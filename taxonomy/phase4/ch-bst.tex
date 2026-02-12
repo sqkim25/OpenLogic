@@ -1,0 +1,1316 @@
+\chapter{Set-Theoretic Foundations} \label{ch:bst}
+
+%% ===================================================================
+%% BST.1: Sets and Membership
+%% ===================================================================
+
+\section{Sets and Membership} \label{BST.1}
+
+A \emph{set} is a collection of objects, considered as a single
+object. The objects making up the set are called \emph{elements} or
+\emph{members} of the set. % PRIM-BST002
+If $x$ is an element of a set~$A$, we
+write $x \in A$; if not, we write $x \notin A$. The set which has no
+elements is called the \emph{empty} set and
+denoted~``$\emptyset$''. % PRIM-BST004
+
+It does not matter how we \emph{specify} the set, or how we
+\emph{order} its elements, or indeed how \emph{many times} we
+count its elements. All that matters are what its elements
+are. We codify this in the following principle.
+
+\begin{defn}[Extensionality] % PRIM-BST001
+\label{PRIM-BST001}
+  If $A$ and $B$ are sets, then $A = B$ iff
+  every element of~$A$ is also an element of~$B$, and vice
+  versa.
+\end{defn}
+
+Extensionality licenses some notation. In general, when we have some
+objects $a_{1}$, \dots, $a_{n}$, then $\{a_{1}, \dots, a_{n}\}$ is
+\emph{the} set whose elements are $a_1, \ldots, a_n$. We emphasise
+the word ``\emph{the}'', since extensionality tells us that there can
+be only \emph{one} such set. Indeed, extensionality also licenses the
+following:
+  \[
+    \{a, a, b\} = \{a, b\} = \{b,a\}.
+  \]
+This delivers on the point that, when we consider sets, we don't care
+about the order of their elements, or how many times they are
+specified.
+
+Frequently we'll specify a set by some property that its elements
+share. We'll use the following shorthand notation for that:
+$\Setabs{x}{\phi(x)}$, where the $\phi(x)$ stands for the property
+that~$x$ has to have in order to be counted among the elements of
+the set.\footnote{Unrestricted set-builder notation leads to
+paradoxes: for instance, the set $R = \Setabs{x}{x \notin x}$ cannot
+exist (Russell's Paradox). Throughout this text, we work in naive set
+theory and rely on set-builder notation only for unproblematic
+instances of comprehension.}
+
+Extensionality gives us a way for showing that sets are identical: to
+show that $A = B$, show that whenever $x \in A$ then also $x \in B$,
+and whenever $y \in B$ then also $y \in A$.
+
+
+%%% Subsets and Power Sets (from sfr/set/sub — KEEP)
+
+We will often want to compare sets. One obvious kind of comparison
+is: \emph{everything in one set is in the other too}.
+
+\begin{defn}[Subset] % PRIM-BST003
+\label{PRIM-BST003}
+If every element of a set $A$ is also an element of~$B$, then we
+say that $A$ is a \emph{subset} of~$B$, and write $A \subseteq B$. If
+$A$ is not a subset of~$B$ we write $A \not\subseteq B$.
+If $A \subseteq B$ but $A \neq B$, we write $A \subsetneq B$ and say
+that $A$ is a \emph{proper subset} of $B$.
+\end{defn}
+
+The notation $(\forall x \in A)\phi$ abbreviates $\forall x(x \in A
+\lif \phi)$, and $(\exists x \in A)\phi$ abbreviates $\exists x(x \in
+A \land \phi)$. Using this notation, $A \subseteq B$ iff $(\forall x
+\in A)\, x \in B$.
+
+\begin{prop} \label{PRIM-BST001:subset-char}
+$A = B$ iff both $A \subseteq B$ and $B \subseteq A$.
+\end{prop}
+
+Now we consider a certain kind of set: the set of all subsets of a
+given set.
+
+\begin{defn}[Power Set] % PRIM-BST015
+\label{PRIM-BST015}
+The set consisting of all subsets of a set~$A$ is called the
+\emph{power set of}~$A$, written $\Pow{A}$.
+  \[
+    \Pow{A} = \Setabs{B}{B \subseteq A}
+  \]
+\end{defn}
+
+\begin{ex}
+What are all the possible subsets of $\{ a, b, c \}$? They are:
+$\emptyset$, $\{a \}$, $\{b\}$, $\{c\}$, $\{a, b\}$, $\{a, c\}$, $\{b,
+c\}$, $\{a, b, c\}$. The set of all these subsets is
+$\Pow{\{a,b,c\}}$:
+\[
+\Pow{\{ a, b, c \}} = \{\emptyset, \{a \}, \{b\}, \{c\}, \{a, b\},
+\{b, c\}, \{a, c\}, \{a, b, c\}\}
+\]
+\end{ex}
+
+
+%%% Unions and Intersections (from sfr/set/uni — KEEP)
+
+We can define new sets from old by combining their elements, or by
+taking only those elements they share.
+
+\begin{defn}[Union] % PRIM-BST005
+\label{PRIM-BST005}
+The \emph{union} of two sets $A$ and $B$, written $A \cup B$, is the
+set of all things which are elements of $A$, $B$, or both.
+\[
+A \cup B = \Setabs{x}{x \in A \lor x \in B}
+\]
+\end{defn}
+
+\begin{defn}[Intersection] % PRIM-BST005
+The \emph{intersection} of two sets $A$ and $B$, written $A \cap B$, is
+the set of all things which are elements of both $A$ and~$B$.
+\[
+A \cap B = \Setabs{x}{x \in A \land x \in B}
+\]
+Two sets are called \emph{disjoint} if their intersection is
+empty. This means they have no elements in common.
+\end{defn}
+
+We can also form the union or intersection of more than two
+sets. An elegant way of dealing with this in general is the
+following: suppose you collect all the sets you want to form the union
+(or intersection) of into a single set. Then we can define the union
+of all our original sets as the set of all objects which belong to at
+least one element of the set, and the intersection as the set of
+all objects which belong to every element of the set.
+
+\begin{defn}[General Union]
+If $A$ is a set of sets, then $\bigcup A$ is the set of elements of
+elements of~$A$:
+\begin{align*}
+\bigcup A & = \Setabs{x}{x \text{ belongs to an element of } A}\\
+& = \Setabs{x}{\text{there is a } B \in A
+  \text{ so that } x \in B}
+\end{align*}
+\end{defn}
+
+\begin{defn}[General Intersection]
+If $A$ is a set of sets, then $\bigcap A$ is the set of objects which
+all elements of~$A$ have in common:
+\begin{align*}
+\bigcap A & = \Setabs{x}{x \text{ belongs to every element of } A}\\
+ & = \Setabs{x}{\text{for all } B \in A, x \in B}
+\end{align*}
+\end{defn}
+
+\begin{ex}
+Suppose $A = \{ \{ a, b \}, \{ a, d, e \}, \{ a, d \} \}$.
+Then $\bigcup A = \{ a, b, d, e \}$ and $\bigcap A = \{ a \}$.
+\end{ex}
+
+We could also do the same for a sequence of sets $A_1$, $A_2$, \dots
+\begin{align*}
+\bigcup_i A_i & = \Setabs{x}{x \text{ belongs to one of the } A_i}\\
+\bigcap_i A_i & = \Setabs{x}{x \text{ belongs to every } A_i}.
+\end{align*}
+
+When we have an \emph{index} of sets, i.e., some set $I$ such that we
+are considering $A_i$ for each $i \in I$, we may also write:
+\begin{align*}
+	\bigcup_{i \in I} A_i & = \bigcup \Setabs{A_i }{i \in I}\\
+	\bigcap_{i \in I} A_i & = \bigcap\Setabs{A_i}{i \in I}
+\end{align*}
+
+The \emph{set difference}~$A \setminus B$ is the set of all elements of
+$A$ which are not also elements of~$B$, i.e.,
+$A\setminus B = \Setabs{x}{x\in A \text{ and } x \notin B}$.
+
+
+%%% Pairs, Tuples, Cartesian Products (from sfr/set/pai — ABSORB)
+
+It follows from extensionality that sets have no order to their
+elements. So if we want to represent order, we use \emph{ordered
+pairs} $\tuple{x, y}$. In an unordered pair $\{x, y\}$, the order does
+not matter: $\{x, y\} = \{y, x\}$. In an ordered pair, it does: if $x
+\neq y$, then $\tuple{x, y} \neq \tuple{y, x}$.
+
+We want to preserve the idea that ordered pairs are identical iff they
+share the same first element and share the same second element, i.e.:
+\[
+  \tuple{a, b}= \tuple{c, d}\text{ iff both }a = c \text{ and }b=d.
+\]
+We can define ordered pairs in set theory using the Wiener--Kuratowski
+definition.
+
+\begin{defn}[Ordered pair] % PRIM-BST006
+\label{PRIM-BST006}
+	$\tuple{a, b} = \{\{a\}, \{a, b\}\}$.
+\end{defn}
+
+This reduces ordered pairs to sets: $\tuple{a,b}$ is simply the
+set $\{\{a\},\{a,b\}\}$.
+
+We can use ordered pairs to define ordered sequences of
+more than two objects. \emph{Triples} $\tuple{x, y, z}$ are
+$\tuple{\tuple{x, y},z}$,
+\emph{quadruples} $\tuple{x,y,z,u}$ are
+$\tuple{\tuple{\tuple{x,y},z},u}$, and so on. In general, we talk of
+\emph{ordered $n$-tuples} $\tuple{x_1, \dots, x_n}$.
+
+\begin{defn}[Cartesian product] % PRIM-BST007
+\label{PRIM-BST007}
+Given sets $A$ and $B$, their \emph{Cartesian product} $A \times B$ is
+defined by
+\[
+  A \times B = \Setabs{\tuple{x, y}}{x \in A \text{ and } y \in B}.
+\]
+\end{defn}
+
+If $A$ is a set, the product of $A$ with itself, $A \times A$, is also
+written~$A^2$. It is the set of \emph{all} pairs $\tuple{x, y}$ with
+$x, y \in A$. The set of all triples $\tuple{x, y, z}$ is $A^3$, and
+so on. We can give a recursive definition:
+\begin{align*}
+  A^1 & = A\\
+  A^{k+1} & = A^k \times A
+\end{align*}
+
+Finite sequences (words) over $A$ and the set $A^*$ are defined
+formally in \S\ref{BST.4}.
+
+
+%%% Important Sets (from sfr/set/imp — CONDENSE: N only here)
+
+\begin{defn}[Natural Numbers] % PRIM-BST012
+\label{PRIM-BST012}
+The set of \emph{natural numbers} is denoted $\Nat = \{0, 1, 2, 3,
+\ldots\}$.
+\end{defn}
+
+The natural numbers form the most basic infinite set and serve as the
+foundation for counting, induction, and recursion throughout
+mathematical logic.
+
+
+%% ===================================================================
+%% BST.2: Relations
+%% ===================================================================
+
+\section{Relations} \label{BST.2}
+
+%%% Relations as Sets (from sfr/rel/set — KEEP)
+
+Recall from \S\ref{BST.1} the notion of an ordered pair $\tuple{a,b}$ and
+the Cartesian product $A \times B$. We can use these to give a
+set-theoretic treatment of relations: a relation on a set is simply a
+set of ordered pairs.
+
+Consider a particular relation on a set: the $<$-relation
+on the set~$\Nat$ of natural numbers. Consider the set of all pairs of
+numbers $\tuple{n, m}$ where $n<m$, i.e.,
+\[
+  R=\Setabs{\tuple{n, m}}{n, m \in \Nat \text{ and } n<m}.
+\]
+There is a close connection between $n$ being less than $m$, and the
+pair $\tuple{n, m}$ being a member of $R$, namely:
+$n<m$ iff $\tuple{n, m} \in R$.
+Indeed, without any loss of information, we can consider the set $R$
+to \emph{be} the $<$-relation on $\Nat$. This justifies the following
+definition:
+
+\begin{defn}[Binary relation] % PRIM-BST008
+\label{PRIM-BST008}
+A \emph{binary relation} on a set $A$ is a subset of~$A^{2}$. If $R
+\subseteq A^{2}$ is a binary relation on~$A$ and $x, y \in A$, we
+sometimes write $Rxy$ (or $xRy$) for $\tuple{x, y} \in R$.
+\end{defn}
+
+\begin{ex}
+The set $\Nat^{2}$ of pairs of natural numbers can be listed in a
+2-dimensional matrix like this:
+\[
+  \begin{array}{ccccc}
+  \mathbf{\tuple{ 0,0 }} & \tuple{ 0,1 } &
+    \tuple{ 0,2 } & \tuple{ 0,3 } & \ldots\\
+  \tuple{ 1,0 } & \mathbf{\tuple{ 1,1 }} &
+    \tuple{ 1,2 } & \tuple{ 1,3 } & \ldots\\
+  \tuple{ 2,0 } & \tuple{ 2,1 } &
+    \mathbf{\tuple{ 2,2 }} & \tuple{ 2,3 } & \ldots\\
+  \tuple{ 3,0 } & \tuple{ 3,1 } & \tuple{ 3,2 } &
+    \mathbf{\tuple{ 3,3 }} & \ldots\\
+  \vdots & \vdots & \vdots & \vdots & \mathbf{\ddots}
+  \end{array}
+\]
+The diagonal pairs $\{\tuple{0,0 }, \tuple{ 1,1 }, \tuple{ 2,2 },
+\dots\}$ form the \emph{identity relation on}~$\Nat$. We define
+$\Id{A}=\Setabs{\tuple{ x,x }}{x \in A}$ for any set $A$. The pairs
+above the diagonal form the \emph{less than} relation, those below the
+diagonal form the \emph{greater than} relation.
+\end{ex}
+
+According to this definition, \emph{any} subset of $A^{2}$ is a
+relation on~$A$. In particular, $\emptyset$ is a relation on any set
+(the empty relation), and $A^{2}$~itself is a relation on~$A$ (the
+universal relation).
+
+
+%%% Special Properties of Relations (from sfr/rel/prp — KEEP)
+
+Some kinds of relations are so common that they have been given special
+names. We categorize relations according to special properties. Combinations
+of these properties yield orders and equivalence relations.
+
+\begin{defn}[Reflexivity]
+A relation $R \subseteq A^2$ is \emph{reflexive} iff, for every $x \in
+A$, $Rxx$.
+\end{defn}
+
+\begin{defn}[Transitivity]
+A relation $R \subseteq A^2$ is \emph{transitive} iff, whenever $Rxy$
+and $Ryz$, then also $Rxz$.
+\end{defn}
+
+\begin{defn}[Symmetry]
+A relation~$R \subseteq A^2$ is \emph{symmetric} iff, whenever
+$Rxy$, then also~$Ryx$.
+\end{defn}
+
+\begin{defn}[Anti-symmetry]
+A relation~$R \subseteq A^2$ is \emph{anti-sym\-met\-ric} iff, whenever both
+$Rxy$ and $Ryx$, then $x=y$ (or, in other words: if $x\neq y$ then
+either $\lnot Rxy$ or $\lnot Ryx$).
+\end{defn}
+
+Note that being anti-symmetric and merely not being symmetric are
+different conditions. A relation can be both symmetric and
+anti-symmetric (e.g., the identity relation).
+
+\begin{defn}[Connectivity]
+A relation $R \subseteq A^2$ is \emph{connected} if for all $x,y\in
+A$, if $x \neq y$, then either $Rxy$ or~$Ryx$.
+\end{defn}
+
+\begin{defn}[Irreflexivity]
+A relation $R \subseteq A^2$ is called \emph{irreflexive} if, for all $x \in
+A$, not $Rxx$.
+\end{defn}
+
+\begin{defn}[Asymmetry]
+A relation $R \subseteq A^2$ is called \emph{asymmetric} if for no pair $x,y\in
+A$ we have both $Rxy$ and~$Ryx$.
+\end{defn}
+
+Note that if $A \neq \emptyset$, then no irreflexive relation on~$A$
+is reflexive and every asymmetric relation on~$A$ is also
+anti-symmetric. However, there are $R \subseteq A^2$ that are not
+reflexive and also not irreflexive, and there are anti-symmetric
+relations that are not asymmetric.
+
+
+%%% Equivalence Relations (from sfr/rel/eqv — KEEP)
+
+The identity relation on a set is reflexive, symmetric, and
+transitive. Relations~$R$ that have all three of these properties are very
+common.
+
+\begin{defn}[Equivalence relation] % DEF-BST004
+\label{DEF-BST004}
+A relation $R \subseteq A^2$ that is reflexive, symmetric, and
+transitive is called an \emph{equivalence relation}. Elements $x$
+and $y$ of~$A$ are said to be \emph{$R$-equivalent} if~$Rxy$.
+\end{defn}
+
+Equivalence relations give rise to the notion of an \emph{equivalence
+class}. An equivalence relation ``chunks up'' the domain into
+different partitions. Within each partition, all the objects are
+related to one another; and no objects from different partitions
+relate to one another.
+
+\begin{defn}[Equivalence class]
+Let $R \subseteq A^2$ be an equivalence relation. For each $x \in A$,
+the \emph{equivalence class} of $x$ in~$A$ is the set $\equivrep{x}{R}
+= \Setabs{y \in A}{Rxy}$. The \emph{quotient} of $A$ under~$R$ is
+$\equivclass{A}{R} = \Setabs{\equivrep{x}{R}}{x \in A}$, i.e., the set
+of these equivalence classes.
+\end{defn}
+
+The next result proves that the equivalence classes are indeed the
+partitions of~$A$:
+
+\begin{prop} \label{DEF-BST004:partition}
+If $R \subseteq A^2$ is an equivalence relation, then $Rxy$ iff
+$\equivrep{x}{R} = \equivrep{y}{R}$.
+\end{prop}
+
+\begin{proof}
+For the left-to-right direction, suppose $Rxy$, and let $z \in
+\equivrep{x}{R}$. By definition, then, $Rxz$. Since $R$ is an
+equivalence relation, $Ryz$. (Spelling this out: as $Rxy$ and~$R$ is
+symmetric we have $Ryx$, and as $Rxz$ and~$R$ is transitive we
+have~$Ryz$.) So $z \in \equivrep{y}{R}$. Generalising,
+$\equivrep{x}{R} \subseteq \equivrep{y}{R}$. But exactly similarly,
+$\equivrep{y}{R} \subseteq \equivrep{x}{R}$. So $\equivrep{x}{R} =
+\equivrep{y}{R}$, by extensionality.
+
+For the right-to-left direction, suppose $\equivrep{x}{R} =
+\equivrep{y}{R}$. Since $R$ is reflexive, $Ryy$, so $y \in
+\equivrep{y}{R}$. Thus also $y \in \equivrep{x}{R}$ by the assumption
+that $\equivrep{x}{R} = \equivrep{y}{R}$. So $Rxy$.
+\end{proof}
+
+\begin{ex}
+A nice example of equivalence relations comes from modular arithmetic.
+For any $a$, $b$, and $n \in \PosInt$, say that $a \equiv_n b$ iff
+dividing $a$ by~$n$ gives the same remainder as dividing $b$ by~$n$.
+(Somewhat more symbolically: $a \equiv_n b$ iff, for some $k \in
+\Int$, $a - b = kn$.) Now, $\equiv_n$ is an equivalence relation, for
+any~$n$. And there are exactly $n$ distinct equivalence classes
+generated by~$\equiv_n$; that is, $\equivclass{\Nat}{\equiv_n}$ has
+$n$ elements. These are: the set of numbers divisible by $n$
+without remainder, i.e., $\equivrep{0}{\equiv_n}$; the set of numbers
+divisible by $n$ with remainder~$1$, i.e., $\equivrep{1}{\equiv_n}$;
+\ldots; and the set of numbers divisible by~$n$ with remainder~$n-1$,
+i.e.,~$\equivrep{n-1}{\equiv_n}$.
+\end{ex}
+
+
+%%% Orders (from sfr/rel/ord — CONDENSE)
+
+Many of our comparisons involve describing some objects as being
+``less than'', ``equal to'', or ``greater than'' other objects, in a
+certain respect. These involve \emph{order} relations. There are
+different kinds: some require that any two objects be comparable,
+others don't; some include identity (like~$\le$) and some exclude it
+(like~$<$).
+
+\begin{defn}[Preorder]
+A relation which is both reflexive and transitive is called a
+\emph{preorder.}
+\end{defn}
+
+\begin{defn}[Partial order] % DEF-BST005
+\label{DEF-BST005}
+A preorder which is also anti-symmetric is called a
+\emph{partial order}.
+\end{defn}
+
+\begin{defn}[Linear order]
+A partial order which is also connected is called a
+\emph{total order} or \emph{linear order.}
+\end{defn}
+
+\begin{defn}[Strict order]
+A \emph{strict order} is a relation which is irreflexive, asymmetric,
+and transitive.
+\end{defn}
+
+\begin{defn}[Strict linear order]
+A strict order which is also connected is called a
+\emph{strict total order} or \emph{strict linear order.}
+\end{defn}
+
+\begin{ex}
+An important partial order is the relation $\subseteq$ on a set of
+sets. This is not in general a linear order, since if $a \neq b$ and
+we consider $\Pow{\{a, b\}} = \{\emptyset, \{a\}, \{b\}, \{a,b\}\}$,
+we see that $\{a\} \nsubseteq \{b\}$ and $\{a\} \neq \{b\}$ and $\{b\}
+\nsubseteq \{a\}$.
+\end{ex}
+
+Any strict order $R$ on~$A$ can be turned into a partial order by
+adding the diagonal $\Id{A}$, i.e., adding all the pairs~$\tuple{x,
+x}$.  (This is called the \emph{reflexive closure} of~$R$.)
+
+\begin{prop}\label{prop:stricttopartial}
+If $R$ is a strict order on~$A$, then $R^+ = R \cup \Id{A}$ is a
+partial order. Moreover, if $R$ is a strict linear order, then $R^+$ is
+a linear order.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+Suppose $R$ is a strict order on~$A$ and let $R^+ = R \cup \Id{A}$.
+\emph{Reflexivity}: $\tuple{x, x} \in \Id{A} \subseteq R^+$ for all
+$x \in A$.
+\emph{Anti-symmetry}: if $R^+xy$ and $R^+yx$ with $x \neq y$, then
+$Rxy$ and $Ryx$, contradicting asymmetry.
+\emph{Transitivity}: if $R^+xy$ and $R^+yz$, then either both pairs
+are in $R$ (use transitivity of~$R$), or one is in $\Id{A}$ (use $x=y$
+or $y=z$). The ``moreover'' clause follows because connectivity of~$R$
+is inherited by~$R^+$.
+\end{proof}
+
+
+%%% Trees (from sfr/rel/tre — CONDENSE)
+
+A particular kind of partial order that plays an important role in
+logic is a \emph{tree}. Finite trees occur in syntax (formula
+decomposition) and derivation systems, while infinite trees appear in
+completeness proofs.
+
+A \emph{minimal element} in a set~$A$ partially ordered
+by~$\le$ is an element $x \in A$ such that for all $y \in A$ we have
+that~$x \le y$. A set is \emph{well-ordered} by~$\le$ if every one of
+its subsets has a minimal element.
+
+\begin{defn}[Tree]
+A \emph{tree} is a pair $T = \tuple{A, \le}$ such that $A$ is a set
+and $\le$ is a partial order on~$A$ with a unique minimal element
+$r \in A$ (called the \emph{root}) such that for all $x \in A$,
+the set $\Setabs{y}{y \le z}$ is well-ordered by~$\le$.
+\end{defn}
+
+\begin{defn}[Successors]
+Suppose $T = \tuple{A, \le}$ is a tree.
+If $x,y \in A$, $x < y$, and there is no $z \in A$ such that
+$x < z < y$, then we say that $y$ is a \emph{successor} (or
+\emph{child}) of~$x$, and $x$ is the \emph{predecessor} (or
+\emph{parent}) of~$y$.
+\end{defn}
+
+\begin{defn}[Branches]
+Given a tree $T = \tuple{A, \le}$, a \emph{branch} of~$T$ is a
+maximal chain in~$T$, i.e., a set $B \subseteq A$ such that
+for any $x, y \in B$ either $x \le y$ or $y \le x$, and for any
+$z \in A \setminus B$ there exists $u \in B$ such that neither
+$z \le u$ nor $u \le z$.
+We use $[T]$ to denote the set of all branches of $T$.
+\end{defn}
+
+A tree is \emph{infinite} if its underlying set is infinite, and
+\emph{finitely branching} if every node has only finitely many
+successors.
+
+\begin{ex}
+A classic example of a finitely branching tree is the
+\emph{infinite binary tree} $\Bin^*$, ordered by the extension
+relation $\sqsubseteq$ (e.g., $101 \sqsubseteq 101101$).
+Every element~$s$ has exactly two successors, $s0$ and~$s1$, and its
+root is the empty sequence $\emptyseq$.
+\end{ex}
+
+
+%%% Operations on Relations (from sfr/rel/ops — CONDENSE)
+
+It is often useful to modify or combine relations. Here are some
+fundamental operations.
+
+\begin{defn}[Operations on relations]
+Let $R$, $S$ be relations, and $A$ be any set.
+
+The \emph{inverse} of $R$ is $R^{-1} = \Setabs{\tuple{y, x}}{\tuple{x,
+    y} \in R}$.
+
+The \emph{relative product} of $R$ and $S$ is $(R \mid S) =
+\Setabs{\tuple{x, z}}{\exists y(Rxy \land Syz)}$.
+
+The \emph{restriction} of $R$ to $A$ is $\funrestrictionto{R}{A}= R
+\cap A^2$.
+
+The \emph{application} of $R$ to $A$ is $\funimage{R}{A} = \Setabs{y}{
+(\exists x \in A)\, Rxy}$.
+\end{defn}
+
+\begin{defn}[Transitive closure]
+Let $R \subseteq A^2$ be a binary relation.
+
+The \emph{transitive closure} of~$R$ is $R^+ = \bigcup_{0 < n \in
+\Nat} R^n$, where we recursively define $R^1 = R$ and $R^{n+1} = R^n
+\mid R$.
+
+The \emph{reflexive transitive closure} of $R$ is $R^* = R^+ \cup
+\Id{A}$.
+\end{defn}
+
+
+%% ===================================================================
+%% BST.3: Functions
+%% ===================================================================
+
+\section{Functions} \label{BST.3}
+
+%%% Basics (from sfr/fun/bas — KEEP)
+
+A \emph{function} is a map which sends each element of a given set
+to a specific element in some (other) given set. For instance, the
+operation of adding~$1$ defines a function: each number~$n$ is mapped
+to a unique number~$n+1$.
+
+More generally, functions may take pairs, triples, etc., as inputs and
+return some kind of output. In a mathematical, abstract sense, a function
+is a \emph{black box}: what matters is only what output is paired with
+what input, not the method for calculating the output.
+
+\begin{defn}[Function] % PRIM-BST009
+\label{PRIM-BST009}
+A \emph{function} $f \colon A \to B$ is a mapping of each element
+of~$A$ to an element of~$B$.
+
+We call $A$ the \emph{domain} of~$f$ and $B$ the \emph{codomain}
+of~$f$.  The elements of~$A$ are called inputs or \emph{arguments}
+of~$f$, and the element of~$B$ that is paired with an argument~$x$
+by~$f$ is called the \emph{value of~$f$} for argument~$x$,
+written~$f(x)$.
+
+The \emph{range} $\ran{f}$ of~$f$ is the subset of the codomain
+consisting of the values of~$f$ for some argument; $\ran{f} =
+\Setabs{f(x)}{x \in A}$.
+\end{defn}
+
+\begin{ex}
+Let $f \colon \Nat \to \Nat$ be defined such that $f(x) = x+1$. This
+is a function which takes in natural numbers and outputs natural numbers.
+Given a natural number~$x$, $f$ will output its successor~$x+1$.
+In this case, the codomain $\Nat$ is not the range of~$f$, since the
+natural number~$0$ is not the successor of any natural number. The
+range of~$f$ is the set of all positive integers, $\PosInt$.
+\end{ex}
+
+Two functions $f$ and $g$ are the same if they have the same domain,
+codomain, and agree on all values: if $\forall x\, f(x) = g(x)$, then
+$f = g$.
+
+
+%%% Kinds of Functions (from sfr/fun/kin — KEEP)
+
+We introduce a taxonomy for the most frequently encountered kinds of
+functions.
+
+\begin{defn}[Surjective function] % DEF-BST002
+\label{DEF-BST002}
+A function $f \colon A \rightarrow B$ is \emph{surjective} iff $B$
+is also the range of~$f$, i.e., for every $y \in B$ there is at least
+one $x \in A$ such that~$f(x) = y$, or in symbols:
+\[
+  (\forall y \in B)(\exists x \in A)\, f(x) = y.
+\]
+We call such a function a surjection from $A$ to $B$.
+\end{defn}
+
+\begin{defn}[Injective function] % DEF-BST001
+\label{DEF-BST001}
+A function $f \colon A \rightarrow B$ is \emph{injective} iff for
+each $y \in B$ there is at most one $x \in A$ such that~$f(x) = y$. We
+call such a function an injection from $A$ to~$B$.
+\end{defn}
+
+\begin{defn}[Bijection] % DEF-BST003
+\label{DEF-BST003}
+A function $f \colon A \to B$ is \emph{bijective} iff it is both
+surjective and injective. We call such a function
+a bijection from $A$ to~$B$ (or between $A$ and~$B$).
+\end{defn}
+
+\begin{ex}
+The constant function $f\colon \Nat \to \Nat$ given by $f(x) = 1$ is
+neither injective, nor surjective.
+The identity function $f\colon \Nat \to \Nat$ given by $f(x) = x$ is
+both injective and surjective.
+The successor function $f \colon \Nat \to \Nat$ given by $f(x) = x+1$
+is injective but not surjective.
+The function $f \colon \Nat \to \Nat$ defined by:
+\[
+  f(x) =
+  \begin{cases}
+    \frac{x}{2} & \text{if $x$ is even} \\
+    \frac{x+1}{2} & \text{if $x$ is odd.}
+  \end{cases}
+\]
+is surjective, but not injective.
+\end{ex}
+
+
+%%% Inverses of Functions (from sfr/fun/inv — KEEP)
+
+We now ask whether the mapping defined by a function can be
+``reversed.'' This is made precise by the notion of an inverse.
+
+\begin{defn}[Inverse]
+A function $g \colon B \to A$ is an \emph{inverse} of a function $f
+\colon A \to B$ if $f(g(y)) = y$ and $g(f(x)) = x$ for all $x \in A$
+and $y \in B$.
+\end{defn}
+
+If $f$ has an inverse~$g$, we often write $f^{-1}$ instead of~$g$.
+
+\begin{prop}\label{prop:inj-left-inv}
+If $f\colon A \to B$ is injective, then there is a \emph{left
+inverse}~$g\colon B \to A$ of~$f$ so that $g(f(x)) = x$ for all $x
+\in A$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+Since $f$ is injective, for each $y \in \ran{f}$ there is exactly one
+$x$ with $f(x) = y$; define $g(y) = x$ in that case. For $y \notin
+\ran{f}$, map $g(y)$ to any fixed $a \in A$. Then $g(f(x)) = x$ for
+all $x \in A$ by construction.
+\end{proof}
+
+\begin{prop}\label{prop:surj-right-inv}
+    If $f\colon A \to B$ is surjective, then there is a
+    \emph{right inverse}~$h\colon B \to A$ of~$f$ so that $f(h(y)) =
+    y$ for all~$y \in B$.
+\end{prop}
+
+The proof requires choosing, for each $y \in B$, some $x \in A$ with
+$f(x) = y$. That such a choice is always possible is guaranteed by the
+Axiom of Choice. In many specific cases (e.g., when $A = \Nat$, or when
+$A$ is finite, or when $f$ is bijective), the Axiom of Choice is
+not required.
+
+\begin{prop}\label{prop:bijection-inverse}
+If $f\colon A \to B$ is bijective, there is a
+function~$f^{-1}\colon B \to A$ so that for all $x \in A$,
+$f^{-1}(f(x)) = x$ and for all $y \in B$, $f(f^{-1}(y)) = y$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+Since $f$ is injective, it has a left inverse~$g$. Since $f$ is
+surjective, it has a right inverse~$h$. For any $y \in B$:
+$g(y) = g(f(h(y))) = h(y)$, so $g = h$. This common function
+$f^{-1} = g = h$ is both a left and right inverse of~$f$.
+\end{proof}
+
+
+%%% Composition of Functions (from sfr/fun/cmp — KEEP)
+
+We can define a new function by composing two functions $f$ and~$g$,
+i.e., by first applying $f$ and then~$g$. This is only possible if
+the range of~$f$ is a subset of the domain of~$g$.
+
+\begin{defn}[Composition]
+Let $f\colon A \to B$ and $g\colon B \to C$ be functions. The
+\emph{composition} of $f$ with~$g$ is $\comp{f}{g} \colon A \to C$,
+where $(\comp{f}{g})(x) = g(f(x))$.
+\end{defn}
+
+\begin{ex}
+Consider the functions $f(x) = x + 1$, and $g(x) = 2x$. Since
+$(\comp{f}{g})(x) = g(f(x))$, for each input~$x$ you must first take
+its successor, then multiply the result by two. So their composition
+is given by $(\comp{f}{g})(x) = 2(x+1)$.
+\end{ex}
+
+Composition preserves injectivity and surjectivity: if $f \colon A \to
+B$ and $g \colon B \to C$ are both injective, then $\comp{f}{g}$ is
+injective; likewise for surjectivity.
+
+
+%%% Functions as Relations (from sfr/fun/rel — CONDENSE)
+
+A function $f \colon A \to B$ naturally defines a relation between $A$
+and~$B$. In fact, we can \emph{identify} a function with this
+relation, i.e., with a set of pairs.
+
+\begin{defn}[Graph of a function]
+Let $f\colon A \to B$ be a function.
+The \emph{graph} of~$f$ is the relation $R_f \subseteq A \times B$
+defined by
+\[
+R_f = \Setabs{\tuple{x,y}}{f(x) = y}.
+\]
+\end{defn}
+
+Conversely, any relation $R \subseteq A \times B$ that is functional
+(for each $x \in A$ there is exactly one $y \in B$ with $Rxy$) is the
+graph of a function $f \colon A \to B$ defined by $f(x) = y$ iff
+$Rxy$. Functions can thus be identified with certain relations, i.e.,
+with certain sets of tuples.
+
+%%% ===================================================================
+%%% BST.4  Sequences and Numbers
+%%% ===================================================================
+
+\section{Sequences and Numbers}
+\label{BST.4}
+
+The ordered pair $\tuple{a,b}$ (PRIM-BST006, \S\ref{BST.1}) and
+Cartesian product $A \times B$ (PRIM-BST007, \S\ref{BST.1}) allow us to form pairs
+and grids of elements.  We now extend these constructions to
+\emph{finite sequences} of arbitrary length and to \emph{infinite
+sequences}, both of which are pervasive in logic and computability
+theory.
+
+\subsection{Tuples and Finite Sequences}
+
+Ordered pairs generalise to longer sequences by iteration.  A
+\emph{triple} $\tuple{x,y,z}$ is the pair $\tuple{\tuple{x,y},z}$; a
+\emph{quadruple} $\tuple{x,y,z,u}$ is
+$\tuple{\tuple{\tuple{x,y},z},u}$; and in general an \emph{ordered
+$n$-tuple} $\tuple{x_1, \dots, x_n}$ is defined recursively by
+\begin{align*}
+  \tuple{x_1} &= x_1, \\
+  \tuple{x_1, \dots, x_{k+1}} &= \tuple{\tuple{x_1, \dots, x_k},\, x_{k+1}}.
+\end{align*}
+The Cartesian product generalises correspondingly:
+\begin{align*}
+  A^1 &= A, \\
+  A^{k+1} &= A^k \times A.
+\end{align*}
+
+\begin{defn}[Finite sequences / words] % PRIM-BST010
+  \label{PRIM-BST010}
+  Let $A$ be a set.  A \emph{word} (or \emph{finite sequence}) over~$A$ is
+  any $n$-tuple of elements of~$A$, for some $n \geq 0$.  By convention
+  elements of~$A$ are sequences of length~$1$, and $\emptyset$ is the
+  unique sequence of length~$0$ (the \emph{empty word}).  The set of
+  \emph{all} finite sequences over~$A$ is
+  \[
+    A^* = \{\emptyset\} \cup A \cup A^2 \cup A^3 \cup \dots
+  \]
+\end{defn}
+
+\begin{ex}
+If $A = \{a,b,c\}$, then the sequence ``$bac$'' is the triple
+$\tuple{b,a,c} \in A^3$.  The set $A^*$ contains the empty word, all
+single letters, all pairs, all triples, and so on.
+\end{ex}
+
+\subsection{Infinite Sequences}
+
+\begin{defn}[Infinite sequences] % PRIM-BST011
+  \label{PRIM-BST011}
+  For any set $A$, the set $A^\omega$ consists of all infinite
+  (one-way) sequences of elements of~$A$.  An element of $A^\omega$ is
+  a sequence $a_1 a_2 a_3 \dots$ where each $a_i \in A$.
+  Equivalently, $A^\omega$ is the set of all functions
+  $f \colon \Nat \to A$ (or $f \colon \PosInt \to A$, depending on
+  indexing convention).
+\end{defn}
+
+Finite sequences ($A^*$, PRIM-BST010) and infinite sequences
+($A^\omega$, PRIM-BST011) will recur throughout the text: $A^*$
+underlies the syntax of formal languages
+(see PRIM-SYN001, CH-SYN), while $A^\omega$ appears in
+diagonalisation arguments (\S\ref{BST.6}).
+
+
+%%% ===================================================================
+%%% BST.5  Induction and Recursion
+%%% ===================================================================
+
+\section{Induction and Recursion}
+\label{BST.5}
+
+Induction is a proof technique for establishing that \emph{every}
+element of a suitably constructed set has a given property.  It applies
+whenever the set is built up from basic elements by repeatedly applying
+certain operations---that is, whenever the set is the \emph{closure}
+of some base elements under those operations.
+
+A set $S$ is \emph{closed} under a function $f$ iff $x \in S$ implies
+$f(x) \in S$.  A property $P$ is \emph{preserved} under $f$ iff
+$P(a)$ implies $P(f(a))$ for every $a$ in the domain of $f$.
+
+\subsection{Mathematical Induction on $\Nat$}
+
+The natural numbers $\Nat$ (PRIM-BST012, \S\ref{BST.1}) are closed
+under the successor function $s(n) = n+1$, and every natural number is
+obtained from $0$ by finitely many applications of $s$.  This yields
+the principle of mathematical induction.
+
+\begin{defn}[Mathematical induction on $\Nat$] % PRIM-BST013
+  \label{PRIM-BST013}
+  If $0$ has property $P$, and $P$ is preserved under the successor
+  function, then every natural number has property~$P$.
+\end{defn}
+
+More formally: if $P(0)$ holds and $P(k) \Rightarrow P(k+1)$ for all
+$k \in \Nat$, then $P(n)$ holds for all $n \in \Nat$.
+
+\begin{rem}[Set-theoretic justification]
+  Induction on $\Nat$ can be grounded in the set-theoretic notion of
+  closure.  If $N, s, o$ form a Dedekind algebra (see below), then for
+  any set $X$: if $o \in X$ and $s(n) \in X$ whenever $n \in N \cap X$,
+  then $N \subseteq X$.  Applying this with
+  $X = \{n \in N : P(n)\}$ recovers the familiar induction schema.
+\end{rem}
+
+\subsection{Structural Induction on Formulas}
+
+The set of formulas of a formal language is built from atomic formulas
+by the formula-building functions: negation ($\lnot$), conjunction
+($\land$), disjunction ($\lor$), conditional ($\lif$), biconditional
+($\liff$), and quantification ($\lforall[]$, $\lexists[]$).  The set
+of formulas is closed under each of these operations, and every
+formula is obtained from atomic formulas by finitely many applications
+of them.
+
+\begin{defn}[Structural induction on formulas] % PRIM-BST014
+  \label{PRIM-BST014}
+  If every atomic formula has property $P$, and $P$ is preserved under
+  each formula-building function, then every formula has property~$P$.
+\end{defn}
+
+This suggests the following recipe for an inductive proof that every
+formula has property~$P$:
+
+\medskip\noindent
+\textbf{Base case.}  Let $\varphi$ be an atomic formula.  [\ldots]
+Therefore $\varphi$ has property~$P$.
+
+\medskip\noindent
+\textbf{Inductive step.}  Let $\varphi$ and $\psi$ be formulas, both
+having property~$P$.
+
+\begin{itemize}
+  \item Case $\lnot$: [\ldots] Therefore $\lnot \varphi$ has property~$P$.
+  \item Case $\land$: [\ldots] Therefore $\varphi \land \psi$ has property~$P$.
+  \item Case $\lor$: [\ldots] Therefore $\varphi \lor \psi$ has property~$P$.
+  \item Case $\lif$: [\ldots] Therefore $\varphi \lif \psi$ has property~$P$.
+  \item Case $\liff$: [\ldots] Therefore $\varphi \liff \psi$ has property~$P$.
+  \item Case $\lforall[]$: [\ldots] Therefore $\lforall[x]\varphi$ has property~$P$.
+  \item Case $\lexists[]$: [\ldots] Therefore $\lexists[x]\varphi$ has property~$P$.
+\end{itemize}
+
+\medskip\noindent
+Therefore every formula has property~$P$.
+
+\subsection{Closure and Dedekind Algebras}
+
+The closure machinery underlying induction can be made precise in
+purely set-theoretic terms.
+
+\begin{defn}[Closure] % DEF-BST006
+  \label{DEF-BST006}
+  For any function $f$ and any element $o$, a set $X$ is
+  \emph{$f$-closed} iff $f(x) \in X$ for every $x \in X$.  The
+  \emph{closure} of $o$ under $f$ is
+  \[
+    \closureofunder{f}{o}
+    \;=\; \bigcap\Setabs{X}{o \in X \text{ and } X \text{ is $f$-closed}}.
+  \]
+\end{defn}
+
+Intuitively, $\closureofunder{f}{o}$ is the \emph{smallest} $f$-closed
+set containing~$o$.  One can verify that $o \in \closureofunder{f}{o}$,
+that $\closureofunder{f}{o}$ is $f$-closed, and that it is contained in
+every $f$-closed set that has $o$ as an element.
+
+\begin{defn}[Dedekind algebra] % DEF-BST007
+  \label{DEF-BST007}
+  A \emph{Dedekind algebra} is a triple $(A, f, o)$ where $A$ is a set,
+  $f \colon A \to A$ is a function, and $o \in A$, satisfying:
+  \begin{enumerate}
+    \item $o \notin \ran{f}$ \quad (zero is not a successor),
+    \item $f$ is an injection \quad (distinct elements have distinct
+      successors),
+    \item $A = \closureofunder{f}{o}$ \quad ($A$ is the smallest
+      $f$-closed set containing~$o$).
+  \end{enumerate}
+\end{defn}
+
+Any Dedekind algebra can serve as a surrogate for the natural numbers:
+conditions (1)--(3) are precisely the Dedekind--Peano characterisation
+of $\Nat$, and arithmetic (addition, multiplication, exponentiation) can
+be defined by recursion on a Dedekind algebra.  Moreover, any Dedekind
+infinite set (see DEF-BST008, \S\ref{BST.6}) gives rise to a Dedekind
+algebra.
+
+
+%%% ===================================================================
+%%% BST.6  Cardinality
+%%% ===================================================================
+
+\section{Cardinality}
+\label{BST.6}
+
+With functions (PRIM-BST009), injections (DEF-BST001), surjections
+(DEF-BST002), and bijections (DEF-BST003) in hand (\S\ref{BST.3}),
+we can make precise the idea of ``how many elements'' a set has, and
+compare the sizes of infinite sets.
+
+\subsection{Enumerations and Enumerable Sets}
+
+Informally, an \emph{enumeration} of a set~$A$ is a (possibly
+infinite) list of elements of~$A$ such that every element appears at
+some finite position.  We make this precise as follows.
+
+\begin{defn}[Enumeration] % PRIM-BST016 (part 1)
+  An \emph{enumeration} of a non-empty set~$A$ is a surjective
+  function $f \colon \Nat \to A$ (equivalently, $f \colon \PosInt \to A$).
+\end{defn}
+
+A surjection $f \colon \PosInt \to A$ gives the list $f(1), f(2), f(3), \dots$
+in which every element of~$A$ appears.  The list may contain repetitions;
+these can always be removed, yielding a bijection between $A$ and either
+$\Nat$ or an initial segment $\{0, \dots, n\}$
+(equivalently, $\PosInt$ or $\{1, \dots, n\}$).
+
+\begin{defn}[Enumerable set] % PRIM-BST016 (part 2)
+  \label{PRIM-BST016}
+  A set~$A$ is \emph{enumerable} (also called \emph{countable}) iff
+  $A = \emptyset$ or there is an enumeration of~$A$.
+  A set is \emph{non-enumerable} iff it is not enumerable.
+\end{defn}
+
+\begin{cor}[$\Nat$ is enumerable] % THM-BST002
+  \label{THM-BST002}
+  $\Nat$ is enumerable.
+\end{cor}
+
+\begin{proof}
+  The identity function $\Id{\Nat}(n) = n$ is a bijection
+  $\Nat \to \Nat$, hence an enumeration of~$\Nat$.
+\end{proof}
+
+\begin{ex}[Enumerating $\Int$ by hopping]
+  The function $f \colon \Nat \to \Int$ defined by
+  \[
+    f(n) = (-1)^{n}\left\lceil \tfrac{n}{2} \right\rceil
+  \]
+  enumerates the integers by ``hopping'' between positive and negative
+  values:
+  \[
+    \begin{array}{c c c c c c c c}
+      f(0) & f(1) & f(2) & f(3) & f(4) & f(5) & f(6) & \dots \\[4pt]
+      0 & -1 & 1 & -2 & 2 & -3 & 3 & \dots
+    \end{array}
+  \]
+  Equivalently, $f$ can be written as:
+  \[
+    f(n) = \begin{cases}
+      n/2 & \text{if $n$ is even,}\\
+      -(n+1)/2 & \text{if $n$ is odd.}
+    \end{cases}
+  \]
+\end{ex}
+
+\subsection{Cantor's Zig-Zag Method}
+
+We now show that the set of all pairs of natural numbers is enumerable.
+Arrange the elements of $\Nat \times \Nat$ in an array:
+\[
+  \begin{array}{ c | c | c | c | c | c}
+    & \mathbf 0 & \mathbf 1 & \mathbf 2 & \mathbf 3 & \dots \\
+    \hline
+    \mathbf 0 & \tuple{0,0} & \tuple{0,1} & \tuple{0,2} & \tuple{0,3} & \dots \\
+    \hline
+    \mathbf 1 & \tuple{1,0} & \tuple{1,1} & \tuple{1,2} & \tuple{1,3} & \dots \\
+    \hline
+    \mathbf 2 & \tuple{2,0} & \tuple{2,1} & \tuple{2,2} & \tuple{2,3} & \dots \\
+    \hline
+    \mathbf 3 & \tuple{3,0} & \tuple{3,1} & \tuple{3,2} & \tuple{3,3} & \dots \\
+    \hline
+    \vdots & \vdots & \vdots & \vdots & \vdots & \ddots
+  \end{array}
+\]
+Every ordered pair appears exactly once.  To convert this
+two-dimensional array into a one-dimensional list, traverse the
+successive anti-diagonals (where $n+m$ is constant), reading each
+anti-diagonal from bottom-left to top-right.  Numbering positions from
+$0$, we obtain:
+\[
+  \begin{array}{ c | c | c | c | c | c | c}
+    & \mathbf 0 & \mathbf 1 & \mathbf 2 & \mathbf 3 & \mathbf 4 &\dots \\
+    \hline
+    \mathbf 0 & 0  & 1& 3 & 6& 10 &\ldots \\
+    \hline
+    \mathbf 1 &2 & 4& 7 & 11 & \dots &\ldots \\
+    \hline
+    \mathbf 2 & 5 & 8 & 12 & \ldots & \dots&\ldots \\
+    \hline
+    \mathbf 3 & 9 & 13 & \ldots & \ldots & \dots & \ldots \\
+    \hline
+    \mathbf 4 & 14 & \ldots & \ldots & \ldots & \dots & \ldots \\
+    \hline
+    \vdots & \vdots & \vdots & \vdots & \vdots&\ldots & \ddots
+  \end{array}
+\]
+This pattern is called \emph{Cantor's zig-zag method}.  It enumerates
+$\Nat \times \Nat$ as:
+\[
+  \tuple{0,0},\; \tuple{0,1},\; \tuple{1,0},\; \tuple{0,2},\;
+  \tuple{1,1},\; \tuple{2,0},\; \tuple{0,3},\; \tuple{1,2},\;
+  \tuple{2,1},\; \tuple{3,0},\; \dots
+\]
+
+\begin{prop}[$\Nat \times \Nat$ is enumerable] % THM-BST003
+  \label{THM-BST003}
+  $\Nat \times \Nat$ is enumerable.
+\end{prop}
+
+\begin{proof}
+Let $f \colon \Nat \to \Nat \times \Nat$ map each $k \in \Nat$ to the
+pair $\tuple{n,m}$ occupying position $k$ in the zig-zag array.  Every
+pair $\tuple{n,m}$ lies on the anti-diagonal where $n + m$ is constant,
+and so appears at a definite finite position; hence $f$ is a surjection
+(indeed a bijection).
+\end{proof}
+
+The same technique generalises by induction.  We can view
+$\Nat^3 = (\Nat \times \Nat) \times \Nat$ and enumerate it by
+zig-zagging the enumeration of $\Nat^2$ against $\Nat$.  Repeating:
+
+\begin{prop}
+  $\Nat^n$ is enumerable, for every $n \in \Nat$.
+\end{prop}
+
+\subsection{Pairing Functions}
+
+It is useful to have an explicit formula for the zig-zag enumeration.
+The \emph{inverse} of the enumeration is a bijection
+$g \colon \Nat \times \Nat \to \Nat$ that assigns to each pair its
+position in the zig-zag array.
+
+\begin{defn}[Pairing function]
+  An arithmetical \emph{pairing function} is an injective function
+  $f \colon A \times B \to \Nat$.  The value $f(x,y)$ is called the
+  \emph{code} for $\tuple{x,y}$.
+\end{defn}
+
+The zig-zag order yields the explicit pairing function
+\[
+  g(n,m) = \frac{(n+m+1)(n+m)}{2} + n.
+\]
+Indeed, the pair $\tuple{n,m}$ lies on the anti-diagonal where the sum
+$n+m$ equals some value~$k$; the $k$th triangular number $k(k+1)/2$
+gives the position of the first entry on that anti-diagonal, and $n$
+counts the offset within it.  For instance,
+$g(1,2) = \tfrac{4 \cdot 3}{2} + 1 = 7$, matching the array above.
+
+\subsection{Non-Enumerable Sets}
+
+Not every infinite set is enumerable.  The \emph{diagonal method},
+introduced by Cantor, shows that certain natural sets have ``more''
+elements than can be listed.
+
+\begin{thm}[$\Bin^\omega$ is non-enumerable]
+  \label{thm:nonenum-bin-omega}
+  $\Bin^\omega$, the set of all infinite sequences of $0$'s and $1$'s,
+  is non-enumerable.
+\end{thm}
+
+\begin{proof}
+Suppose for contradiction that $\Bin^\omega$ is enumerable.  Then there
+is a list $s_0, s_1, s_2, \dots$ of all elements of $\Bin^\omega$.
+Write $s_i(j)$ for the $j$th entry of the $i$th sequence.  Arrange the
+sequences into an array:
+\[
+  \begin{array}{c|c|c|c|c|c}
+    & 0 & 1 & 2 & 3 & \dots \\\hline
+    0 & \mathbf{s_{0}(0)} & s_{0}(1) & s_{0}(2) & s_0(3) & \dots \\\hline
+    1 & s_{1}(0)& \mathbf{s_{1}(1)} & s_1(2) & s_1(3) & \dots \\\hline
+    2 & s_{2}(0)& s_{2}(1) & \mathbf{s_2(2)} & s_2(3) & \dots \\\hline
+    3 & s_{3}(0)& s_{3}(1) & s_3(2) & \mathbf{s_3(3)} & \dots \\\hline
+    \vdots & \vdots & \vdots & \vdots & \vdots & \mathbf{\ddots}
+  \end{array}
+\]
+Define a new sequence $d \in \Bin^\omega$ by flipping each diagonal
+entry:
+\[
+  d(n) =
+  \begin{cases}
+    1 & \text{if } s_n(n) = 0, \\
+    0 & \text{if } s_n(n) = 1.
+  \end{cases}
+\]
+Then $d \in \Bin^\omega$, since it is an infinite sequence of $0$'s and
+$1$'s.  But for every $n \in \Nat$, $d(n) \neq s_n(n)$, so $d \neq s_n$.
+Hence $d$ does not appear on the list, contradicting the assumption that
+the list enumerates all of $\Bin^\omega$.
+\end{proof}
+
+\begin{thm}[$\Pow{\Nat}$ is non-enumerable]
+  \label{thm:nonenum-pownat}
+  $\Pow{\Nat}$ is not enumerable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+The argument follows the same diagonal pattern.  Given any list
+$N_0, N_1, N_2, \dots$ of subsets of $\Nat$, define
+$D = \Setabs{n \in \Nat}{n \notin N_n}$.  Then $D \subseteq \Nat$ but
+$D \neq N_n$ for every~$n$ (since $n \in D$ iff $n \notin N_n$), so the
+list omits~$D$.
+\end{proof}
+
+\subsection{Reduction}
+
+Diagonalisation is not the only way to establish non-enumerability.
+A general strategy is \emph{reduction}: to show that a set $B$ is
+non-enumerable, exhibit a surjection $f \colon B \to A$ from $B$ onto a
+known non-enumerable set~$A$.  Any enumeration of $B$ would then yield
+an enumeration of $A$, a contradiction.
+
+Equivalently, if $A$ is non-enumerable and there is an injection
+$g \colon A \to B$, then $B$ is non-enumerable.
+
+\subsection{Equinumerosity}
+
+To compare sizes of arbitrary sets---not just to classify them as
+``enumerable'' or ``non-enumerable''---we introduce a general notion
+of size equivalence.
+
+\begin{defn}[Equinumerosity] % DEF-BST009
+  \label{DEF-BST009}
+  $A$ is \emph{equinumerous} with $B$, written $\cardeq{A}{B}$, iff
+  there is a bijection $f \colon A \to B$.
+\end{defn}
+
+Equinumerosity is an equivalence relation: reflexivity follows from the
+identity function (DEF-BST003), symmetry from inverses of bijections,
+and transitivity from composition of bijections.  Moreover, if
+$\cardeq{A}{B}$, then $A$ is enumerable if and only if $B$ is.
+
+\subsection{Dedekind Infinite Sets}
+
+\begin{defn}[Dedekind infinite] % DEF-BST008
+  \label{DEF-BST008}
+  A set $A$ is \emph{Dedekind infinite} iff there is an injection from
+  $A$ to a proper subset of $A$.  Equivalently, there exist some
+  $o \in A$ and an injection $f \colon A \to A$ such that
+  $o \notin \ran{f}$.
+\end{defn}
+
+Intuitively, a Dedekind infinite set can be put in bijection with a
+proper subset of itself---the hallmark of infinity.  As noted in
+\S\ref{BST.5}, any Dedekind infinite set gives rise to a Dedekind
+algebra and hence supports induction.
+
+\subsection{Sets of Different Sizes and Cantor's Theorem}
+
+We now define a strict size ordering on sets and state the central
+theorem of cardinality theory.
+
+\begin{defn}[Size comparison by injection]
+  $A$ is \emph{no larger than}~$B$, written $\cardle{A}{B}$, iff there
+  is an injection $f \colon A \to B$.
+\end{defn}
+
+\begin{defn}[Strict size comparison]
+  $A$ is \emph{smaller than}~$B$, written $\cardless{A}{B}$, iff
+  $\cardle{A}{B}$ and $\cardneq{A}{B}$---i.e., there is an injection
+  $f \colon A \to B$ but no bijection $g \colon A \to B$.
+\end{defn}
+
+The relation $\cardle{\cdot}{\cdot}$ is reflexive and transitive; the
+relation $\cardless{\cdot}{\cdot}$ is irreflexive and transitive.
+
+Using these definitions, a set $A$ is enumerable iff
+$\cardle{A}{\Nat}$, and non-enumerable iff $\cardless{\Nat}{A}$.
+The non-enumerability of $\Pow{\Nat}$
+(Theorem~\ref{thm:nonenum-pownat}) can be restated as
+$\cardless{\Nat}{\Pow{\Nat}}$.  Cantor proved that this
+phenomenon is perfectly general:
+
+\begin{thm}[Cantor's Theorem] % THM-BST001
+  \label{THM-BST001}
+  $\cardless{A}{\Pow{A}}$, for any set $A$.
+\end{thm}
+
+\begin{proof}
+\emph{$\cardle{A}{\Pow{A}}$:} The function $f \colon A \to \Pow{A}$
+defined by $f(x) = \{x\}$ is an injection, since $x \neq y$ implies
+$\{x\} \neq \{y\}$ by extensionality (PRIM-BST001).
+
+\emph{$\cardneq{A}{\Pow{A}}$:} Suppose for contradiction that there
+is a bijection $g \colon A \to \Pow{A}$.  Define
+\[
+  D = \Setabs{x \in A}{x \notin g(x)}.
+\]
+Since $g(x) \subseteq A$ for every $x$, $D$ is a well-defined subset
+of~$A$, so $D \in \Pow{A}$.  Because $g$ is a bijection, there exists
+$y \in A$ with $g(y) = D$.  But then
+\[
+  y \in g(y) \;\text{ iff }\; y \in D \;\text{ iff }\; y \notin g(y),
+\]
+a contradiction.  Hence no bijection $A \to \Pow{A}$ exists, and
+$\cardneq{A}{\Pow{A}}$.
+
+Combining both parts: $\cardless{A}{\Pow{A}}$.
+\end{proof}
+
+The construction of the ``anti-diagonal'' set $D$ mirrors the diagonal
+argument in Theorem~\ref{thm:nonenum-pownat}, and was the inspiration for
+Russell's Paradox.
+
+\subsection{Schr\"oder-Bernstein}
+
+Cantor's Theorem shows that strict size differences exist among infinite
+sets.  For the converse direction---showing two sets have the
+\emph{same} size---the following deep result is essential.
+
+\begin{thm}[Schr\"oder-Bernstein]
+  \label{thm:schroder-bernstein}
+  If $\cardle{A}{B}$ and $\cardle{B}{A}$, then $\cardeq{A}{B}$.
+\end{thm}
+
+In other words, if there is an injection $f \colon A \to B$ and an
+injection $g \colon B \to A$, then there is a bijection
+$h \colon A \to B$.  This justifies treating $\cardle{\cdot}{\cdot}$ as
+a genuine size comparison: mutual ``no larger than'' implies
+equinumerosity.
+
+\begin{proof}[Proof sketch]
+Given injections $f \colon A \to B$ and $g \colon B \to A$, the
+composition $g \circ f$ is an injection from $A$ into $A$ whose range
+$\funimage{g}{\funimage{f}{A}}$ satisfies
+$\funimage{g}{\funimage{f}{A}} \subseteq \funimage{g}{B} \subseteq A$.
+Thus $g \circ f$ is a bijection from $A$ onto
+$\funimage{g}{\funimage{f}{A}}$, and we have the ``subset sandwich''
+$\funimage{g}{\funimage{f}{A}} \subseteq \funimage{g}{B} \subseteq A$
+with $\cardeq{\funimage{g}{\funimage{f}{A}}}{A}$.
+
+The key step uses the generalised closure construction
+(cf.\ DEF-BST006, \S\ref{BST.5}).  Define
+$\Closureofunder{(g \circ f)}{A \setminus \funimage{g}{B}}$: the
+smallest $(g \circ f)$-closed set containing
+$A \setminus \funimage{g}{B}$.  One shows that the function
+\[
+  h(x) = \begin{cases}
+    (g \circ f)(x) & \text{if $x$ belongs to the closure,} \\
+    x & \text{otherwise}
+  \end{cases}
+\]
+is a bijection from $A$ onto $\funimage{g}{B}$.  Composing $h$ with
+$g^{-1} \colon \funimage{g}{B} \to B$ (which exists since $g$ is
+injective) yields a bijection $A \to B$.
+\end{proof}

@@ -1,0 +1,2717 @@
+\chapter{Deduction} \label{ch:ded}
+
+%% ===================================================================
+%% DED.1: Generic Proof Theory
+%% Sources: axd/rul (GENERALIZE), axd/ptn (GENERALIZE+ABSORB),
+%%          axd/prv (ABSORB), axd/ppr (CONDENSE), axd/qpr (CONDENSE),
+%%          ntd/rul (EXTRACT), seq/rul (EXTRACT), seq/srl (EXTRACT),
+%%          com/mcs (CONDENSE)
+%% ===================================================================
+
+\section{Generic Proof Theory} \label{DED.1}
+
+This section develops proof-theoretic concepts at the \emph{generic}
+level, independent of any particular proof system.  Each concept
+defined here---axiom schema, rule of inference, derivation,
+provability, consistency, and so on---is instantiated differently by
+the concrete proof systems presented in DED.2--DED.5.  The structural
+properties established below (reflexivity, monotonicity, transitivity,
+compactness) hold in each system, though the proofs differ in
+detail. Canonical proofs are given here for the Hilbert-style
+(axiomatic) case; remarks indicate how they adapt to other systems.
+
+%%% -----------------------------------------------------------------
+%%% DED.1.1  Axiom Schemas and Rules of Inference
+%%% -----------------------------------------------------------------
+
+\subsection{Axiom Schemas and Rules of Inference}
+
+\begin{defn}[Axiom Schema] % PRIM-DED001
+\label{PRIM-DED001}
+An \emph{axiom schema} is a schematic expression involving metavariables
+that stands for a (typically infinite) collection of formulas: every
+formula obtained by uniformly replacing the metavariables with concrete
+formulas is an \emph{instance} of the schema and counts as a logical
+axiom.
+\end{defn}
+
+For instance, the schema $!A \lif (!B \lif !A)$ generates infinitely
+many axioms---one for each choice of formulas~$!A$ and~$!B$.  Different
+proof systems employ different collections of axiom schemas (or none at
+all, as in the case of natural deduction).
+
+\begin{defn}[Non-Logical Axiom] % PRIM-DED002
+\label{PRIM-DED002}
+A \emph{non-logical axiom} is a sentence adopted as a premise of
+a theory but not derivable from the logical axioms alone.  A set of
+non-logical axioms is sometimes called a set of \emph{proper axioms}
+or simply the \emph{axioms of the theory}.  A theory is
+\emph{axiomatized} by a set~$\Gamma_0$ of non-logical axioms when the
+theory consists of all sentences that follow (semantically or
+proof-theoretically) from~$\Gamma_0$.
+\end{defn}
+
+\begin{defn}[Rule of Inference] % PRIM-DED003
+\label{PRIM-DED003}
+A \emph{rule of inference} gives a sufficient condition for what counts
+as a correct inference step in a derivation from a set of
+assumptions~$\Gamma$.  More precisely, a rule specifies one or more
+\emph{premises} and a \emph{conclusion}; a step is correct when each
+premise either appears earlier in the derivation, is an axiom, or is
+an element of~$\Gamma$.
+\end{defn}
+
+The simplest and most ubiquitous rule of inference is \emph{modus ponens}:
+
+\begin{quote}
+If $!B \lif !A$ and $!B$ both occur (as axioms, assumptions, or
+earlier conclusions) in a derivation, then $!A$ is a correct inference
+step.
+\end{quote}
+
+What counts as a correct derivation depends on which rules of inference
+are admitted and on what is taken as an axiom.  Different proof systems
+make different choices:
+\begin{itemize}
+\item \emph{Axiomatic (Hilbert-style) deduction} (see DED.2) uses
+  many axiom schemas and few rules (typically just modus ponens and
+  a quantifier rule).
+\item \emph{Natural deduction} (see DED.3) uses no logical axioms,
+  but has introduction and elimination rules for each connective and
+  quantifier.
+\item \emph{Sequent calculus} (see DED.4) operates on sequents and
+  employs left/right introduction rules together with structural rules.
+\item \emph{Tableaux} (see DED.5) work by attempted refutation,
+  applying branch-extension rules to signed formulas.
+\end{itemize}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.2  Proof Systems and Derivations
+%%% -----------------------------------------------------------------
+
+\subsection{Proof Systems and Derivations}
+
+\begin{defn}[Proof System] % PRIM-DED004
+\label{PRIM-DED004}
+A \emph{proof system} is a specification of:
+\begin{enumerate}
+\item A set of logical axioms (possibly empty, possibly given by schemas);
+\item A set of rules of inference;
+\item A definition of what constitutes a \emph{derivation}.
+\end{enumerate}
+A proof system determines a derivability relation $\Gamma \Proves !A$
+on formulas.
+\end{defn}
+
+\begin{defn}[Derivation] % PRIM-DED005
+\label{PRIM-DED005}
+Let $\Gamma$ be a set of formulas of~$\Lang L$.  A \emph{derivation}
+from~$\Gamma$ is a finite combinatorial object---a sequence of
+formulas, a tree of formulas, or a tree of sequents, depending on the
+proof system---in which every step is justified either as:
+\begin{enumerate}
+\item an element of~$\Gamma$ (an assumption); or
+\item an instance of a logical axiom; or
+\item the conclusion of a correct application of a rule of inference
+  to earlier steps.
+\end{enumerate}
+A derivation \emph{derives} its final formula (its last element, its
+root, or the succedent of its root sequent, depending on the system).
+\end{defn}
+
+\begin{rem}
+The shape of derivations differs across proof systems.  In axiomatic
+deduction, a derivation is a finite \emph{sequence} of formulas.  In
+natural deduction and the sequent calculus, a derivation is a finite
+\emph{tree}.  In tableaux, a derivation is a finitely branching tree
+of signed formulas.  Despite these differences, the abstract notion
+of derivability is uniform: $\Gamma \Proves !A$ means that there
+exists a derivation of~$!A$ from~$\Gamma$ in the given system.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.3  Sequents and Structural Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Sequents and Structural Rules}
+
+\begin{defn}[Sequent] % PRIM-DED008
+\label{PRIM-DED008}
+A \emph{sequent} is an expression of the form
+\[
+\Gamma \Sequent \Delta
+\]
+where $\Gamma$ and $\Delta$ are finite (possibly empty) sequences of
+sentences of the language~$\Lang L$.  $\Gamma$ is called the
+\emph{antecedent} and $\Delta$ is called the \emph{succedent}.
+\end{defn}
+
+The intuitive reading of a sequent $\Gamma \Sequent \Delta$ is: if all
+of the sentences in the antecedent hold, then at least one of the
+sentences in the succedent holds.  That is, if $\Gamma = \tuple{!A_1,
+\dots, !A_m}$ and $\Delta = \tuple{!B_1, \dots, !B_n}$, then $\Gamma
+\Sequent \Delta$ holds iff
+\[
+(!A_1 \land \cdots \land !A_m) \lif (!B_1 \lor \cdots \lor !B_n)
+\]
+holds.  When $\Gamma$ is empty, $\Sequent \Delta$ asserts that
+$!B_1 \lor \dots \lor !B_n$ holds.  When $\Delta$ is empty, $\Gamma
+\Sequent$ asserts that $\lnot(!A_1 \land \dots \land !A_m)$.
+
+\begin{defn}[Structural Rules] % PRIM-DED007
+\label{PRIM-DED007}
+The \emph{structural rules} of a proof system govern the manipulation
+of the context (the set or sequence of assumptions or side formulas)
+without introducing or eliminating any logical connective.  The
+principal structural rules are:
+\begin{enumerate}
+\item \textbf{Weakening} ($\Weakening$): one may add a formula to the
+  context without affecting derivability.
+  \begin{defish}
+  \Axiom$ \Gamma \fCenter \Delta $
+  \RightLabel{\LeftR{\Weakening}}
+  \UnaryInf$ !A, \Gamma \fCenter \Delta$
+  \DisplayProof
+  \hfill
+  \Axiom$ \Gamma \fCenter \Delta$
+  \RightLabel{\RightR{\Weakening}}
+  \UnaryInf$ \Gamma \fCenter \Delta, !A$
+  \DisplayProof
+  \end{defish}
+
+\item \textbf{Contraction} ($\Contraction$): two copies of the same
+  formula may be collapsed into one.
+  \begin{defish}
+  \Axiom$ !A, !A, \Gamma \fCenter \Delta $
+  \RightLabel{\LeftR{\Contraction}}
+  \UnaryInf$ !A, \Gamma \fCenter \Delta$
+  \DisplayProof
+  \hfill
+  \Axiom$ \Gamma \fCenter \Delta, !A, !A$
+  \RightLabel{\RightR{\Contraction}}
+  \UnaryInf$ \Gamma \fCenter \Delta, !A$
+  \DisplayProof
+  \end{defish}
+
+\item \textbf{Exchange} ($\Exchange$): the order of formulas in the
+  context may be permuted.
+  \begin{defish}
+  \Axiom$ \Gamma, !A, !B, \Pi \fCenter \Delta $
+  \RightLabel{\LeftR{\Exchange}}
+  \UnaryInf$ \Gamma, !B, !A, \Pi \fCenter \Delta$
+  \DisplayProof
+  \hfill
+  \Axiom$ \Gamma \fCenter \Delta, !A, !B, \Lambda$
+  \RightLabel{\RightR{\Exchange}}
+  \UnaryInf$ \Gamma \fCenter \Delta, !B, !A, \Lambda$
+  \DisplayProof
+  \end{defish}
+
+\item \textbf{Cut} ($\Cut$): if a formula can be derived on the right
+  and consumed on the left, it may be eliminated.
+  \begin{defish}
+  \[
+  \Axiom$ \Gamma \fCenter \Delta, !A$
+  \Axiom$ !A, \Pi \fCenter \Lambda $
+  \RightLabel{\Cut}
+  \BinaryInf$ \Gamma, \Pi \fCenter \Delta, \Lambda$
+  \DisplayProof
+  \]
+  \end{defish}
+\end{enumerate}
+\end{defn}
+
+\begin{rem}
+The structural rules are stated here in their sequent-calculus form,
+but analogous phenomena occur in every proof system.  In axiomatic
+deduction, weakening corresponds to monotonicity of derivability
+(adding unused hypotheses), and cut corresponds to transitivity
+(chaining derivations).  In natural deduction, weakening is built into
+the assumption mechanism, contraction is implicit in re-use of
+assumptions, and cut corresponds to substituting a derivation for an
+assumption.  Substructural logics arise by restricting or removing
+structural rules: e.g., linear logic drops weakening and contraction;
+relevant logic restricts weakening.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.4  Assumption Discharge
+%%% -----------------------------------------------------------------
+
+\subsection{Assumption Discharge}
+
+\begin{defn}[Assumption Discharge] % PRIM-DED009
+\label{PRIM-DED009}
+In natural deduction, an \emph{assumption} is any sentence occupying a
+topmost (leaf) position in a derivation tree. Certain rules of
+inference---notably $\Intro{\lif}$, $\Intro{\lnot}$, $\Elim{\lor}$,
+and $\Elim{\lexists}$---permit one to \emph{discharge} assumptions:
+the discharged assumption is cancelled and no longer counts among the
+open (undischarged) assumptions of the derivation. The label notation
+$\Discharge{!A}{n}$ indicates that the assumption~$!A$ bearing
+label~$n$ is discharged by the corresponding inference step.
+\end{defn}
+
+Discharging is a permission, not a requirement: one may apply a
+discharging rule even when the assumption to be discharged does not
+actually occur in the derivation above.  The set of
+\emph{undischarged} assumptions of a derivation is the set of
+assumptions that have not been cancelled by any rule application.  A
+derivation with no undischarged assumptions is a \emph{proof} (of a
+theorem).
+
+%%% -----------------------------------------------------------------
+%%% DED.1.5  Provability and Theorems
+%%% -----------------------------------------------------------------
+
+\subsection{Provability and Theorems}
+
+\begin{defn}[Provability] % PRIM-DED006
+\label{PRIM-DED006}
+A formula~$!A$ is \emph{derivable} from $\Gamma$, written
+$\Gamma \Proves !A$, if there is a derivation from~$\Gamma$ ending
+in~$!A$ (in whatever proof system is in force).
+\end{defn}
+
+\begin{defn}[Theorem] % PRIM-DED010
+\label{PRIM-DED010}
+A formula~$!A$ is a \emph{theorem} if there is a derivation
+of~$!A$ from the empty set.  We write $\Proves !A$ if $!A$ is a
+theorem and $\Proves/ !A$ if it is not.
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.6  Structural Properties of Derivability
+%%% -----------------------------------------------------------------
+
+\subsection{Structural Properties of Derivability}
+
+Just as we have defined semantic notions (validity, entailment,
+satisfiability), we now establish corresponding \emph{proof-theoretic
+properties}. These are not defined by appeal to satisfaction in
+structures, but by appeal to the derivability or non-derivability of
+formulas. It was an important discovery, the content of the
+\emph{soundness} and \emph{completeness} theorems (see
+DEF-META001, Soundness, \S META.1 and THM-META002, Completeness, \S
+META.3), that these notions coincide.
+
+\begin{prop}[Reflexivity] % structural property
+\label{DED-prop:reflexivity}
+If $!A \in \Gamma$, then $\Gamma \Proves !A$.
+\end{prop}
+
+\begin{proof}
+The formula~$!A$ by itself constitutes a (trivial) derivation of~$!A$
+from~$\Gamma$: in axiomatic deduction, it is a one-element sequence
+whose sole entry is justified as an element of~$\Gamma$; in natural
+deduction, it is a single-node tree (an assumption); in the sequent
+calculus, the initial sequent $!A \Sequent !A$ suffices.
+\end{proof}
+
+\begin{prop}[Monotonicity] % structural property
+\label{DED-prop:monotonicity}
+If $\Gamma \subseteq \Delta$ and $\Gamma \Proves !A$, then $\Delta
+\Proves !A$.
+\end{prop}
+
+\begin{proof}
+Any derivation of~$!A$ from~$\Gamma$ is also a derivation of~$!A$
+from~$\Delta$, since every element of~$\Gamma$ used in the derivation
+is also an element of~$\Delta$.
+\end{proof}
+
+\begin{prop}[Transitivity] % structural property
+\label{DED-prop:transitivity}
+If $\Gamma \Proves !A$ and $\{!A\} \cup \Delta \Proves
+!B$, then $\Gamma \cup \Delta \Proves !B$.
+\end{prop}
+
+\begin{proof}
+Suppose $\{!A\} \cup \Delta \Proves !B$.  Then there is
+a derivation $!B_1, \dots, !B_l = !B$ from~$\{!A\} \cup
+\Delta$. Some of the steps in that derivation will be correct
+because of a rule which refers to a prior line~$!B_i = !A$. By
+hypothesis, there is a derivation of~$!A$ from~$\Gamma$, i.e.,
+a derivation~$!A_1, \dots, !A_k = !A$ where every $!A_i$ is an
+axiom, an element of~$\Gamma$, or correct by a rule of
+inference. Now consider the sequence
+\[
+!A_1, \dots, !A_k = !A, !B_1, \dots, !B_l = !B.
+\]
+This is a correct derivation of~$!B$ from $\Gamma \cup \Delta$
+since every $B_i = !A$ is now justified by the same rule which
+justifies~$!A_k = !A$.
+\end{proof}
+
+\begin{rem}
+The proof above is stated for axiomatic deduction, where derivations
+are sequences and transitivity amounts to concatenation. In natural
+deduction, transitivity is realized by substituting the derivation
+of~$!A$ for the assumption~$!A$ in the derivation of~$!B$. In the
+sequent calculus, transitivity is an instance of the cut rule.  Each
+proof system instantiates these concepts differently; see DED.2--DED.5.
+\end{rem}
+
+Note that transitivity implies in particular: if $\Gamma \Proves !A$
+and $!A \Proves !B$, then $\Gamma \Proves !B$.  It follows also that
+if $!A_1, \dots, !A_n \Proves !B$ and $\Gamma \Proves !A_i$ for
+each~$i$, then $\Gamma \Proves !B$.
+
+\begin{prop}[Inconsistency Characterization] % structural property
+\label{DED-prop:incons}
+$\Gamma$ is inconsistent iff $\Gamma \Proves !A$ for every~$!A$.
+\end{prop}
+
+\begin{proof}
+If $\Gamma$ is inconsistent, then $\Gamma \Proves \lfalse$.  From
+$\lfalse$ any formula~$!A$ follows (by the logical axiom or rule
+$\lfalse \lif !A$ in all standard proof systems).  Conversely, if
+$\Gamma \Proves !A$ for every~$!A$, then in particular $\Gamma
+\Proves \lfalse$, so $\Gamma$ is inconsistent.
+\end{proof}
+
+\begin{prop}[Compactness] % structural property
+\label{DED-prop:proves-compact}
+\begin{enumerate}
+\item If $\Gamma \Proves !A$ then there is a finite subset $\Gamma_0
+  \subseteq \Gamma$ such that $\Gamma_0 \Proves !A$.
+\item If every finite subset of~$\Gamma$ is consistent, then $\Gamma$
+  is consistent.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\begin{enumerate}
+  \item If $\Gamma \Proves !A$, then there is a derivation---a finite
+    object. Let $\Gamma_0$ be the set of elements of~$\Gamma$ that
+    actually appear in the derivation.  Since the derivation is finite,
+    $\Gamma_0$ is finite, and the derivation is equally a derivation
+    from~$\Gamma_0$.  So $\Gamma_0 \Proves !A$.
+  \item This is the contrapositive of~(1) for the special case $!A
+    \ident \lfalse$.
+\end{enumerate}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.7  Consistency and Derivability
+%%% -----------------------------------------------------------------
+
+\subsection{Consistency and Derivability}
+
+We now establish a number of properties of the derivability relation.
+They are independently interesting, and each plays a role in the proof
+of the completeness theorem (see THM-META002, Completeness, \S META.3).
+
+\begin{defn}[Syntactic Consistency] % DEF-DED001
+\label{DEF-DED001}
+A set $\Gamma$ of formulas is \emph{consistent} if and only if
+$\Gamma \Proves/ \lfalse$; it is \emph{inconsistent} otherwise.
+\end{defn}
+
+\begin{prop} % provability-contr
+\label{DED-prop:provability-contr}
+If $\Gamma \Proves !A$ and $\Gamma \cup \{!A\}$ is inconsistent,
+then $\Gamma$ is inconsistent.
+\end{prop}
+
+\begin{proof}
+If $\Gamma \cup \{!A\}$ is inconsistent, then $\Gamma \cup \{!A\}
+\Proves \lfalse$.  By reflexivity, $\Gamma \Proves !B$ for every
+$!B \in \Gamma$.  Since also $\Gamma \Proves !A$ by hypothesis,
+$\Gamma \Proves !B$ for every $!B \in \Gamma \cup \{!A\}$.  By
+transitivity, $\Gamma \Proves \lfalse$, i.e., $\Gamma$ is
+inconsistent.
+\end{proof}
+
+\begin{prop} % prov-incons
+\label{DED-prop:prov-incons}
+$\Gamma \Proves !A$ iff $\Gamma \cup \{\lnot !A\}$ is inconsistent.
+\end{prop}
+
+\begin{proof}
+First suppose $\Gamma \Proves !A$.  Then $\Gamma \cup \{\lnot !A\}
+\Proves !A$ by monotonicity, and $\Gamma \cup \{\lnot !A\} \Proves
+\lnot !A$ by reflexivity.  Since from~$!A$ and~$\lnot !A$ together
+we can derive~$\lfalse$ (via the axiom or rule $\lnot !A \lif (!A
+\lif \lfalse)$ and modus ponens, in all standard proof systems),
+$\Gamma \cup \{\lnot !A\} \Proves \lfalse$.
+
+Now assume $\Gamma \cup \{\lnot !A\}$ is inconsistent.  By the
+deduction theorem (see THM-DED001, \S DED.7), $\Gamma \Proves \lnot
+!A \lif \lfalse$.  Since $(\lnot !A \lif \lfalse) \lif \lnot\lnot !A$
+and $\lnot\lnot !A \lif !A$ are derivable, we obtain $\Gamma \Proves
+!A$ by modus ponens.
+\end{proof}
+
+\begin{prop} % explicit-inc
+\label{DED-prop:explicit-inc}
+If $\Gamma \Proves !A$ and $\lnot !A \in \Gamma$, then $\Gamma$ is
+inconsistent.
+\end{prop}
+
+\begin{proof}
+Since $\lnot !A \in \Gamma$, by reflexivity $\Gamma \Proves \lnot
+!A$.  Together with $\Gamma \Proves !A$ and the derivability of
+$\lnot !A \lif (!A \lif \lfalse)$, two applications of modus ponens
+yield $\Gamma \Proves \lfalse$.
+\end{proof}
+
+\begin{prop} % provability-exhaustive
+\label{DED-prop:provability-exhaustive}
+If $\Gamma \cup \{!A\}$ and $\Gamma \cup \{\lnot !A\}$ are both
+inconsistent, then $\Gamma$ is inconsistent.
+\end{prop}
+
+\begin{proof}
+By \cref{DED-prop:prov-incons}, $\Gamma \cup \{\lnot !A\}$ inconsistent
+implies $\Gamma \Proves !A$.  Since $\Gamma \cup \{!A\}$ is also
+inconsistent, \cref{DED-prop:provability-contr} gives that $\Gamma$
+is inconsistent.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.8  Derived and Admissible Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Derived and Admissible Rules}
+
+\begin{defn}[Derived Rule] % DEF-DED009
+\label{DEF-DED009}
+A rule $\frac{!A_1 \cdots !A_n}{!B}$ is a \emph{derived rule} of a
+proof system if there exists a derivation of~$!B$ from assumptions
+$!A_1, \ldots, !A_n$ using only the primitive rules. Derived rules
+serve as shortcuts that do not extend the system's deductive power.
+\end{defn}
+
+\begin{defn}[Admissible Rule] % DEF-DED010
+\label{DEF-DED010}
+A rule $\frac{!A_1 \cdots !A_n}{!B}$ is \emph{admissible} if:
+whenever $\Proves !A_1, \ldots, \Proves !A_n$ are all provable (as
+theorems), then $\Proves !B$ is also provable. Unlike derived rules,
+admissible rules need not yield a derivation using the premises
+directly.
+\end{defn}
+
+\begin{rem}
+Every derived rule is admissible, but not conversely.  For example,
+the cut rule is admissible in the sequent calculus~$\Log{LK}$ (this is
+the content of the cut-elimination theorem, see THM-META004, Cut
+Elimination, \S META.4), but in a system with cut it is a primitive
+(hence trivially derived) rule.  The distinction matters for proof
+search: derived rules can always be ``compiled away'' by inlining
+their justifying derivation, while admissible rules may require a
+global transformation of the proof.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.9  Deductive Closure and Conservative Extension
+%%% -----------------------------------------------------------------
+
+\subsection{Deductive Closure and Conservative Extension}
+
+\begin{defn}[Deductive Closure] % DEF-DED003
+\label{DEF-DED003}
+The \emph{deductive closure} of a set of formulas~$\Gamma$ is the set
+\[
+\Thms{\Gamma} = \Setabs{!A}{\Gamma \Proves !A}.
+\]
+A set $\Gamma$ is \emph{deductively closed} if $\Gamma = \Thms{\Gamma}$.
+\end{defn}
+
+\begin{defn}[Conservative Extension] % DEF-DED004
+\label{DEF-DED004}
+A theory $T'$ in language $\Lang{L'} \supseteq \Lang{L}$ is a
+\emph{conservative extension} of a theory $T$ in $\Lang{L}$ if for
+every $\Lang{L}$-sentence $!A$: $T' \Proves !A$ implies $T \Proves
+!A$.
+\end{defn}
+
+\begin{rem}
+Conservative extensions are important in mathematical logic because
+they guarantee that expanding a theory with new symbols and axioms does
+not prove new theorems in the original language.  This notion appears
+throughout the metatheory: definitional extensions are conservative,
+and the method of Henkin constants used in the completeness proof (see
+\S META.3) produces a conservative extension of the original theory.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.10  Maximally Consistent Sets
+%%% -----------------------------------------------------------------
+
+\subsection{Maximally Consistent Sets}
+
+\begin{defn}[Maximally Consistent Set] % DEF-DED002
+\label{DEF-DED002}
+A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
+\begin{enumerate}
+\item $\Gamma$ is consistent, and
+\item if $\Gamma \subsetneq \Gamma'$, then $\Gamma'$ is inconsistent.
+\end{enumerate}
+Equivalently, $\Gamma$ is maximally consistent iff $\Gamma$ is
+consistent and for every sentence~$!A$: if $\Gamma \cup \{!A\}$ is
+consistent, then $!A \in \Gamma$.
+\end{defn}
+
+Maximally consistent sets are central to the completeness proof.
+Every consistent set of sentences is contained in a maximally
+consistent set (by Lindenbaum's Lemma, see THM-DED005, \S DED.7).
+A maximally consistent set~$\Gamma$ contains, for each sentence~$!A$,
+either $!A$ or~$\lnot !A$.  This property is what allows us to
+construct a structure satisfying~$\Gamma$ in the completeness argument.
+
+\begin{prop}
+\label{DED-prop:mcs}
+Suppose $\Gamma$ is maximally consistent. Then:
+\begin{enumerate}
+\item \label{DED-prop:mcs-prov-in} If $\Gamma \Proves !A$, then
+  $!A \in \Gamma$.
+\item \label{DED-prop:mcs-either-or} For any $!A$, either $!A \in
+  \Gamma$ or $\lnot !A \in \Gamma$.
+\item $(!A \land !B) \in \Gamma$ iff both $!A \in \Gamma$ and
+  $!B \in \Gamma$.
+\item $(!A \lor !B) \in \Gamma$ iff either $!A \in \Gamma$ or
+  $!B \in \Gamma$.
+\item $(!A \lif !B) \in \Gamma$ iff either $!A \notin \Gamma$ or
+  $!B \in \Gamma$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Let $\Gamma$ be maximally consistent throughout.
+\begin{enumerate}
+\item If $\Gamma \Proves !A$ and $!A \notin \Gamma$, then since
+  $\Gamma$ is maximally consistent, $\Gamma \cup \{!A\}$ is
+  inconsistent. By \cref{DED-prop:provability-contr}, $\Gamma$ is
+  inconsistent, contradicting the hypothesis.  Hence $!A \in \Gamma$.
+
+\item Suppose both $!A \notin \Gamma$ and $\lnot !A \notin \Gamma$.
+  Then $\Gamma \cup \{!A\}$ and $\Gamma \cup \{\lnot !A\}$ are both
+  inconsistent. By \cref{DED-prop:provability-exhaustive}, $\Gamma$ is
+  inconsistent---a contradiction.
+
+\item For the forward direction: if $(!A \land !B) \in \Gamma$ then
+  $\Gamma \Proves !A \land !B$.  Since $!A \land !B \Proves !A$ and
+  $!A \land !B \Proves !B$, we get $\Gamma \Proves !A$ and $\Gamma
+  \Proves !B$ by transitivity. By~(1), $!A \in \Gamma$ and $!B \in
+  \Gamma$.  For the reverse: if $!A, !B \in \Gamma$ then $\Gamma
+  \Proves !A$ and $\Gamma \Proves !B$, so $\Gamma \Proves !A \land
+  !B$, and by~(1), $(!A \land !B) \in \Gamma$.
+
+\item Analogous, using the derivability properties of~$\lor$.
+
+\item Analogous, using the derivability properties of~$\lif$.
+\end{enumerate}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.1.11  Generic Connective and Quantifier Derivability
+%%% -----------------------------------------------------------------
+
+\subsection{Generic Connective and Quantifier Derivability}
+
+The following propositions state basic derivability facts for the
+propositional connectives and quantifiers that hold in all standard
+proof systems.  They are used in the proof of the completeness theorem.
+System-specific derivations establishing these facts are given in
+DED.2--DED.5.
+
+\begin{prop} % generic connective derivability
+\label{DED-prop:provability-land}
+\begin{enumerate}
+\item Both $!A \land !B \Proves !A$ and $!A \land !B \Proves !B$.
+\item $!A, !B \Proves !A \land !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{prop}
+\label{DED-prop:provability-lor}
+\begin{enumerate}
+\item $!A \lor !B, \lnot !A, \lnot !B$ is inconsistent.
+\item Both $!A \Proves !A \lor !B$ and $!B \Proves !A \lor !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{prop}
+\label{DED-prop:provability-lif}
+\begin{enumerate}
+\item $!A, !A \lif !B \Proves !B$.
+\item Both $\lnot !A \Proves !A \lif !B$ and $!B \Proves !A \lif !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}[Proof sketch]
+The proofs of these facts depend on the particular proof system.  In
+axiomatic deduction, they follow from the logical axioms and modus
+ponens together with the deduction theorem. In natural deduction, they
+follow directly from the introduction and elimination rules. In the
+sequent calculus, they follow from the left and right logical rules.
+Detailed derivations appear in DED.2 (axiomatic), DED.3 (natural
+deduction), DED.4 (sequent calculus), and DED.5 (tableaux).
+\end{proof}
+
+\begin{thm}[Strong Generalization]
+\label{DED-thm:strong-generalization}
+If $c$ is a constant symbol not occurring in $\Gamma$ or $!A(x)$ and
+$\Gamma \Proves !A(c)$, then $\Gamma \Proves \lforall[x][!A(x)]$.
+\end{thm}
+
+\begin{proof}
+By the deduction theorem, $\Gamma \Proves \ltrue \lif !A(c)$.  Since
+$c$ does not occur in $\Gamma$ or~$\ltrue$, the quantifier rule (or
+its equivalent in other systems) gives $\Gamma \Proves \ltrue \lif
+\lforall[x][!A(x)]$.  By the deduction theorem again, $\Gamma \Proves
+\lforall[x][!A(x)]$.
+\end{proof}
+
+\begin{prop}
+\label{DED-prop:provability-quantifiers}
+\begin{enumerate}
+\item $!A(t) \Proves \lexists[x][!A(x)]$.
+\item $\lforall[x][!A(x)] \Proves !A(t)$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Both follow from the quantifier axioms (or quantifier rules, in
+natural deduction and the sequent calculus) and the deduction theorem
+(or the corresponding introduction/elimination rules).  For detailed
+derivations, see DED.2--DED.5.
+\end{proof}
+
+
+%% ===================================================================
+%% DED.2: Axiomatic (Hilbert) Systems
+%% Sources: prf/axd (CONDENSE), axd/prp (KEEP), axd/qua (KEEP),
+%%          axd/ded (KEEP+MERGE ddq), axd/ppr (CONDENSE),
+%%          axd/qpr (CONDENSE), axd/sou (KEEP)
+%% ===================================================================
+
+\section{Axiomatic (Hilbert) Systems} \label{DED.2}
+
+The axiomatic system instantiates the generic proof-theoretic framework
+of \S\ref{DED.1} as follows.  A derivation (\ref{PRIM-DED005}) is a
+finite \emph{sequence} of sentences; the system has many axiom schemas
+(\ref{PRIM-DED001}) and only two rules of inference
+(\ref{PRIM-DED003}): modus ponens and a quantifier rule.  Provability
+(\ref{PRIM-DED006}) and consistency (\ref{DEF-DED001}) are defined
+exactly as in \S\ref{DED.1}; all structural properties established
+there (reflexivity, monotonicity, transitivity, compactness) hold with
+derivations understood as sequences.
+
+Axiomatic derivation systems were introduced by Gottlob Frege in 1879,
+refined by Whitehead and Russell, and perfected by Hilbert and his
+students in the 1920s.  Because derivations have a very simple
+structure, it is relatively easy to prove things \emph{about} them
+(e.g., the deduction theorem), though finding derivations in practice
+is difficult.
+
+%%% -----------------------------------------------------------------
+%%% DED.2.1  Propositional Axioms and Modus Ponens
+%%% -----------------------------------------------------------------
+
+\subsection{Propositional Axioms and Modus Ponens}
+
+\begin{defn}[Axiomatic System] % DEF-DED005
+\label{DEF-DED005}
+The \emph{axiomatic (Hilbert-style) deduction system} is defined by
+the propositional axiom schemas of \ref{AX-DED003} below, the
+quantifier axioms and quantifier rule of \S\ref{DED.2}.2, and the
+rule of modus ponens (\ref{AX-DED001}).  A derivation from a set of
+sentences~$\Gamma$ is a finite sequence $!B_1, \dots, !B_n$ in which
+every~$!B_i$ is either
+\begin{enumerate}
+\item an element of~$\Gamma$, or
+\item an instance of one of the axiom schemas, or
+\item justified by a rule of inference applied to earlier items in the
+  sequence.
+\end{enumerate}
+We write $\Gamma \Proves !A$ if there exists such a sequence ending
+in~$!A$.
+\end{defn}
+
+\begin{defn}[Propositional Axioms] % AX-DED003 (propositional part)
+\label{AX-DED003}
+The set $\PAx$ of \emph{axioms} for the propositional connectives
+comprises all formulas of the following forms:
+\begin{align}
+  & (!A \land !B) \lif !A \tag{A1}\label{ax:land1}\\
+  & (!A \land !B) \lif !B \tag{A2}\label{ax:land2}\\
+  & !A \lif (!B \lif (!A \land !B)) \tag{A3}\label{ax:land3}\\
+  & !A \lif (!A \lor !B) \tag{A4}\label{ax:lor1}\\
+  & !A \lif (!B \lor !A) \tag{A5}\label{ax:lor2}\\
+  & (!A \lif !C) \lif ((!B \lif !C) \lif ((!A \lor !B) \lif !C))
+    \tag{A6}\label{ax:lor3}\\
+  & !A \lif (!B \lif !A) \tag{A7}\label{ax:lif1}\\
+  & (!A \lif (!B \lif !C)) \lif ((!A \lif !B) \lif (!A \lif !C))
+    \tag{A8}\label{ax:lif2}\\
+  & (!A \lif !B) \lif ((!A \lif \lnot !B) \lif \lnot !A)
+    \tag{A9}\label{ax:lnot1}\\
+  & \lnot !A \lif (!A \lif !B) \tag{A10}\label{ax:lnot2}\\
+  & \ltrue \tag{A11}\label{ax:ltrue}\\
+  & \lfalse \lif !A \tag{A12}\label{ax:lfalse1}\\
+  & (!A \lif \lfalse) \lif \lnot !A \tag{A13}\label{ax:lfalse2}\\
+  & \lnot\lnot !A \lif !A \tag{A14}\label{ax:dne}
+\end{align}
+\end{defn}
+
+\begin{defn}[Modus Ponens] % AX-DED001
+\label{AX-DED001}
+If $!B$ and $!B \lif !A$ already occur in a derivation, then $!A$ is
+a correct inference step. We abbreviate this rule as~$\MP$.
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.2.2  Quantifier Axioms and Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Quantifier Axioms and Rules}
+
+\begin{defn}[Quantifier Axioms] % AX-DED002 (part of AX-DED003)
+\label{AX-DED002}
+The \emph{axioms} governing quantifiers are all instances of:
+\begin{align}
+  & \lforall[x][!B] \lif !B(t), \tag{Q1}\label{ax:q1}\\
+  & !B(t) \lif \lexists[x][!B], \tag{Q2}\label{ax:q2}
+\end{align}
+for any closed term~$t$.
+\end{defn}
+
+\begin{defn}[Quantifier Rule] % AX-DED002 (continued)
+The quantifier rule $\QR$ has two forms:
+\begin{enumerate}
+\item If $!B \lif !A(a)$ already occurs in the derivation and $a$
+  does not occur in~$\Gamma$ or~$!B$, then $!B \lif
+  \lforall[x][!A(x)]$ is a correct inference step.
+\item If $!A(a) \lif !B$ already occurs in the derivation and $a$
+  does not occur in~$\Gamma$ or~$!B$, then $\lexists[x][!A(x)] \lif
+  !B$ is a correct inference step.
+\end{enumerate}
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.2.3  The Deduction Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{The Deduction Theorem (Axiomatic Proof)}
+
+The deduction theorem (\ref{THM-DED001}) is the central metatheorem for
+axiomatic systems.  Below we give its full proof, including the
+quantifier-rule case.
+
+\begin{prop}[Meta-Modus Ponens]
+\label{DED2-prop:mp}
+If $\Gamma \Proves !A$ and $\Gamma \Proves !A \lif !B$, then
+$\Gamma \Proves !B$.
+\end{prop}
+
+\begin{proof}
+We have that $\{!A, !A \lif !B\} \Proves !B$:
+\begin{derivation}
+  1. & $!A$ & Hyp.\\
+  2. & $!A \lif !B$ & Hyp.\\
+  3. & $!B$ & 1, 2, \MP
+\end{derivation}
+By transitivity (\ref{DED-prop:transitivity}), $\Gamma \Proves !B$.
+\end{proof}
+
+\begin{thm}[Deduction Theorem --- Axiomatic Proof] % THM-DED001, CP-009
+\label{DED2-thm:deduction-thm}
+$\Gamma \cup \{!A\} \Proves !B$ if and only if $\Gamma \Proves !A
+\lif !B$.
+\end{thm}
+
+\begin{proof}
+The ``if'' direction is immediate: if $\Gamma \Proves !A \lif !B$
+then $\Gamma \cup \{!A\} \Proves !A \lif !B$ by monotonicity
+(\ref{DED-prop:monotonicity}), $\Gamma \cup \{!A\} \Proves !A$ by
+reflexivity (\ref{DED-prop:reflexivity}), and
+\cref{DED2-prop:mp} gives $\Gamma \cup \{!A\} \Proves !B$.
+
+For the ``only if'' direction, we proceed by induction on the length
+of the derivation of~$!B$ from~$\Gamma \cup \{!A\}$.
+
+\emph{Base case.}  A derivation of length~$1$ consists of $!B$ alone,
+justified because $!B \in \Gamma \cup \{!A\}$ or $!B$ is an axiom.
+If $!B \in \Gamma$ or $!B$ is an axiom, then $\Gamma \Proves !B$.
+Since $\Gamma \Proves !B \lif (!A \lif !B)$ by axiom~\eqref{ax:lif1},
+\cref{DED2-prop:mp} gives $\Gamma \Proves !A \lif !B$.  If $!B
+\ident !A$, then $\Gamma \Proves !A \lif !A$ is derivable using
+axioms \eqref{ax:lif1} and~\eqref{ax:lif2} and two applications
+of~\MP.
+
+\emph{Inductive step (modus ponens).}  Suppose the derivation of~$!B$
+from $\Gamma \cup \{!A\}$ ends with a step justified by modus ponens
+from earlier lines $!C \lif !B$ and~$!C$.  Then $\Gamma \cup \{!A\}
+\Proves !C \lif !B$ and $\Gamma \cup \{!A\} \Proves !C$, and both
+derivations are shorter. By induction hypothesis:
+\begin{align*}
+  & \Gamma \Proves !A \lif (!C \lif !B); \\
+  & \Gamma \Proves !A \lif !C.
+\end{align*}
+By axiom~\eqref{ax:lif2},
+\[
+\Gamma \Proves (!A \lif (!C \lif !B)) \lif
+((!A\lif !C)  \lif (!A \lif !B)),
+\]
+and two applications of \cref{DED2-prop:mp} give
+$\Gamma \Proves !A \lif !B$.
+
+\emph{Inductive step ($\QR$, universal case).}  Suppose $!B \ident !C
+\lif \lforall[x][!D(x)]$ and a formula $!C \lif !D(a)$ appears
+earlier in the derivation, where $a$ does not occur in~$!C$, $!A$,
+or~$\Gamma$.  By induction hypothesis, $\Gamma \Proves !A \lif (!C
+\lif !D(a))$.  From
+\[
+\Proves (!A \lif (!C \lif !D(a))) \lif ((!A \land !C) \lif !D(a))
+\]
+and modus ponens we get $\Gamma \Proves (!A \land !C) \lif !D(a)$.
+Since the eigenvariable condition still holds, a step justified
+by~$\QR$ gives $\Gamma \Proves (!A \land !C) \lif
+\lforall[x][!D(x)]$. From
+\[
+\Proves ((!A \land !C) \lif \lforall[x][!D(x)]) \lif (!A \lif (!C
+\lif \lforall[x][!D(x)])),
+\]
+modus ponens yields $\Gamma \Proves !A \lif (!C \lif
+\lforall[x][!D(x)])$, i.e., $\Gamma \Proves !A \lif !B$.
+
+The existential case ($!B \ident \lexists[x][!D(x)] \lif !C$) is
+symmetric: one replaces $!C \lif !D(a)$ with $!D(a) \lif !C$
+throughout and applies the second form of~$\QR$.
+\end{proof}
+
+Notice how axioms \eqref{ax:lif1} and~\eqref{ax:lif2} were chosen
+precisely so that the Deduction Theorem would hold.
+
+%%% -----------------------------------------------------------------
+%%% DED.2.4  Derivability Properties
+%%% -----------------------------------------------------------------
+
+\subsection{Derivability Properties}
+
+The following propositions provide the derivability facts stated
+generically in \S\ref{DED.1}, now with explicit axiomatic proofs.
+
+\begin{prop}\label{DED2-prop:provability-land}
+\begin{enumerate}
+\item Both $!A \land !B \Proves !A$ and $!A \land !B \Proves !B$.
+\item $!A, !B \Proves !A \land !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(1) From axioms \eqref{ax:land1} and~\eqref{ax:land2} by modus ponens.
+(2) From axiom~\eqref{ax:land3} by two applications of modus ponens.
+\end{proof}
+
+\begin{prop}\label{DED2-prop:provability-lor}
+\begin{enumerate}
+\item $!A \lor !B, \lnot !A, \lnot !B$ is inconsistent.
+\item Both $!A \Proves !A \lor !B$ and $!B \Proves !A \lor !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(1) From axiom~\eqref{ax:lnot1} we derive $\{\lnot !A\} \Proves !A
+\lif \lfalse$ and $\{\lnot !B\} \Proves !B \lif \lfalse$.  By
+axiom~\eqref{ax:lor3} and the deduction theorem, $\{!A \lor !B, \lnot
+!A, \lnot !B\} \Proves \lfalse$.
+(2) From axioms \eqref{ax:lor1} and~\eqref{ax:lor2} by modus ponens.
+\end{proof}
+
+\begin{prop}\label{DED2-prop:provability-lif}
+\begin{enumerate}
+\item $!A, !A \lif !B \Proves !B$.
+\item Both $\lnot !A \Proves !A \lif !B$ and $!B \Proves !A \lif !B$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(1) Immediate from modus ponens.
+(2) By axiom~\eqref{ax:lnot2} and axiom~\eqref{ax:lif1},
+respectively, together with the deduction theorem.
+\end{proof}
+
+\begin{thm}[Strong Generalization]
+\label{DED2-thm:strong-generalization}
+If $c$ is a constant symbol not occurring in~$\Gamma$ or $!A(x)$ and
+$\Gamma \Proves !A(c)$, then $\Gamma \Proves \lforall[x][!A(x)]$.
+\end{thm}
+
+\begin{proof}
+By the deduction theorem, $\Gamma \Proves \ltrue \lif !A(c)$.  Since
+$c$ does not occur in~$\Gamma$ or~$\ltrue$, the quantifier rule gives
+$\Gamma \Proves \ltrue \lif \lforall[x][!A(x)]$. By the deduction
+theorem again, $\Gamma \Proves \lforall[x][!A(x)]$.
+\end{proof}
+
+\begin{prop}\label{DED2-prop:provability-quantifiers}
+\begin{enumerate}
+\item $!A(t) \Proves \lexists[x][!A(x)]$.
+\item $\lforall[x][!A(x)] \Proves !A(t)$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+(1) By axiom~\eqref{ax:q2} and modus ponens.
+(2) By axiom~\eqref{ax:q1} and modus ponens.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.2.5  Soundness (Axiomatic)
+%%% -----------------------------------------------------------------
+
+\subsection{Soundness} \label{DED.2.sou}
+
+\begin{prop}\label{DED2-prop:axioms-valid}
+If $!A$ is an axiom (propositional, quantifier, or identity), then
+$\Sat{M}{!A}[s]$ for each structure~$\Struct{M}$ and assignment~$s$.
+\end{prop}
+
+\begin{proof}
+We verify that all the axioms are valid. For instance, here is the
+case for axiom~\eqref{ax:q1}: suppose $t$ is free for~$x$ in~$!A$,
+and assume $\Sat{M}{\lforall[x][!A]}[s]$. Then for each
+$\varAssign{s'}{s}{x}$, also $\Sat{M}{!A}[s']$, and in particular
+this holds when $s'(x) = \Value{t}{M}[s]$. By the substitution lemma
+(see SYN.4), $\Sat{M}{\Subst{!A}{t}{x}}[s]$.  This shows that
+$\Sat{M}{(\lforall[x][!A] \lif \Subst{!A}{t}{x})}[s]$. The remaining
+propositional axioms are verified by truth-value analysis.
+
+For the identity axioms: $\eq[t][t]$ is valid since $\Value{t}{M} =
+\Value{t}{M}$. The axiom $\eq[t_1][t_2] \lif (!B(t_1) \lif !B(t_2))$
+is valid because if $\Value{t_1}{M} = \Value{t_2}{M}$, then by the
+substitution lemma $\Sat{M}{!B(t_1)}$ iff $\Sat{M}{!B(t_2)}$.
+\end{proof}
+
+\begin{thm}[Soundness] % CP-001(AX)
+\label{DED2-thm:soundness}
+If $\Gamma \Proves !A$ then $\Gamma \Entails !A$.
+\end{thm}
+
+\begin{proof}
+By induction on the length of the derivation of~$!A$ from~$\Gamma$.
+
+If there are no steps justified by inferences, then all formulas in
+the derivation are either axiom instances or in~$\Gamma$. By
+\cref{DED2-prop:axioms-valid}, all axioms are valid, so if $!A$ is an
+axiom then $\Gamma \Entails !A$. If $!A \in \Gamma$, then trivially
+$\Gamma \Entails !A$.
+
+If the last step is justified by modus ponens, then there are formulas
+$!B$ and $!B \lif !A$ in the derivation, and the induction hypothesis
+applies to the parts of the derivation ending in those formulas (since
+they contain at least one fewer inference step). So by induction
+hypothesis, $\Gamma \Entails !B$ and $\Gamma \Entails !B \lif !A$.
+Then $\Gamma \Entails !A$ by the semantic deduction theorem (see
+THM-SEM, Semantic Deduction, \S SEM).
+
+If the last step is justified by~$\QR$ and has the form $!C \lif
+\lforall[x][!B(x)]$, then there is a preceding step $!C \lif !B(c)$
+with $c$ not in~$\Gamma$, $!C$, or $\lforall[x][!B(x)]$. By
+induction hypothesis, $\Gamma \Entails !C \lif !B(c)$. By the
+semantic deduction theorem, $\Gamma \cup \{!C\} \Entails !B(c)$.
+Consider a structure~$\Struct{M}$ with $\Sat{M}{\Gamma \cup \{!C\}}$.
+We must show $\Sat{M}{\lforall[x][!B(x)]}$, i.e., for every variable
+assignment~$s$, $\Sat{M}{!B(x)}[s]$. Since $\Gamma \cup \{!C\}$
+consists of sentences, $\Sat{M}{!D}[s]$ for all $!D \in \Gamma \cup
+\{!C\}$. Let $\Struct{M'}$ be like~$\Struct{M}$ except $\Assign{c}{M'}
+= s(x)$. Since $c$ does not occur in~$\Gamma$ or~$!C$,
+$\Sat{M'}{\Gamma \cup \{!C\}}$. Since $\Gamma \cup \{!C\} \Entails
+!B(c)$, $\Sat{M'}{!B(c)}$. Since $!B(c)$ is a sentence,
+$\Sat{M'}{!B(c)}[s]$. By the substitution lemma, $\Sat{M'}{!B(x)}[s]$.
+Since $c$ does not occur in~$!B(x)$, $\Sat{M}{!B(x)}[s]$. Since $s$
+was arbitrary, $\Sat{M}{\lforall[x][!B(x)]}$, and by the semantic
+deduction theorem, $\Gamma \Entails !C \lif \lforall[x][!B(x)]$.
+
+The case where the last step is $\lexists[x][!B(x)] \lif !C$ is
+symmetric.
+
+For the identity axioms, \cref{DED2-prop:axioms-valid} ensures they are
+valid, so the base case of the induction applies.
+\end{proof}
+
+\begin{cor}[Weak Soundness]
+\label{DED2-cor:weak-soundness}
+If $\Proves !A$, then $!A$ is valid.
+\end{cor}
+
+\begin{cor}
+\label{DED2-cor:consistency-soundness}
+If $\Gamma$ is satisfiable, then it is consistent.
+\end{cor}
+
+\begin{proof}
+We prove the contrapositive. If $\Gamma$ is inconsistent, then
+$\Gamma \Proves \lfalse$. By \cref{DED2-thm:soundness}, any
+structure~$\Struct{M}$ satisfying~$\Gamma$ must satisfy~$\lfalse$.
+Since $\Sat/{M}{\lfalse}$ for every~$\Struct{M}$, no structure can
+satisfy~$\Gamma$, so $\Gamma$ is unsatisfiable.
+\end{proof}
+
+
+%% ===================================================================
+%% DED.3: Natural Deduction
+%% Sources: prf/ntd (CONDENSE), ntd/rul (KEEP), ntd/prl (KEEP),
+%%          ntd/qrl (KEEP), ntd/der (CONDENSE), ntd/sou (KEEP+ABSORB sid)
+%% ===================================================================
+
+\section{Natural Deduction} \label{DED.3}
+
+Natural deduction instantiates the generic framework of \S\ref{DED.1}
+differently from axiomatic deduction.  There are no logical axioms;
+instead, each connective and quantifier has introduction and
+elimination rules, corresponding to natural inference patterns (e.g.,
+conditional proof, proof by cases, indirect proof).  A derivation
+(\ref{PRIM-DED005}) is a finite \emph{tree} of sentences rather than
+a sequence.  Provability (\ref{PRIM-DED006}) and consistency
+(\ref{DEF-DED001}) are defined exactly as in \S\ref{DED.1}.
+
+A distinguishing feature of natural deduction is the mechanism of
+\emph{assumption discharge} (\ref{PRIM-DED009}): certain rules cancel
+(\emph{discharge}) hypothetical assumptions, so that they no longer
+count among the open assumptions of the derivation.  The undischarged
+assumptions of a completed derivation are the set~$\Gamma$ from which
+the conclusion is derived.
+
+Natural deduction systems were developed by Gentzen and Ja\'skowski in
+the 1930s, and later refined by Prawitz and Fitch.  In the philosophy
+of logic, the rules of natural deduction have sometimes been taken to
+define the meanings of the logical operators (``proof-theoretic
+semantics'').
+
+%%% -----------------------------------------------------------------
+%%% DED.3.1  Rules and Derivations
+%%% -----------------------------------------------------------------
+
+\subsection{Rules and Derivations}
+
+\begin{defn}[Assumption]
+An \emph{assumption} is any sentence
+in the topmost position of any branch of a derivation tree.
+\end{defn}
+
+Derivations in natural deduction are certain trees of sentences, where
+the topmost sentences are assumptions, and if a sentence stands below
+one, two, or three other sentences, it must follow correctly by a rule
+of inference. The sentences at the top of the inference are the
+\emph{premises} and the sentence below the \emph{conclusion}. The
+rules come in pairs---an introduction and an elimination rule for each
+operator---and some rules allow an assumption to be
+\emph{discharged}. To indicate which assumption is discharged by which
+inference, both receive a matching label: the assumption is written
+``$\Discharge{!A}{n}$.''
+
+It is customary to consider rules for all the operators $\land$,
+$\lor$, $\lif$, $\lnot$, and $\lfalse$, even if some of those are
+defined.
+
+%%% -----------------------------------------------------------------
+%%% DED.3.2  Propositional Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Propositional Rules} % DEF-DED006
+\label{DEF-DED006}
+
+\subsubsection*{Rules for $\land$}
+
+\begin{defish}
+\AxiomC{$!A$}
+\AxiomC{$!B$}
+\RightLabel{\Intro{\land}}
+\BinaryInfC{$!A \land !B$}
+\DisplayProof
+\hfill
+\begin{tabular}{r}
+\AxiomC{$!A \land !B$}
+\RightLabel{\Elim{\land}}
+\UnaryInfC{$!A$}
+\DisplayProof
+\\[3ex]
+\AxiomC{$!A \land !B$}
+\RightLabel{\Elim{\land}}
+\UnaryInfC{$!B$}
+\DisplayProof
+\end{tabular}
+\end{defish}
+
+\subsubsection*{Rules for $\lor$}
+
+\begin{defish}
+\begin{tabular}{r}
+\AxiomC{$!A$}
+\RightLabel{\Intro{\lor}}
+\UnaryInfC{$!A \lor !B$}
+\DisplayProof
+\\[3ex]
+\AxiomC{$!B$}
+\RightLabel{\Intro{\lor}}
+\UnaryInfC{$!A \lor !B$}
+\DisplayProof
+\end{tabular}
+\hfill
+\AxiomC{$!A \lor !B$}
+\AxiomC{$\Discharge{!A}{n}$}
+\DeduceC{$!C$}
+\AxiomC{$\Discharge{!B}{n}$}
+\DeduceC{$!C$}
+\DischargeRule{\Elim{\lor}}{n}
+\TrinaryInfC{$!C$}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lif$}
+
+\begin{defish}
+\AxiomC{$\Discharge{!A}{n}$}
+\DeduceC{$!B$}
+\DischargeRule{\Intro{\lif}}{n}
+\UnaryInfC{$!A \lif !B$}
+\DisplayProof
+\hfill
+\AxiomC{$!A \lif !B$}
+\AxiomC{$!A$}
+\RightLabel{\Elim{\lif}}
+\BinaryInfC{$!B$}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lnot$}
+
+\begin{defish}
+\AxiomC{$\Discharge{!A}{n}$}
+\noLine
+\DeduceC{$\lfalse$}
+\DischargeRule{\Intro{\lnot}}{n}
+\UnaryInfC{$\lnot !A$}
+\DisplayProof
+\hfill
+\AxiomC{$\lnot !A$}
+\AxiomC{$!A$}
+\RightLabel{\Elim{\lnot}}
+\BinaryInfC{$\lfalse$}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lfalse$}
+
+\begin{defish}
+\AxiomC{$\lfalse$}
+\RightLabel{\FalseInt}
+\UnaryInfC{$!A$}
+\DisplayProof
+\hfill
+\AxiomC{$\Discharge{\lnot !A}{n}$}
+\DeduceC{$\lfalse$}
+\DischargeRule{\FalseCl}{n}
+\UnaryInfC{$!A$}
+\DisplayProof
+\end{defish}
+
+Note that $\Intro{\lnot}$ and $\FalseCl$ are very similar: the
+difference is that $\Intro{\lnot}$ derives a negated sentence~$\lnot
+!A$ while $\FalseCl$ derives a positive sentence~$!A$.
+
+Whenever a rule indicates that some assumption may be discharged, this
+is a permission, not a requirement.  In the $\Intro{\lif}$ rule, for
+instance, we may discharge any number of assumptions of the
+form~$!A$, including zero.
+
+%%% -----------------------------------------------------------------
+%%% DED.3.3  Quantifier Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Quantifier Rules}
+
+\subsubsection*{Rules for $\lforall$}
+
+\begin{defish}
+\AxiomC{$!A(a)$}
+\RightLabel{\Intro{\lforall}}
+\UnaryInfC{$\lforall[x][\Atom{!A}{x}]$}
+\DisplayProof
+\hfill
+\AxiomC{$\lforall[x][\Atom{!A}{x}]$}
+\RightLabel{\Elim{\lforall}}
+\UnaryInfC{$!A(t)$}
+\DisplayProof
+\end{defish}
+
+In $\Elim{\lforall}$, $t$ is a closed term. In $\Intro{\lforall}$,
+$a$ is a constant symbol which does not occur in the
+conclusion~$\lforall[x][!A(x)]$ or in any undischarged assumption. We
+call $a$ the \emph{eigenvariable} of the $\Intro{\lforall}$ inference.
+
+\subsubsection*{Rules for $\lexists$}
+
+\begin{defish}
+\AxiomC{$\Atom{!A}{t}$}
+\RightLabel{\Intro{\lexists}}
+\UnaryInfC{$\lexists[x][\Atom{!A}{x}]$}
+\DisplayProof
+\hfill
+\AxiomC{$\lexists[x][\Atom{!A}{x}]$}
+\AxiomC{[$\Atom{!A}{a}$]$^n$}
+\DeduceC{$!C$}
+\DischargeRule{\Elim{\lexists}}{n}
+\BinaryInfC{$!C$}
+\DisplayProof
+\end{defish}
+
+Again, $t$ is a closed term, and $a$ is a constant symbol which does
+not occur in $\lexists[x][!A(x)]$, in~$!C$, or in any undischarged
+assumption (other than~$!A(a)$). We call $a$ the \emph{eigenvariable}
+of the $\Elim{\lexists}$ inference.
+
+The condition that an eigenvariable not occur in the premises or in
+any undischarged assumption is the \emph{eigenvariable condition}.  It
+is necessary to ensure soundness.
+
+\subsubsection*{Rules for Identity}
+
+\begin{defish}
+\AxiomC{}
+\RightLabel{\Intro{\eq}}
+\UnaryInfC{$\eq[t][t]$}
+\DisplayProof
+\hfill
+\begin{tabular}{r}
+\AxiomC{$\eq[t_1][t_2]$}
+\AxiomC{$!A(t_1)$}
+\RightLabel{\Elim{\eq}}
+\BinaryInfC{$!A(t_2)$}
+\DisplayProof
+\\[3ex]
+\AxiomC{$\eq[t_1][t_2]$}
+\AxiomC{$!A(t_2)$}
+\RightLabel{\Elim{\eq}}
+\BinaryInfC{$!A(t_1)$}
+\DisplayProof
+\end{tabular}
+\end{defish}
+
+In the above rules, $t$, $t_1$, and $t_2$ are closed terms. The
+$\Intro{\eq}$ rule derives $\eq[t][t]$ from no assumptions.
+
+%%% -----------------------------------------------------------------
+%%% DED.3.4  Derivations
+%%% -----------------------------------------------------------------
+
+\subsection{Derivations}
+
+\begin{defn}[Derivation] % ND instantiation of PRIM-DED005
+\label{DED3-defn:derivation}
+A \emph{derivation} of a sentence~$!A$ from assumptions~$\Gamma$ is a
+finite tree of sentences satisfying:
+\begin{enumerate}
+\item The topmost sentences are either in~$\Gamma$ or are discharged
+  by an inference in the tree.
+\item The bottommost sentence is~$!A$.
+\item Every sentence except~$!A$ is a premise of a correct application
+  of an inference rule whose conclusion stands directly below it.
+\end{enumerate}
+We call $!A$ the \emph{conclusion} and $\Gamma$ the
+\emph{undischarged assumptions}. If such a derivation exists, we write
+$\Gamma \Proves !A$. If every assumption is discharged, we
+write~$\Proves !A$.
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.3.5  Soundness (Natural Deduction)
+%%% -----------------------------------------------------------------
+
+\subsection{Soundness} \label{DED.3.sou}
+
+\begin{thm}[Soundness] % CP-001(ND)
+\label{DED3-thm:soundness}
+If $!A$ is derivable from the undischarged assumptions~$\Gamma$, then
+$\Gamma \Entails !A$.
+\end{thm}
+
+\begin{proof}
+Let $\delta$ be a derivation of~$!A$. We proceed by induction on the
+number of inferences in~$\delta$.
+
+\emph{Base case.} If there are no inferences, $\delta$ consists of a
+single sentence~$!A$ that is an undischarged assumption. Any
+structure satisfying~$\Gamma$ satisfies~$!A$ since $!A \in \Gamma$.
+
+\emph{Inductive step.} Suppose $\delta$ contains~$n$ inferences.  We
+assume the induction hypothesis for each sub-derivation (which has
+fewer than~$n$ inferences) and distinguish cases by the last
+inference.
+
+\begin{enumerate}
+\item \emph{$\Intro{\lnot}$:} The derivation ends in
+\begin{prooftree}
+  \AxiomC{$\Gamma, \Discharge{!A}{n}$}
+  \RightLabel{$\delta_1$}
+  \DeduceC{$\lfalse$}
+  \DischargeRule{\Intro{\lnot}}{n}
+  \UnaryInfC{$\lnot !A$}
+\end{prooftree}
+By induction hypothesis, $\Gamma \cup \{!A\} \Entails \lfalse$.
+Suppose $\Sat{M}{\Gamma}$ but $\Sat/{M}{\lnot !A}$, i.e.,
+$\Sat{M}{!A}$. Then $\Sat{M}{\Gamma \cup \{!A\}}$, so
+$\Sat{M}{\lfalse}$, a contradiction. Hence $\Sat{M}{\lnot !A}$.
+
+\item \emph{$\Elim{\land}$:} By induction hypothesis $\Gamma \Entails
+!A \land !B$; by definition of satisfaction, $\Sat{M}{!A}$ (or
+$\Sat{M}{!B}$, for the other variant).
+
+\item \emph{$\Intro{\lor}$:} By induction hypothesis $\Gamma \Entails
+!A$; since $\Sat{M}{!A}$ implies $\Sat{M}{!A \lor !B}$.
+
+\item \emph{$\Intro{\lif}$:} By induction hypothesis $\Gamma \cup
+\{!A\} \Entails !B$. Suppose $\Sat{M}{\Gamma}$ but
+$\Sat/{M}{!A \lif !B}$. Then $\Sat{M}{!A}$ and $\Sat/{M}{!B}$, so
+$\Sat{M}{\Gamma \cup \{!A\}}$, giving $\Sat{M}{!B}$, contradiction.
+
+\item \emph{$\Elim{\lif}$:} By induction hypothesis $\Gamma_1
+\Entails !A \lif !B$ and $\Gamma_2 \Entails !A$. If
+$\Sat{M}{\Gamma_1 \cup \Gamma_2}$, then $\Sat{M}{!A \lif !B}$ and
+$\Sat{M}{!A}$, so $\Sat{M}{!B}$.
+
+\item \emph{$\Elim{\lnot}$:} By induction hypothesis $\Gamma_1
+\Entails \lnot !A$ and $\Gamma_2 \Entails !A$. If
+$\Sat{M}{\Gamma_1 \cup \Gamma_2}$ then both $\Sat{M}{\lnot !A}$ and
+$\Sat{M}{!A}$, giving $\Sat{M}{\lfalse}$.
+
+\item \emph{$\FalseInt$:} By induction hypothesis $\Gamma \Entails
+\lfalse$. Since $\Sat/{M}{\lfalse}$ for every~$\Struct{M}$, no
+structure satisfies~$\Gamma$, so $\Gamma \Entails !A$ vacuously.
+
+\item \emph{$\FalseCl$:} By induction hypothesis $\Gamma \cup \{\lnot
+!A\} \Entails \lfalse$. Suppose $\Sat{M}{\Gamma}$ but
+$\Sat/{M}{!A}$, i.e., $\Sat{M}{\lnot !A}$. Then $\Sat{M}{\Gamma \cup
+\{\lnot !A\}}$, so $\Sat{M}{\lfalse}$, contradiction.
+
+\item \emph{$\Intro{\land}$:} By induction hypothesis $\Gamma_1
+\Entails !A$ and $\Gamma_2 \Entails !B$. If $\Sat{M}{\Gamma_1 \cup
+\Gamma_2}$, then $\Sat{M}{!A}$ and $\Sat{M}{!B}$, so $\Sat{M}{!A
+\land !B}$.
+
+\item \emph{$\Elim{\lor}$:} By induction hypothesis $\Gamma_1
+\Entails !A \lor !B$, $\Gamma_2 \cup \{!A\} \Entails !C$, and
+$\Gamma_3 \cup \{!B\} \Entails !C$. If $\Sat{M}{\Gamma_1 \cup
+\Gamma_2 \cup \Gamma_3}$, then $\Sat{M}{!A \lor !B}$, so either
+$\Sat{M}{!A}$ or $\Sat{M}{!B}$; in either case $\Sat{M}{!C}$.
+
+\item \emph{$\Intro{\lforall}$:} By induction hypothesis $\Gamma
+\Entails !A(a)$ where $a$ does not occur in~$\Gamma$ or
+$\lforall[x][!A(x)]$. Suppose $\Sat{M}{\Gamma}$. We must show
+$\Sat{M}{\lforall[x][!A(x)]}$, i.e., for every variable
+assignment~$s$, $\Sat{M}{!A(x)}[s]$. Let $\Struct{M'}$ be
+like~$\Struct{M}$ except $\Assign{a}{M'} = s(x)$. Since $a$ does not
+occur in~$\Gamma$, $\Sat{M'}{\Gamma}$, so $\Sat{M'}{!A(a)}$, whence
+$\Sat{M'}{!A(a)}[s]$. By the substitution lemma,
+$\Sat{M'}{!A(x)}[s]$. Since $a$ does not occur in~$!A(x)$,
+$\Sat{M}{!A(x)}[s]$.
+
+\item \emph{$\Intro{\lexists}$:} By induction hypothesis $\Gamma
+\Entails !A(t)$. By the substitution lemma, $\Sat{M}{!A(t)}$ implies
+$\Sat{M}{\lexists[x][!A(x)]}$.
+
+\item \emph{$\Elim{\lforall}$:} By induction hypothesis $\Gamma
+\Entails \lforall[x][!A(x)]$. If $\Sat{M}{\lforall[x][!A(x)]}$, by
+the substitution lemma $\Sat{M}{!A(t)}$.
+
+\item \emph{$\Elim{\lexists}$:} By induction hypothesis $\Gamma_1
+\Entails \lexists[x][!A(x)]$ and $\Gamma_2 \cup \{!A(a)\} \Entails
+!C$, where $a$ does not occur in $\lexists[x][!A(x)]$, $!C$, or the
+undischarged assumptions. The argument is analogous to the
+$\Intro{\lforall}$ case, constructing a suitable~$\Struct{M'}$.
+
+\item \emph{$\Intro{\eq}$:} $\eq[t][t]$ is valid since
+$\Value{t}{M} = \Value{t}{M}$ for every~$\Struct{M}$.
+
+\item \emph{$\Elim{\eq}$:} By induction hypothesis $\Gamma_1
+\Entails \eq[t_1][t_2]$ and $\Gamma_2 \Entails !A(t_1)$. If
+$\Sat{M}{\Gamma_1 \cup \Gamma_2}$, then $\Value{t_1}{M} =
+\Value{t_2}{M}$. By the substitution lemma, $\Sat{M}{!A(t_1)}$
+iff $\Sat{M}{!A(t_2)}$, so $\Sat{M}{!A(t_2)}$.
+\end{enumerate}
+\end{proof}
+
+\begin{cor}[Weak Soundness]
+\label{DED3-cor:weak-soundness}
+If $\Proves !A$, then $!A$ is valid.
+\end{cor}
+
+\begin{cor}
+\label{DED3-cor:consistency-soundness}
+If $\Gamma$ is satisfiable, then it is consistent.
+\end{cor}
+
+\begin{proof}
+Contrapositive: if $\Gamma$ is inconsistent, then $\Gamma \Proves
+\lfalse$. By \cref{DED3-thm:soundness}, any structure satisfying
+$\Gamma$ must satisfy~$\lfalse$. Since $\Sat/{M}{\lfalse}$ for
+every~$\Struct{M}$, $\Gamma$ is unsatisfiable.
+\end{proof}
+
+\begin{rem}
+The structural properties of \S\ref{DED.1} (reflexivity, monotonicity,
+transitivity, compactness) hold for natural deduction. Transitivity
+uses implication-introduction and elimination rather than sequence
+concatenation.
+\end{rem}
+
+
+%% ===================================================================
+%% DED.4: Sequent Calculus
+%% Sources: seq/rul (KEEP), seq/prl (KEEP), seq/srl (KEEP),
+%%          seq/qrl (KEEP), seq/der (CONDENSE), seq/sou (KEEP+ABSORB sid),
+%%          seq/ide (CONDENSE)
+%% ===================================================================
+
+\section{Sequent Calculus} \label{DED.4}
+
+The sequent calculus (Gentzen's $\Log{LK}$) instantiates the generic
+framework of \S\ref{DED.1} with derivations that are trees of
+\emph{sequents} (\ref{PRIM-DED008}) rather than trees of single
+formulas.  The system has no axiom schemas in the Hilbert sense;
+instead, it employs initial sequents, logical rules (one left and one
+right rule per connective), and the structural rules of
+\S\ref{DED.1}.3 (\ref{PRIM-DED007}).  Provability
+(\ref{PRIM-DED006}) and consistency (\ref{DEF-DED001}) are defined as
+before: $\Gamma \Proves !A$ iff for some finite $\Gamma_0 \subseteq
+\Gamma$, the sequent $\Gamma_0 \Sequent !A$ has a derivation.
+
+%%% -----------------------------------------------------------------
+%%% DED.4.1  Sequents and Initial Sequents
+%%% -----------------------------------------------------------------
+
+\subsection{Sequents and Initial Sequents} % DEF-DED007
+\label{DEF-DED007}
+
+For the following, let $\Gamma, \Delta, \Pi, \Lambda$ represent finite
+sequences of sentences.
+
+\begin{defn}[Sequent]
+A \emph{sequent} is an expression $\Gamma \Sequent \Delta$ where
+$\Gamma$ (the \emph{antecedent}) and $\Delta$ (the \emph{succedent})
+are finite (possibly empty) sequences of sentences.
+\end{defn}
+
+The intuitive reading of $\Gamma \Sequent \Delta$ is: if all
+sentences in the antecedent hold, then at least one of the sentences
+in the succedent holds.  That is, if $\Gamma = \tuple{!A_1, \dots,
+!A_m}$ and $\Delta = \tuple{!B_1, \dots, !B_n}$, then $\Gamma
+\Sequent \Delta$ corresponds to
+\[
+(!A_1 \land \cdots \land !A_m) \lif (!B_1 \lor \cdots \lor !B_n).
+\]
+When $\Gamma$ is empty, $\Sequent \Delta$ asserts $!B_1 \lor \dots
+\lor !B_n$. When $\Delta$ is empty, $\Gamma \Sequent$ asserts
+$\lnot(!A_1 \land \dots \land !A_m)$.
+
+If $\Gamma$ is a sequence, we write $\Gamma, !A$ for the result of
+appending $!A$ to the right end of~$\Gamma$ (and $!A, \Gamma$ for
+appending to the left). $\Gamma, \Delta$ denotes concatenation.
+
+\begin{defn}[Initial Sequent]
+An \emph{initial sequent} is a sequent of one of the following forms:
+\begin{enumerate}
+\item $!A \Sequent !A$ for any sentence~$!A$;
+\item $\quad \Sequent \ltrue$;
+\item $\lfalse \Sequent \quad$.
+\end{enumerate}
+\end{defn}
+
+Derivations in the sequent calculus are trees of sequents, where the
+topmost sequents are initial sequents, and the logical rules are named
+for the main operator of the sentence they introduce. Each comes in
+two forms: a left rule (introducing the operator in the antecedent)
+and a right rule (introducing it in the succedent).
+
+%%% -----------------------------------------------------------------
+%%% DED.4.2  Propositional Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Propositional Rules}
+
+\subsubsection*{Rules for $\lnot$}
+
+\begin{defish}
+\Axiom$ \Gamma \fCenter \Delta, !A $
+\RightLabel{\LeftR{\lnot}}
+\UnaryInf$ \lnot !A, \Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$!A, \Gamma \fCenter \Delta$
+\RightLabel{\RightR{\lnot}}
+\UnaryInf$ \Gamma \fCenter \Delta, \lnot !A $
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\land$}
+
+\begin{defish}\noindent
+\begin{tabular}{l}
+\Axiom$ !A, \Gamma \fCenter \Delta$
+\RightLabel{\LeftR{\land}}
+\UnaryInf$ !A \land !B, \Gamma \fCenter \Delta$
+\DisplayProof
+\\[3ex]
+\Axiom$!B, \Gamma \fCenter \Delta$
+\RightLabel{\LeftR{\land}}
+\UnaryInf$!A \land !B, \Gamma \fCenter \Delta$
+\DisplayProof
+\end{tabular}
+\hfill
+\Axiom$\Gamma \fCenter \Delta, !A$
+\Axiom$ \Gamma \fCenter \Delta, !B$
+\RightLabel{\RightR{\land}}
+\BinaryInf$ \Gamma \fCenter \Delta, !A \land !B $
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lor$}
+
+\begin{defish}
+\Axiom$!A, \Gamma \fCenter \Delta$
+\Axiom$!B, \Gamma \fCenter \Delta$
+\RightLabel{\LeftR{\lor}}
+\BinaryInf$!A \lor !B, \Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\begin{tabular}{r}
+\Axiom$\Gamma \fCenter \Delta, !A$
+\RightLabel{\RightR{\lor}}
+\UnaryInf$ \Gamma \fCenter \Delta, !A \lor !B$
+\DisplayProof
+\\[3ex]
+\Axiom$ \Gamma \fCenter \Delta, !B$
+\RightLabel{\RightR{\lor}}
+\UnaryInf$ \Gamma \fCenter \Delta, !A \lor !B$
+\DisplayProof
+\end{tabular}
+\end{defish}
+
+\subsubsection*{Rules for $\lif$}
+
+\begin{defish}
+\Axiom$ \Gamma \fCenter \Delta, !A$
+\Axiom$ !B, \Pi \fCenter \Lambda$
+\RightLabel{\LeftR{\lif}}
+\BinaryInf$ !A \lif !B, \Gamma, \Pi \fCenter \Delta, \Lambda$
+\DisplayProof
+\hfill
+\Axiom$ !A, \Gamma \fCenter \Delta, !B$
+\RightLabel{\RightR{\lif}}
+\UnaryInf$ \Gamma \fCenter \Delta, !A \lif !B $
+\DisplayProof
+\end{defish}
+
+%%% -----------------------------------------------------------------
+%%% DED.4.3  Structural Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Structural Rules}
+
+The structural rules (\ref{PRIM-DED007}) of $\Log{LK}$ allow
+rearranging sentences in the antecedent and succedent. Because the
+logical rules require that the principal sentence stand at a specific
+position, exchange is needed to move it there; weakening and
+contraction handle unused or duplicated formulas.
+
+\subsubsection*{Weakening}
+
+\begin{defish}
+\Axiom$ \Gamma \fCenter \Delta $
+\RightLabel{\LeftR{\Weakening}}
+\UnaryInf$ !A, \Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$ \Gamma \fCenter \Delta$
+\RightLabel{\RightR{\Weakening}}
+\UnaryInf$ \Gamma \fCenter \Delta, !A$
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Contraction}
+
+\begin{defish}
+\Axiom$ !A, !A, \Gamma \fCenter \Delta $
+\RightLabel{\LeftR{\Contraction}}
+\UnaryInf$ !A, \Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$ \Gamma \fCenter \Delta, !A, !A$
+\RightLabel{\RightR{\Contraction}}
+\UnaryInf$ \Gamma \fCenter \Delta, !A$
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Exchange}
+
+\begin{defish}
+\Axiom$ \Gamma, !A, !B, \Pi \fCenter \Delta $
+\RightLabel{\LeftR{\Exchange}}
+\UnaryInf$ \Gamma, !B, !A, \Pi \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$ \Gamma \fCenter \Delta, !A, !B, \Lambda$
+\RightLabel{\RightR{\Exchange}}
+\UnaryInf$ \Gamma \fCenter \Delta, !B, !A, \Lambda$
+\DisplayProof
+\end{defish}
+
+A series of weakening, contraction, and exchange inferences is often
+indicated by double inference lines.
+
+\subsubsection*{Cut}
+
+\begin{defish}
+\[
+\Axiom$ \Gamma \fCenter \Delta, !A$
+\Axiom$ !A, \Pi \fCenter \Lambda $
+\RightLabel{\Cut}
+\BinaryInf$ \Gamma, \Pi \fCenter \Delta, \Lambda$
+\DisplayProof
+\]
+\end{defish}
+
+The cut rule is not strictly necessary, but makes it considerably
+easier to reuse and combine derivations.
+
+\begin{rem}[Cut Elimination] % CP-010
+\label{CP-010}
+\emph{Cut Elimination (Gentzen's Hauptsatz):} The $\Cut$ rule is
+\emph{admissible} in~$\Log{LK}$---every $\Log{LK}$-derivation using
+$\Cut$ can be transformed into one without~$\Cut$. The proof is a
+detailed structural induction on the complexity of the cut formula and
+the height of the derivation; it is beyond our scope here. Cut
+elimination has profound consequences: it implies the subformula
+property (every formula in a cut-free derivation is a subformula of
+the end-sequent), which in turn yields consistency proofs, decidability
+results, and interpolation theorems.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% DED.4.4  Quantifier Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Quantifier Rules}
+
+\subsubsection*{Rules for $\lforall$}
+
+\begin{defish}
+\Axiom$ !A(t), \Gamma \fCenter \Delta$
+\RightLabel{\LeftR{\lforall}}
+\UnaryInf$ \lforall[x][!A(x)],\Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$ \Gamma \fCenter \Delta, !A(a) $
+\RightLabel{\RightR{\lforall}}
+\UnaryInf$ \Gamma \fCenter \Delta, \lforall[x][!A(x)]$
+\DisplayProof
+\end{defish}
+
+In $\LeftR{\lforall}$, $t$ is a closed term. In $\RightR{\lforall}$,
+$a$ is a constant symbol which must not occur in the lower sequent.
+We call $a$ the \emph{eigenvariable} of the $\RightR{\lforall}$
+inference.
+
+\subsubsection*{Rules for $\lexists$}
+
+\begin{defish}
+\Axiom$ !A(a), \Gamma \fCenter \Delta $
+\RightLabel{\LeftR{\lexists}}
+\UnaryInf$ \lexists[x][!A(x)], \Gamma \fCenter \Delta$
+\DisplayProof
+\hfill
+\Axiom$ \Gamma \fCenter \Delta, !A(t) $
+\RightLabel{\RightR{\lexists}}
+\UnaryInf$ \Gamma \fCenter \Delta, \lexists[x][!A(x)]$
+\DisplayProof
+\end{defish}
+
+Again, $t$ is a closed term, and $a$ is a constant symbol not
+occurring in the lower sequent. The \emph{eigenvariable condition}
+requires that the eigenvariable~$a$ not occur anywhere in the lower
+sequent of the $\RightR{\lforall}$ or $\LeftR{\lexists}$ inference.
+
+\subsubsection*{Identity Rules}
+
+\begin{defn}[Initial Sequents for $\eq$]
+If $t$ is a closed term, then ${} \Sequent \eq[t][t]$ is an initial
+sequent.
+\end{defn}
+
+The rules for~$\eq$ are ($t_1$ and $t_2$ are closed terms):
+
+\begin{defish}
+\Axiom$ \eq[t_1][t_2], \Gamma \fCenter \Delta, !A(t_1) $
+\RightLabel{$\eq$}
+\UnaryInf$\eq[t_1][t_2], \Gamma \fCenter \Delta, !A(t_2)$
+\DisplayProof
+\hfill
+\Axiom$\eq[t_1][t_2], \Gamma \fCenter \Delta, !A(t_2) $
+\RightLabel{$\eq$}
+\UnaryInf$\eq[t_1][t_2], \Gamma  \fCenter \Delta, !A(t_1)$
+\DisplayProof
+\end{defish}
+
+%%% -----------------------------------------------------------------
+%%% DED.4.5  Derivations
+%%% -----------------------------------------------------------------
+
+\subsection{Derivations}
+
+\begin{defn}[$\Log{LK}$-Derivation]
+\label{DED4-defn:derivation}
+An \emph{$\Log{LK}$-derivation} of a sequent~$S$ is a finite tree of
+sequents satisfying:
+\begin{enumerate}
+\item The topmost sequents are initial sequents.
+\item The bottommost sequent is~$S$.
+\item Every sequent except $S$ is a premise of a correct application
+  of an inference rule whose conclusion stands directly below it.
+\end{enumerate}
+We say $S$ is the \emph{end-sequent} and that $S$ is
+\emph{$\Log{LK}$-derivable}.
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.4.6  Soundness (Sequent Calculus)
+%%% -----------------------------------------------------------------
+
+\subsection{Soundness} \label{DED.4.sou}
+
+\begin{defn}[Valid Sequent]
+\label{DED4-defn:valid-sequent}
+A structure~$\Struct{M}$ \emph{satisfies} a sequent $\Gamma \Sequent
+\Delta$ iff either $\Sat/{M}{!A}$ for some $!A \in \Gamma$ or
+$\Sat{M}{!A}$ for some $!A \in \Delta$.  A sequent is \emph{valid}
+iff every structure satisfies it.
+\end{defn}
+
+\begin{thm}[Soundness] % CP-001(SC)
+\label{DED4-thm:sequent-soundness}
+If $\Log{LK}$ derives $\Theta \Sequent \Xi$, then $\Theta \Sequent
+\Xi$ is valid.
+\end{thm}
+
+\begin{proof}
+Let $\pi$ be a derivation of $\Theta \Sequent \Xi$. We proceed by
+induction on the number of inferences~$n$ in~$\pi$.
+
+If $n = 0$, then $\pi$ is an initial sequent. Every initial sequent
+$!A \Sequent !A$ is valid, since for every~$\Struct{M}$, either
+$\Sat/{M}{!A}$ or $\Sat{M}{!A}$.  The sequents $\Sequent \ltrue$ and
+$\lfalse \Sequent$ are also valid.  Identity initial sequents
+$\Sequent \eq[t][t]$ are valid since $\Value{t}{M} = \Value{t}{M}$.
+
+If $n > 0$, we distinguish cases by the last inference.  By induction
+hypothesis the premise(s) are valid.
+
+\begin{enumerate}
+\item \emph{Weakening:} If the premise $\Gamma \Sequent \Delta$ is
+valid, then so is $!A, \Gamma \Sequent \Delta$ (and $\Gamma \Sequent
+\Delta, !A$), since any witness to the validity of $\Gamma \Sequent
+\Delta$ also witnesses the validity of the weakened sequent.
+
+\item \emph{$\LeftR{\lnot}$:} The premise is $\Gamma \Sequent \Delta,
+!A$ and the conclusion is $\lnot !A, \Gamma \Sequent \Delta$. Given
+$\Struct{M}$, if $\Struct{M}$ falsifies some $!C \in \Gamma$ or
+satisfies some $!C \in \Delta$, the conclusion is satisfied. Otherwise,
+the validity of the premise forces $\Sat{M}{!A}$, whence
+$\Sat/{M}{\lnot !A}$, and $\lnot !A \in \Theta$ is falsified.
+
+\item \emph{$\RightR{\lnot}$:} Symmetric to the $\LeftR{\lnot}$ case.
+
+\item \emph{$\LeftR{\land}$:} The premise is $!A, \Gamma \Sequent
+\Delta$ and the conclusion is $!A \land !B, \Gamma \Sequent \Delta$.
+If $\Sat/{M}{!A}$, then $\Sat/{M}{!A \land !B}$, and the conclusion
+is satisfied. Otherwise $\Sat{M}{!A}$, and the validity of the
+premise gives the result. The case with $!B$ is analogous.
+
+\item \emph{$\RightR{\lor}$:} The premise is $\Gamma \Sequent \Delta,
+!A$ and the conclusion is $\Gamma \Sequent \Delta, !A \lor !B$. If
+$\Sat{M}{!A}$ then $\Sat{M}{!A \lor !B}$. Otherwise the validity of
+the premise gives a witness in $\Gamma$ or~$\Delta$.
+
+\item \emph{$\RightR{\lif}$:} The premise is $!A, \Gamma \Sequent
+\Delta, !B$ and the conclusion is $\Gamma \Sequent \Delta, !A \lif
+!B$. If $\Sat/{M}{!A}$ or $\Sat{M}{!B}$, then $\Sat{M}{!A \lif !B}$.
+Otherwise the validity of the premise gives a witness.
+
+\item \emph{$\RightR{\land}$:} (Two premises.) If $\Struct{M}$ does
+not satisfy $\Gamma \Sequent \Delta$, then the validity of the first
+premise forces $\Sat{M}{!A}$ and the validity of the second forces
+$\Sat{M}{!B}$, whence $\Sat{M}{!A \land !B}$.
+
+\item \emph{$\LeftR{\lor}$:} (Two premises.) If $\Sat{M}{!A \lor !B}$
+then either $\Sat{M}{!A}$ or $\Sat{M}{!B}$. In the former case the
+validity of the left premise gives the result; in the latter, the
+right premise.
+
+\item \emph{$\LeftR{\lif}$:} (Two premises.) Suppose $\Struct{M}$
+does not satisfy $\Gamma, \Pi \Sequent \Delta, \Lambda$. Then
+$\Struct{M}$ satisfies neither $\Gamma \Sequent \Delta$ nor $\Pi
+\Sequent \Lambda$. The validity of $\Gamma \Sequent \Delta, !A$
+forces $\Sat{M}{!A}$, and the validity of $!B, \Pi \Sequent \Lambda$
+forces $\Sat/{M}{!B}$. Hence $\Sat/{M}{!A \lif !B}$.
+
+\item \emph{$\Cut$:} (Two premises.) Either $\Sat/{M}{!A}$ or
+$\Sat{M}{!A}$. In the first case, $\Struct{M}$ must satisfy $\Gamma
+\Sequent \Delta$ by the validity of the left premise. In the second,
+$\Struct{M}$ must satisfy $\Pi \Sequent \Lambda$ by the validity of
+the right premise.
+
+\item \emph{$\LeftR{\lforall}$:} The premise is $!A(t), \Gamma
+\Sequent \Delta$ and the conclusion is $\lforall[x][!A(x)], \Gamma
+\Sequent \Delta$. If $\Sat{M}{\lforall[x][!A(x)]}$, then by the
+substitution lemma $\Sat{M}{!A(t)}$. The validity of the premise then
+gives the result. If $\Sat/{M}{\lforall[x][!A(x)]}$, the conclusion
+is satisfied since $\lforall[x][!A(x)]$ is in the antecedent.
+
+\item \emph{$\RightR{\lforall}$:} The premise is $\Gamma \Sequent
+\Delta, !A(a)$ where the eigenvariable condition holds. Suppose
+$\Sat{M}{\Gamma}$ and $\Sat/{M}{!C}$ for all $!C \in \Delta$. We
+must show $\Sat{M}{\lforall[x][!A(x)]}$, i.e., for all~$s$,
+$\Sat{M}{!A(x)}[s]$. Let $\Struct{M'}$ be like~$\Struct{M}$ except
+$\Assign{a}{M'} = s(x)$. Since $a$ does not occur in $\Gamma$ or
+$\Delta$, the same truth values hold in~$\Struct{M'}$. The validity
+of the premise then gives $\Sat{M'}{!A(a)}$. By the substitution
+lemma, $\Sat{M'}{!A(x)}[s]$, and since $a$ does not occur
+in~$!A(x)$, $\Sat{M}{!A(x)}[s]$.
+
+\item \emph{$\LeftR{\lexists}$:} Symmetric to the $\RightR{\lforall}$
+case.
+
+\item \emph{$\RightR{\lexists}$:} Symmetric to the $\LeftR{\lforall}$
+case.
+
+\item \emph{Identity rule~$\eq$:} The premise is $\eq[t_1][t_2],
+\Gamma \Sequent \Delta, !A(t_1)$ and the conclusion is
+$\eq[t_1][t_2], \Gamma \Sequent \Delta, !A(t_2)$. By induction
+hypothesis the premise is valid. If $\Sat{M}{\eq[t_1][t_2]}$ and
+$\Sat{M}{!A(t_1)}$, then $\Value{t_1}{M} = \Value{t_2}{M}$, and by
+the substitution lemma $\Sat{M}{!A(t_2)}$.
+\end{enumerate}
+\end{proof}
+
+\begin{cor}[Weak Soundness]
+\label{DED4-cor:weak-soundness}
+If $\Proves !A$ then $!A$ is valid.
+\end{cor}
+
+\begin{cor}
+\label{DED4-cor:entailment-soundness}
+If $\Gamma \Proves !A$ then $\Gamma \Entails !A$.
+\end{cor}
+
+\begin{proof}
+If $\Gamma \Proves !A$ then for some finite $\Gamma_0 \subseteq
+\Gamma$, there is a derivation of $\Gamma_0 \Sequent !A$. By
+\cref{DED4-thm:sequent-soundness}, every structure~$\Struct{M}$
+either falsifies some $!B \in \Gamma_0$ or satisfies~$!A$. Hence, if
+$\Sat{M}{\Gamma}$ then $\Sat{M}{!A}$.
+\end{proof}
+
+\begin{cor}
+\label{DED4-cor:consistency-soundness}
+If $\Gamma$ is satisfiable, then it is consistent.
+\end{cor}
+
+\begin{proof}
+Contrapositive: if $\Gamma$ is inconsistent, then there is a finite
+$\Gamma_0 \subseteq \Gamma$ and a derivation of $\Gamma_0 \Sequent$.
+By \cref{DED4-thm:sequent-soundness}, $\Gamma_0 \Sequent$ is valid,
+i.e., for every $\Struct{M}$ there is $!C \in \Gamma_0$ with
+$\Sat/{M}{!C}$. Hence no structure satisfies~$\Gamma$.
+\end{proof}
+
+\begin{rem}
+In the sequent calculus, derivability is expressed via $\Gamma_0
+\Sequent !A$. Transitivity corresponds to the $\Cut$ rule.
+\end{rem}
+
+
+%% ===================================================================
+%% DED.5: Tableaux
+%% Sources: tab/rul (KEEP), tab/prl (KEEP), tab/qrl (KEEP),
+%%          tab/der (CONDENSE), tab/sou (KEEP+ABSORB sid),
+%%          tab/ide (CONDENSE)
+%% ===================================================================
+
+\section{Tableaux} \label{DED.5}
+
+Tableaux instantiate the generic framework of \S\ref{DED.1} by
+working \emph{refutationally}: to show $\Gamma \Proves !A$, one
+attempts to build a systematic survey of all ways the assumptions
+in~$\Gamma$ could be true and~$!A$ false, and demonstrates that every
+such possibility leads to a contradiction. Derivations
+(\ref{PRIM-DED005}) are finitely branching trees of \emph{signed
+formulas} rather than trees of plain formulas or sequents. Provability
+(\ref{PRIM-DED006}) and consistency (\ref{DEF-DED001}) are defined as
+in \S\ref{DED.1}: $\Gamma \Proves !A$ iff $\{\sFmla{\True}{!B_1},
+\dots, \sFmla{\True}{!B_n}, \sFmla{\False}{!A}\}$ has a closed
+tableau for some $!B_1, \dots, !B_n \in \Gamma$.
+
+%%% -----------------------------------------------------------------
+%%% DED.5.1  Signed Formulas and Tableau Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Signed Formulas and Tableau Rules} % DEF-DED008
+\label{DEF-DED008}
+
+\begin{defn}[Signed Formula]
+A \emph{signed formula} is a pair consisting of a truth value sign and
+a sentence:
+\[
+\sFmla{\True}{!A} \quad\text{or}\quad \sFmla{\False}{!A}.
+\]
+\end{defn}
+
+Intuitively, $\sFmla{\True}{!A}$ means ``$!A$ might be true'' and
+$\sFmla{\False}{!A}$ means ``$!A$ might be false'' in some structure.
+
+Each signed formula in a tableau is either an \emph{assumption} (at
+the top) or obtained from a signed formula above it by a rule of
+inference. There are two rules per main operator---one for sign~$\True$
+and one for sign~$\False$---and some rules branch the tree.
+
+A branch is \emph{closed} when it contains both $\sFmla{\True}{!A}$
+and $\sFmla{\False}{!A}$. A \emph{closed tableau} is one where every
+branch is closed. A closed tableau \emph{for $!A$} is a closed
+tableau with root~$\sFmla{\False}{!A}$. If such a closed tableau
+exists, all possibilities for~$!A$ being false have been ruled out.
+
+%%% -----------------------------------------------------------------
+%%% DED.5.2  Propositional Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Propositional Rules}
+
+\subsubsection*{Rules for $\lnot$}
+
+\begin{defish}
+\AxiomC{\sFmla{\True}{\lnot !A}}
+\RightLabel{\TRule{\True}{\lnot}}
+\UnaryInfC{\sFmla{\False}{!A}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{\lnot !A}}
+\RightLabel{\TRule{\False}{\lnot}}
+\UnaryInfC{\sFmla{\True}{!A}}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\land$}
+
+\begin{defish}\noindent
+\AxiomC{\sFmla{\True}{!A \land !B}}
+\RightLabel{\TRule{\True}{\land}}
+\UnaryInfC{\sFmla{\True}{!A}}
+\noLine
+\UnaryInfC{\sFmla{\True}{!B}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{!A \land !B}}
+\RightLabel{\TRule{\False}{\land}}
+\UnaryInfC{$\sFmla{\False}{!A} \quad \mid \quad \sFmla{\False}{!B}$}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lor$}
+
+\begin{defish}
+\AxiomC{\sFmla{\True}{!A \lor !B}}
+\RightLabel{\TRule{\True}{\lor}}
+\UnaryInfC{$\sFmla{\True}{!A} \quad \mid \quad \sFmla{\True}{!B}$}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{!A \lor !B}}
+\RightLabel{\TRule{\False}{\lor}}
+\UnaryInfC{\sFmla{\False}{!A}}
+\noLine
+\UnaryInfC{\sFmla{\False}{!B}}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{Rules for $\lif$}
+
+\begin{defish}
+\AxiomC{\sFmla{\True}{!A \lif !B}}
+\RightLabel{\TRule{\True}{\lif}}
+\UnaryInfC{$\sFmla{\False}{!A} \quad \mid \quad \sFmla{\True}{!B}$}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{!A \lif !B}}
+\RightLabel{\TRule{\False}{\lif}}
+\UnaryInfC{\sFmla{\True}{!A}}
+\noLine
+\UnaryInfC{\sFmla{\False}{!B}}
+\DisplayProof
+\end{defish}
+
+\subsubsection*{The Cut Rule}
+
+\begin{defish}
+\AxiomC{}
+\RightLabel{\Cut}
+\UnaryInfC{$\sFmla{\True}{!A} \quad \mid \quad \sFmla{\False}{!A}$}
+\DisplayProof
+\end{defish}
+
+The $\Cut$ rule splits every branch in two. It is not necessary (any
+set of signed formulas with a closed tableau has one not using $\Cut$),
+but it allows convenient combination of tableaux.
+
+%%% -----------------------------------------------------------------
+%%% DED.5.3  Quantifier Rules
+%%% -----------------------------------------------------------------
+
+\subsection{Quantifier Rules}
+
+\subsubsection*{Rules for $\lforall$}
+
+\begin{defish}
+\AxiomC{\sFmla{\True}{\lforall[x][!A(x)]}}
+\RightLabel{\TRule{\True}{\forall}}
+\UnaryInfC{\sFmla{\True}{!A(t)}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{\lforall[x][!A(x)]}}
+\RightLabel{\TRule{\False}{\lforall}}
+\UnaryInfC{\sFmla{\False}{!A(a)}}
+\DisplayProof
+\end{defish}
+
+In $\TRule{\True}{\lforall}$, $t$ is a closed term. In
+$\TRule{\False}{\lforall}$, $a$ is a constant symbol not occurring
+anywhere in the branch above. We call $a$ the \emph{eigenvariable}.
+
+\subsubsection*{Rules for $\lexists$}
+
+\begin{defish}
+\AxiomC{\sFmla{\True}{\lexists[x][!A(x)]}}
+\RightLabel{\TRule{\True}{\lexists}}
+\UnaryInfC{\sFmla{\True}{!A(a)}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\False}{\lexists[x][!A(x)]}}
+\RightLabel{\TRule{\False}{\lexists}}
+\UnaryInfC{\sFmla{\False}{!A(t)}}
+\DisplayProof
+\end{defish}
+
+Again, $t$ is a closed term, and $a$ is a constant symbol not
+occurring in the branch above. The \emph{eigenvariable condition}
+requires that $a$ not occur in the branch above the
+$\TRule{\False}{\lforall}$ or $\TRule{\True}{\lexists}$ inference.
+
+\subsubsection*{Identity Rules}
+
+\begin{defish}
+\AxiomC{}
+\RightLabel{$\eq$}
+\UnaryInfC{\sFmla{\True}{\eq[t][t]}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\True}{\eq[t_1][t_2]}}
+\noLine
+\UnaryInfC{\sFmla{\True}{!A(t_1)}}
+\RightLabel{$\TRule{\True}{\eq}$}
+\UnaryInfC{\sFmla{\True}{!A(t_2)}}
+\DisplayProof
+\hfill
+\AxiomC{\sFmla{\True}{\eq[t_1][t_2]}}
+\noLine
+\UnaryInfC{\sFmla{\False}{!A(t_1)}}
+\RightLabel{$\TRule{\False}{\eq}$}
+\UnaryInfC{\sFmla{\False}{!A(t_2)}}
+\DisplayProof
+\end{defish}
+
+In contrast to the other rules, $\TRule{\True}{\eq}$ and
+$\TRule{\False}{\eq}$ require two signed formulas already on the
+branch: both $\sFmla{\True}{\eq[t_1][t_2]}$ and $\sFmla{S}{!A(t_1)}$.
+
+%%% -----------------------------------------------------------------
+%%% DED.5.4  Tableaux
+%%% -----------------------------------------------------------------
+
+\subsection{Tableaux}
+
+\begin{defn}[Tableau]
+\label{DED5-defn:tableau}
+A \emph{tableau} for assumptions $\sFmla{S_1}{!A_1}$, \dots,
+$\sFmla{S_n}{!A_n}$ (where each $S_i$ is $\True$ or~$\False$) is a
+finite tree of signed formulas satisfying:
+\begin{enumerate}
+\item The $n$ topmost signed formulas are $\sFmla{S_i}{!A_i}$, one
+  below the other.
+\item Every signed formula not among the assumptions results from a
+  correct application of an inference rule to a signed formula in the
+  branch above it.
+\end{enumerate}
+A branch is \emph{closed} iff it contains both $\sFmla{\True}{!A}$
+and~$\sFmla{\False}{!A}$, and \emph{open} otherwise. A tableau with
+every branch closed is a \emph{closed tableau}; otherwise it is
+\emph{open}.
+\end{defn}
+
+%%% -----------------------------------------------------------------
+%%% DED.5.5  Soundness (Tableaux)
+%%% -----------------------------------------------------------------
+
+\subsection{Soundness} \label{DED.5.sou}
+
+\begin{defn}[Satisfaction of Signed Formulas]
+\label{DED5-defn:satisfies-signed}
+A structure~$\Struct{M}$ \emph{satisfies} $\sFmla{\True}{!A}$ iff
+$\Sat{M}{!A}$, and satisfies $\sFmla{\False}{!A}$ iff $\Sat/{M}{!A}$.
+$\Struct{M}$ satisfies a set~$\Gamma$ of signed formulas iff it
+satisfies every member.  $\Gamma$ is \emph{satisfiable} if some
+structure satisfies it, and \emph{unsatisfiable} otherwise.
+\end{defn}
+
+\begin{thm}[Soundness] % CP-001(Tab)
+\label{DED5-thm:tableau-soundness}
+If $\Gamma$ has a closed tableau, $\Gamma$ is unsatisfiable.
+\end{thm}
+
+\begin{proof}
+Call a branch \emph{satisfiable} iff the set of signed formulas on it
+is satisfiable, and call a tableau \emph{satisfiable} if it has at
+least one satisfiable branch.
+
+We show: extending a satisfiable tableau by one rule of inference
+always results in a satisfiable tableau. This proves the theorem: a
+closed tableau results from applying rules to the tableau consisting
+only of the assumptions from~$\Gamma$. If $\Gamma$ were satisfiable,
+the initial tableau would be satisfiable, and hence every extension
+would be satisfiable. But a closed tableau is clearly not satisfiable:
+every branch contains both $\sFmla{\True}{!A}$ and
+$\sFmla{\False}{!A}$.
+
+Suppose we have a satisfiable tableau with a satisfiable branch to
+which a rule is applied. Let $\Gamma$ be the set of signed formulas on
+that branch, and let $\sFmla{S}{!A} \in \Gamma$ be the signed formula
+to which the rule is applied. If the rule does not split, we show that
+the extended branch is satisfiable. If the rule splits, we show at
+least one resulting branch is satisfiable.
+
+\emph{Non-splitting rules:}
+\begin{enumerate}
+\item \emph{$\TRule{\True}{\lnot}$ applied to
+$\sFmla{\True}{\lnot !B}$:} The extended branch contains $\Gamma \cup
+\{\sFmla{\False}{!B}\}$. If $\Sat{M}{\Gamma}$, then
+$\Sat{M}{\lnot !B}$, so $\Sat/{M}{!B}$, i.e., $\Struct{M}$ satisfies
+$\sFmla{\False}{!B}$.
+
+\item \emph{$\TRule{\False}{\lnot}$ applied to
+$\sFmla{\False}{\lnot !B}$:} If $\Sat/{M}{\lnot !B}$, then
+$\Sat{M}{!B}$, so $\Struct{M}$ satisfies $\sFmla{\True}{!B}$.
+
+\item \emph{$\TRule{\True}{\land}$ applied to
+$\sFmla{\True}{!B \land !C}$:} If $\Sat{M}{!B \land !C}$, then
+$\Sat{M}{!B}$ and $\Sat{M}{!C}$, so $\Struct{M}$ satisfies both new
+signed formulas.
+
+\item \emph{$\TRule{\False}{\lor}$ applied to
+$\sFmla{\False}{!B \lor !C}$:} If $\Sat/{M}{!B \lor !C}$, then
+$\Sat/{M}{!B}$ and $\Sat/{M}{!C}$.
+
+\item \emph{$\TRule{\False}{\lif}$ applied to
+$\sFmla{\False}{!B \lif !C}$:} If $\Sat/{M}{!B \lif !C}$, then
+$\Sat{M}{!B}$ and $\Sat/{M}{!C}$.
+
+\item \emph{$\TRule{\True}{\lforall}$ applied to
+$\sFmla{\True}{\lforall[x][!A(x)]}$:} This adds
+$\sFmla{\True}{!A(t)}$. If $\Sat{M}{\lforall[x][!A(x)]}$, by the
+substitution lemma $\Sat{M}{!A(t)}$.
+
+\item \emph{$\TRule{\False}{\lforall}$ applied to
+$\sFmla{\False}{\lforall[x][!A(x)]}$:} This adds
+$\sFmla{\False}{!A(a)}$ where $a$ does not occur in~$\Gamma$. Since
+$\Sat/{M}{\lforall[x][!A(x)]}$, for some variable assignment~$s$,
+$\Sat/{M}{!A(x)}[s]$. Let $\Struct{M'}$ be like~$\Struct{M}$ except
+$\Assign{a}{M'} = s(x)$. Since $a$ does not occur in~$\Gamma$,
+$\Struct{M'}$ still satisfies~$\Gamma$. By the substitution lemma,
+$\Sat/{M'}{!A(a)}$, so $\Struct{M'}$ satisfies
+$\sFmla{\False}{!A(a)}$.
+
+\item \emph{$\TRule{\True}{\lexists}$ applied to
+$\sFmla{\True}{\lexists[x][!A(x)]}$:} Symmetric to the
+$\TRule{\False}{\lforall}$ case, constructing $\Struct{M'}$ with
+$\Assign{a}{M'} = s(x)$ for a suitable~$s$.
+
+\item \emph{$\TRule{\False}{\lexists}$ applied to
+$\sFmla{\False}{\lexists[x][!A(x)]}$:} Symmetric to the
+$\TRule{\True}{\lforall}$ case.
+
+\item \emph{Identity rule~$\eq$} (adding $\sFmla{\True}{\eq[t][t]}$):
+Trivially $\Sat{M}{\eq[t][t]}$.
+
+\item \emph{$\TRule{\True}{\eq}$} (adding $\sFmla{\True}{!A(t_2)}$
+from $\sFmla{\True}{\eq[t_1][t_2]}$ and $\sFmla{\True}{!A(t_1)}$):
+Since $\Value{t_1}{M} = \Value{t_2}{M}$, the substitution lemma gives
+$\Sat{M}{!A(t_2)}$. The $\TRule{\False}{\eq}$ case is similar.
+\end{enumerate}
+
+\emph{Splitting rules:}
+\begin{enumerate}
+\item \emph{$\TRule{\False}{\land}$ applied to
+$\sFmla{\False}{!B \land !C}$:} Splits into $\sFmla{\False}{!B}$ and
+$\sFmla{\False}{!C}$. If $\Sat/{M}{!B \land !C}$, then
+$\Sat/{M}{!B}$ or $\Sat/{M}{!C}$; accordingly $\Struct{M}$ satisfies
+the left or right branch.
+
+\item \emph{$\TRule{\True}{\lor}$ applied to
+$\sFmla{\True}{!B \lor !C}$:} Splits into $\sFmla{\True}{!B}$ and
+$\sFmla{\True}{!C}$. Since $\Sat{M}{!B}$ or $\Sat{M}{!C}$, at
+least one branch is satisfiable.
+
+\item \emph{$\TRule{\True}{\lif}$ applied to
+$\sFmla{\True}{!B \lif !C}$:} Splits into $\sFmla{\False}{!B}$ and
+$\sFmla{\True}{!C}$. Since either $\Sat/{M}{!B}$ or $\Sat{M}{!C}$,
+at least one branch is satisfiable.
+
+\item \emph{$\Cut$:} Splits into $\sFmla{\True}{!B}$ and
+$\sFmla{\False}{!B}$. Since either $\Sat{M}{!B}$ or $\Sat/{M}{!B}$,
+at least one branch is satisfiable.
+\end{enumerate}
+\end{proof}
+
+\begin{cor}[Weak Soundness]
+\label{DED5-cor:weak-soundness}
+If $\Proves !A$ then $!A$ is valid.
+\end{cor}
+
+\begin{cor}
+\label{DED5-cor:entailment-soundness}
+If $\Gamma \Proves !A$ then $\Gamma \Entails !A$.
+\end{cor}
+
+\begin{proof}
+If $\Gamma \Proves !A$ then for some $!B_1, \dots, !B_n \in \Gamma$,
+$\{\sFmla{\False}{!A}, \sFmla{\True}{!B_1}, \dots,
+\sFmla{\True}{!B_n}\}$ has a closed tableau. By
+\cref{DED5-thm:tableau-soundness}, every structure~$\Struct{M}$ either
+falsifies some~$!B_i$ or satisfies~$!A$. Hence if
+$\Sat{M}{\Gamma}$ then $\Sat{M}{!A}$.
+\end{proof}
+
+\begin{cor}
+\label{DED5-cor:consistency-soundness}
+If $\Gamma$ is satisfiable, then it is consistent.
+\end{cor}
+
+\begin{proof}
+Contrapositive: if $\Gamma$ is inconsistent, then there are $!B_1,
+\dots, !B_n \in \Gamma$ with a closed tableau for
+$\{\sFmla{\True}{!B_1}, \dots, \sFmla{\True}{!B_n}\}$. By
+\cref{DED5-thm:tableau-soundness}, no structure satisfies all~$!B_i$,
+so $\Gamma$ is unsatisfiable.
+\end{proof}
+
+\begin{rem}
+Tableau consistency---the absence of a closed tableau from $\True$-signed
+assumptions---is a reformulation of the generic consistency notion of
+\S\ref{DED.1}. Transitivity uses the $\Cut$ rule.
+\end{rem}
+
+
+%% ===================================================================
+%% DED.6: Theories and Arithmetic
+%% Sources: inc/int/def (DISTRIBUTE: Q, PA), inc/tcp/oqn (DEF only),
+%%          inc/inp/prc (DEF-DED014)
+%% ===================================================================
+
+\section{Theories and Arithmetic} \label{DED.6}
+
+This section introduces the formal theories of arithmetic that serve
+as the principal objects of study in the incompleteness theorems (see
+CH-BST, Boundedness). We define Robinson's~$\Th{Q}$, Peano
+Arithmetic~$\Th{PA}$, the notion of $\omega$-consistency, and the
+derivability conditions that any sufficiently strong theory must
+satisfy for the incompleteness theorems to apply.
+
+%%% -----------------------------------------------------------------
+%%% DED.6.1  Robinson Arithmetic Q
+%%% -----------------------------------------------------------------
+
+\subsection{Robinson Arithmetic $\Th{Q}$}
+
+The natural language in which to express facts of arithmetic is~$\Lang
+L_A$.  $\Lang L_A$ contains a single two-place predicate symbol~$<$, a
+single constant symbol~$\Obj 0$, one one-place function symbol~$\prime$,
+and two two-place function symbols~$+$ and~$\times$ (see
+PRIM-SYN009, Language, \S SYN.1 for the general notion of a
+first-order language).
+
+\begin{defn}[Robinson Arithmetic $\Th{Q}$] % DEF-DED011
+\label{DEF-DED011}
+The theory $\Th{Q}$ axiomatized by the following sentences is known
+as ``Robinson's $\Th{Q}$'' and is a very simple theory of arithmetic.
+\begin{align*}
+& \lforall[x][\lforall[y][(\eq[x'][y'] \lif \eq[x][y])]]
+  \tag{$!Q_1$}\\
+& \lforall[x][\eq/[\Obj 0][x']] \tag{$!Q_2$}\\
+& \lforall[x][(\eq[x][\Obj 0] \lor \lexists[y][\eq[x][y']])]
+  \tag{$!Q_3$}\\
+& \lforall[x][\eq[(x + \Obj 0)][x]] \tag{$!Q_4$}\\
+& \lforall[x][\lforall[y][\eq[(x + y')][(x + y)']]] \tag{$!Q_5$}\\
+& \lforall[x][\eq[(x \times \Obj 0)][\Obj 0]] \tag{$!Q_6$}\\
+& \lforall[x][\lforall[y][\eq[(x \times y')][((x \times y) + x)]]]
+  \tag{$!Q_7$}\\
+& \lforall[x][\lforall[y][(x < y \liff
+  \lexists[z][\eq[(z' + x)][y]])]] \tag{$!Q_8$}
+\end{align*}
+The sentences $\{!Q_1, \dots, !Q_8\}$ are the axioms of~$\Th{Q}$, so
+\[
+\Th{Q} = \Setabs{!A}{\{!Q_1, \dots, !Q_8\} \Entails !A}.
+\]
+\end{defn}
+
+The axioms~$!Q_1$ and~$!Q_2$ express that the successor function is
+injective with $0$ not in its range. Axiom~$!Q_3$ says every number is
+either~$0$ or a successor.  Axioms~$!Q_4$--$!Q_7$ give the recursive
+definitions of addition and multiplication.  Axiom~$!Q_8$ defines the
+ordering in terms of addition.
+
+$\Th{Q}$ is weak: it cannot even prove the commutativity of addition.
+Its importance lies in the fact that $\Th{Q}$ is strong enough to
+represent all computable functions and all decidable relations (see
+\S CMP.4), which is the key hypothesis of the incompleteness theorems.
+Since any theory that extends~$\Th{Q}$ inherits this representability,
+the incompleteness theorems apply to a wide class of theories.
+
+%%% -----------------------------------------------------------------
+%%% DED.6.2  Peano Arithmetic PA
+%%% -----------------------------------------------------------------
+
+\subsection{Peano Arithmetic $\Th{PA}$}
+
+\begin{defn}[Peano Arithmetic $\Th{PA}$] % DEF-DED012
+\label{DEF-DED012}
+Suppose $!A(x)$ is a formula in $\Lang L_A$ with free variables~$x$
+and $y_1$, \dots, $y_n$.  Then any sentence of the form
+\[
+\lforall[y_1][\dots\lforall[y_n][((!A(\Obj 0) \land \lforall[x][(!A(x)
+\lif !A(x'))]) \lif \lforall[x][!A(x)])]]
+\]
+is an instance of the \emph{induction schema}.
+
+\emph{Peano Arithmetic}~$\Th{PA}$ is the theory axiomatized by the
+axioms of $\Th{Q}$ together with all instances of the induction schema.
+\end{defn}
+
+Every instance of the induction schema is true in the standard model
+of arithmetic~$\Struct{N}$ (see DEF-SEM012, Standard Model, \S SEM.5).
+If $!A(x)$ defines a subset~$X_{!A}$ of~$\Nat$ in~$\Struct{N}$, then the
+induction schema asserts that if $0 \in X_{!A}$ and $X_{!A}$ is closed
+under the successor function, then $X_{!A} = \Nat$.
+
+The induction schema is genuinely a \emph{schema}: it generates
+infinitely many axioms, and $\Th{PA}$ is not finitely axiomatizable.
+However, since one can effectively determine whether a string of
+symbols is an instance of an induction axiom, the set of axioms
+for~$\Th{PA}$ is decidable, and $\Th{PA}$ is an axiomatizable theory
+in the sense of PRIM-DED002.
+
+$\Th{PA}$ is a much more robust theory than~$\Th{Q}$: one can prove
+the commutativity and associativity of addition and multiplication, and
+in fact most finitary number-theoretic and combinatorial arguments can
+be carried out in~$\Th{PA}$.
+
+%%% -----------------------------------------------------------------
+%%% DED.6.3  Omega-Consistency
+%%% -----------------------------------------------------------------
+
+\subsection{$\omega$-Consistency}
+
+\begin{defn}[$\omega$-Consistency] % DEF-DED013
+\label{DEF-DED013}
+A theory $\Th{T}$ is \emph{$\omega$-consistent} if the following
+holds: if $\lexists[x][!A(x)]$ is any sentence and $\Th{T}$ proves
+$\lnot !A(\num 0)$, $\lnot !A(\num 1)$, $\lnot !A(\num 2)$, \dots,
+then $\Th{T}$ does not prove $\lexists[x][!A(x)]$.
+\end{defn}
+
+$\omega$-consistency is strictly stronger than ordinary consistency:
+every $\omega$-consistent theory is consistent, but the converse fails.
+G\"odel's original 1931 proof of the first incompleteness theorem
+assumed $\omega$-consistency.  Rosser subsequently strengthened the
+result by replacing $\omega$-consistency with ordinary consistency (see
+THM-BST002, Rosser's Theorem, \S BST.3).
+
+%%% -----------------------------------------------------------------
+%%% DED.6.4  Derivability Conditions
+%%% -----------------------------------------------------------------
+
+\subsection{Derivability Conditions}
+
+\begin{defn}[Derivability Conditions] % DEF-DED014 (authoritative: \S META.6)
+Let $\Th{T}$ be an axiomatizable theory extending~$\Th{Q}$, and let
+$\OProv[\Th{T}](y)$ be a formula representing the derivability
+predicate for~$\Th{T}$ (i.e., $\OProv[\Th{T}](y) \defis
+\lexists[x][\OPrf[\Th{T}](x,y)]$, where $\OPrf[\Th{T}](x,y)$
+represents the proof relation).  The \emph{derivability conditions} (also
+called Hilbert--Bernays--L\"ob conditions) are:
+\begin{enumerate}
+\item[\textbf{P1.}] If $\Th{T} \Proves !A$, then $\Th{T} \Proves
+  \OProv[\Th{T}](\gn{!A})$.
+\item[\textbf{P2.}] For all formulas $!A$ and $!B$,
+  \[
+  \Th{T} \Proves \OProv[\Th{T}](\gn{!A \lif !B}) \lif
+  (\OProv[\Th{T}](\gn{!A}) \lif \OProv[\Th{T}](\gn{!B})).
+  \]
+\item[\textbf{P3.}] For every formula~$!A$,
+  \[
+  \Th{T} \Proves \OProv[\Th{T}](\gn{!A})
+  \lif \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!A})}).
+  \]
+\end{enumerate}
+\end{defn}
+
+Condition P1 says that $\Th{T}$ is aware of its own theorems: if it
+proves~$!A$, it proves that it proves~$!A$.  Condition P2 says that
+the provability predicate distributes over the conditional, so that
+$\Th{T}$ can reason internally about modus ponens.  Condition P3 is a
+form of positive introspection: $\Th{T}$ can verify its own provability.
+
+All three conditions hold for $\Th{PA}$ (and, more generally, for any
+axiomatizable extension of~$\Th{Q}$ with a suitably chosen provability
+predicate).  Conditions P1 and P2 are relatively easy to verify; P3
+requires substantial formalization of proof theory inside~$\Th{T}$
+itself.
+
+The derivability conditions are the essential hypotheses for L\"ob's
+Theorem (see THM-DED007, \S DED.7) and the Second Incompleteness
+Theorem (see THM-BST003, \S BST.4).
+
+
+%% ===================================================================
+%% DED.7: Theorems
+%% Sources: axd/ded (THM-DED001 cross-ref), com/lin (THM-DED005),
+%%          inc/inp/fix (THM-DED006), inc/inp/lob (THM-DED007)
+%% ===================================================================
+
+\section{Theorems} \label{DED.7}
+
+This section collects the principal theorems of deduction theory.
+
+%%% -----------------------------------------------------------------
+%%% DED.7.1  The Deduction Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{The Deduction Theorem}
+
+\begin{thm}[Deduction Theorem] % THM-DED001
+\label{THM-DED001}
+$\Gamma \cup \{!A\} \Proves !B$ if and only if $\Gamma \Proves !A
+\lif !B$.
+\end{thm}
+
+The deduction theorem is a fundamental metatheorem relating assumption
+introduction to the conditional connective.  Its proof depends on the
+proof system:
+\begin{itemize}
+\item In axiomatic deduction, the proof is by induction on the length
+  of the derivation and uses the logical axiom $!A \lif (!B \lif !A)$
+  and the distribution axiom $(!A \lif (!B \lif !C)) \lif ((!A \lif
+  !B) \lif (!A \lif !C))$.  See DED.2 for the full proof.
+\item In natural deduction, the deduction theorem is immediate from
+  the $\Intro{\lif}$ rule, which allows one to discharge an
+  assumption~$!A$ and conclude $!A \lif !B$.  See DED.3.
+\item In the sequent calculus, the deduction theorem corresponds to
+  the right conditional rule $\RightR{\lif}$, which moves a formula
+  from the antecedent to the succedent.  See DED.4.
+\end{itemize}
+
+%%% -----------------------------------------------------------------
+%%% DED.7.2  Lindenbaum's Lemma
+%%% -----------------------------------------------------------------
+
+\subsection{Lindenbaum's Lemma}
+
+\begin{lem}[Lindenbaum's Lemma] % THM-DED005 (authoritative: \S META.2)
+Every consistent set~$\Gamma$ in a language~$\Lang{L}$ can be
+extended to a complete and consistent set~$\Gamma^*$.
+\end{lem}
+
+\begin{proof}
+Let $\Gamma$ be consistent.  Let $!A_0, !A_1, \dots$ be an
+enumeration of all the sentences of~$\Lang L$.  Define $\Gamma_0 =
+\Gamma$, and
+\[
+\Gamma_{n+1} =
+\begin{cases}
+\Gamma_n \cup \{ !A_n \} & \text{if $\Gamma_n \cup \{!A_n\}$ is
+  consistent;} \\
+\Gamma_n \cup \{ \lnot !A_n \} & \text{otherwise.}
+\end{cases}
+\]
+Let $\Gamma^* = \bigcup_{n \geq 0} \Gamma_n$.
+
+Each $\Gamma_n$ is consistent: $\Gamma_0$ is consistent by definition.
+If $\Gamma_{n+1} = \Gamma_n \cup \{!A_n\}$, this is because the latter
+is consistent.  If it is not, $\Gamma_{n+1} = \Gamma_n \cup \{\lnot
+!A_n\}$. We verify that $\Gamma_n \cup \{\lnot !A_n\}$ is consistent.
+If it were not, then \emph{both} $\Gamma_n \cup \{!A_n\}$ and $\Gamma_n
+\cup \{\lnot !A_n\}$ would be inconsistent. By
+\cref{DED-prop:provability-exhaustive}, $\Gamma_n$ would be
+inconsistent, contradicting the induction hypothesis.
+
+For every~$n$ and every $i < n$, $\Gamma_i \subseteq \Gamma_n$. This
+follows by a simple induction on~$n$.
+
+From this it follows that $\Gamma^*$ is consistent: let $\Gamma'
+\subseteq \Gamma^*$ be finite. Each $!B \in \Gamma'$ is also
+in~$\Gamma_i$ for some~$i$.  Let $n$ be the largest of these. Since
+$\Gamma_i \subseteq \Gamma_n$ if $i \le n$, every $!B \in \Gamma'$ is
+also $\in \Gamma_n$, i.e., $\Gamma' \subseteq \Gamma_n$, and
+$\Gamma_n$~is consistent.  So every finite subset $\Gamma' \subseteq
+\Gamma^*$ is consistent.  By compactness
+(\cref{DED-prop:proves-compact}), $\Gamma^*$ is consistent.
+
+Every sentence of $\Frm[L]$ appears on the list used to
+define~$\Gamma^*$.  If $!A_n \notin \Gamma^*$, then that is because
+$\Gamma_n \cup \{!A_n\}$ was inconsistent.  But then $\lnot !A_n
+\in \Gamma^*$, so $\Gamma^*$ is complete.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.7.3  The Fixed-Point Lemma
+%%% -----------------------------------------------------------------
+
+\subsection{The Fixed-Point Lemma}
+
+The fixed-point lemma (also called the diagonal lemma or
+self-referential lemma) is the engine behind the incompleteness
+theorems.  It guarantees that any expressible property can be asserted
+of its own G\"odel number.
+
+\begin{lem}[Fixed-Point Lemma] % THM-DED006 (authoritative: \S META.5)
+Let $!B(x)$ be any formula with one free variable~$x$. Then there is a
+sentence~$!A$ such that $\Th{Q} \Proves !A \liff !B(\gn{!A})$.
+\end{lem}
+
+\begin{proof}
+Given $!B(x)$, let $!E(x)$ be the formula
+$\lexists[y][(!D_{\fn{diag}}(x,y) \land !B(y))]$, where
+$!D_{\fn{diag}}(x,y)$ is a formula representing the primitive
+recursive diagonalization function~$\fn{diag}$ in~$\Th{Q}$. The
+function $\fn{diag}(n)$ computes, given the G\"odel number~$n$ of a
+formula~$!E(x)$, the G\"odel number of its diagonalization
+$!E(\gn{!E(x)})$.
+
+Let $!A$ be the diagonalization of~$!E(x)$, i.e., $!A$ is
+$!E(\gn{!E(x)})$.
+
+Since $!D_{\fn{diag}}$ represents $\fn{diag}$, and
+$\fn{diag}(\Gn{!E(x)}) = \Gn{!A}$, $\Th{Q}$ can derive:
+\begin{align}
+  & !D_{\fn{diag}}(\gn{!E(x)}, \gn{!A}) \label{repdiag1} \\
+  & \lforall[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \lif
+  \eq[y][\gn{!A}])]. \label{repdiag2}
+\end{align}
+We show that $\Th{Q} \Proves !A \liff !B(\gn{!A})$, arguing informally
+using logic and facts derivable in~$\Th{Q}$.
+
+\emph{Forward direction.} Suppose~$!A$, i.e., $!E(\gn{!E(x)})$, which
+by definition of~$!E(x)$ is
+\[
+\lexists[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \land !B(y))].
+\]
+Consider such a~$y$. Since $!D_{\fn{diag}}(\gn{!E(x)},y)$, by
+\eqref{repdiag2}, $y = \gn{!A}$. So from $!B(y)$ we
+have~$!B(\gn{!A})$.
+
+\emph{Reverse direction.} Suppose $!B(\gn{!A})$. By
+\eqref{repdiag1}, we have
+\[
+!D_{\fn{diag}}(\gn{!E(x)}, \gn{!A}) \land !B(\gn{!A}).
+\]
+It follows that
+\[
+\lexists[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \land !B(y))],
+\]
+which is $!E(\gn{!E(x)})$, i.e.,~$!A$.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% DED.7.4  L\"ob's Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{L\"ob's Theorem}
+
+\begin{thm}[L\"ob's Theorem] % THM-DED007 (authoritative: \S META.6)
+Let $\Th{T}$ be an axiomatizable theory extending $\Th{Q}$, and
+suppose $\OProv[\Th{T}](y)$ is a formula satisfying the derivability
+conditions P1--P3 (see DEF-DED014, \S DED.6). If $\Th{T}$ derives
+$\OProv[\Th{T}](\gn{!A}) \lif !A$, then in fact $\Th{T}$ derives $!A$.
+\end{thm}
+
+Equivalently: if $\Th{T} \Proves/ !A$, then $\Th{T} \Proves/
+\OProv[\Th{T}](\gn{!A}) \lif !A$.  The schema
+$\OProv[\Th{T}](\gn{!A}) \lif !A$ is called the \emph{reflection
+principle}; L\"ob's theorem says that a consistent theory can only
+derive those instances of the reflection principle where~$!A$ is
+already a theorem.
+
+\begin{proof}
+Suppose $!A$ is a sentence such that $\Th{T}$ derives
+$\OProv[\Th{T}](\gn{!A}) \lif !A$.  Let $!B(y)$ be the
+formula~$\OProv[\Th{T}](y) \lif !A$, and use the fixed-point lemma
+(THM-DED006) to find a sentence~$!D$ such that $\Th{T}$
+derives $!D \liff !B(\gn{!D})$. Then each of the following is
+derivable in $\Th{T}$:
+\begin{align}
+  & !D \liff (\OProv[\Th{T}](\gn{!D}) \lif !A) \label{L-1}\\
+  & \qquad \text{$!D$ is a fixed point of~$!B(y)$}\notag \\
+  & !D \lif (\OProv[\Th{T}](\gn{!D}) \lif !A) \label{L-2}\\
+  & \qquad\text{from \eqref{L-1}}\notag\\
+  & \OProv[\Th{T}](\gn{!D \lif (\OProv[\Th{T}](\gn{!D}) \lif !A)})
+    \label{L-3}\\
+  & \qquad \text{from \eqref{L-2} by condition P1}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \lif
+    \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D}) \lif !A})
+    \label{L-4}\\
+  &\qquad \text{from \eqref{L-3} using condition P2}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \lif
+    (\OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D})}) \lif
+    \OProv[\Th{T}](\gn{!A})) \label{L-5}\\
+  &\qquad \text{from \eqref{L-4} using P2 again} \notag\\
+  & \OProv[\Th{T}](\gn{!D}) \lif
+    \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D})}) \label{L-6}\\
+  & \qquad\text{by derivability condition P3} \notag\\
+  & \OProv[\Th{T}](\gn{!D}) \lif \OProv[\Th{T}](\gn{!A}) \label{L-7}\\
+  &\qquad\text{from \eqref{L-5} and \eqref{L-6}}\notag\\
+  & \OProv[\Th{T}](\gn{!A}) \lif !A \label{L-8}\\
+  &\qquad\text{by assumption of the theorem} \notag\\
+  & \OProv[\Th{T}](\gn{!D}) \lif !A \label{L-9}\\
+  &\qquad\text{from \eqref{L-7} and \eqref{L-8}}\notag\\
+  & (\OProv[\Th{T}](\gn{!D}) \lif !A) \lif !D \label{L-10}\\
+  & \qquad \text{from \eqref{L-1}}\notag \\
+  & !D \label{L-11}\\
+  & \qquad\text{from \eqref{L-9} and \eqref{L-10}}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \label{L-12}\\
+  & \qquad\text{from \eqref{L-11} by condition P1}\notag \\
+  & !A \qquad\qquad\text{from \eqref{L-8} and \eqref{L-12}}\notag
+\end{align}
+\end{proof}
+
+\begin{rem}
+With L\"ob's theorem in hand, there is a short proof of the second
+incompleteness theorem (see THM-BST003, Second Incompleteness Theorem,
+\S BST.4).  Take $!A \defis \lfalse$.  If $\Th{T} \Proves
+\OProv[\Th{T}](\gn{\lfalse}) \lif \lfalse$, then by L\"ob's theorem
+$\Th{T} \Proves \lfalse$.  Contrapositively, if $\Th{T}$ is
+consistent, then $\Th{T} \Proves/ \OProv[\Th{T}](\gn{\lfalse}) \lif
+\lfalse$, i.e., $\Th{T} \Proves/ \OCon[\Th{T}]$.
+
+L\"ob's theorem also settles the status of the fixed point~$!H$ of
+$\OProv[\Th{T}](x)$, i.e., a sentence~$!H$ such that $\Th{T} \Proves
+\OProv[\Th{T}](\gn{!H}) \liff !H$.  Since in particular $\Th{T}
+\Proves \OProv[\Th{T}](\gn{!H}) \lif !H$, L\"ob's theorem gives
+$\Th{T} \Proves !H$.
+\end{rem}

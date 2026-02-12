@@ -1,0 +1,94 @@
+% lean-text.tex
+% A Lean Systematization of Mathematical Logic
+%
+% Compiled from the OpenLogic Project textbook, organized by the
+% taxonomy of mathematical logic (6 domains + metatheory).
+% Every concept traceable to primitives, no redundancy, full dependency graph.
+
+\documentclass[openany]{memoir}
+
+\input{lean-preamble.sty}
+
+% Page layout
+\linespread{1.05}  % Optimized for Palatino
+
+% Numbering
+\setsecnumdepth{subsection}
+\settocdepth{section}
+
+% Chapter style
+\chapterstyle{bianchi}
+
+\begin{document}
+
+%% ===================================================================
+%%% Front Matter
+%% ===================================================================
+
+\frontmatter
+
+\begin{titlingpage}
+\begin{center}
+\vspace*{3cm}
+{\Huge\bfseries A Lean Systematization of\\[0.5em] Mathematical Logic}
+
+\vspace{2cm}
+
+{\Large Based on the OpenLogic Project}
+
+\vspace{1cm}
+
+{\large Organized by the Taxonomy of Mathematical Logic\\[0.5em]
+6 Domains $+$ Metatheory $\cdot$ 205 Items $\cdot$ 13 Composition Patterns}
+
+\vspace{3cm}
+
+{\normalsize
+Every concept traceable to primitives.\\
+No redundancy. Full dependency graph.}
+
+\vspace{2cm}
+
+{\small Compiled from \textit{Open Logic: A Complete Text}\\
+by the Open Logic Project\\[0.5em]
+Systematized using the taxonomy at
+\texttt{taxonomy/}}
+\end{center}
+\end{titlingpage}
+
+\tableofcontents
+
+%% ===================================================================
+%%% Main Matter
+%% ===================================================================
+
+\mainmatter
+
+% Chapter dependency order:
+%   BST -> SYN -> SEM (parallel with DED) -> DED -> CMP -> META -> SET -> EXT
+%
+% BST provides the naive set-theoretic metalanguage (Level-0).
+% SYN, SEM, DED define the formal logic.
+% CMP adds computation theory.
+% META collects cross-domain composition patterns (soundness, completeness, etc.).
+% SET is ZFC as a formal first-order theory (Level-1).
+% EXT points to extensions (modal, intuitionistic, etc.).
+
+\input{ch-bst}   % CH-BST: Set-Theoretic Foundations (Level-0)
+\input{ch-syn}   % CH-SYN: Syntax
+\input{ch-sem}   % CH-SEM: Semantics
+\input{ch-ded}   % CH-DED: Deduction
+\input{ch-cmp}   % CH-CMP: Computation
+\input{ch-meta}  % CH-META: Metatheory (Composition Patterns)
+\input{ch-set}   % CH-SET: Formal Set Theory (Level-1)
+\input{ch-ext}   % CH-EXT: Extensions
+
+%% ===================================================================
+%%% Back Matter
+%% ===================================================================
+
+\backmatter
+
+% Future: bibliography, index, notation index
+
+\end{document}

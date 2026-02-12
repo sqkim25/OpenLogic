@@ -1,0 +1,2876 @@
+\chapter{Metatheory} \label{ch:meta}
+
+%% ===================================================================
+%% META.1: Soundness (CP-001)
+%% Source: written from scratch (unified statement referencing DED.2--DED.5)
+%% ===================================================================
+
+\section{Soundness} \label{META.1}
+
+The Soundness Theorem establishes that the derivability relation~$\Proves$
+is truth-preserving: nothing that can be derived from a set of
+sentences~$\Gamma$ goes beyond what is semantically entailed by~$\Gamma$.
+
+\begin{thm}[Soundness Theorem] % CP-001
+\label{CP-001}
+If $\Gamma \Proves !A$, then $\Gamma \Entails !A$.
+\end{thm}
+
+This result is proved independently for each of the four proof systems
+treated in this text:
+\begin{itemize}
+\item \textbf{Axiomatic (Hilbert-style) deduction} --- see \S\ref{DED.2}.
+\item \textbf{Natural deduction} --- see \S\ref{DED.3}.
+\item \textbf{Sequent calculus} --- see \S\ref{DED.4}.
+\item \textbf{Tableaux} --- see \S\ref{DED.5}.
+\end{itemize}
+
+In each case, the proof proceeds by induction on the length (or tree
+structure) of the derivation.  The base cases verify that every logical
+axiom (in the axiomatic system) or initial sequent / leaf assumption is
+logically valid or follows from the assumptions.  The inductive step shows
+that each rule of inference---modus ponens, introduction/elimination
+rules, structural rules, or tableau expansion rules, depending on the
+system---preserves truth: if the premises of the rule are true in every
+structure satisfying~$\Gamma$, so is the conclusion.  Since every step in
+the derivation preserves truth, the final conclusion is entailed
+by~$\Gamma$.
+
+An important corollary is that every satisfiable set is consistent:
+
+\begin{cor} % CP-001
+\label{cor:satisfiable-consistent}
+If $\Gamma$ is satisfiable, then $\Gamma$ is consistent.
+Equivalently, if $\Gamma$ is inconsistent, then $\Gamma$ is
+unsatisfiable.
+\end{cor}
+
+\begin{proof}
+Suppose $\Gamma$ is satisfiable and, toward a contradiction, suppose
+$\Gamma$ is inconsistent, i.e., $\Gamma \Proves \lfalse$.  By Soundness
+(\ref{CP-001}), $\Gamma \Entails \lfalse$.  But $\lfalse$ is false in
+every structure, so no structure satisfies~$\Gamma$---contradicting the
+assumption that $\Gamma$ is satisfiable.
+\end{proof}
+
+
+%% ===================================================================
+%% META.2: Completeness (CP-002)
+%% Sources: fol/com/ccs, fol/com/mcs, fol/com/hen, fol/com/lin,
+%%          fol/com/mod, fol/com/ide, fol/com/cth
+%% ===================================================================
+
+\section{Completeness} \label{META.2}
+
+The Completeness Theorem, due to G\"odel (1930) with an influential
+alternative proof by Henkin (1949), establishes the converse of
+soundness: every sentence that is semantically entailed by a set of
+sentences is derivable from it.  Equivalently, every consistent set of
+sentences is satisfiable.  We follow the Henkin proof strategy, which
+constructs a model out of the syntax itself.
+
+%%% -----------------------------------------------------------------
+%%% META.2.1  Complete Consistent Sets
+%%% -----------------------------------------------------------------
+
+\subsection{Complete Consistent Sets of Sentences}
+
+\begin{defn}[Complete set] % DEF-SEM005 (authoritative: \S SEM.3)
+A set~$\Gamma$ of sentences is \emph{complete} iff for any
+sentence~$!A$, either $!A \in \Gamma$ or $\lnot !A \in \Gamma$.
+\end{defn}
+
+Complete consistent sets are central to the completeness proof: we will
+show that every consistent set of sentences~$\Gamma$ can be extended to
+a complete consistent set~$\Gamma^*$, from which a satisfying structure
+is constructed.
+
+In what follows, we will often tacitly use the properties of
+reflexivity, monotonicity, and transitivity of $\Proves$ (see
+\S\ref{DED.1}).
+
+\begin{prop} \label{prop:ccs}
+Suppose $\Gamma$ is complete and consistent. Then:
+\begin{enumerate}
+\item \label{prop:ccs-prov-in} If $\Gamma \Proves !A$, then $!A \in
+  \Gamma$.
+
+\item \label{prop:ccs-and} $!A \land !B \in \Gamma$
+  iff both $!A \in \Gamma$ and $!B \in \Gamma$.
+
+\item \label{prop:ccs-or} $!A \lor !B \in \Gamma$ iff
+  either $!A \in \Gamma$ or $!B \in \Gamma$.
+
+\item \label{prop:ccs-if} $!A \lif !B \in \Gamma$ iff
+  either $!A \notin \Gamma$ or $!B \in \Gamma$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Let us suppose for all of the following that $\Gamma$ is complete and
+consistent.
+\begin{enumerate}
+\item If $\Gamma \Proves !A$, then $!A \in \Gamma$.
+
+Suppose that $\Gamma \Proves !A$.  Suppose to the contrary that $!A
+\notin \Gamma$.  Since $\Gamma$ is complete, $\lnot !A \in \Gamma$.
+By the properties of derivability (see DEF-DED003, \S\ref{DED.1}),
+$\Gamma$ is inconsistent.  This contradicts the assumption that
+$\Gamma$ is consistent.  Hence, it cannot be the case that $!A \notin
+\Gamma$, so $!A \in \Gamma$.
+
+\item $!A \land !B \in \Gamma$ iff both $!A \in \Gamma$ and $!B \in \Gamma$:
+
+For the forward direction, suppose $!A \land !B \in \Gamma$.  Then
+by the provability properties of~$\land$ (see \S\ref{DED.1}), item~(1),
+$\Gamma \Proves !A$ and $\Gamma \Proves !B$.  By
+\ref{prop:ccs-prov-in}, $!A \in \Gamma$ and $!B \in \Gamma$, as
+required.
+
+For the reverse direction, let $!A \in \Gamma$ and $!B \in
+\Gamma$.  By the provability properties of~$\land$, item~(2),
+$\Gamma \Proves !A \land !B$.  By \ref{prop:ccs-prov-in}, $!A \land
+!B \in \Gamma$.
+
+\item First we show that if $!A \lor !B \in \Gamma$, then either $!A \in
+\Gamma$ or $!B \in \Gamma$.  Suppose $!A \lor !B \in \Gamma$ but $!A
+\notin \Gamma$ and $!B \notin \Gamma$.  Since $\Gamma$ is
+complete, $\lnot !A \in \Gamma$ and $\lnot !B \in \Gamma$.  By
+the provability properties of~$\lor$ (see \S\ref{DED.1}),
+item (1), $\Gamma$ is inconsistent, a contradiction.  Hence, either $!A
+\in \Gamma$ or $!B \in \Gamma$.
+
+For the reverse direction, suppose that $!A \in \Gamma$ or $!B \in
+\Gamma$.  By the provability properties of~$\lor$, item (2),
+$\Gamma \Proves !A \lor !B$.  By \ref{prop:ccs-prov-in}, $!A \lor
+!B \in \Gamma$, as required.
+
+\item For the forward direction, suppose $!A \lif !B \in \Gamma$, and suppose
+to the contrary that $!A \in \Gamma$ and $!B \notin \Gamma$.  On these
+assumptions, $!A \lif !B \in \Gamma$ and $!A \in \Gamma$.  By
+the provability properties of~$\lif$ (see \S\ref{DED.1}), item~(1),
+$\Gamma \Proves !B$.  But then by \ref{prop:ccs-prov-in}, $!B \in
+\Gamma$, contradicting the assumption that $!B \notin \Gamma$.
+
+For the reverse direction, first consider the case where $!A \notin
+\Gamma$.  Since $\Gamma$ is complete, $\lnot !A \in \Gamma$.  By
+the provability properties of~$\lif$, item~(2),
+$\Gamma \Proves !A \lif !B$.  Again by \ref{prop:ccs-prov-in}, we get
+that $!A \lif !B \in \Gamma$, as required.
+
+Now consider the case where $!B \in \Gamma$.  By
+the provability properties of~$\lif$,
+item (2) again, $\Gamma \Proves !A \lif !B$.  By
+\ref{prop:ccs-prov-in}, $!A \lif !B \in \Gamma$.
+\end{enumerate}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.2.2  Maximally Consistent Sets
+%%% -----------------------------------------------------------------
+
+\subsection{Maximally Consistent Sets of Sentences}
+
+\begin{defn}[Maximally consistent set] % DEF-DED002 (authoritative: \S DED.1)
+A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
+\begin{enumerate}
+\item $\Gamma$ is consistent, and
+\item if $\Gamma \subsetneq \Gamma'$, then $\Gamma'$ is inconsistent.
+\end{enumerate}
+\end{defn}
+
+Every maximally consistent set is complete and consistent; it therefore
+has all the properties established in Proposition~\ref{prop:ccs}.
+
+%%% -----------------------------------------------------------------
+%%% META.2.3  Henkin Expansion
+%%% -----------------------------------------------------------------
+
+\subsection{Henkin Expansion}
+
+In order to guarantee that the model we construct from a complete
+consistent set~$\Gamma$ makes all the quantified formulas in~$\Gamma$
+true, we use a trick due to Leon Henkin: expand the language by
+infinitely many constants and add, for each formula with one free
+variable $!A(x)$, a formula of the form $\lexists[x][!A(x)] \lif !A(c)$,
+where $c$ is one of the new constants.
+
+\begin{prop} \label{prop:lang-exp}
+If $\Gamma$ is consistent in $\Lang L$ and $\Lang L'$ is obtained from
+$\Lang L$ by adding a denumerable set of new constants $\Obj d_0$,
+$\Obj d_1$, \dots, then $\Gamma$ is consistent in~$\Lang L'$.
+\end{prop}
+
+\begin{defn}[Saturated set] \label{defn:saturated-set}
+A set $\Gamma$ of formulas of a language $\Lang {L}$ is
+\emph{saturated} iff for each formula~$!A(x) \in \Frm[L]$ with one
+free variable~$x$ there is a constant~$c \in \Lang{L}$ such
+that $\lexists[x][!A(x)] \lif !A(c) \in \Gamma$.
+\end{defn}
+
+The following definition will be used in the proof of the next lemma.
+
+\begin{defn} \label{defn:henkin-exp}
+Let $\Lang L'$ be as in Proposition~\ref{prop:lang-exp}.  Fix an enumeration
+$!A_0(x_0)$, $!A_1(x_1)$, \dots of all formulas~$!A_i(x_i)$
+of~$\Lang L'$ in which one variable ($x_i$) occurs free.  We define
+the sentences~$!D_n$ by induction on~$n$.
+
+Let $c_0$ be the first constant among the $\Obj d_i$ we added
+to~$\Lang{L}$ which does not occur in~$!A_0(x_0)$.  Assuming that
+$!D_0$, \dots,~$!D_{n-1}$ have already been defined, let $c_n$ be the
+first among the new constants~$\Obj d_i$ that occurs neither in
+$!D_0$, \dots,~$!D_{n-1}$ nor in~$!A_n(x_n)$.
+
+Now let $!D_{n}$ be the formula
+$\lexists[x_{n}][!A_{n}(x_{n})] \lif !A_{n}(c_{n})$.
+\end{defn}
+
+\begin{lem}[Henkin's Lemma] % THM-META-HEN
+\label{lem:henkin}
+Every consistent set~$\Gamma$ can be extended to a saturated
+consistent set~$\Gamma'$.
+\end{lem}
+
+\begin{proof}
+Given a consistent set of sentences~$\Gamma$ in a language~$\Lang{L}$,
+expand the language by adding a denumerable set of new
+constants to form~$\Lang{L'}$.  By Proposition~\ref{prop:lang-exp}, $\Gamma$
+is still consistent in the richer language.  Further, let $!D_i$ be as
+in Definition~\ref{defn:henkin-exp}.  Let
+\begin{align*}
+\Gamma_0 & = \Gamma \\
+\Gamma_{n+1} & = \Gamma_n \cup \{!D_n \}
+\end{align*}
+i.e., $\Gamma_{n+1} = \Gamma \cup \{ !D_0, \dots, !D_n \}$, and let
+$\Gamma' = \bigcup_{n} \Gamma_n$.  $\Gamma'$ is clearly saturated.
+
+If $\Gamma'$ were inconsistent, then for some $n$, $\Gamma_n$ would be
+inconsistent.  So to show that $\Gamma'$ is
+consistent it suffices to show, by induction on~$n$, that each
+set~$\Gamma_n$ is consistent.
+
+The induction basis is simply the claim that $\Gamma_0 = \Gamma$ is
+consistent, which is the hypothesis of the lemma.  For the induction
+step, suppose that $\Gamma_{n}$ is consistent but $\Gamma_{n+1} =
+\Gamma_n \cup \{!D_n\}$ is inconsistent.  Recall that $!D_n$~is
+$\lexists[x_{n}][!A_{n}(x_n)] \lif !A_{n}(c_{n})$,
+where $!A_n(x_n)$ is a formula of $\Lang{L'}$ with only the
+variable~$x_n$ free. By the way we have chosen the~$c_n$ (see
+Definition~\ref{defn:henkin-exp}), $c_n$ does not occur in~$!A_n(x_n)$ nor
+in~$\Gamma_n$.
+
+If $\Gamma_n \cup \{!D_n\}$ is inconsistent, then $\Gamma_n
+\Proves \lnot !D_n$, and hence both of the following hold:
+\[
+\Gamma_n \Proves \lexists[x_n][!A_n(x_n)]
+\qquad
+\Gamma_n \Proves \lnot !A_n(c_n)
+\]
+Since $c_n$ does not occur in
+$\Gamma_n$ or in~$!A_n(x_n)$,
+the strong generalization theorem applies (see \S\ref{DED.1}).
+From $\Gamma_n \Proves \lnot !A_n(c_n)$,
+we obtain
+$\Gamma_n \Proves \lforall[x_n][\lnot !A_n(x_n)]$.
+Thus we have that both
+$\Gamma_n \Proves \lexists[x_n][!A_n(x_n)]$ and
+$\Gamma_n \Proves \lforall[x_n][\lnot !A_n(x_n)]$,
+so $\Gamma_n$ itself is inconsistent.
+Contradiction: $\Gamma_n$ was supposed to be consistent.  Hence
+$\Gamma_n \cup \{ !D_n\}$ is consistent.
+\end{proof}
+
+We now show that complete, consistent sets which are saturated
+have the property that they contain an existentially quantified sentence
+iff they contain at least one instance, and they contain a universally
+quantified sentence iff they contain all instances.
+
+\begin{prop}\label{prop:saturated-instances}
+Suppose $\Gamma$ is complete, consistent, and saturated.
+\begin{enumerate}
+\item $\lexists[x][!A(x)] \in \Gamma$ iff $!A(t) \in \Gamma$
+  for at least one closed term~$t$.
+\item $\lforall[x][!A(x)] \in \Gamma$ iff $!A(t) \in \Gamma$
+  for all closed terms~$t$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\begin{enumerate}
+\item First suppose that $\lexists[x][!A(x)]
+      \in \Gamma$.  Because $\Gamma$ is saturated,
+      $(\lexists[x][!A(x)] \lif !A(c)) \in \Gamma$ for some
+      constant~$c$. By the provability properties of~$\lif$ (see
+      Proposition~\ref{prop:ccs}\ref{prop:ccs-if}),
+      and Proposition~\ref{prop:ccs}\ref{prop:ccs-prov-in}, $!A(c)
+      \in \Gamma$.
+
+    For the other direction, saturation is not necessary: Suppose
+    $!A(t) \in \Gamma$.  Then $\Gamma \Proves \lexists[x][!A(x)]$ by
+    the provability properties of quantifiers (see \S\ref{DED.1}), item~(1). By
+    Proposition~\ref{prop:ccs}\ref{prop:ccs-prov-in},
+    $\lexists[x][!A(x)] \in \Gamma$.
+
+\item Suppose that $!A(t) \in \Gamma$ for
+      all closed terms~$t$.  By way of contradiction, assume
+      $\lforall[x][!A(x)] \notin \Gamma$.  Since $\Gamma$ is complete,
+      $\lnot\lforall[x][!A(x)] \in \Gamma$.  By saturation,
+      $(\lexists[x][\lnot !A(x)] \lif \lnot !A(c)) \in
+        \Gamma$ for some constant~$c$.  By assumption, since $c$
+      is a closed term, $!A(c) \in \Gamma$.  But this would make
+      $\Gamma$ inconsistent, since
+      $\lnot \lforall[x][!A(x)]$,
+      $\lexists[x][\lnot !A(x)] \lif \lnot !A(c)$, $!A(c)$
+      is inconsistent.
+
+      For the reverse direction, we do not need saturation: Suppose
+      $\lforall[x][!A(x)] \in \Gamma$.  Then $\Gamma \Proves !A(t)$
+      by the provability properties of quantifiers (see \S\ref{DED.1}),
+      item~(2). We get $!A(t) \in \Gamma$ by
+      Proposition~\ref{prop:ccs}.
+\end{enumerate}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.2.4  Lindenbaum's Lemma
+%%% -----------------------------------------------------------------
+
+\subsection{Lindenbaum's Lemma}
+
+\begin{lem}[Lindenbaum's Lemma] % THM-DED005
+\label{THM-DED005}
+Every consistent set~$\Gamma$ in a language~$\Lang{L}$ can be
+extended to a complete and consistent set~$\Gamma^*$.
+\end{lem}
+
+\begin{proof}
+Let $\Gamma$ be consistent.  Let $!A_0$, $!A_1$,
+\dots{} be an enumeration of all the sentences of~$\Lang L$.
+Define $\Gamma_0 = \Gamma$, and
+\[
+\Gamma_{n+1} =
+\begin{cases}
+\Gamma_n \cup \{ !A_n \} & \textrm{if $\Gamma_n \cup \{!A_n\}$ is
+  consistent;} \\
+\Gamma_n \cup \{ \lnot !A_n \} & \textrm{otherwise.}
+\end{cases}
+\]
+Let $\Gamma^* = \bigcup_{n \geq 0} \Gamma_n$.
+
+Each $\Gamma_n$ is consistent: $\Gamma_0$ is consistent by definition.
+If $\Gamma_{n+1} = \Gamma_n \cup \{!A_n\}$, this is because the latter
+is consistent.  If it is not, $\Gamma_{n+1} = \Gamma_n \cup \{\lnot
+!A_n\}$. We have to verify that $\Gamma_n \cup \{\lnot !A_n\}$ is
+consistent. Suppose it is not. Then \emph{both} $\Gamma_n \cup
+\{!A_n\}$ and $\Gamma_n \cup \{\lnot !A_n\}$ are inconsistent.  This
+means that $\Gamma_n$ would be inconsistent by
+the exhaustive cases property of derivability (see \S\ref{DED.1}),
+contrary to the induction hypothesis.
+
+For every~$n$ and every $i < n$, $\Gamma_i \subseteq \Gamma_n$. This
+follows by a simple induction on~$n$. For $n=0$, there are no $i < 0$,
+so the claim holds automatically.  For the inductive step, suppose it
+is true for~$n$. We show that if $i < n+1$ then $\Gamma_i \subseteq
+\Gamma_{n+1}$. We have $\Gamma_{n+1} = \Gamma_n \cup \{!A_n\}$ or $=
+\Gamma_n \cup \{\lnot !A_n\}$ by construction. So $\Gamma_n \subseteq
+\Gamma_{n+1}$. If $i < n+1$, then $\Gamma_i \subseteq \Gamma_n$ by
+inductive hypothesis (if $i < n$) or the trivial fact that $\Gamma_n
+\subseteq \Gamma_n$ (if $i = n$). We get that $\Gamma_i \subseteq
+\Gamma_{n+1}$ by transitivity of~$\subseteq$.
+
+From this it follows that $\Gamma^*$ is consistent. Here is why: Let
+$\Gamma' \subseteq \Gamma^*$ be finite. Each $!B \in \Gamma'$ is also
+in~$\Gamma_i$ for some~$i$. Let $n$ be the largest of these. Since
+$\Gamma_i \subseteq \Gamma_n$ if $i \le n$, every $!B \in \Gamma'$ is
+also $\in \Gamma_n$, i.e., $\Gamma' \subseteq \Gamma_n$, and
+$\Gamma_n$~is consistent. So, every finite subset $\Gamma' \subseteq
+\Gamma^*$ is consistent. By the compactness of derivability
+(see \S\ref{DED.1}), $\Gamma^*$ is
+  consistent.
+
+Every sentence of $\Frm[L]$ appears on the list used to
+define~$\Gamma^*$. If $!A_n \notin \Gamma^*$, then that is because
+$\Gamma_n \cup \{!A_n\}$ was inconsistent.  But then $\lnot !A_n
+\in \Gamma^*$, so $\Gamma^*$ is complete.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.2.5  Construction of a Model
+%%% -----------------------------------------------------------------
+
+\subsection{Construction of a Model}
+
+We first extend~$\Gamma$ to a consistent, complete, and saturated
+set~$\Gamma^*$.  The term model~$\Struct{M(\Gamma^*)}$ takes the set
+of closed terms of~$\Lang{L'}$ as the domain, assigns every constant
+to itself, and defines predicate extensions so that an atomic sentence
+is true in $\Struct{M(\Gamma^*)}$ iff it is in~$\Gamma^*$.
+
+\begin{defn}[Term model] % DEF-META-TM
+\label{defn:termmodel}
+Let $\Gamma^*$ be a complete and consistent,
+saturated set of sentences in a language~$\Lang L$. The \emph{term
+  model}~$\Struct M(\Gamma^*)$ of $\Gamma^*$ is the structure
+defined as follows:
+\begin{enumerate}
+\item The domain~$\Domain{M(\Gamma^*)}$ is the set of all closed
+  terms of~$\Lang L$.
+\item The interpretation of a constant $c$ is $c$ itself:
+  $\Assign{c}{M(\Gamma^*)} = c$.
+\item The function~$f$ is assigned the function which, given as
+  arguments the closed terms $t_1$, \dots, $t_n$, has as value the
+  closed term $f(t_1, \dots, t_n)$:
+\[
+\Assign{f}{M(\Gamma^*)}(t_1, \dots, t_n) = f(t_1,\dots, t_n)
+\]
+\item If $R$ is an $n$-place predicate, then
+  \[
+  \tuple{t_1, \dots,
+  t_n} \in \Assign{R}{M(\Gamma^*)} \text{ iff } \Atom{R}{t_1, \dots,
+    t_n} \in \Gamma^*.
+  \]
+\end{enumerate}
+\end{defn}
+
+\begin{lem}
+\label{lem:val-in-termmodel} Let $\Struct M(\Gamma^*)$ be the term model
+of Definition~\ref{defn:termmodel}; then $\Value{t}{M(\Gamma^*)} = t$.
+\end{lem}
+
+\begin{proof}
+ The proof is by induction on $t$, where the base case, when $t$
+ is a constant, follows directly from the definition of the term
+ model. For the induction step assume $t_1, \ldots, t_n$ are closed terms
+ such that $\Value{t_i}{M(\Gamma^*)} = t_i$ and that $f$ is an $n$-ary
+ function. Then
+\begin{align*}
+\Value{f(t_1,\ldots,t_n)}{M(\Gamma^*)} &= \Assign{f}{M(\Gamma^*)}(\Value{t_1}
+ {M(\Gamma^*)},
+\ldots, \Value{t_n}{M(\Gamma^*)}) \\
+&= \Assign{f}{M(\Gamma^*)}(t_1, \dots, t_n) \\
+&= f(t_1,\dots, t_n),
+\end{align*}
+and so by induction this holds for every closed term~$t$.
+\end{proof}
+
+\begin{prop}
+\label{prop:quant-termmodel}
+Let $\Struct M(\Gamma^*)$ be the term model of Definition~\ref{defn:termmodel}.
+\begin{enumerate}
+\item $\Sat{M(\Gamma^*)}{\lexists[x][!A(x)]}$ iff
+  $\Sat{M(\Gamma^*)}{!A(t)}$ for at least one closed term~$t$.
+\item $\Sat{M(\Gamma^*)}{\lforall[x][!A(x)]}$ iff
+  $\Sat{M(\Gamma^*)}{!A(t)}$ for all closed terms~$t$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+\begin{enumerate}
+\item By the definition of satisfaction (see DEF-SEM002, \S\ref{SEM.4}),
+    $\Sat{M(\Gamma^*)}{\lexists[x][!A(x)]}$ iff for at least one
+    variable assignment~$s$, $\Sat{M(\Gamma^*)}{!A(x)}[s]$. As
+    $\Domain{M(\Gamma^*)}$ consists of the closed terms of~$\Lang{L}$,
+    this is the case iff there is at least one closed term~$t$ such
+    that $s(x) = t$ and $\Sat{M(\Gamma^*)}{!A(x)}[s]$.  By
+    the Extension Lemma (see \S\ref{SEM.4}),
+    $\Sat{M(\Gamma^*)}{!A(x)}[s]$ iff $\Sat{M(\Gamma^*)}{!A(t)}[s]$,
+    where $s(x) = t$.  By the Sentence Satisfaction Lemma (see \S\ref{SEM.4}),
+    $\Sat{M(\Gamma^*)}{!A(t)}[s]$ iff $\Sat{M(\Gamma^*)}{!A(t)}$,
+    since $!A(t)$ is a sentence.
+\item By the definition of satisfaction,
+    $\Sat{M(\Gamma^*)}{\lforall[x][!A(x)]}$ iff for every variable
+    assignment $s$, $\Sat{M(\Gamma^*)}{!A(x)}[s]$. Recall that
+    $\Domain{M(\Gamma^*)}$ consists of the closed terms of~$\Lang{L}$,
+    so for every closed term~$t$, $s(x) = t$ is such a variable
+    assignment, and for any variable assignment, $s(x)$ is some closed
+    term~$t$.  By the Extension Lemma,
+    $\Sat{M(\Gamma^*)}{!A(x)}[s]$ iff $\Sat{M(\Gamma^*)}{!A(t)}[s]$,
+    where $s(x) = t$.  By the Sentence Satisfaction Lemma,
+    $\Sat{M(\Gamma^*)}{!A(t)}[s]$ iff $\Sat{M(\Gamma^*)}{!A(t)}$,
+    since $!A(t)$ is a sentence.
+\end{enumerate}
+\end{proof}
+
+\begin{lem}[Truth Lemma] % THM-META-TL
+\label{lem:truth}
+Suppose $!A$ does not contain~$\eq$. Then
+$\Sat{M(\Gamma^*)}{!A}$ iff $!A \in \Gamma^*$.
+\end{lem}
+
+\begin{proof}
+We prove both directions simultaneously, and by induction on $!A$.
+\begin{enumerate}
+\item $!A \ident \lfalse$:
+  $\Sat/{M(\Gamma^*)}{\lfalse}$
+    by definition of satisfaction. On the other hand, $\lfalse \notin
+    \Gamma^*$ since $\Gamma^*$ is consistent.
+
+\item $!A \ident \ltrue$:
+  $\Sat{M(\Gamma^*)}{\ltrue}$
+    by definition of satisfaction. On the other hand, $\ltrue \in
+    \Gamma^*$ since $\Gamma^*$ is consistent and complete, and
+    $\Gamma^* \Proves \ltrue$.
+
+\item $!A \ident R(t_1, \dots, t_n)$:
+  $\Sat{M(\Gamma^*)}{\Atom{R}{t_1, \dots, t_n}}$ iff $\tuple{t_1,
+      \dots, t_n} \in \Assign{R}{M(\Gamma^*)}$ (by the definition of
+    satisfaction) iff $R(t_1, \dots, t_n) \in \Gamma^*$ (by the
+    construction of $\Struct
+    M(\Gamma^*)$).
+
+\item $!A \ident \lnot !B$:
+    $\Sat{M(\Gamma^*)}{\lnot !B}$ iff
+    $\Sat/{M(\Gamma^*)}{!B}$ (by
+    definition of satisfaction). By induction hypothesis,
+    $\Sat/{M(\Gamma^*)}{!B}$ iff
+    $!B \notin \Gamma^*$. Since $\Gamma^*$ is consistent and
+    complete, $!B
+    \notin \Gamma^*$ iff $\lnot !B \in \Gamma^*$.
+
+\item $!A \ident !B \land !C$:
+    $\Sat{M(\Gamma^*)}{!B \land !C}$
+    iff we have both
+    $\Sat{M(\Gamma^*)}{!B}$ and
+    $\Sat{M(\Gamma^*)}{!C}$ (by
+    definition of satisfaction) iff both $!B \in \Gamma^*$ and $!C \in
+    \Gamma^*$ (by the induction hypothesis). By
+    Proposition~\ref{prop:ccs}\ref{prop:ccs-and}, this is the case
+    iff $(!B \land !C) \in \Gamma^*$.
+
+\item $!A \ident !B \lor !C$:
+    $\Sat{M(\Gamma^*)}{!B \lor !C}$
+    iff $\Sat{M(\Gamma^*)}{!B}$ or
+    $\Sat{M(\Gamma^*)}{!C}$ (by
+    definition of satisfaction) iff $!B \in \Gamma^*$ or $!C \in
+    \Gamma^*$ (by induction hypothesis). This is the case iff $(!B
+    \lor !C) \in \Gamma^*$ (by
+    Proposition~\ref{prop:ccs}\ref{prop:ccs-or}).
+
+\item $!A \ident !B \lif !C$:
+    $\Sat{M(\Gamma^*)}{!B \lif !C}$
+    iff $\Sat/{M(\Gamma^*)}{!B}$ or $\Sat{M(\Gamma^*)}{!C}$ (by
+    definition of satisfaction) iff $!B \notin \Gamma^*$ or $!C \in
+    \Gamma^*$ (by induction hypothesis). This is the case iff $(!B
+    \lif !C) \in \Gamma^*$ (by
+    Proposition~\ref{prop:ccs}\ref{prop:ccs-if}).
+
+\item $!A \ident \lforall[x][!B(x)]$:
+    $\Sat{M(\Gamma^*)}{\lforall[x][!B(x)]}$ iff
+      $\Sat{M(\Gamma^*)}{!B(t)}$ for all terms~$t$
+      (Proposition~\ref{prop:quant-termmodel}).  By induction hypothesis, this
+      is the case iff $!B(t) \in \Gamma^*$ for all terms~$t$; by
+      Proposition~\ref{prop:saturated-instances}, this in turn is the case
+      iff $\lforall[x][!A(x)] \in \Gamma^*$.
+
+\item $!A \ident \lexists[x][!B(x)]$:
+    $\Sat{M(\Gamma^*)}{\lexists[x][!B(x)]}$ iff
+      $\Sat{M(\Gamma^*)}{!B(t)}$ for at least one term~$t$
+      (Proposition~\ref{prop:quant-termmodel}).  By induction hypothesis, this
+      is the case iff $!B(t) \in \Gamma^*$ for at least one term~$t$.
+      By Proposition~\ref{prop:saturated-instances}, this in turn is the
+      case iff $\lexists[x][!B(x)] \in \Gamma^*$.
+\end{enumerate}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.2.6  Identity
+%%% -----------------------------------------------------------------
+
+\subsection{Identity}
+
+The term model constructed above suffices for sets~$\Gamma$ that do not
+contain the identity predicate~$\eq$.  When $\Gamma^*$ contains a
+sentence~$\eq[t][t']$ with $t$ and $t'$ distinct terms, the term model
+falsifies it (since $\Value{t}{M(\Gamma^*)} = t \neq t'$).  We fix
+this by quotienting the term model by provable equality.
+
+\begin{defn} \label{defn:approx}
+  Let $\Gamma^*$ be a consistent and complete set of sentences
+  in~$\Lang L$.  We define the relation $\approx$ on the set of closed
+  terms of~$\Lang L$ by
+  \[
+  t \approx t' \text{\quad iff \quad} \eq[t][t'] \in \Gamma^*
+  \]
+\end{defn}
+
+\begin{prop}
+\label{prop:approx-equiv}
+The relation $\approx$ has the following properties:
+\begin{enumerate}
+\item $\approx$ is reflexive.
+\item $\approx$ is symmetric.
+\item  $\approx$ is transitive.
+\item If $t \approx t'$, $f$ is a function, and $t_1$, \dots,
+  $t_{i-1}$, $t_{i+1}$, \dots, $t_n$ are closed terms, then
+\[
+\Atom{f}{t_1,\dots, t_{i-1}, t, t_{i+1}, \dots, t_n} \approx
+\Atom{f}{t_1,\dots, t_{i-1}, t', t_{i+1}, \dots, t_n}.
+\]
+\item If $t \approx t'$, $R$ is a predicate, and $t_1$, \dots,
+  $t_{i-1}$, $t_{i+1}$, \dots, $t_n$ are closed terms, then
+\begin{multline*}
+\Atom{R}{t_1,\dots, t_{i-1}, t, t_{i+1}, \dots, t_n} \in \Gamma^* \text{ iff } \\
+\Atom{R}{t_1,\dots, t_{i-1}, t', t_{i+1}, \dots, t_n} \in \Gamma^*.
+\end{multline*}
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Since $\Gamma^*$ is consistent and complete, $\eq[t][t'] \in
+\Gamma^*$ iff $\Gamma^* \Proves \eq[t][t']$.  Thus it is enough to
+show the following:
+\begin{enumerate}
+\item $\Gamma^* \Proves \eq[t][t]$ for all closed terms~$t$.
+\item If $\Gamma^* \Proves \eq[t][t']$ then $\Gamma^* \Proves \eq[t'][t]$.
+\item If $\Gamma^* \Proves \eq[t][t']$ and $\Gamma^* \Proves
+  \eq[t'][t'']$, then $\Gamma^* \Proves \eq[t][t'']$.
+\item If $\Gamma^* \Proves \eq[t][t']$, then
+\[
+\Gamma^* \Proves
+\eq[\Atom{f}{t_1,\dots,t_{i-1},t,t_{i+1},\dots,t_n}][\Atom{f}{t_1,\dots,t_{i-1},t',t_{i+1},\dots,t_n}]
+\]
+for every $n$-place function~$f$ and closed terms $t_1$, \dots,
+$t_{i-1}$, $t_{i+1}$, \dots,~$t_n$.
+\item If $\Gamma^* \Proves \eq[t][t']$ and
+$\Gamma^* \Proves
+\Atom{R}{t_1,\dots,t_{i-1},t,t_{i+1},\dots,t_n}$, then
+$\Gamma^* \Proves \Atom{R}{t_1,\dots,t_{i-1},t',t_{i+1},\dots,t_n}$
+for every $n$-place predicate~$R$ and closed terms $t_1$, \dots,
+$t_{i-1}$, $t_{i+1}$, \dots,~$t_n$.
+\end{enumerate}
+\end{proof}
+
+\begin{defn} \label{defn:equiv-class}
+Suppose $\Gamma^*$ is a consistent and complete set in a
+language~$\Lang L$, $t$ is a closed term, and $\approx$ as in the
+previous definition. Then:
+\[
+\equivrep{t}{\approx} = \Setabs{t'}{t'\in \Trm[L], t \approx t'}
+\]
+and $\equivclass{\Trm[L]}{\approx} = \Setabs{\equivrep{t}{\approx}}{t \in \Trm[L]}$.
+\end{defn}
+
+\begin{defn}[Factored term model] % DEF-META-FTM
+\label{defn:term-model-factor}
+Let $\Struct M = \Struct M(\Gamma^*)$ be the term model
+for~$\Gamma^*$ from Definition~\ref{defn:termmodel}.  Then $\Struct{\equivclass{M}{\approx}}$ is the following
+structure:
+\begin{enumerate}
+\item $\Domain{\equivclass{M}{\approx}} = \equivclass{\Trm[L]}{\approx}$.
+\item $\Assign{c}{\equivclass{M}{\approx}} = \equivrep{c}{\approx}$
+\item $\Assign{f}{\equivclass{M}{\approx}}(\equivrep{t_1}{\approx}, \dots,
+  \equivrep{t_n}{\approx}) = \equivrep{\Atom{f}{t_1,\dots, t_n}}{\approx}$
+\item $\tuple{\equivrep{t_1}{\approx}, \dots, \equivrep{t_n}{\approx}} \in
+  \Assign{R}{\equivclass{M}{\approx}}$ iff
+  $\Sat{M}{\Atom{R}{t_1,\dots, t_n}}$, i.e., iff $\Atom{R}{t_1,\dots,
+  t_n} \in \Gamma^*$.
+\end{enumerate}
+\end{defn}
+
+The definitions of $\Assign{f}{\equivclass{M}{\approx}}$ and
+$\Assign{R}{\equivclass{M}{\approx}}$ refer to elements of
+$\equivclass{\Trm[L]}{\approx}$ via representatives~$t \in
+\equivrep{t}{\approx}$.  Proposition~\ref{prop:approx-equiv}
+guarantees that these definitions do not depend on the choice of
+representatives.
+
+\begin{prop}
+$\Struct{\equivclass{M}{\approx}}$ is well defined, i.e., if $t_1$,
+  \dots, $t_n$, $t_1'$, \dots, $t_n'$ are closed terms,
+  and $t_i \approx t_i'$ then
+\begin{enumerate}
+\item $\equivrep{\Atom{f}{t_1,\dots, t_n}}{\approx} =
+    \equivrep{\Atom{f}{t_1',\dots, t_n'}}{\approx}$, i.e.,
+  \[
+  \Atom{f}{t_1,\dots, t_n} \approx \Atom{f}{t_1',\dots, t_n'}
+  \]
+  and
+\item $\Sat{M}{\Atom{R}{t_1,\dots, t_n}}$ iff
+  $\Sat{M}{\Atom{R}{t_1',\dots, t_n'}}$, i.e.,
+  \[
+    \Atom{R}{t_1,\dots, t_n} \in \Gamma^* \text{ iff }
+    \Atom{R}{t_1',\dots, t_n'} \in \Gamma^*.
+  \]
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Follows from Proposition~\ref{prop:approx-equiv} by induction on~$n$.
+\end{proof}
+
+\begin{lem}
+\label{lem:val-in-termmodel-factored} Let $\Struct M = \Struct M
+ (\Gamma^*)$; then $\Value{t}{\equivclass{M}{\approx}} = \equivrep{t}
+ {\approx}$.
+\end{lem}
+
+\begin{proof}
+The proof is similar to that of Lemma~\ref{lem:val-in-termmodel}.
+\end{proof}
+
+\begin{lem}[Truth Lemma, with identity] % THM-META-TLI
+\label{lem:truth-factored}
+$\Sat{\equivclass{M}{\approx}}{!A}$ iff $!A \in \Gamma^*$ for all
+  sentences~$!A$.
+\end{lem}
+
+\begin{proof}
+By induction on~$!A$, just as in the proof of Lemma~\ref{lem:truth}.
+The only case that needs additional attention is when $!A \ident
+\eq[t][t']$.
+\begin{align*}
+\Sat{\equivclass{M}{\approx}}{\eq[t][t']} & \text{ iff } \equivrep{t}{\approx} = \equivrep{t'}{\approx}
+\text{ (by definition of $\Struct{\equivclass{M}{\approx}}$)}\\
+& \text{ iff } t \approx t' \text{ (by definition of $\equivrep{t}{\approx}$)}\\
+& \text{ iff } \eq[t][t'] \in \Gamma^* \text{ (by definition of $\approx$).}
+\end{align*}
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.2.7  The Completeness Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{The Completeness Theorem}
+
+Let us combine our results: we arrive at the completeness theorem.
+
+\begin{thm}[Completeness Theorem] % CP-002
+\label{CP-002}
+Let $\Gamma$ be a set of sentences.  If $\Gamma$ is consistent, it
+is satisfiable.
+\end{thm}
+
+\begin{proof}
+Suppose $\Gamma$ is consistent. By
+  Lemma~\ref{lem:henkin}, there is a saturated consistent set
+  $\Gamma' \supseteq \Gamma$. By Lemma~\ref{THM-DED005} (Lindenbaum's Lemma), there
+is a $\Gamma^* \supseteq \Gamma'$ which is
+consistent and complete.
+  Since $\Gamma' \subseteq \Gamma^*$, for each
+  formula~$!A(x)$, $\Gamma^*$ contains a sentence of the form
+        $\lexists[x][!A(x)] \lif !A(c)$
+  and so $\Gamma^*$ is saturated.  If $\Gamma$
+  does not contain~$\eq$, then by
+Lemma~\ref{lem:truth} (Truth Lemma),
+$\Sat{M(\Gamma^*)}{!A}$ iff $!A \in
+\Gamma^*$.  From this it follows in particular that for all $!A \in
+\Gamma$, $\Sat{M(\Gamma^*)}{!A}$, so
+$\Gamma$ is satisfiable.
+  If $\Gamma$ does contain~$\eq$,
+  then by Lemma~\ref{lem:truth-factored}, for all sentences~$!A$,
+  $\Sat{\equivclass{M}{\approx}}{!A}$ iff $!A \in \Gamma^*$.  In
+  particular, $\Sat{\equivclass{M}{\approx}}{!A}$ for all $!A \in
+  \Gamma$, so $\Gamma$ is satisfiable.
+\end{proof}
+
+\begin{cor}[Completeness Theorem, Second Version] % CP-002
+\label{cor:completeness}
+For all $\Gamma$ and sentences~$!A$: if $\Gamma \Entails !A$ then
+$\Gamma \Proves !A$.
+\end{cor}
+
+\begin{proof}
+Note that the $\Gamma$'s in Corollary~\ref{cor:completeness} and
+Theorem~\ref{CP-002} are universally quantified.  To make sure we
+do not confuse ourselves, let us restate Theorem~\ref{CP-002}
+using a different variable: for any set of sentences~$\Delta$, if
+$\Delta$ is consistent, it is satisfiable.  By contraposition, if
+$\Delta$ is not satisfiable, then $\Delta$ is inconsistent.  We will
+use this to prove the corollary.
+
+Suppose that $\Gamma \Entails !A$.  Then $\Gamma \cup \{\lnot !A\}$ is
+unsatisfiable by the entailment--unsatisfiability equivalence
+(see DEF-SEM002, \S\ref{SEM.4}).  Taking $\Gamma
+\cup \{\lnot !A\}$ as our $\Delta$, the previous version of
+Theorem~\ref{CP-002} gives us that $\Gamma \cup \{\lnot !A\}$ is
+inconsistent.  By
+the derivability from inconsistency property (see \S\ref{DED.1}),
+$\Gamma \Proves !A$.
+\end{proof}
+
+
+%% ===================================================================
+%% META.3: Compactness (CP-003)
+%% Source: fol/com/com
+%% ===================================================================
+
+\section{Compactness} \label{META.3}
+
+\begin{defn}[Finitely satisfiable] % DEF-SEM003
+\label{DEF-SEM003}
+  A set $\Gamma$ of formulas is \emph{finitely satisfiable} iff every finite $\Gamma_0 \subseteq \Gamma$ is satisfiable.
+\end{defn}
+
+\begin{thm}[Compactness Theorem] % CP-003
+\label{CP-003}
+The following hold for any sentences $\Gamma$ and $!A$:
+\begin{enumerate}
+  \item $\Gamma \Entails !A$ iff there is a finite $\Gamma_0
+    \subseteq \Gamma$ such that $\Gamma_0 \Entails !A$.
+  \item $\Gamma$ is satisfiable iff it is finitely
+    satisfiable.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+We prove (2).  If $\Gamma$ is satisfiable, then there is
+a structure~$\Struct{M}$
+such that $\Sat{M}{!A}$ for all $!A \in
+\Gamma$.  Of course, this $\Struct{M}$ also
+satisfies every finite subset of~$\Gamma$, so $\Gamma$ is finitely
+satisfiable.
+
+Now suppose that $\Gamma$ is finitely satisfiable.  Then every finite
+subset~$\Gamma_0 \subseteq \Gamma$ is satisfiable.  By soundness
+(Corollary~\ref{cor:satisfiable-consistent}, from \S\ref{META.1}),
+every finite subset is consistent.  Then $\Gamma$ itself must be
+consistent by
+the compactness of derivability (see \S\ref{DED.1}).
+By the Completeness Theorem (\ref{CP-002}), since $\Gamma$~is
+consistent, it is satisfiable.
+\end{proof}
+
+
+%% ===================================================================
+%% META.4: Lowenheim-Skolem (CP-004)
+%% Source: fol/com/dls
+%% ===================================================================
+
+\section{The L\"owenheim--Skolem Theorem} \label{META.4}
+
+First-order logic cannot express that the size of a structure is
+non-enumerable: any sentence or set of sentences satisfied in all
+non-enumerable structures is also satisfied in some enumerable
+structure.
+
+\begin{thm}[Downward L\"owenheim--Skolem] % CP-004
+\label{CP-004}
+If $\Gamma$ is consistent then it has
+an enumerable model, i.e., it is satisfiable in a structure
+whose domain is either finite or denumerable.
+\end{thm}
+
+\begin{proof}
+If $\Gamma$ is consistent, the structure~$\Struct M$ delivered by
+the proof of the Completeness Theorem (\ref{CP-002}) has a domain $\Domain{M}$ that
+is no larger than the set of the terms of the language~$\Lang L$. So
+$\Struct M$ is at most denumerable.
+\end{proof}
+
+\begin{thm}[L\"owenheim--Skolem without identity] % CP-004-variant
+\label{thm:noidentity-ls}
+If $\Gamma$ is a consistent set of sentences
+in the language of first-order logic without identity, then it has
+a denumerable model, i.e., it is satisfiable in a structure
+whose domain is infinite and enumerable.
+\end{thm}
+
+\begin{proof}
+If $\Gamma$ is consistent and contains no sentences in which identity
+appears, then the structure~$\Struct M$ delivered by the proof of
+the Completeness Theorem has a domain $\Domain{M}$ identical to the set
+of terms of the language~$\Lang L'$. So $\Struct{M}$ is
+denumerable, since $\Trm[L']$ is.
+\end{proof}
+
+
+%% ===================================================================
+%% META.5: First Incompleteness (CP-005)
+%% Sources: inc/inp/fix (KEEP), inc/inp/s1c (KEEP),
+%%          inc/inp/1in (ABSORB:inc/tcp/inc), inc/inp/ros (KEEP)
+%% ===================================================================
+
+\section{The First Incompleteness Theorem} \label{META.5}
+
+The First Incompleteness Theorem establishes an inherent limitation of
+sufficiently strong, axiomatizable theories: no such theory can be both
+consistent and complete.  The proof rests on the Fixed-Point Lemma,
+$\Sigma_1$-completeness, and a careful analysis of the provability
+predicate.
+
+%%% -----------------------------------------------------------------
+%%% META.5.1  The Fixed-Point Lemma
+%%% -----------------------------------------------------------------
+
+\subsection{The Fixed-Point Lemma}
+
+The fixed-point lemma says that for any formula~$!B(x)$, there is
+a sentence~$!A$ such that $\Th{T} \Proves !A \liff !B(\gn{!A})$,
+provided $\Th{T}$ extends~$\Th{Q}$.  In the case of the liar sentence,
+we would want $!A$ to be equivalent (provably in~$\Th{T}$) to~``$\gn{!A}$
+is false,'' i.e., the statement that $\Gn{!A}$ is the G\"odel number
+of a false sentence. To understand the idea of the proof, it will
+be useful to compare it with Quine's informal gloss of~$!A$ as,
+``{}`yields a falsehood when preceded by its own quotation' yields a
+falsehood when preceded by its own quotation.''  The operation of
+taking an expression, and then forming a sentence by preceding this
+expression by its own quotation may be called \emph{diagonalizing} the
+expression, and the result its diagonalization. So, the
+diagonalization of `yields a falsehood when preceded by its own
+quotation' is ``{}`yields a falsehood when preceded by its own
+quotation' yields a falsehood when preceded by its own quotation.''
+Now note that Quine's liar sentence is not the diagonalization of
+`yields a falsehood' but of `yields a falsehood when preceded by its
+own quotation.' So the property being diagonalized to yield the liar
+sentence itself involves diagonalization!{}
+
+In the language of arithmetic, we form quotations of a formula with
+one free variable by computing its G\"odel numbers and then
+substituting the standard numeral for that G\"odel number into the
+free variable. The diagonalization of~$!E(x)$ is $!E(\num{n})$, where
+$n = \Gn{!E(x)}$. (From now on, let us abbreviate $\num{\Gn{!E(x)}}$ as
+$\gn{!E(x)}$.)  So if $!B(x)$ is ``is a falsehood,'' then ``yields a
+falsehood if preceded by its own quotation,'' would be ``yields a
+falsehood when applied to the G\"odel number of its diagonalization.''
+If we had a symbol~$\Obj{diag}$ for the function $\fn{diag}(n)$ which
+computes the G\"odel number of the diagonalization of the formula
+with G\"odel number~$n$, we could write $!E(x)$ as
+$!B(\Obj{diag}(x))$. And Quine's version of the liar sentence would
+then be the diagonalization of it, i.e., $!E(\gn{!E(x)})$ or
+$!B(\Obj{diag}(\gn{!B(\Obj{diag}(x))}))$.  Of course, $!B(x)$ could
+now be any other property, and the same construction would work. For
+the incompleteness theorem, we take $!B(x)$ to be ``$x$~is not
+derivable in~$\Th{T}$.'' Then $!E(x)$ would be ``yields
+a sentence not derivable in~$\Th{T}$ when applied to the
+G\"odel number of its diagonalization.''
+
+To formalize this in~$\Th{T}$, we have to find a way to formalize
+$\fn{diag}$. The function $\fn{diag}(n)$ is computable, in fact, it is
+primitive recursive: if $n$ is the G\"odel number of a
+formula~$!E(x)$, $\fn{diag}(n)$ returns the G\"odel number
+of~$!E(\gn{!E(x)})$. (Recall, $\gn{!E(x)}$ is the standard numeral of
+the G\"odel number of~$!E(x)$, i.e., $\num{\Gn{!E(x)}}$). If
+$\Obj{diag}$ were a function symbol in $\Th{T}$ representing the
+function $\fn{diag}$, we could take $!A$ to be the formula
+$!B(\Obj{diag}(\gn{!B(\Obj{diag}(x))}))$. Notice that
+\begin{align*}
+\fn{diag}(\Gn{!B(\Obj{diag}(x))}) & =
+\Gn{!B(\Obj{diag}(\gn{!B(\Obj{diag}(x))}))} \\
+& = \Gn{!A}.
+\end{align*}
+Assuming $\Th{T}$ can derive
+\[
+\Obj{diag}(\gn{!B(\Obj{diag}(x))}) = \gn{!A},
+\]
+it can derive $!B(\Obj{diag}(\gn{!B(\Obj{diag}(x))}))
+\liff !B(\gn{!A})$. But the left hand side is, by
+definition,~$!A$.
+
+Of course, $\Obj{diag}$ will in general not be a function symbol of
+$\Th{T}$, and certainly is not one of~$\Th{Q}$. But, since $\fn{diag}$
+is computable, it is \emph{representable} in~$\Th{Q}$ by some formula
+$!D_{\fn{diag}}(x,y)$. So instead of writing $!B(\Obj{diag}(x))$ we
+can write $\lexists[y][(!D_{\fn{diag}}(x,y) \land !B(y))]$. Otherwise,
+the proof sketched above goes through, and in fact, it goes through
+already in~$\Th{Q}$.
+
+\begin{lem}[Fixed-Point Lemma] % THM-DED006
+\label{THM-DED006}
+Let $!B(x)$ be any formula with one free
+variable~$x$. Then there is a sentence~$!A$ such that $\Th{Q} \Proves
+!A \liff !B(\gn{!A})$.
+\end{lem}
+
+\begin{proof}
+Given $!B(x)$, let $!E(x)$ be the formula
+$\lexists[y][(!D_{\fn{diag}}(x,y) \land !B(y))]$ and let $!A$~be its
+diagonalization, i.e., the formula $!E(\gn{!E(x)})$.
+
+Since $!D_{\fn{diag}}$ represents $\fn{diag}$, and
+$\fn{diag}(\Gn{!E(x)}) = \Gn{!A}$, $\Th{Q}$ can derive
+\begin{align}
+  & !D_{\fn{diag}}(\gn{!E(x)}, \gn{!A}) \label{repdiag1} \\
+  & \lforall[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \lif
+  \eq[y][\gn{!A}])]. \label{repdiag2}
+\end{align}
+Now we show that $\Th{Q} \Proves !A \liff !B(\gn{!A})$. We argue
+informally, using just logic and facts derivable in~$\Th{Q}$.
+
+First, suppose~$!A$, i.e., $!E(\gn{!E(x)})$. Going back to the
+definition of $!E(x)$, we see that $!E(\gn{!E(x)})$ just is
+\[
+\lexists[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \land !B(y))].
+\]
+Consider such a~$y$. Since $!D_{\fn{diag}}(\gn{!E(x)},y)$, by
+\eqref{repdiag2}, $y = \gn{!A}$. So, from $!B(y)$ we
+have~$!B(\gn{!A})$.
+
+Now suppose $!B(\gn{!A})$. By \eqref{repdiag1}, we have
+\begin{align*}
+& !D_{\fn{diag}}(\gn{!E(x)}, \gn{!A}) \land !B(\gn{!A}).
+\intertext{It follows
+that}
+& \lexists[y][(!D_{\fn{diag}}(\gn{!E(x)},y) \land !B(y))].
+\end{align*}
+But that is just $!E(\gn{!E(x)})$, i.e.,~$!A$.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.5.2  Sigma-1 Completeness
+%%% -----------------------------------------------------------------
+
+\subsection{$\Sigma_1$-Completeness}
+
+Despite the incompleteness of $\Th{Q}$ and its consistent, axiomatizable
+extensions, $\Th{Q}$ does prove many basic facts about
+numerals. In fact, this can be extended quite considerably. To understand
+the scope of what can be proved in~$\Th{Q}$, we introduce the notions of
+$\Delta_0$, $\Sigma_1$, and $\Pi_1$ formulas. Roughly speaking, a
+$\Sigma_1$ formula is one of the form $\lexists[x][!B(x)]$, where $!B$
+is constructed using only propositional connectives and bounded
+quantifiers. We shall show that if $!A$ is a $\Sigma_1$ sentence
+which is true in $\Struct{N}$, then $\Th{Q} \Proves !A$.
+
+\begin{defn}[Bounded quantifiers] % DEF-INC015
+\label{DEF-INC015}
+A \emph{bounded existential formula} is one of the form
+$\lexists[x][(x < t \land !A(x))]$ where $t$ is any term, which we
+conventionally write as $\bexists{x < t}{!A(x)}$.
+A \emph{bounded universal formula} is one of the form
+$\lforall[x][(x < t \lif !A(x))]$ where $t$ is any term, which we
+conventionally write as $\bforall{x < t}{!A(x)}$.
+\end{defn}
+
+\begin{defn}[$\Delta_0$, $\Sigma_1$, $\Pi_1$ formulas] % DEF-INC016, DEF-INC017
+\label{DEF-INC016}
+A formula $!B$ is $\Delta_0$ if it is built up from atomic
+formulas using only propositional connectives and bounded
+quantification.
+A formula $!A$ is $\Sigma_1$ if $!A \ident \lexists[x][!B(x)]$
+where $!B$ is $\Delta_0$.
+A formula $!A$ is $\Pi_1$ if $!A \ident \lforall[x][!B(x)]$
+where $!B$ is $\Delta_0$.
+\end{defn}
+
+\begin{lem} \label{lem:q-proves-clterm-id}
+Suppose $t$ is a closed term such that
+$\Value{t}{N} = n$. Then $\Th{Q} \Proves \eq[t][\num n]$.
+\end{lem}
+
+\begin{proof}
+We prove this by induction on the complexity of~$t$. For the base case,
+$\Value{\Obj 0}{N} = 0$, and $\Th{Q} \Proves \eq[\Obj 0][\num 0]$
+since $\num 0 \ident \Obj 0$.
+For the inductive case, let $t_1$ and $t_2$ be terms such that
+$\Value{t_1}{N} = n_1$, $\Value{t_2}{N} = n_2$,
+$\Th{Q} \Proves \eq[t_1][\num n_1]$, and
+$\Th{Q} \Proves \eq[t_2][\num n_2]$.
+
+Then $\Value{(t_1')}{N} = n_1 + 1$, and we have that $\Th{Q} \Proves
+\eq[t_1'][{\num n_1}']$ by the first-order rules for identity applied
+to the induction hypothesis and the formula
+$\eq[\num{n_1}'][\num{n_1}']$,
+so we have $\Th{Q} \Proves \eq[t_1'][\num{n_1 + 1}]$
+by the definition of numerals.
+
+For sums we have
+\[
+      \Value{(t_1 + t_2)}{N}
+    = \Value{t_1}{N} + \Value{t_2}{N}
+    = n_1 + n_2.
+\]
+By the induction hypothesis and the rules for identity,
+$\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1} + t_2]$, and then
+$\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1} + \num{n_2}]$
+by a second application of the rules for identity.
+By the fact that $\Th{Q}$ proves the standard addition identities
+(see DEF-CMP009, Representability, \S CMP.5),
+$\Th{Q} \Proves \eq[\num{n_1} + \num{n_2}][\num{n_1 + n_2}]$,
+so $\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1 + n_2}]$.
+
+Similar reasoning also works for~$\times$, using the corresponding
+multiplication identities.
+Since this exhausts the closed terms of arithmetic, we have that
+$\Th{Q} \Proves \eq[t][\num n]$ for all closed terms~$t$ such that
+$\Value{t}{N} = n$.
+\end{proof}
+
+\begin{lem} \label{lem:atomic-completeness}
+Suppose $t_1$ and $t_2$ are closed terms. Then
+\begin{enumerate}
+\item If $\Value{t_1}{N} = \Value{t_2}{N}$,
+    then $\Th{Q} \Proves \eq[t_1][t_2]$.
+\item If $\Value{t_1}{N} \neq \Value{t_2}{N}$,
+    then $\Th{Q} \Proves \eq/[t_1][t_2]$.
+\item If $\Value{t_1}{N} < \Value{t_2}{N}$,
+    then $\Th{Q} \Proves t_1 < t_2$.
+\item If $\Value{t_2}{N} \leq \Value{t_1}{N}$,
+    then $\Th{Q} \Proves \lnot(t_1 < t_2)$.
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+Given terms $t_1$ and $t_2$, we fix $n = \Value{t_1}{N}$ and
+$m = \Value{t_2}{N}$.
+
+Suppose $!A \ident t_1 = t_2$. By Lemma~\ref{lem:q-proves-clterm-id},
+$\Th{Q} \Proves \eq[t_1][\num n]$ and $\Th{Q} \Proves \eq[t_2][\num n]$.
+If $n = m$, then $\Th{Q} \Proves \eq[\num n][\num m]$ and hence
+$\Th{Q} \Proves \eq[t_1][t_2]$ by the transitivity of identity.
+If $n \neq m$ then $\Th{Q} \Proves \eq/[\num n][\num m]$,
+and by the transitivity of identity again,
+$\Th{Q} \Proves \eq/[t_1][t_2]$.
+
+Now let $!A \ident t_1 < t_2$. For both cases, we rely on axiom~$!Q_8$,
+which states that $x < y \liff \lexists[z][\eq[z' + x][y]]$
+for all $x,y$.
+
+Suppose $\Sat{N}{t_1 < t_2}$. Then there exists some $k \in \Nat$
+such that $n + k + 1 = m$. By Lemma~\ref{lem:q-proves-clterm-id},
+$\Th{Q} \Proves \eq[t_1][\num n]$ and $\Th{Q} \Proves \eq[t_2][\num m]$,
+and by the first part of this lemma,
+$\Th{Q} \Proves \eq[\num n + {\num k}'][\num m]$.
+By the transitivity of identity it follows that
+$\Th{Q} \Proves \eq[{\num k}' + t_1][t_2]$,
+so $\Th{Q} \Proves \lexists[z][\eq[z' + t_1][t_2]]$.
+By the right-to-left direction of~$!Q_8$, $\Th{Q} \Proves t_1 < t_2$.
+
+Suppose instead that $\Sat/{N}{t_1 < t_2}$, i.e., $m \leq n$.
+We work in~$\Th{Q}$ and assume that $t_1 < t_2$. By the left-to-right
+direction of~$!Q_8$, there is some~$z$ such that $\eq[z' + t_1][t_2]$.
+Since $\Th{Q} \Proves \eq[t_1][\num n]$ and
+$\Th{Q} \Proves \eq[t_2][\num m]$, $\eq[z' + \num n][\num m]$.
+By an external induction on~$m$ using~$!Q_5$,
+$\eq[z' + \num{n - m}][\Obj 0]$.
+If $m = n$ then $\eq/[z'][\Obj 0]$, giving a contradiction via~$!Q_3$.
+If $m < n$ then $\eq[(z' + \num{n - m - 1})'][\Obj 0]$ by~$!Q_5$ again,
+giving a contradiction via~$!Q_3$.
+So $\Th{Q} \Proves \lnot(t_1 < t_2)$.
+\end{proof}
+
+\begin{lem} \label{lem:bounded-quant-equiv}
+Suppose $!A$ is a formula, $t$ a closed term, and $k=\Value{t}{N}$. Then
+\begin{enumerate}
+\item $\Th{Q} \Proves \bforall{x<t}{!A(x)}$ iff $\Th{Q} \Proves
+    !A(\num 0) \land \dots \land !A(\num{k-1})$.
+\item $\Th{Q} \Proves \bexists{x<t}{!A(x)}$ iff $\Th{Q} \Proves
+    !A(\num 0) \lor \dots \lor !A(\num{k-1})$.
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+    We prove the case for the bounded universal quantifier.
+    If $\Value{t}{N} = 0$ then the left-hand side of the
+    equivalence is provable in~$\Th{Q}$, because there is no
+    $x<\num 0$ by properties of~$<$ in~$\Th{Q}$.
+    Similarly, we can take an empty disjunction to be simply
+    $\ltrue$, which is also provable in~$\Th{Q}$.
+    We therefore suppose that $\Value{t}{N} = k+1$ for some
+    natural number~$k$. By Lemma~\ref{lem:q-proves-clterm-id} we
+    can assume that we are working with a formula of the
+    form $\bforall{x<\num{k+1}}{!A(x)}$.
+
+    Suppose that $\Th{Q} \Proves \bforall{x<\num{k+1}}{!A(x)}$,
+    and let $n \leq k$. Since $\Th{Q} \Proves \num n < \num{k+1}$
+    by Lemma~\ref{lem:atomic-completeness}, it follows by logic that
+    $\Th{Q} \Proves !A(\num n)$. Applying this fact $k+1$ times
+    for each $n \leq k$, we get that $\Th{Q} \Proves !A(\num 0)
+    \land \dots \land !A(\num k)$ as desired.
+
+    For the other direction, suppose that $\Th{Q} \Proves
+    !A(\num 0) \land \dots \land !A(\num k)$. Working in
+    $\Th{Q}$, suppose that $x < \num{k+1}$.
+    By properties of~$<$ in~$\Th{Q}$ we have that
+    $x = \num 0 \lor \dots \lor x = \num k$, so by logic it
+    follows that~$!A(x)$, and hence the universal claim
+    $\bforall{x<\num{k+1}}{!A(x)}$ follows.
+
+    The proof of the equivalence for bounded existentially
+    quantified formulas is similar.
+\end{proof}
+
+\begin{lem} \label{lem:delta0-completeness}
+If $!A$ is a $\Delta_0$ sentence which is true in
+$\Struct{N}$, then $\Th{Q} \Proves !A$.
+\end{lem}
+
+\begin{proof}
+We prove this by induction on formula complexity.
+The base case is given by Lemma~\ref{lem:atomic-completeness},
+so we move to the induction step. For simplicity we split
+the case of negation into subcases depending on the
+structure of the formula to which the negation is
+applied.
+
+\begin{enumerate}
+\item Suppose $(!A \land !B)$ is true in $\Struct{N}$,
+so $!A$ and $!B$ are true in~$\Struct{N}$.
+By the induction hypothesis, $\Th{Q} \Proves !A$ and
+$\Th{Q} \Proves !B$,
+so $\Th{Q} \Proves (!A \land !B)$ by logic.
+
+\item Suppose $\lnot (!A \land !B)$ is true in $\Struct{N}$,
+so either $\lnot !A$ or $\lnot !B$ is true in $\Struct{N}$.
+Without loss of generality, suppose the former. By the
+induction hypothesis $\Th{Q} \Proves \lnot !A$, and hence
+$\Th{Q} \Proves \lnot (!A \land !B)$ by logic.
+
+\item Suppose $(!A \lor !B)$ is true in $\Struct{N}$, so
+either $!A$ is true in $\Struct{N}$ or $!B$ is true in
+$\Struct{N}$. Without loss of generality, suppose the former
+holds. By the induction hypothesis $\Th{Q} \Proves !A$, and
+hence $\Th{Q} \Proves (!A \lor !B)$ by logic.
+
+\item Suppose $\lnot(!A \lor !B)$ is true in $\Struct{N}$,
+so $\lnot !A$ and $\lnot !B$ are true in $\Struct{N}$.
+Then $\Th{Q} \Proves \lnot !A$ and $\Th{Q} \Proves \lnot !B$
+by the induction hypothesis. Consequently,
+$\Th{Q} \Proves \lnot(!A \lor !B)$ by logic.
+
+\item Suppose that $\bforall{x<t}{!A(x)}$ is true
+in~$\Struct{N}$, where $t$ is a closed term and $k=\Value{t}{N}$. By the induction
+hypothesis and logic, if $!A(\num n)$ is true in~$\Struct{N}$
+for all $n < \Value{t}{N}$ then $\Th{Q} \Proves
+!A(\num 0) \land \dots \land !A(\num{k-1})$.
+By Lemma~\ref{lem:bounded-quant-equiv} it follows that
+$\Th{Q} \Proves \bforall{x<t}{!A(x)}$.
+
+\item The case for the bounded existential quantifier, where
+we have a sentence of the form $\bexists{x < t}{!A(x)}$,
+is similar to that for the bounded universal quantifier.
+
+\item Suppose that $\lnot \bforall{x<t}{!A(x)}$ is true
+in~$\Struct{N}$, where $t$ is a closed term. This sentence
+is equivalent to the sentence $\bexists{x<t}{\lnot !A(x)}$,
+with the equivalence derivable in~$\Th{Q}$, so we may apply
+the reasoning for bounded existential quantifiers.
+
+\item Similarly, suppose that $\lnot \bexists{x<t}!A(x)$ is
+true in $\Struct{N}$, where $t$ is a closed term. This
+sentence is equivalent in $\Th{Q}$ to
+$\bforall{x<t}{\lnot!A(x)}$, and so we may apply the reasoning
+for bounded universal quantifiers.
+
+\item Finally, suppose $\lnot !A$ is true in $\Struct{N}$.
+The only cases remaining are when $!A$ is atomic and when
+$\lnot !A \ident \lnot\lnot !B$ for some $\Delta_0$
+sentence $!B$. If $!A$ is atomic then by
+Lemma~\ref{lem:atomic-completeness}, $\Th{Q} \Proves \lnot !A$.
+If $\lnot !A \ident \lnot\lnot !B$, then by logic it is
+provably equivalent in~$\Th{Q}$ to~$!B$, which is true
+in~$\Struct{N}$ since $\lnot !A$ is true in~$\Struct{N}$.
+By the induction hypothesis we therefore have that
+$\Th{Q} \Proves \lnot !A$.
+\end{enumerate}
+\end{proof}
+
+\begin{thm}[$\Sigma_1$-Completeness] \label{thm:sigma1-completeness}
+If $!A$ is a $\Sigma_1$ sentence which is true
+in~$\Struct{N}$, then $\Th{Q} \Proves !A$.
+\end{thm}
+
+\begin{proof}
+If $\lexists{x}!A(x)$ is a $\Sigma_1$ sentence which
+is true in~$\Struct{N}$, then there exists a natural
+number~$n$ and a variable assignment~$s$ such that $s(x) = n$ and
+$\Sat{N}{!A(x)}[s]$. By standard facts about
+the satisfaction relation it follows that
+$\Sat{N}{!A(\num n)}$. But $!A(\num n)$ is a
+$\Delta_0$ formula, so by Lemma~\ref{lem:delta0-completeness}
+we have that $\Th{Q} \Proves !A(\num n)$, and hence by
+logic we also have that $\Th{Q} \Proves \lexists[x][!A(x)]$.
+\end{proof}
+
+%%% -----------------------------------------------------------------
+%%% META.5.3  The First Incompleteness Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{G\"odel's First Incompleteness Theorem}
+
+We can now describe G\"odel's original proof of the first
+incompleteness theorem. Let $\Th{T}$ be any computably axiomatized theory
+in a language extending the language of arithmetic, such that $\Th{T}$
+includes the axioms of $\Th{Q}$. This means that, in particular, $\Th{T}$
+represents computable functions and relations.
+
+We have argued that, given a reasonable coding of formulas and proofs
+as numbers, the relation $\Prf[\Th{T}](x,y)$ is computable, where
+$\Prf[\Th{T}](x,y)$ holds if and only if $x$ is the G\"odel number of
+a derivation of the formula with G\"odel number~$y$
+in~$\Th{T}$. In fact, for the particular theory that G\"odel had in
+mind, G\"odel was able to show that this relation is primitive
+recursive, using the list of 45 functions and relations in his
+paper. The 45th relation, $x B y$, is just $\Prf[\Th{T}](x,y)$ for his
+particular choice of~$\Th{T}$. Remember that where G\"odel uses the
+word ``recursive'' in his paper, we would now use the phrase
+``primitive recursive.''
+
+Since $\Prf[\Th{T}](x,y)$ is computable, it is representable in $\Th{T}$. We
+will use $\OPrf[\Th{T}](x,y)$ to refer to the formula that represents
+it. Let $\OProv[\Th{T}](y)$ be the formula
+$\lexists[x][\OPrf[\Th{T}](x,y)]$. This describes the 46th relation,
+$\fn{Bew}(y)$, on G\"odel's list. As G\"odel notes, this is the only
+relation that ``cannot be asserted to be recursive.''  What he
+probably meant is this: from the definition, it is not clear that it
+is computable; and later developments, in fact, show that it is not.
+
+Let $\Th{T}$ be an axiomatizable theory containing~$\Th{Q}$. Then
+$\Prf[\Th{T}](x, y)$ is decidable, hence representable in~$\Th{Q}$ by
+a formula~$\OPrf[\Th{T}](x, y)$. Let $\OProv[\Th{T}](y)$ be the formula we
+described above. By the fixed-point lemma, there is a formula
+$!G_\Th{T}$ such that $\Th{Q}$ (and hence $\Th{T}$) derives
+\begin{equation}
+\label{eqn:qpf}
+!G_\Th{T} \liff \lnot \OProv[\Th{T}](\gn{!G_\Th{T}}).
+\end{equation}
+Note that $!G_\Th{T}$ says, in essence, ``$!G_\Th{T}$ is not
+derivable in~$\Th{T}$.''
+
+\begin{lem}\label{lem:cons-G-unprov}
+If $\Th{T}$ is a consistent, axiomatizable theory
+extending~$\Th{Q}$, then $\Th{T} \Proves/ !G_\Th{T}$.
+\end{lem}
+
+\begin{proof}
+Suppose $\Th{T}$ derives $!G_\Th{T}$. Then there \emph{is}
+a derivation, and so, for some number $m$, the relation $\Prf[\Th{T}](m,
+\Gn{!G_\Th{T}})$ holds. But then $\Th{Q}$ derives the sentence
+$\OPrf[\Th{T}](\num m, \gn{!G_\Th{T}})$. So $\Th{Q}$ derives
+$\lexists[x][\OPrf[\Th{T}](x,\gn{!G_\Th{T}})]$, which is, by definition,
+$\OProv[\Th{T}](\gn{!G_\Th{T}})$. By \eqref{eqn:qpf}, $\Th{Q}$ derives
+$\lnot !G_\Th{T}$, and since $\Th{T}$ extends $\Th{Q}$, so
+does~$\Th{T}$. We have shown that if $\Th{T}$ derives $!G_\Th{T}$, then
+it also derives $\lnot !G_\Th{T}$, and hence it would be inconsistent.
+\end{proof}
+
+\begin{defn}[$\omega$-consistency]
+\label{defn:omega-consistency}
+A theory $\Th{T}$ is \emph{$\omega$-consistent} if the following holds: if
+$\lexists[x][!A(x)]$ is any sentence and $\Th{T}$ derives $\lnot
+!A(\num 0)$, $\lnot !A(\num 1)$, $\lnot !A(\num 2)$, \dots then $\Th{T}$
+does not prove $\lexists[x][!A(x)]$.
+\end{defn}
+
+Note that every $\omega$-consistent theory is also consistent. This
+follows simply from the fact that if $\Th{T}$ is inconsistent, then
+$\Th{T} \Proves !A$ for every~$!A$. In particular, if $\Th{T}$ is
+inconsistent, it derives both $\lnot !A(\num n)$ for every~$n$ and
+also derives~$\lexists[x][!A(x)]$. So, if $\Th{T}$ is
+inconsistent, it is $\omega$-inconsistent. By contraposition, if
+$\Th{T}$ is $\omega$-consistent, it must be consistent.
+
+\begin{lem}\label{lem:omega-cons-G-unref}
+If $\Th{T}$ is an $\omega$-consistent, axiomatizable theory
+extending~$\Th{Q}$, then $\Th{T} \Proves/ \lnot !G_\Th{T}$.
+\end{lem}
+
+\begin{proof}
+We show that if $\Th{T}$ derives $\lnot !G_\Th{T}$, then it is
+$\omega$-inconsistent. Suppose $\Th{T}$ derives $\lnot !G_\Th{T}$. If
+$\Th{T}$ is inconsistent, it is $\omega$-inconsistent, and we are
+done. Otherwise, $\Th{T}$ is consistent, so it does not derive
+$!G_\Th{T}$ by Lemma~\ref{lem:cons-G-unprov}. Since there is no
+derivation of $!G_\Th{T}$ in $\Th{T}$, $\Th{Q}$ derives
+\[
+\lnot \OPrf[\Th{T}](\num 0, \gn{!G_\Th{T}}), \lnot \OPrf[\Th{T}](\num 1,
+\gn{!G_\Th{T}}), \lnot \OPrf[\Th{T}](\num 2, \gn{!G_\Th{T}}), \dots
+\]
+and so does~$\Th{T}$.  On the other hand, by \eqref{eqn:qpf}, $\lnot
+!G_\Th{T}$ is equivalent to
+$\lexists[x][\OPrf[\Th{T}](x,\gn{!G_\Th{T}})]$. So $\Th{T}$ is
+$\omega$-inconsistent.
+\end{proof}
+
+\begin{thm}[First Incompleteness Theorem --- G\"odel's version] % CP-005
+\label{CP-005}
+Let $\Th{T}$ be any
+$\omega$-consistent, axiomatizable theory extending~$\Th{Q}$. Then
+$\Th{T}$ is not complete.
+\end{thm}
+
+\begin{proof}
+  If $\Th{T}$ is $\omega$-consistent, it is consistent, so $\Th{T}
+  \Proves/ !G_\Th{T}$ by Lemma~\ref{lem:cons-G-unprov}.  By
+  Lemma~\ref{lem:omega-cons-G-unref}, $\Th{T} \Proves/ \lnot !G_\Th{T}$.
+  This means that $\Th{T}$ is incomplete, since it derives neither
+  $!G_\Th{T}$ nor $\lnot !G_\Th{T}$.
+\end{proof}
+
+\begin{rem}[Computability-theoretic proof]
+\label{rem:comp-incompleteness}
+There is an alternative, more direct proof of the First Incompleteness
+Theorem via computability theory: if $\Th{T}$ were a complete,
+consistent, axiomatizable extension of~$\Th{Q}$, then $\Th{T}$ would
+be decidable, contradicting the undecidability of~$\Th{Q}$ (see
+Theorem~\ref{CP-008} below). This computability-theoretic argument
+avoids the need for the $\omega$-consistency hypothesis entirely,
+though it does not construct an explicit independent sentence.
+\end{rem}
+
+%%% -----------------------------------------------------------------
+%%% META.5.4  Rosser's Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{Rosser's Theorem}
+
+Can we modify G\"odel's proof to get a stronger result, replacing
+``$\omega$-consistent'' with simply ``consistent''? The answer is
+``yes,'' using a trick discovered by Rosser.  Rosser's trick is to use
+a ``modified'' derivability predicate $\ORProv_T(y)$ instead of
+$\OProv[\Th{T}](y)$.
+
+\begin{thm}[Rosser's Theorem] % CP-005 (strengthened)
+\label{thm:rosser}
+Let $\Th{T}$ be any consistent, axiomatizable theory
+extending $\Th{Q}$. Then $\Th{T}$ is not complete.
+\end{thm}
+
+\begin{proof}
+Recall that $\OProv[\Th{T}](y)$ is defined as $\lexists[x][\OPrf[\Th{T}](x,
+  y)]$, where $\OPrf[\Th{T}](x, y)$ represents the decidable relation which
+holds iff $x$ is the G\"odel number of a derivation of the
+sentence with G\"odel number~$y$. The relation that holds between
+$x$ and~$y$ if $x$~is the G\"odel number of a \emph{refutation} of the
+sentence with G\"odel number~$y$ is also decidable. Let $\fn{not}(x)$
+be the primitive recursive function which does the following: if $x$
+is the code of a formula $!A$, $\fn{not}(x)$ is a code of $\lnot
+!A$. Then $\Refut[\Th{T}](x, y)$ holds iff $\Prf[\Th{T}](x, \fn{not}(y))$.  Let
+$\ORefut[\Th{T}](x, y)$ represent it.  Then, if $\Th{T} \Proves \lnot !A$
+and $\delta$ is a corresponding derivation, $\Th{Q} \Proves
+\ORefut[\Th{T}](\gn{\delta}, \gn{!A})$.  We define $\ORProv[\Th{T}](y)$ as
+\[
+\lexists[x][(\OPrf[\Th{T}](x,y) \land \lforall[z][(z < x \lif \lnot
+  \ORefut[\Th{T}](z,y))])].
+\]
+Roughly, $\ORProv[\Th{T}](y)$ says ``there is a proof of $y$ in $\Th{T}$,
+and there is no shorter refutation of~$y$.''  Assuming $\Th{T}$ is
+consistent, $\ORProv[\Th{T}](y)$ is true of the same numbers as
+$\OProv[\Th{T}](y)$; but from the point of view of \emph{provability}
+in~$\Th{T}$ (and we now know that there is a difference between truth
+and provability!) the two have different properties. If $\Th{T}$ is
+\emph{in}consistent, then the two do \emph{not} hold of the same
+numbers!
+
+By the fixed-point lemma, there is a formula $!R_\Th{T}$ such that
+\begin{equation}
+  \Th{Q} \Proves !R_\Th{T} \liff \lnot \ORProv[\Th{T}](\gn{!R_\Th{T}}).
+  \label{RT}
+\end{equation}
+In contrast to the proof of Theorem~\ref{CP-005},
+here we claim that if $\Th{T}$ is consistent, $\Th{T}$ does not derive
+$!R_\Th{T}$, and $\Th{T}$ also does not derive $\lnot !R_\Th{T}$. (In
+other words, we do not need the assumption of $\omega$-consistency.)
+
+First, let us show that $\Th{T} \Proves/ !R_{\Th{T}}$.  Suppose it did, so
+there is a derivation of~$!R_{\Th{T}}$ from~$T$; let $n$ be its G\"odel
+number. Then $\Th{Q} \Proves \OPrf[\Th{T}](\num{n}, \gn{!R_{\Th{T}}})$, since
+$\OPrf[\Th{T}]$ represents $\Prf[\Th{T}]$ in~$\Th{Q}$. Also, for each $k < n$,
+$k$ is not the G\"odel number of a derivation of $\lnot !R_{\Th{T}}$, since $\Th{T}$ is
+consistent. So for each $k < n$, $\Th{Q} \Proves \lnot
+\ORefut[\Th{T}](\num{k}, \gn{!R_{\Th{T}}})$. By properties of~$<$ in~$\Th{Q}$,
+$\Th{Q} \Proves \lforall[z][(z < \num{n} \lif \lnot \ORefut[\Th{T}](z,
+  \gn{!R_{\Th{T}}}))]$. Thus,
+\[
+\Th{Q} \Proves \lexists[x][(\OPrf[\Th{T}](x,\gn{!R_{\Th{T}}}) \land \lforall[z][(z
+    < x \lif \lnot \ORefut[\Th{T}](z,\gn{!R_{\Th{T}}}))])],
+\]
+but that is just $\ORProv[\Th{T}](\gn{!R_{\Th{T}}})$. By \eqref{RT}, $\Th{Q}
+\Proves \lnot !R_{\Th{T}}$. Since $\Th{T}$ extends $\Th{Q}$, also $\Th{T}
+\Proves \lnot !R_{\Th{T}}$. We have assumed that $\Th{T} \Proves !R_{\Th{T}}$, so
+$\Th{T}$ would be inconsistent, contrary to the assumption of the
+theorem.
+
+Now, let us show that $\Th{T} \Proves/ \lnot !R_{\Th{T}}$. Again, suppose it
+did, and suppose $n$ is the G\"odel number of a derivation
+of~$\lnot !R_{\Th{T}}$. Then $\Refut[\Th{T}](n, \Gn{!R_{\Th{T}}})$ holds, and since
+$\ORefut[\Th{T}]$ represents $\Refut[\Th{T}]$ in $\Th{Q}$, $\Th{Q} \Proves
+\ORefut[\Th{T}](\num{n}, \gn{!R_{\Th{T}}})$. We will again show that $\Th{T}$ would
+then be inconsistent because it would also derive~$!R_{\Th{T}}$.  Since
+\begin{align*}
+\Th{Q} & \Proves !R_{\Th{T}} \liff \lnot \ORProv[\Th{T}](\gn{!R_{\Th{T}}}),
+\intertext{and since $\Th{T}$ extends~$\Th{Q}$, it suffices to show that}
+\Th{Q} & \Proves \lnot \ORProv[\Th{T}](\gn{!R_{\Th{T}}}).
+\end{align*}
+The sentence $\lnot
+\ORProv[\Th{T}](\gn{!R_{\Th{T}}})$, i.e.,
+\begin{align*}
+  \lnot & \lexists[x][(\OPrf[\Th{T}](x,\gn{!R_{\Th{T}}}) \land
+    \lforall[z][(z < x \lif \lnot \ORefut[\Th{T}](z,\gn{!R_{\Th{T}}}))])],
+  \intertext{is logically equivalent to}
+  & \lforall[x][(\OPrf[\Th{T}](x,\gn{!R_{\Th{T}}}) \lif
+    \lexists[z][(z < x \land \ORefut[\Th{T}](z,\gn{!R_{\Th{T}}}))])].
+\end{align*}
+We argue informally using logic, making use of facts about what
+$\Th{Q}$ derives. Suppose $x$ is arbitrary and $\OPrf[\Th{T}](x,
+\gn{!R_{\Th{T}}})$. We already know that $\Th{T} \Proves/ !R_{\Th{T}}$, and so for
+every $k$, $\Th{Q} \Proves \lnot \OPrf[\Th{T}](\num{k}, \gn{!R_{\Th{T}}})$. Thus,
+for every $k$ it follows that $\eq/[x][\num{k}]$. In particular, we
+have (a) that $\eq/[x][\num{n}]$.  We also have $\lnot(\eq[x][\num{0}]
+\lor \eq[x][\num{1}] \lor \dots \lor \eq[x][\num{n-1}])$ and so by
+properties of~$<$ in~$\Th{Q}$, (b) $\lnot(x < \num{n})$. By
+trichotomy in~$\Th{Q}$, $\num{n} < x$. Since $\Th{Q} \Proves
+\ORefut[\Th{T}](\num{n}, \gn{!R_{\Th{T}}})$, we have $\num{n} < x \land
+\ORefut[\Th{T}](\num{n}, \gn{!R_{\Th{T}}})$, and from that $\lexists[z][(z < x
+\land \ORefut[\Th{T}](z,\gn{!R_{\Th{T}}}))]$. Since $x$ was arbitrary we get, as
+required, that
+\[
+\lforall[x][(\OPrf[\Th{T}](x,\gn{!R_{\Th{T}}}) \lif
+  \lexists[z][(z < x \land \ORefut[\Th{T}](z,\gn{!R_{\Th{T}}}))])].
+\]
+\end{proof}
+
+
+%% ===================================================================
+%% META.6: Second Incompleteness (CP-006)
+%% Sources: inc/inp/prc (KEEP), inc/inp/2in (KEEP), inc/inp/lob (KEEP)
+%% ===================================================================
+
+\section{The Second Incompleteness Theorem} \label{META.6}
+
+G\"odel's Second Incompleteness Theorem shows that no consistent,
+sufficiently strong theory can prove its own consistency. The proof
+rests on the derivability conditions for the provability predicate.
+We also present L\"ob's Theorem, which gives a sharp characterization
+of when a reflection principle can be derived.
+
+%%% -----------------------------------------------------------------
+%%% META.6.1  Derivability Conditions
+%%% -----------------------------------------------------------------
+
+\subsection{The Derivability Conditions for $\Th{PA}$}
+
+Peano arithmetic, or $\Th{PA}$, is the theory extending $\Th{Q}$ with
+induction axioms for all formulas. In other words, one adds to $\Th{Q}$
+axioms of the form
+\[
+(!A(0) \land \lforall[x][(!A(x) \lif !A(x'))]) \lif \lforall[x][!A(x)]
+\]
+for every formula~$!A$. Notice that this is really a
+\emph{schema}, which is to say, infinitely many axioms (and it turns
+out that $\Th{PA}$ is {\em not} finitely axiomatizable). But since one
+can effectively determine whether or not a string of symbols is an
+instance of an induction axiom, the set of axioms for $\Th{PA}$ is
+computable. $\Th{PA}$ is a much more robust theory than~$\Th{Q}$. For
+example, one can easily prove that addition and multiplication are
+commutative, using induction in the usual way. In fact, most finitary
+number-theoretic and combinatorial arguments can be carried out
+in~$\Th{PA}$.
+
+Since $\Th{PA}$ is computably axiomatized, the derivability
+predicate $\Prf[\Th{PA}](x,y)$ is computable and hence represented
+in~$\Th{Q}$ (and so, in~$\Th{PA}$). As before, we will take
+$\OPrf[\Th{PA}](x,y)$ to denote the formula representing the relation.
+Let $\OProv[\Th{PA}](y)$ be the formula
+$\lexists[x][\Prf[\Th{PA}](x,y)]$, which, intuitively says, ``$y$ is
+derivable from the axioms of $\Th{PA}$.''  The reason we need a
+little bit more than the axioms of $\Th{Q}$ is we need to know that
+the theory we are using is strong enough to derive a few basic
+facts about this derivability predicate. In fact, what we need are
+the following facts:
+
+\begin{defn}[Derivability Conditions] % DEF-DED014
+\label{DEF-DED014}
+A formula $\OProv[\Th{T}](y)$ satisfies the
+\emph{Hilbert--Bernays--L\"ob derivability conditions} for a
+theory~$\Th{T}$ if the following hold:
+\begin{enumerate}
+\item[P1.] If $\Th{T} \Proves !A$, then $\Th{T} \Proves
+  \OProv[\Th{T}](\gn{!A})$.
+\item[P2.] For all formulas $!A$ and $!B$,
+  \[
+  \Th{T} \Proves \OProv[\Th{T}](\gn{!A \lif !B}) \lif
+  (\OProv[\Th{T}](\gn{!A}) \lif \OProv[\Th{T}](\gn{!B})).
+  \]
+\item[P3.] For every formula~$!A$,
+  \[
+  \Th{T} \Proves \OProv[\Th{T}](\gn{!A})
+  \lif \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!A})}).
+  \]
+\end{enumerate}
+\end{defn}
+
+The only way to verify that these three properties hold is to describe
+the formula $\OProv[\Th{PA}](y)$ carefully and use the axioms of
+$\Th{PA}$ to describe the relevant formal derivations. Conditions (1)
+and~(2) are easy; it is really condition~(3) that requires
+work. Carrying out the
+details would be tedious and uninteresting, so here we will ask you to
+take it on faith that $\Th{PA}$ has the three properties listed
+above. A reasonable choice of $\OProv[\Th{PA}](y)$ will also satisfy
+\begin{enumerate}
+\item[P4.] If $\Th{PA} \Proves \OProv[\Th{PA}](\gn{!A})$, then
+  $\Th{PA} \Proves !A$.
+\end{enumerate}
+But we will not need this fact.
+
+%%% -----------------------------------------------------------------
+%%% META.6.2  The Second Incompleteness Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{The Second Incompleteness Theorem}
+
+How can we express the assertion that $\Th{PA}$ does not prove its own
+consistency? Saying $\Th{PA}$ is inconsistent amounts to saying that
+$\Th{PA} \Proves \eq[0][1]$. So we can take the consistency statement
+$\OCon[\Th{PA}]$ to be the sentence $\lnot
+\OProv[\Th{PA}](\gn{\eq[0][1]})$, and then the following theorem does
+the job:
+
+\begin{thm}[Second Incompleteness Theorem] % CP-006
+\label{CP-006}
+Assuming $\Th{PA}$ is consistent, then $\Th{PA}$ does not derive
+$\OCon[\Th{PA}]$.
+\end{thm}
+
+It is important to note that the theorem depends on the particular
+representation of $\OCon[\Th{PA}]$ (i.e., the particular
+representation of $\OProv[\Th{PA}](y)$). All we will use is that the
+representation of $\OProv[\Th{PA}](y)$ satisfies the three
+derivability conditions, so the theorem generalizes to any theory
+with a derivability predicate having these properties.
+
+It is informative to read G\"odel's sketch of an argument, since the
+theorem follows like a good punch line. It goes like this. Let
+$!G_\Th{PA}$ be the G\"odel sentence that we constructed in the proof
+of Theorem~\ref{CP-005}. We have shown ``If $\Th{PA}$
+is consistent, then $\Th{PA}$ does not derive $!G_\Th{PA}$.'' If we
+formalize this \emph{in} $\Th{PA}$, we have a proof of
+\[
+\OCon[\Th{PA}] \lif \lnot \OProv[\Th{PA}](\gn{!G_\Th{PA}}).
+\]
+Now suppose $\Th{PA}$ derives $\OCon[\Th{PA}]$. Then it derives $\lnot
+\OProv[\Th{PA}](\gn{!G_\Th{PA}})$. But since $!G_\Th{PA}$ is a G\"odel
+sentence, this is equivalent to $!G_\Th{PA}$. So $\Th{PA}$ derives
+$!G_\Th{PA}$.
+
+But: we know that if $\Th{PA}$ is consistent, it does not derive
+$!G_\Th{PA}$!{}  So if $\Th{PA}$ is consistent, it cannot derive
+$\OCon[\Th{PA}]$.
+
+To make the argument more precise, we will let $!G_\Th{PA}$ be the
+G\"odel sentence for~$\Th{PA}$ and use the derivability conditions
+(P1)--(P3) to show that $\Th{PA}$ derives $\OCon[\Th{PA}] \lif
+!G_\Th{PA}$. This will show that $\Th{PA}$ does not derive
+$\OCon[\Th{PA}]$. Here is a sketch of the proof, in~$\Th{PA}$. (For
+simplicity, we drop the $\Th{PA}$ subscripts.)
+\begin{align}
+& !G \liff \lnot \OProv(\gn{!G}) \label{G2-1}\\
+& \qquad\text{$!G$ is a G\"odel sentence}\notag \\
+& !G \lif \lnot \OProv(\gn{!G}) \label{G2-2}\\
+  & \qquad\text{from \eqref{G2-1}} \notag\\
+& !G \lif
+  (\OProv(\gn{!G}) \lif \lfalse) \label{G2-3}\\
+  & \qquad\text{from \eqref{G2-2} by logic}\notag\\
+& \OProv(\gn{
+    !G \lif
+    (\OProv(\gn{!G}) \lif \lfalse)
+  }) \label{G2-4}\\
+  & \qquad\text{from \eqref{G2-3} by condition P1} \notag\\
+& \OProv(\gn{!G}) \lif
+  \OProv(\gn{
+    (\OProv(\gn{!G}) \lif \lfalse)
+    }) \label{G2-5}\\
+  & \qquad\text{from \eqref{G2-4} by condition P2} \notag\\
+& \OProv(\gn{!G}) \lif (\OProv(\gn{\OProv(\gn{!G})}) \lif \OProv(\gn{\lfalse})) \label{G2-6}\\
+  & \qquad\text{from \eqref{G2-5} by condition P2 and logic} \notag\\
+& \OProv(\gn{!G}) \lif
+  \OProv(\gn{\OProv(\gn{!G})}) \label{G2-7}\\
+   & \qquad\text{by P3} \notag\\
+& \OProv(\gn{!G}) \lif \OProv(\gn{\lfalse}) \label{G2-8}\\
+  & \qquad \text{from \eqref{G2-6} and \eqref{G2-7} by logic}\notag\\
+& \OCon \lif \lnot \OProv(\gn{!G}) \label{G2-9}\\
+  & \qquad\text{contraposition of \eqref{G2-8} and $\OCon \ident \lnot \OProv(\gn{\lfalse})$}\notag \\
+& \OCon \lif !G \notag\\
+  & \qquad\text{from \eqref{G2-1} and \eqref{G2-9} by logic}\notag
+\end{align}
+The use of logic in the above involves just elementary facts from propositional
+logic, e.g., \eqref{G2-3} uses $\Proves \lnot!A \liff (!A\lif
+\lfalse)$ and \eqref{G2-8} uses $!A \lif (!B \lif !C), !A \lif !B
+\Proves !A \lif !C$. The use of condition~P2 in \eqref{G2-5} and
+\eqref{G2-6} relies on instances of~P2, $\OProv(\gn{!A \lif !B}) \lif
+(\OProv(\gn{!A}) \lif \OProv(\gn{!B}))$. In the first one, $!A \ident
+!G$ and $!B \ident \OProv(\gn{!G}) \lif \lfalse$; in the second, $!A
+\ident \OProv(\gn{G})$ and $!B \ident \lfalse$.
+
+The more abstract version of the second incompleteness theorem is as follows:
+
+\begin{thm}[Second Incompleteness Theorem --- general version] % CP-006
+\label{thm:second-incompleteness-gen}
+Let $\Th{T}$ be any
+consistent, axiomatized theory extending $\Th{Q}$ and let
+$\OProv[\Th{T}](y)$ be any formula satisfying derivability conditions
+P1--P3 for~$\Th{T}$. Then $\Th{T}$ does not derive~$\OCon[T]$.
+\end{thm}
+
+The moral of the story is that no ``reasonable'' consistent theory for
+mathematics can derive its own consistency statement. Suppose
+$\Th{T}$ is a theory of mathematics that includes $\Th{Q}$ and
+Hilbert's ``finitary'' reasoning (whatever that may be). Then, the
+whole of $\Th{T}$ cannot derive the consistency statement of
+$\Th{T}$, and so, a fortiori, the finitary fragment cannot derive
+the consistency statement of~$\Th{T}$ either. In that sense, there
+cannot be a finitary consistency proof for ``all of mathematics.''
+
+There is some leeway in interpreting the term ``finitary,'' and
+G\"odel, in the 1931 paper, grants the possibility that something we
+may consider ``finitary'' may lie outside the kinds of mathematics
+Hilbert wanted to formalize. But G\"odel was being charitable; today,
+it is hard to see how we might find something that can reasonably be
+called finitary but is not formalizable in, say, $\Th{ZFC}$,
+Zermelo--Fraenkel set theory with the axiom of choice.
+
+%%% -----------------------------------------------------------------
+%%% META.6.3  Lob's Theorem
+%%% -----------------------------------------------------------------
+
+\subsection{L\"ob's Theorem}
+
+The G\"odel sentence for a theory~$\Th{T}$ is a fixed point of $\lnot
+\OProv[\Th{T}](y)$, i.e., a sentence~$!G$ such that
+\[
+\Th{T} \Proves \lnot \OProv[\Th{T}](\gn{!G}) \liff !G.
+\]
+It is not derivable, because if $\Th{T} \Proves !G$, (a) by derivability
+condition~(1), $\Th{T} \Proves \OProv[\Th{T}](\gn{!G})$, and (b) $\Th{T}
+\Proves !G$ together with $\Th{T} \Proves \lnot \OProv[\Th{T}](\gn{!G})
+\liff !G$ gives $\Th{T} \Proves \lnot \OProv[\Th{T}](\gn{!G})$, and so
+$\Th{T}$ would be inconsistent.  Now it is natural to ask about the
+status of a fixed point of $\OProv[\Th{T}](y)$, i.e., a sentence~$!H$
+such that
+\[
+\Th{T} \Proves \OProv[\Th{T}](\gn{!H}) \liff !H.
+\]
+If it were derivable, $\Th{T} \Proves \OProv[\Th{T}](\gn{!H})$ by
+condition~(1), but the same conclusion follows if we apply modus
+ponens to the equivalence above. Hence, we do not get that $\Th{T}$ is
+inconsistent, at least not by the same argument as in the case of the
+G\"odel sentence. This of course does not show that $\Th{T}$
+\emph{does} derive~$!H$.
+
+We can make headway on this question if we generalize it a bit. The
+left-to-right direction of the fixed point equivalence,
+$\OProv[\Th{T}](\gn{!H}) \lif !H$, is an instance of a general schema
+called a \emph{reflection principle}: $\OProv[\Th{T}](\gn{!A}) \lif !A$.
+It is called that because it expresses, in a sense, that $\Th{T}$ can
+``reflect'' about what it can derive; basically it says, ``If $\Th{T}$
+can derive~$!A$, then~$!A$ is true,'' for any~$!A$.  This is true for
+sound theories only, of course, and this suggests that theories will
+in general not derive every instance of it.  So which instances can a
+theory (strong enough, and satisfying the derivability conditions)
+derive?  Certainly all those where $!A$ itself is derivable. And that is
+it, as the next result shows.
+
+The heuristic for the proof of L\"ob's theorem is a clever proof that
+Santa Claus exists. (If you do not like that conclusion, you are free
+to substitute any other conclusion you would like.) Here it is:
+\begin{enumerate}
+\item Let $X$ be the sentence, ``If $X$ is true, then Santa Claus
+  exists.''
+\item Suppose $X$ is true.
+\item Then what it says holds; i.e., we have: if $X$ is true, then
+  Santa Claus exists.
+\item Since we are assuming $X$ is true, we can conclude that
+  Santa Claus exists, by modus ponens from (2) and~(3).
+\item We have succeeded in deriving (4), ``Santa Claus exists,'' from
+  the assumption~(2), ``$X$ is true.'' By conditional proof, we have
+  shown: ``If $X$ is true, then Santa Claus exists.''
+\item But this is just the sentence~$X$. So we have shown that $X$ is
+  true.
+\item But then, by the argument (2)--(4) above, Santa Claus exists.
+\end{enumerate}
+A formalization of this idea, replacing ``is true'' with ``is
+derivable,'' and ``Santa Claus exists'' with~$!A$, yields the proof of
+L\"ob's theorem. The trick is to apply the fixed-point lemma to the
+formula~$\OProv[\Th{T}](y) \lif !A$. The fixed point of that
+corresponds to the sentence~$X$ in the preceding sketch.
+
+\begin{thm}[L\"ob's Theorem] % THM-DED007
+\label{THM-DED007}
+Let $\Th{T}$ be an axiomatizable theory extending $\Th{Q}$, and
+suppose $\OProv[\Th{T}](y)$ is a formula satisfying conditions P1--P3
+(Definition~\ref{DEF-DED014}). If $\Th{T}$ derives $\OProv[\Th{T}](\gn{!A}) \lif !A$,
+then in fact $\Th{T}$ derives $!A$.
+\end{thm}
+
+Put differently, if $\Th{T} \Proves/ !A$, then $\Th{T} \Proves/
+\OProv[\Th{T}](\gn{!A}) \lif !A$.
+
+\begin{proof}
+Suppose $!A$ is a sentence such that $\Th{T}$ derives
+$\OProv[\Th{T}](\gn{!A}) \lif !A$. Let $!B(y)$ be the formula~$\OProv[\Th{T}](y)
+\lif !A$, and use the fixed-point lemma to find a sentence~$!D$
+such that $\Th{T}$ derives $!D \liff !B(\gn{!D})$. Then each of the
+following is derivable in $\Th{T}$:
+\begin{align}
+  & !D \liff (\OProv[\Th{T}](\gn{!D}) \lif !A) \label{L-1}\\
+  & \qquad \text{$!D$ is a fixed point of~$!B(y)$}\notag \\
+  & !D \lif (\OProv[\Th{T}](\gn{!D}) \lif !A) \label{L-2}\\
+  & \qquad\text{from \eqref{L-1}}\notag\\
+  & \OProv[\Th{T}](\gn{!D \lif (\OProv[\Th{T}](\gn{!D}) \lif !A)}) \label{L-3}\\
+  & \qquad \text{from \eqref{L-2} by condition P1}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \lif \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D}) \lif !A})
+  \label{L-4}\\
+  &\qquad \text{from \eqref{L-3} using condition P2}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \lif (\OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D})}) \lif \OProv[\Th{T}](\gn{!A})) \label{L-5}\\
+  &\qquad \text{from \eqref{L-4} using P2 again} \notag\\
+& \OProv[\Th{T}](\gn{!D}) \lif \OProv[\Th{T}](\gn{\OProv[\Th{T}](\gn{!D})}) \label{L-6}\\
+  & \qquad\text{by derivability condition P3} \notag\\
+  & \OProv[\Th{T}](\gn{!D}) \lif \OProv[\Th{T}](\gn{!A}) \label{L-7} \\
+  &\qquad\text{from \eqref{L-5} and \eqref{L-6}}\notag\\
+  & \OProv[\Th{T}](\gn{!A}) \lif !A \label{L-8}\\
+  &\qquad\text{by assumption of the theorem} \notag\\
+  & \OProv[\Th{T}](\gn{!D}) \lif !A \label{L-9}\\
+  &\qquad\text{from \eqref{L-7} and \eqref{L-8}}\notag\\
+  & (\OProv[\Th{T}](\gn{!D}) \lif !A) \lif !D \label{L-10}\\
+  & \qquad \text{from \eqref{L-1}}\notag \\
+  & !D \label{L-11}\\
+  & \qquad\text{from \eqref{L-9} and \eqref{L-10}}\notag \\
+  & \OProv[\Th{T}](\gn{!D}) \label{L-12}\\
+  & \qquad\text{from \eqref{L-11} by condition~P1}\notag \\
+  & !A \qquad\qquad\text{from \eqref{L-8} and \eqref{L-12}}\notag
+\end{align}
+\end{proof}
+
+With L\"ob's theorem in hand, there is a short proof of the second
+incompleteness theorem (for theories having a derivability predicate
+satisfying conditions P1--P3): if $\Th{T} \Proves
+\OProv[\Th{T}](\gn{\lfalse}) \lif \lfalse$, then $\Th{T} \Proves \lfalse$.
+If $\Th{T}$ is consistent, $\Th{T} \Proves/ \lfalse$. So, $\Th{T}
+\Proves/ \OProv[\Th{T}](\gn{\lfalse}) \lif \lfalse$, i.e., $\Th{T} \Proves/
+\OCon[\Th{T}]$.  We can also apply it to show that~$!H$, the fixed
+point of $\OProv[\Th{T}](x)$, is derivable. For since
+\begin{align*}
+  \Th{T} & \Proves \OProv[\Th{T}](\gn{!H}) \liff !H\\
+  \intertext{in particular}
+    \Th{T} & \Proves \OProv[\Th{T}](\gn{!H}) \lif !H
+\end{align*}
+and so by L\"ob's theorem, $\Th{T} \Proves !H$.
+
+
+%% ===================================================================
+%% META.7: Undefinability (CP-007)
+%% Sources: inc/inp/tar (KEEP)
+%% ===================================================================
+
+\section{The Undefinability of Truth} \label{META.7}
+
+The notion of \emph{definability} depends on having a formal semantics
+for the language of arithmetic.  We have described a set of formulas
+and sentences in the language of arithmetic. The ``intended
+interpretation'' is to read such sentences as making assertions about
+the natural numbers, and such an assertion can be true or false. Let
+$\Struct{N}$ be the structure with domain $\Nat$ and the standard
+interpretation for the symbols in the language of arithmetic.  Then
+$\Sat{N}{!A}$ means ``$!A$ is true in the standard interpretation.''
+
+\begin{defn}[Definability in $\Struct{N}$] \label{defn:definable-N}
+A relation $R(x_1,\dots,x_k)$ of natural numbers is \emph{definable}
+in $\Struct{N}$ if and only if there is a formula $!A(x_1,\dots,x_k)$
+in the language of arithmetic such that for every $n_1,\dots,n_k$,
+$R(n_1,\dots,n_k)$ if and only if $\Sat{N}{!A(\num n_1,\dots,\num
+  n_k)}$.
+\end{defn}
+
+Put differently, a relation is definable in $\Struct{N}$ if and
+only if it is representable in the theory $\Th{TA}$, where $\Th{TA} =
+\Setabs{!A}{\Sat{N}{!A}}$ is the set of true sentences of
+arithmetic.
+
+\begin{lem} \label{lem:comp-definable}
+Every computable relation is definable in~$\Struct{N}$.
+\end{lem}
+
+\begin{proof}
+It is easy to check that the formula representing a relation in
+$\Th{Q}$ defines the same relation in $\Struct{N}$.
+\end{proof}
+
+Now one can ask, is the converse also true?  That is, is every
+relation definable in~$\Struct{N}$ computable? The answer is no. For
+example:
+
+\begin{lem} \label{lem:halting-definable}
+The halting relation is definable in $\Struct{N}$.
+\end{lem}
+
+\begin{proof}
+Recall that the Kleene normal form theorem states that every partial
+computable function~$f$ has an index~$e$ such that $f(x) =
+U(\umin{s}{T(e,x,s)})$ for all $x \in \Nat$, where $U$ and $T$ are
+primitive recursive and therefore total. Thus, $f(x)$ is defined
+(i.e., the computation halts) iff there is an~$s$ such that $T(e,x,s)$
+holds.
+
+Now let $H$ be the halting relation, i.e.,
+\[
+H = \Setabs{\tuple{e,x}}{\lexists[s][T(e, x, s)]}.
+\]
+Let $!D_T$ define $T$ in $\Struct{N}$. Then
+\[
+H = \Setabs{\tuple{e,x}}{\Sat{N}{\lexists[s][!D_T(\num e, \num x, s)]}},
+\]
+so $\lexists[s][!D_T(z, x, s)]$ defines~$H$ in $\Struct{N}$.
+\end{proof}
+
+What about $\Th{TA}$ itself? Is it definable in arithmetic? That
+is: is the set $\Setabs{\Gn{!A}}{\Sat{N}{!A}}$ definable in
+arithmetic? Tarski's theorem answers this in the negative.
+
+\begin{thm}[Tarski's Undefinability Theorem] % CP-007
+\label{CP-007}
+The set of true sentences of arithmetic is not definable in arithmetic.
+\end{thm}
+
+\begin{proof}
+Suppose $!D(x)$ defined it, i.e., $\Sat{N}{!A}$ iff
+$\Sat{N}{!D(\gn{!A})}$. By the fixed-point lemma
+(Lemma~\ref{THM-DED006}), there is a formula
+$!A$ such that $\Th{Q} \Proves !A \liff \lnot !D(\gn{!A})$, and hence
+$\Sat{N}{!A \liff \lnot !D(\gn{!A})}$. But then $\Sat{N}{!A}$ if and
+only if $\Sat{N}{\lnot !D(\gn{!A})}$, which contradicts the fact that
+$!D(y)$ is supposed to define the set of true statements of
+arithmetic.
+\end{proof}
+
+Tarski applied this analysis to a more general philosophical notion of
+truth. Given any language $L$, Tarski argued that an adequate notion
+of truth for $L$ would have to satisfy, for each sentence $X$,
+\begin{quote}
+`$X$' is true if and only if $X$.
+\end{quote}
+Tarski's oft-quoted example, for English, is the sentence
+\begin{quote}
+`Snow is white' is true if and only if snow is white.
+\end{quote}
+However, for any language strong enough to represent the diagonal
+function, and any linguistic predicate $T(x)$, we can construct a
+sentence $X$ satisfying ``$X$ if and only if not $T(\text{`$X$'})$.''
+Given that we do not want a truth predicate to declare some sentences
+to be both true and false, Tarski concluded that one cannot specify a
+truth predicate for all sentences in a language without, somehow,
+stepping outside the bounds of the language. In other words, the
+truth predicate for a language cannot be defined in the language
+itself.
+
+
+%% ===================================================================
+%% META.8: Undecidability (CP-008)
+%% Sources: inc/req/und (KEEP)
+%% ===================================================================
+
+\section{Undecidability} \label{META.8}
+
+We call a theory $\Th{T}$ \emph{undecidable} if there is no
+computational procedure which, after finitely many steps and
+unfailingly, provides a correct answer to the question ``does $\Th{T}$
+prove~$!A$?'' for any sentence~$!A$ in the language of~$\Th{T}$.  So
+$\Th{Q}$ would be decidable iff there were a computational procedure
+which decides, given a sentence~$!A$ in the language of arithmetic,
+whether $\Th{Q} \Proves !A$ or not.  We can make this more precise by
+asking: Is the relation~$\Prov[\Th{Q}](y)$, which holds of~$y$
+iff $y$ is the G\"odel number of a sentence provable in~$\Th{Q}$,
+recursive?  The answer is: no.
+
+\begin{thm}[Undecidability of $\Th{Q}$] % CP-008
+\label{CP-008}
+$\Th{Q}$ is undecidable, i.e., the relation
+\[
+\Prov[\Th{Q}](y) \defiff \fn{Sent}(y) \land
+\lexists[x][\Prf[\Th{Q}](x, y)]
+\]
+is not recursive.
+\end{thm}
+
+\begin{proof}
+Suppose it were.  Then we could solve the halting problem as follows:
+Given $e$ and $n$, we know that $\cfind{e}(n) \fdefined$ iff there is
+an~$s$ such that $T(e, n, s)$, where $T$ is Kleene's predicate from
+the Kleene Normal Form Theorem (see DEF-CMP005, \S CMP.3).
+Since $T$ is primitive recursive
+it is representable in~$\Th{Q}$ by a formula $!B_T$, that is, $\Th{Q}
+\Proves !B_T(\num{e}, \num{n}, \num{s})$ iff $T(e, n, s)$.  If $\Th{Q}
+\Proves !B_T(\num{e}, \num{n}, \num{s})$ then also $ \Th{Q} \Proves
+\lexists[y][!B_T(\num{e}, \num{n}, y)]$.  If no such $s$ exists, then
+$\Th{Q} \Proves \lnot !B_T(\num{e}, \num{n}, \num{s})$ for
+every~$s$.  But $\Th{Q}$ is $\omega$-consistent, i.e., if $\Th{Q}
+\Proves \lnot !A(\num{n})$ for every~$n \in \Nat$, then $\Th{Q}
+\Proves/ \lexists[y][!A(y)]$.  We know this because the axioms of
+$\Th{Q}$ are true in the standard model~$\Struct{N}$.  So, $\Th{Q}
+\Proves/ \lexists[y][!B_T(\num{e}, \num{n}, y)]$.  In other words,
+$\Th{Q} \Proves \lexists[y][!B_T(\num{e}, \num{n}, y)]$ iff there is
+an $s$ such that $T(e, n, s)$, i.e., iff $\cfind{e}(n) \fdefined$.
+From $e$ and~$n$ we can compute $\Gn{\lexists[y][!B_T(\num{e},
+    \num{n}, y)]}$, let $g(e, n)$ be the primitive recursive function
+which does that.  So
+\[
+h(e, n) =
+\begin{cases}
+1 & \text{if $\Prov[\Th{Q}](g(e, n))$}\\
+0 & \text{otherwise}.
+\end{cases}
+\]
+This would show that $h$ is recursive if $\Prov[\Th{Q}]$ is. But~$h$
+is not recursive, by the unsolvability of the Halting Problem
+(see DEF-CMP006, \S CMP.4), so
+$\Prov[\Th{Q}]$ cannot be either.
+\end{proof}
+
+\begin{cor}[Undecidability of first-order logic] % CP-008
+\label{cor:fol-undecidable}
+First-order logic is undecidable.
+\end{cor}
+
+\begin{proof}
+If first-order logic were decidable, provability in~$\Th{Q}$ would be
+as well, since $\Th{Q} \Proves !A$ iff $\Proves !T \lif !A$, where
+$!T$ is the conjunction of the axioms of~$\Th{Q}$.
+\end{proof}
+
+
+%% ===================================================================
+%% META.9: Craig Interpolation (CP-011)
+%% Sources: mod/int/sep (CONDENSE), mod/int/prf (KEEP)
+%% ===================================================================
+
+\section{Craig's Interpolation Theorem} \label{META.9}
+
+The interpolation theorem states that whenever a valid conditional
+$\Entails !A \lif !B$ holds, there exists a ``mediating'' sentence~$!C$
+whose non-logical vocabulary is common to both~$!A$ and~$!B$.  Finding
+such an interpolant amounts to finding a sentence that \emph{separates}
+$!A$ from $\lnot !B$.
+
+\subsection{Separation}
+
+An interpolant for $!A$ and $!B$ is a sentence~$!C$ such that
+$!A \Entails !C$ and $!C \Entails !B$.  By contraposition, the latter
+holds iff $\lnot !B \Entails \lnot !C$.  A sentence~$!C$ with this
+property is said to \emph{separate} $!A$ and $\lnot !B$.  So finding an
+interpolant for $!A$ and $!B$ amounts to finding a sentence that
+separates $!A$ and $\lnot !B$.  It will be useful to consider the
+generalization to sets of sentences.
+
+\begin{defn}
+A sentence $!C$ \emph{separates} sets of sentences $\Gamma$ and
+$\Delta$ if and only if $\Gamma \Entails !C$ and $\Delta \Entails
+\lnot !C$. If no such sentence exists, then $\Gamma$ and $\Delta$
+are \emph{inseparable}.
+\end{defn}
+
+\begin{lem}\label{lem:sep1}
+Suppose $\Lang{L}_0$ is the language containing every constant,
+function and predicate (other than $\doteq$) that occurs in
+\emph{both} $\Gamma$ and $\Delta$, and let $\Lang{L}'_0$ be obtained
+by the addition of infinitely many new constants $\Obj c_n$ for $n
+\ge 0$. Then if $\Gamma$ and $\Delta$ are inseparable in $\Lang{L}_0$,
+they are also inseparable in $\Lang{L}'_0$.
+\end{lem}
+
+\begin{proof}
+We proceed indirectly: suppose by way of contradiction that $\Gamma$
+and $\Delta$ are separated in $\Lang{L}'_0$. Then $\Gamma \Entails
+\Subst{!C}{c}{x}$ and $\Delta \Entails \lnot \Subst{!C}{c}{x}$ for some $!C \in
+\Lang{L}_0$ (where $c$ is a new constant---the case where $!C$
+contains more than one such new constant is similar). By
+compactness (Theorem~\ref{CP-003}), there are \emph{finite} subsets $\Gamma_0$ of $\Gamma$
+and $\Delta_0$ of $\Delta$ such that $\Gamma_0 \Entails \Subst{!C}{c}{x}$
+and $\Delta_0 \Entails \lnot \Subst{!C}{c}{x}$. Let $!G$ be the
+conjunction of all formulas in $\Gamma_0$ and $!H$ the
+conjunction of all formulas in $\Delta_0$. Then
+\begin{align*}
+  !G & \Entails \Subst{!C}{c}{x}, & !H  \Entails \lnot \Subst{!C}{c}{x}.
+\end{align*}
+From the former, by Generalization, we have $!G \Entails
+\lforall[x][!C]$, and from the latter by contraposition,
+$\Subst{!C}{c}{x} \Entails \lnot !H$, whence also $\lforall[x][!C]
+\Entails \lnot !H$. Contraposition again gives $!H \Entails
+\lnot \lforall[x][!C]$. By monotonicity,
+\begin{align*}
+  \Gamma &\Entails \lforall[x][!C], &
+  \Delta & \Entails \lnot \lforall[x][!C],
+\end{align*}
+so that $\lforall[x][!C]$ separates $\Gamma$ and $\Delta$ in
+$\Lang{L}_0$.
+\end{proof}
+
+\begin{lem}\label{lem:sep2}
+Suppose that $\Gamma \cup \{ \lexists[x][!S] \}$ and $\Delta$ are
+inseparable, and $c$ is a new constant not in $\Gamma$, $\Delta$,
+or $!S$. Then $\Gamma \cup \{ \lexists[x][!S], \Subst{!S}{c}{x} \}$
+and $\Delta$ are also inseparable.
+\end{lem}
+
+\begin{proof}
+Suppose for contradiction that $!C$ separates $\Gamma \cup \{
+\lexists[x][!S], \Subst{!S}{c}{x}\}$ and $\Delta$, while at the same
+time $\Gamma \cup \{\lexists[x]{!S} \}$ and $\Delta$ are
+inseparable. We distinguish two cases:
+\begin{enumerate}
+\item $c$ does not occur in $!C$: in this case $\Gamma \cup
+  \{\lexists[x][!S], \lnot!C \}$ is satisfiable (otherwise $!C$
+  separates $\Gamma \cup \{\lexists[x][!S] \}$ and $\Delta$). It
+  remains so if $\Subst{!S}{c}{x}$ is added, so $!C$ does not separate
+  $\Gamma \cup \{ \lexists[x][!S], \Subst{!S}{c}{x} \}$ and $\Delta$
+  after all.
+\item $c$ does occur in $!C$ so that $!C$ has the form
+  $\Subst{!C}{c}{x}$. Then we have that
+  \[
+  \Gamma \cup \{ \lexists[x][!S], \Subst{!S}{c}{x}\} \Entails \Subst{!C}{c}{x},
+  \]
+  whence $\Gamma, \lexists[x][!S] \Entails \lforall[x][(!S \lif !C)]$
+  by the Deduction Theorem and Generalization, and finally $\Gamma
+  \cup \{ \lexists[x][!S] \} \Entails \lexists[x][!C]$. On the other
+  hand, $\Delta \Entails \lnot \Subst{!C}{c}{x}$ and hence by
+  Generalization $\Delta \Entails \lnot \lexists[x][!C]$. So $\Gamma
+  \cup \{\lexists[x][!S] \}$ and $\Delta$ are separable, a
+  contradiction.
+\end{enumerate}
+\end{proof}
+
+\subsection{The Interpolation Theorem}
+
+\begin{thm}[Craig's Interpolation Theorem] % CP-011
+\label{CP-011}
+If $\Entails !A \lif !B$, then there is a sentence $!C$ such that
+$\Entails !A \lif !C$ and $\Entails !C \lif !B$, and every
+constant, function, and predicate (other than $\eq$) in
+$!C$ occurs both in $!A$ and~$!B$. The sentence $!C$ is called an
+\emph{interpolant} of $!A$ and~$!B$.
+\end{thm}
+
+\begin{proof}
+Suppose $\Lang{L}_1$ is the language of $!A$ and $\Lang{L}_2$ is the
+language of $!B$. Let $\Lang{L}_0 = \Lang{L}_1 \cap \Lang{L}_2$. For
+each $i \in \{0, 1, 2 \}$, let $\Lang{L}'_i$ be obtained from
+$\Lang{L}_i$ by adding the infinitely many new constants $\Obj c_0,
+\Obj c_1, \Obj c_2, \dots$.
+
+If $!A$ is unsatisfiable, $\lexists[x][\eq/[x][x]]$ is an
+interpolant. If $\lnot !B$ is unsatisfiable (and hence $!B$ is valid),
+$\lexists[x][\eq[x][x]]$ is an interpolant. So we may assume also that
+both $!A$ and $\lnot !B$ are satisfiable.
+
+In order to prove the contrapositive of the Interpolation Theorem,
+assume that there is no interpolant for $!A$ and $!B$. In other words,
+assume that $\{!A\}$ and $\{\lnot !B\}$ are inseparable in
+$\Lang{L}_0$.
+
+Our goal is to extend the pair $(\{ !A \}, \{\lnot!B\})$ to a
+maximally inseparable pair $(\Gamma^*, \Delta^*)$.  Let $!A_0$,
+$!A_1$, $!A_2$, \dots enumerate the sentences of $\Lang{L}_1$, and
+$!B_0$, $!B_1$, $!B_2$, \dots enumerate the sentences
+of~$\Lang{L}_2$. We define two increasing sequences of sets of
+sentences $(\Gamma_n, \Delta_n)$, for $n \ge 0$, as follows. Put
+$\Gamma_0 = \{ !A\}$ and $\Delta_0 = \{\lnot !B \}$. Assuming
+$(\Gamma_n, \Delta_n)$ are already defined, define $\Gamma_{n+1}$ and
+$\Delta_{n+1}$ by:
+\begin{enumerate}
+\item If $\Gamma_n \cup \{!A_n \}$ and $\Delta_n$ are inseparable in
+  $\Lang{L}'_0$, put $!A_n$ in $\Gamma_{n+1}$. Moreover, if $!A_n$ is
+  an existential formula $\lexists[x][!S]$ then pick a new
+  constant $c$ not occurring in $\Gamma_n$, $\Delta_n$, $!A_n$ or
+  $!B_n$, and put $\Subst{!S}{c}{x}$ in $\Gamma_{n+1}$.
+\item If $\Gamma_{n+1}$ and $\Delta_n \cup \{!B_n \}$ are inseparable
+  in $\Lang{L}'_0$, put $!B_n$ in $\Delta_{n+1}$. Moreover, if $!B_n$
+  is an existential formula $\lexists[x][!S]$, then pick a new
+  constant $c$ not occurring in $\Gamma_{n+1}$, $\Delta_n$, $!A_n$
+  or $!B_n$, and put $\Subst{!S}{c}{x}$ in $\Delta_{n+1}$.
+\end{enumerate}
+Finally, define:
+\begin{align*}
+  \Gamma^* & = \bigcup_{n\ge 0} \Gamma_n, &
+  \Delta^* & = \bigcup_{n\ge 0} \Delta_n.
+\end{align*}
+By simultaneous induction on $n$ we can now prove:
+\begin{enumerate}
+\item\label{part-a} $\Gamma_n$ and $\Delta_n$ are inseparable in
+  $\Lang{L}'_0$;
+\item\label{part-b} $\Gamma_{n+1}$ and $\Delta_n$ are inseparable in
+    $\Lang{L}'_0$.
+\end{enumerate}
+The basis for \ref{part-a} is given by Lemma~\ref{lem:sep1}. For
+part \ref{part-b}, we need to distinguish three cases:
+\begin{enumerate}
+\item If $\Gamma_0 \cup \{!A_0 \}$ and $\Delta_0$ are separable, then
+  $\Gamma_1 = \Gamma_0$ and \ref{part-b} is just \ref{part-a};
+\item If $\Gamma_1 = \Gamma_0 \cup\{ !A_0\}$, then $\Gamma_1$ and
+  $\Delta_0$ are inseparable by construction.
+\item It remains to consider the case where $!A_0$ is existential, so
+  that $\Gamma_1 = \Gamma_0 \cup \{ \lexists[x][!S], \Subst{!S}{c}{x}
+  \}$. By construction, $\Gamma_0 \cup \{ \lexists[x][!S]\}$ and
+  $\Delta_0$ are inseparable, so that by Lemma~\ref{lem:sep2} also
+  $\Gamma_0 \cup \{ \lexists[x][!S], \Subst{!S}{c}{x} \}$ and
+  $\Delta_0$ are inseparable.
+\end{enumerate}
+This completes the basis of the induction for \ref{part-a} and
+\ref{part-b} above. Now for the inductive step. For \ref{part-a}, if
+$\Delta_{n+1} = \Delta_n \cup \{ !B_n \}$ then $\Gamma_{n+1}$ and
+$\Delta_{n+1}$ are inseparable by construction (even when $!B_n$ is
+existential, by Lemma~\ref{lem:sep2}); if $\Delta_{n+1} = \Delta_n$
+(because $\Gamma_{n+1}$ and $\Delta_n \cup \{!B_n\}$ are separable),
+then we use the induction hypothesis on \ref{part-b}. For the
+inductive step for \ref{part-b}, if $\Gamma_{n+2} = \Gamma_{n+1} \cup
+\{!A_{n+1} \}$ then $\Gamma_{n+2}$ and $\Delta_{n+1}$ are
+inseparable by construction (even when $!A_{n+1}$ is existential,
+by Lemma~\ref{lem:sep2}); and if  $\Gamma_{n+2} = \Gamma_{n+1}$ then
+we use the inductive case for \ref{part-a} just proved. This
+concludes the induction on \ref{part-a} and \ref{part-b}.
+
+It follows that $\Gamma^*$ and $\Delta^*$ are inseparable; if not, by
+compactness, there is $n \ge 0$ that separates $\Gamma_n$ and
+$\Delta_n$, against \ref{part-a}. In particular, $\Gamma^*$ and
+$\Delta^*$ are consistent: for if the former or the latter is
+inconsistent, then they are separated by $\lexists[x][\eq/[x][x]]$ or
+  $\lforall[x][\eq[x][x]]$, respectively.
+
+We now show that $\Gamma^*$ is maximally consistent in
+$\Lang{L}'_1$ and likewise $\Delta^*$ in $\Lang{L}'_2$. For the
+former, suppose that $!A_n \notin \Gamma^*$ and $\lnot !A_n
+\notin \Gamma^*$, for some $n \ge 0$. If $!A_n \notin \Gamma^*$
+then $\Gamma_n \cup \{!A_n \}$ is separable from $\Delta_n$, and
+so there is $!C \in \Lang{L}'_0$ such that both:
+\begin{align*}
+  \Gamma^* & \Entails !A_n \lif !C, &
+  \Delta^* & \Entails \lnot !C.
+\end{align*}
+Likewise, if $\lnot !A_n \notin \Gamma^*$, there is $!C' \in
+\Lang{L}'_0$ such that both:
+\begin{align*}
+  \Gamma^* & \Entails \lnot !A_n \lif !C', &
+  \Delta^* & \Entails \lnot !C'.
+\end{align*}
+By propositional logic, $\Gamma^* \Entails !C \lor !C'$ and
+$\Delta^* \Entails \lnot (!C \lor !C')$, so $!C \lor
+!C'$ separates $\Gamma^*$ and $\Delta^*$. A similar argument
+establishes that $\Delta^*$ is maximal.
+
+Finally, we show that $\Gamma^* \cap \Delta^*$ is maximally consistent
+in $\Lang{L}'_0$. It is obviously consistent, since it is the
+intersection of consistent sets. To show maximality, let $!S \in
+\Lang{L}'_0$. Now, $\Gamma^*$ is maximal in $\Lang{L'_1}
+\supseteq \Lang{L'_0}$, and similarly $\Delta^*$ is maximal in
+$\Lang{L'_2} \supseteq \Lang{L'_0}$. It follows that either
+$!S \in \Gamma^*$ or $\lnot !S \in \Gamma^*$, and either
+$!S \in \Delta^*$ or $\lnot !S \in \Delta^*$. If $!S \in
+\Gamma^*$ and $\lnot !S \in \Delta^*$ then $!S$ would
+separate $\Gamma^*$ and $\Delta^*$; and if $\lnot !S \in
+\Gamma^*$ and $!S \in \Delta^*$ then $\Gamma^*$ and $\Delta^*$
+would be separated by $\lnot !S$. Hence, either $!S \in
+\Gamma^* \cap \Delta^*$ or $\lnot !S \in \Gamma^* \cap \Delta^*$,
+and $\Gamma^* \cap \Delta^*$ is maximal.
+
+Since $\Gamma^*$ is maximally consistent, it has a model
+$\Struct{M}'_1$ whose domain $\Domain{M'_1}$ comprises all and
+only the elements $\Assign{c}{M'_1}$ interpreting the
+constants---just like in the proof of the Completeness Theorem
+(Theorem~\ref{CP-002}). Similarly, $\Delta^*$ has a
+model $\Struct{M}'_2$ whose domain $\Domain{M'_2}$ is given by the
+interpretations $\Assign{c}{M'_2}$ of the constants.
+
+Let $\Struct{M_1}$ be obtained from $\Struct{M'_1}$ by dropping
+interpretations for constants, functions, and predicates in
+$\Lang{L'_1} \setminus \Lang{L'_0}$, and similarly for
+$\Struct{M_2}$. Then the map $h \colon M_1 \to M_2$ defined by
+$h(\Assign{c}{M'_1}) = \Assign{c}{M'_2}$ is an
+isomorphism in $\Lang{L}'_0$, because $\Gamma^* \cap \Delta^*$ is
+maximally consistent in $\Lang{L}'_0$, as shown. This follows
+because any $\Lang{L}'_0$-sentence either belongs to both
+$\Gamma^*$ and $\Delta^*$, or to neither: so $\Assign{c}{M'_1} \in
+\Assign{P}{M'_1}$ if and only if $\Atom{P}{c} \in \Gamma^*$ if and only if
+$\Atom{P}{c} \in \Delta^*$ if and only if $\Assign{c}{M'_2} \in
+\Assign{P}{M'_2}$. The other conditions satisfied by isomorphisms
+can be established similarly.
+
+Let us now define a model $\Struct{M}$ for the language
+$\Lang{L_1} \cup \Lang{L_2}$ as follows:
+\begin{enumerate}
+\item The domain $\Domain{M}$ is just $\Domain{M_2}$, i.e., the
+  set of all elements $\Assign{c}{M'_2}$;
+\item If a predicate~$P$ is in $\Lang{L_2} \setminus
+  \Lang{L_1}$ then $\Assign{P}{M} = \Assign{P}{M'_2}$;
+\item If a predicate $P$ is in $\Lang{L}_1\setminus \Lang{L}_2$ then
+  $\Assign{P}{M} = h(\Assign{P}{M'_2})$, i.e.,
+  $\tuple{\Assign{c_1}{M'_2}, \dots, \Assign{c_n}{M'_2}} \in
+  \Assign{P}{M}$ if and only if $\tuple{\Assign{c_1}{M'_1}, \dots,
+  \Assign{c_n}{M'_1}} \in \Assign{P}{M'_1}$.
+\item If a predicate $P$ is in $\Lang{L}_0$ then $\Assign{P}{M} =
+  \Assign{P}{M'_2} = h(\Assign{P}{M'_1})$.
+\item Functions of $\Lang{L}_1 \cup \Lang{L}_2$, including
+  constants, are handled similarly.
+\end{enumerate}
+
+Finally, one shows by induction on formulas that $\Struct{M}$ agrees
+with $\Struct{M'_1}$ on all formulas of $\Lang{L'_1}$ and with
+$\Struct{M'_2}$ on all formulas of $\Lang{L'_2}$. In particular,
+$\Struct{M} \Entails \Gamma^* \cup \Delta^*$, whence $\Struct{M}
+\Entails !A$ and $\Struct{M} \Entails \lnot!B$, and
+$\not\Entails !A \lif !B$. This concludes the proof of
+Craig's Interpolation Theorem.
+\end{proof}
+
+
+%% ===================================================================
+%% META.10: Beth Definability (CP-012)
+%% Sources: mod/int/def (KEEP)
+%% ===================================================================
+
+\section{Beth's Definability Theorem} \label{META.10}
+
+One important application of the interpolation theorem is Beth's
+definability theorem.  To define an $n$-place relation~$R$ we can give
+a formula~$!C$ with $n$ free variables which does not
+involve~$R$. This would be an \emph{explicit} definition of~$R$ in
+terms of~$!C$.  We can then say also that a theory~$\Sigma(P)$ in a
+language containing the $n$-place predicate~$P$ explicitly
+defines~$P$ if it contains (or at least entails) a formalized explicit
+definition, i.e.,
+\[
+\Sigma(P) \Entails \lforall[x_1][\dots
+  \lforall[x_n][(\Atom{P}{x_1,\dots, x_n} \liff !C(x_1, \dots,
+    x_n))]].
+\]
+But an explicit definition is only one way of defining---in the sense
+of determining completely---a relation.  A theory may also be such
+that the interpretation of~$P$ is fixed by the interpretation of the
+rest of the language in any model.  The definability theorem
+states that whenever a theory fixes the interpretation of~$P$ in this
+way---whenever it \emph{implicitly defines}~$P$---then it also
+explicitly defines it.
+
+\begin{defn}
+Suppose $\Lang{L}$ is a language not containing the
+predicate~$P$.  A set $\Sigma(P)$ of sentences of $\Lang{L}
+\cup \{P\}$ \emph{explicitly defines}~$P$ if and only if there is
+a formula~$!C(x_1, \dots, x_n)$ of $\Lang{L}$ such that
+\[
+\Sigma(P) \Entails \lforall[x_1][\dots
+  \lforall[x_n][(\Atom{P}{x_1,\dots, x_n} \liff !C(x_1, \dots,
+    x_n))]].
+\]
+\end{defn}
+
+\begin{defn}
+Suppose $\Lang{L}$ is a language not containing the
+predicates~$P$ and~$P'$.  A set $\Sigma(P)$ of sentences of
+$\Lang{L} \cup \{P\}$ \emph{implicitly defines} $P$ if and only if
+\[
+\Sigma(P) \cup \Sigma(P') \Entails \lforall[x_1][\dots
+  \lforall[x_n][(\Atom{P}{x_1,\dots, x_n} \liff \Atom{P'}{x_1,\dots,
+      x_n})]],
+\]
+where $\Sigma(P')$ is the result of uniformly replacing $P$ with $P'$
+in $\Sigma(P)$.
+\end{defn}
+
+In other words, for any model $\Struct{M}$ and $R, R' \subseteq
+\Domain{M}^n$, if both $\Expan{M}{R} \Entails \Sigma(P)$ and
+$\Expan{M}{R'} \Entails \Sigma(P')$, then $R=R'$; where
+$\Expan{M}{R}$ is the structure~$\Struct{M'}$ for the
+expansion of $\Lang{L}$ to $\Lang{L} \cup \{P\}$ such that
+$\Assign{P}{M'} = R$, and similarly for $\Expan{M}{R'}$.
+
+\begin{thm}[Beth Definability Theorem] % CP-012
+\label{CP-012}
+A set $\Sigma(P)$ of $\Lang{L}
+  \cup\{P\}$-formulas implicitly defines $P$ if and only $\Sigma(P)$
+  explicitly defines $P$.
+\end{thm}
+
+\begin{proof}
+If $\Sigma(P)$ explicitly defines $P$ then both
+\begin{align*}
+  \Sigma(P) & \Entails & \lforall[x_1][\dots \lforall[x_n]
+    [(\Atom{P}{x_1,\dots, x_n} \liff !C(x_1,\dots,x_n))]]\\
+  \Sigma(P') & \Entails & \lforall[x_1][\dots \lforall[x_n]
+    [(\Atom{P'}{x_1,\dots, x_n} \liff !C(x_1,\dots,x_n))]]
+\end{align*}
+and the conclusion follows. For the converse: assume that $\Sigma(P)$
+implicitly defines $P$. First, we add constants $c_1$, \dots,~$c_n$ to
+$\Lang{L}$. Then
+\[
+\Sigma(P) \cup \Sigma(P') \Entails
+\Atom{P}{c_1, \dots, c_n} \to  \Atom{P'}{c_1, \dots, c_n}.
+\]
+By compactness (Theorem~\ref{CP-003}), there are finite sets $\Delta_0 \subseteq \Sigma(P)$
+and $\Delta_1 \subseteq \Sigma(P')$ such that
+\[
+\Delta_0 \cup \Delta_1 \Entails
+\Atom{P}{c_1, \dots, c_n} \to \Atom{P'}{c_1, \dots, c_n}.
+\]
+Let $!D(P)$ be the conjunction of all sentences $!A(P)$ such that
+either $!A(P) \in \Delta_0$ or $!A(P') \in \Delta_1$ and let $!D(P')$
+be the conjunction of all sentences $!A(P')$ such that either
+$!A(P) \in \Delta_0$ or $!A(P') \in \Delta_1$. Then $!D(P) \land
+!D(P') \Entails \Atom{P}{c_1, \dots, c_n} \to P'c_1\dots c_n$. We can
+re-arrange this so that each predicate occurs on one side of
+$\Entails$:
+\[
+!D(P) \land \Atom{P}{c_1, \dots, c_n} \Entails
+!D(P') \to \Atom{P'}{c_1, \dots, c_n}.
+\]
+By Craig's Interpolation Theorem (Theorem~\ref{CP-011}) there is a sentence $!C(c_1,\dots, c_n)$
+not containing $P$ or $P'$ such that:
+\begin{align*}
+  !D(P) \land \Atom{P}{c_1, \dots, c_n} & \Entails !C(c_1,\dots, c_n); \\
+  !C(c_1,\dots, c_n) & \Entails !D(P') \to \Atom{P'}{c_1, \dots, c_n}.
+\end{align*}
+From the former of these two entailments we have: $!D(P) \Entails
+\Atom{P}{c_1,\dots, c_n} \lif !C(c_1,\dots, c_n)$. And from the
+latter, since an $\Lang{L} \cup \{P\}$-model $\Expan{M}{R}
+\Entails !A(P)$ if and only if the corresponding $\Lang{L} \cup
+\{P'\}$-model $\Expan{M}{R} \models !A(P')$, we have
+$!C(c_1,\dots, c_n) \Entails !D(P) \lif \Atom{P}{c_1,\dots, c_n}$,
+from which:
+\[
+!D(P) \Entails !C(c_1,\dots,c_n) \to \Atom{P}{c_1,\dots, c_n}.
+\]
+Putting the two together, $!D(P) \Entails \Atom{P}{c_1,\dots, c_n}
+\liff !C(c_1, \dots, c_n)$, and by monotonicity and generalization also
+\[
+\Sigma(P) \Entails
+\lforall[x_1][\dots\lforall[x_n][(\Atom{P}{x_1,\dots, x_n} \liff
+    !C(x_1,\dots, x_n))]].
+\]
+\end{proof}
+
+
+%% ===================================================================
+%% META.11: Lindstrom's Theorem (CP-013)
+%% Sources: mod/lin/alg (ABSORB), mod/lin/lsp (ABSORB),
+%%          mod/bas/pis (CONDENSE), mod/lin/prf (KEEP)
+%% ===================================================================
+
+\section{Lindstr\"om's Theorem} \label{META.11}
+
+Lindstr\"om's theorem characterizes first-order logic as the maximal
+logic---in a precisely defined sense---for which both the Compactness
+Theorem and the Downward L\"owenheim--Skolem Theorem hold.  To state
+the theorem we need the notions of abstract logic, partial
+isomorphism, and the back-and-forth characterization of
+$n$-equivalence.  Throughout this section we restrict to purely
+relational languages (containing only predicates and individual
+constants, no functions).
+
+\subsection{Abstract Logics}
+
+\begin{defn}
+An \emph{abstract logic} is a pair $\tuple{L, \models_L}$, where $L$
+is a function that assigns to each language~$\Lang{L}$ a set
+$L(\Lang{L})$ of sentences, and $\models_L$ is a relation between
+structures for the language~$\Lang{L}$ and elements of
+$L(\Lang{L})$. In particular, $\tuple{F, \models}$ is ordinary
+first-order logic, i.e., $F$ is the function assigning to the
+language~$\Lang{L}$ the set of first-order sentences built from
+the constants in $\Lang{L}$, and $\models$ is the satisfaction relation
+of first-order logic.
+\end{defn}
+
+\begin{defn}
+Let $\Mod(L){!E}$ denote the class $\Setabs{\Struct{M}}{\Struct{M}
+  \models_L !E}$. If the language needs to be made explicit, we
+write $\Mod[L](L){!E}$. Two structures $\Struct{M}$ and
+$\Struct{N}$ for $\Lang{L}$ are \emph{elementarily equivalent in}
+$\tuple{L, \models_L}$, written $\Struct{M} \elemequiv[L] \Struct{N}$, if
+the same sentences from $L(\Lang{L})$ are true in each.
+\end{defn}
+
+\begin{defn}
+An abstract logic $\tuple{L,\models_L}$ for the language $\Lang{L}$
+is \emph{normal} if it satisfies the following properties:
+\begin{enumerate}
+\item (\emph{$L$-Monotonicity}) For languages $\Lang{L}$ and
+  $\Lang{L'}$, if $\Lang{L} \subseteq \Lang{L'}$, then
+  $L(\Lang{L}) \subseteq L(\Lang{L'})$.
+\item (\emph{Expansion Property}) For each $!E \in L(\Lang{L})$
+  there is a \emph{finite} subset $\Lang{L'}$ of $\Lang{L}$ such that
+  the relation $\Struct{M} \models_L !E$ depends only on the
+  reduct of $\Struct{M}$ to $\Lang{L'}$.
+\item (\emph{Isomorphism Property}) If $\Struct{M} \models_L !E$
+  and $\Struct{M} \simeq \Struct{N}$ then also $\Struct{N} \models_L
+  !E$.
+\item (\emph{Renaming Property}) The relation $\models_L$ is preserved
+  under renaming of non-logical symbols.
+\item (\emph{Boolean Property}) $\tuple{L, \models_L}$ is closed
+  under the Boolean connectives: for each $!E \in L(\Lang{L})$ there
+  is $!F$ with $\Mod(L){!F} = \Mod(L){!E}^c$, and for each pair
+  $!E$, $!F$ there is $!G$ with $\Mod(L){!G} = \Mod(L){!E} \cap
+  \Mod(L){!F}$.
+\item (\emph{Quantifier Property}) For each constant $c$ in $\Lang{L}$
+  and $!E \in L(\Lang{L})$ there is $!F \in L(\Lang{L} \setminus \{c\})$
+  such that $\Struct{M} \models_L !F$ iff $\Expan{M}{a} \models_L !E$
+  for some $a \in \Domain{M}$.
+\item (\emph{Relativization Property}) Given a sentence $!E \in
+  L(\Lang{L})$ and symbols $R$, $c_1$, \dots, $c_n$ not in $\Lang{L}$,
+  there is a sentence $!F$ (the \emph{relativization} of $!E$) such
+  that satisfaction of~$!F$ in an expansion of~$\Struct{M}$
+  corresponds to satisfaction of~$!E$ in the substructure picked out by~$R$.
+\end{enumerate}
+First-order logic $\tuple{F, \models}$ is normal.  Moreover, if
+$\tuple{L, \models_L}$ is normal, then $\tuple{F, \models} \leq
+\tuple{L, \models_L}$.
+\end{defn}
+
+\begin{defn}
+Given two abstract logics $\tuple{L_1, \models_{L_1}}$ and
+$\tuple{L_2, \models_{L_2}}$ we say that the latter is \emph{at least
+  as expressive} as the former, written $\tuple{L_1, \models_{L_1}}
+\leq \tuple{L_2, \models_{L_2}}$, if for each language $\Lang{L}$
+and sentence $!E \in L_1(\Lang{L})$ there is a sentence $!F
+\in L_2(\Lang{L})$ such that $\Mod[L](L_1){!E} =
+\Mod[L](L_2){!F}$. The logics are \emph{equivalent} if the inequality
+holds in both directions.
+\end{defn}
+
+\subsection{Compactness and L\"owenheim--Skolem Properties}
+
+\begin{defn}
+An abstract logic $\tuple{L, \models_L}$ has the \emph{Compactness
+  Property} if each set $\Gamma$ of $L(\Lang{L})$-sentences is
+satisfiable whenever each finite $\Gamma_0 \subseteq \Gamma$ is
+satisfiable.
+\end{defn}
+
+\begin{defn}
+$\tuple{L, \models_L}$ has the \emph{Downward L\"owenheim--Skolem
+  Property} if any satisfiable $\Gamma$ has an enumerable model.
+\end{defn}
+
+\subsection{Partial Isomorphisms}
+
+\begin{defn}
+  Given two structures $\Struct{M}$ and $\Struct{N}$, a
+  \emph{partial isomorphism} from $\Struct{M}$ to $\Struct{N}$ is a
+  finite partial function $p$ taking arguments in $\Domain M$ and returning
+  values in $\Domain N$, which is injective and preserves the
+  interpretations of all constants, predicates, and functions on
+  its domain.
+\end{defn}
+
+\begin{defn}\label{defn:partialisom}
+  Two structures $\Struct{M}$ and $\Struct{N}$ are
+  \emph{partially isomorphic}, written $\Struct{M} \iso[p]
+  \Struct{N}$, if and only if there is a non-empty set $I$
+  of partial isomorphisms between $\Struct{M}$ and $\Struct{N}$
+  satisfying the \emph{back-and-forth} property:
+  \begin{enumerate}
+  \item (\emph{Forth}) For every $p \in I$ and $a \in \Domain M$
+    there is $q \in I$ such that $p \subseteq q$ and $a$ is
+    in the domain of $q$;
+  \item (\emph{Back}) For every $p \in I$ and $b \in \Domain N$
+    there is $q \in I$ such that $p \subseteq q$ and $b$ is
+    in the range of $q$.
+  \end{enumerate}
+\end{defn}
+
+\begin{thm}\label{thm:p-isom1}
+  If $\Struct{M} \iso[p] \Struct{N}$ and $\Struct{M}$ and
+  $\Struct{N}$ are enumerable, then $\Struct{M} \iso
+  \Struct{N}$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Enumerate $\Domain{M} = \{a_0, a_1, \ldots\}$ and $\Domain{N} =
+\{b_0, b_1, \ldots\}$.  Starting from an arbitrary $p_0 \in I$,
+alternately apply the Forth property (to include $a_r$ in the domain)
+and the Back property (to include $b_r$ in the range), building an
+increasing chain $p_0 \subseteq p_1 \subseteq \cdots$.  The union
+$p = \bigcup_n p_n$ is an isomorphism.
+\end{proof}
+
+\begin{thm}\label{thm:p-isom2}
+  Suppose $\Struct{M}$ and $\Struct{N}$ are structures for a
+  purely relational language. Then if
+  $\Struct{M} \iso[p] \Struct{N}$, also $\Struct{M} \elemequiv
+  \Struct{N}$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+By induction on formulas, one shows that if $p$ maps each $a_i$ to
+$b_i$, then $\Sat{M}{!A}[s_1]$ iff $\Sat{N}{!A}[s_2]$ whenever
+$s_1(x_i)=a_i$ and $s_2(x_i)=b_i$.  The base case uses the
+isomorphism conditions on $p$; the quantifier step uses the
+back-and-forth property.  The case $n=0$ gives
+$\Struct{M} \elemequiv \Struct{N}$.
+\end{proof}
+
+\subsection{Quantifier Rank and $n$-Equivalence}
+
+\begin{defn}
+  For any formula~$!A$, the \emph{quantifier rank} of $!A$, denoted
+  by $\QuantRank{!A} \in \Nat$, is recursively defined as
+  the highest number of nested quantifiers in $!A$.  Two
+  structures $\Struct{M}$ and $\Struct{N}$ are \emph{$n$-equivalent},
+  written $\Struct{M} \elemequiv[n] \Struct{N}$, if they agree on all
+  sentences of quantifier rank less than or equal to~$n$.
+\end{defn}
+
+\begin{prop}\label{prop:qr-finite}
+  Let $\Lang{L}$ be a finite purely relational language. Then for each $n \in \Nat$ there are
+  only finitely many first-order sentences in $\Lang{L}$
+  that have quantifier rank no greater than $n$, up to
+  logical equivalence.
+\end{prop}
+
+\begin{proof}
+  By induction on $n$.
+\end{proof}
+
+\begin{defn}
+  Given structures $\Struct{M}$ and $\Struct{N}$, we define
+  relations $I_n \subseteq \Domain M^{<\omega} \times \Domain N^{<\omega}$ between
+  sequences of equal length, by recursion on $n$ as follows:
+   \begin{enumerate}
+   \item $I_0(\mathbf{a},\mathbf{b})$ iff $\mathbf{a}$ and
+     $\mathbf{b}$ satisfy the same atomic formulas in $\Struct{M}$
+     and $\Struct{N}$.
+   \item $I_{n+1} (\mathbf{a},\mathbf{b})$ iff for every
+     $a\in \Domain M$ there is a $b\in \Domain N$ such that $I_n
+     (\mathbf{a}a,\mathbf{b}b)$, and vice-versa.
+   \end{enumerate}
+\end{defn}
+
+\begin{defn}
+  Write $\Struct{M} \approx_n \Struct{N}$ if
+  $I_n(\emptyseq,\emptyseq)$ holds of $\Struct{M}$ and
+  $\Struct{N}$ (where $\emptyseq$ is the empty sequence).
+\end{defn}
+
+\begin{thm}\label{thm:b-n-f}
+  Let $\Lang{L}$ be a purely relational language. Then $I_n
+  (\mathbf{a},\mathbf{b})$ implies that for every $!A$ such that
+  $\QuantRank{!A} \le n$, we have $\Sat{M}{!A}[\mathbf{a}]$ if and
+  only if $\Sat{N}{!A}[\mathbf{b}]$. Moreover, if $\Lang{L}$ is finite, the converse also holds.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+The forward direction proceeds by induction on~$!A$.  For the
+converse, one proceeds by induction on~$n$.  The key step uses
+Proposition~\ref{prop:qr-finite}: given $a \in \Domain{M}$, let
+$!T^a_n$ be the finite set of formulas of rank $\le n$ satisfied by
+$\mathbf{a}a$ in $\Struct{M}$.  Then $\mathbf{a}$ satisfies
+$\lexists[x][!T^a_n]$ (rank $\le n+1$), so by hypothesis $\mathbf{b}$
+does too in $\Struct{N}$, yielding the required~$b$.
+\end{proof}
+
+\begin{cor}\label{cor:b-n-f}
+  If $\Struct{M}$ and $\Struct{N}$ are purely relational structures
+  in a finite language, then $\Struct{M} \approx_n\Struct{N}$ if and
+  only if $\Struct{M} \elemequiv[n] \Struct{N}$. In particular
+  $\Struct{M} \elemequiv \Struct{N}$ if and only if for each $n$,
+  $\Struct{M} \approx_n \Struct{N}$.
+\end{cor}
+
+\subsection{Partially Isomorphic Structures in Abstract Logics}
+
+The notion of partial isomorphism is purely algebraic and hence applies
+to abstract logics.  The following key theorem shows that if
+$\tuple{L,\models_L}$ has the L\"owenheim--Skolem property, partially
+isomorphic structures are $L$-equivalent.
+
+\begin{thm}\label{thm:abstract-p-isom}
+Suppose $\tuple{L, \models_L}$ is a normal logic with the
+L\"owenheim--Skolem property. Then any two structures that are
+partially isomorphic are elementarily equivalent in $\tuple{L,
+  \models_L}$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Suppose $\Struct{M} \simeq_p \Struct{N}$ but $\Struct{M} \models_L
+!E$ while $\Struct{N} \not\models_L !E$.  Using the Isomorphism and
+Expansion Properties, assume $\Domain{M}$ and $\Domain{N}$ are
+disjoint and $!E \in L(\Lang{L})$ for a finite language.  Encode the
+partial isomorphism $I$ and the extended structures $\Struct{M}^*$,
+$\Struct{N}^*$ (with their finite-sequence domains and concatenation
+predicates) into a single structure~$\Struct{M}$.  The Relativization
+Property yields a first-order sentence~$!D_1$ true in~$\Struct{M}$
+expressing that $\Struct{M} \models_L !E$ and $\Struct{N} \not\models_L
+!E$, and a sentence~$!D_2$ expressing that $\Struct{M} \simeq_p
+\Struct{N}$ via~$I$.  By the L\"owenheim--Skolem Property,
+$!D_1 \land !D_2$ has an enumerable model containing enumerable
+partially isomorphic substructures.  But enumerable partially
+isomorphic structures are isomorphic (Theorem~\ref{thm:p-isom1}),
+contradicting the Isomorphism Property.
+\end{proof}
+
+\subsection{Lindstr\"om's Theorem}
+
+\begin{lem}
+\label{lem:lindstrom}
+Suppose $!E \in L(\Lang{L})$, with $\Lang{L}$ finite, and assume
+also that there is an $n \in \Nat$ such that for any two
+structures $\Struct{M}$ and~$\Struct{N}$, if $\Struct{M} \equiv_n
+\Struct{N}$ and $\Struct{M} \models_L !E$ then also $\Struct{N}
+\models_L !E$. Then $!E$ is equivalent to a first-order
+sentence, i.e., there is a first-order $!D$ such that
+$\Mod(L){!E} = \Mod(L){!D}$.
+\end{lem}
+
+\begin{proof}
+Let $n$ be such that any two $n$-equivalent structures
+$\Struct{M}$ and $\Struct{N}$ agree on the value assigned to~$!E$.
+Recall Proposition~\ref{prop:qr-finite}: there are only finitely many
+first-order sentences in a finite language that have
+quantifier rank no greater than~$n$, up to logical equivalence. Now,
+for each fixed structure~$\Struct{M}$ let $!D_{\Struct{M}}$ be the
+conjunction of all first-order sentences~$!E$ true in~$\Struct{M}$
+with $\QuantRank{!E} \le n$ (this conjunction is finite), so that
+$\Struct{N} \models !D_{\Struct{M}}$ if and only if $\Struct{N}
+\equiv_n \Struct{M}$. Then put $!D = \textstyle\bigvee
+\Setabs{!D_{\Struct{M}}}{\Struct{M} \models_L !E}$; this disjunction
+is also finite (up to logical equivalence).
+
+The conclusion $\Mod(L){!E} = \Mod(L){!D}$ follows. In fact, if
+$\Struct{N} \models_L !D$ then for some $\Struct{M} \models_L
+!E$ we have $\Struct{N} \models !D_{\Struct{M}}$, whence also
+$\Struct{N} \models_L !E$ (by the hypothesis of the
+lemma). Conversely, if $\Struct{N} \models_L !E$ then
+$!D_\Struct{N}$ is a disjunct in $!D$, and since $\Struct{N}
+\models !D_\Struct{N}$, also $\Struct{N} \models_L !D$.
+\end{proof}
+
+\begin{thm}[Lindstr\"om's Theorem] % CP-013
+  \label{CP-013} Suppose $\tuple{L, \models_L}$ has the
+  Compactness and the L\"owenheim--Skolem Properties. Then
+  $\tuple{L, \models_L} \le \tuple{F, \models}$ (so
+  $\tuple{L, \models_L}$ is equivalent to first-order logic).
+\end{thm}
+
+\begin{proof}
+By Lemma~\ref{lem:lindstrom}, it suffices to show that for any $!E
+\in L(\Lang{L})$, with $\Lang{L}$ finite, there is $n \in \Nat$
+such that for any two structures $\Struct{M}$ and~$\Struct{N}$: if
+$\Struct{M} \equiv_n \Struct{N}$ then $\Struct{M}$ and $\Struct{N}$
+agree on~$!E$. For then $!E$ is equivalent to a first-order
+sentence, from which $\tuple{L, \models_L} \le \tuple{F, \models}$
+follows. Since we are working in a finite, purely relational
+language, by Theorem~\ref{thm:b-n-f} we can replace the statement
+that $\Struct{M} \equiv_n \Struct{N}$ by the corresponding algebraic
+statement that $I_n(\emptyset,\emptyset)$.
+
+Given $!E$, suppose towards a contradiction that for each $n$ there
+are structures $\Struct{M}_n$ and $\Struct{N}_n$ such that
+$I_n(\emptyset, \emptyset)$, but (say) $\Struct{M}_n \models_L !E$
+whereas $\Struct{N}_n \not\models_L !E$. By the Isomorphism Property
+we can assume that all the $\Struct{M}_n$'s interpret the constants of
+the language by the same objects; furthermore, since there are only
+finitely many atomic sentences in the language, we may also assume
+that they satisfy the same atomic sentences (we can take a
+subsequence of the $\Struct{M}$'s otherwise). Let $\Struct{M}$ be the
+union of all the $\Struct{M}_n$'s, i.e., the unique minimal
+structure having each $\Struct{M}_n$ as a substructure.  As in the
+proof of Theorem~\ref{thm:abstract-p-isom}, let $\Struct{M}^*$ be the
+extension of $\Struct{M}$ with domain $\Domain{M} \cup
+\Domain{M}^{<\omega}$, in the expanded language comprising the
+concatenation predicates $P$ and~$Q$.
+
+Similarly, define $\Struct{N}_n$, $\Struct{N}$ and $\Struct{N}^*$. Now
+let $\Struct{M}$ be the structure whose domain comprises the
+domains of $\Struct{M}^*$ and $\Struct{N}^*$ as well as the natural
+numbers~$\Nat$ along with their natural ordering~$\le$, in the
+language with extra predicates representing the domains
+$\Domain{M}$, $\Domain{N}$, $\Domain{M}^{<\omega}$ and
+$\Domain{N}^{<\omega}$ as well as predicates coding the domains of
+$\Struct{M}_n$ and $\Struct{N}_n$ in the sense that:
+\begin{align*}
+  \Domain{M_n} & = \Setabs{a \in \Domain{M}}{R(a, n)}; &
+  \Domain{N_n} & = \Setabs{a \in \Domain{N}}{S(a,n)}; \\
+  \Domain{M}^{<\omega}_n & = \Setabs{a \in \Domain{M}^{<\omega}}{R(a,n)}; &
+  \Domain{N}^{<\omega}_n & = \Setabs{a \in \Domain{N}^{<\omega}}{S(a,n)}.
+\end{align*}
+The structure~$\Struct{M}$ also has a ternary relation $J$ such
+that $J(n, \mathbf{a}, \mathbf{b})$ holds if and only if
+$I_n(\mathbf{a}, \mathbf{b})$.
+
+Now there is a sentence~$!D$ in the language~$\Lang{L}$ augmented
+by $R$, $S$, $J$, etc., saying that $\le$ is a discrete linear ordering
+with first but no last element and such that $\Struct{M}_n \models
+!E$, $\Struct{N}_n \not\models !E$, and for each $n$ in the
+ordering, $J(n, \mathbf{a}, \mathbf{b})$ holds if and only if
+$I_n(\mathbf{a}, \mathbf{b})$.
+
+Using the Compactness Property, we can find a model $\Struct{M}^*$ of
+$!D$ in which the ordering contains a non-standard element~$n^*$. In
+particular then $\Struct{M^*}$ will contain substructures
+$\Struct{M_{n^*}}$ and $\Struct{N_{n^*}}$ such that $\Struct{M_{n^*}}
+\models_L !E$ and $\Struct{N_{n^*}} \not\models_L !E$. But now we can
+define a set $\mathcal{I}$ of pairs of $k$-tuples from
+$\Domain{M_{n^*}}$ and $\Domain{N_{n^*}}$ by putting
+$\tuple{\mathbf{a}, \mathbf{b}} \in \mathcal{I}$ if and only if
+$J(n^*-k, \mathbf{a}, \mathbf{b})$, where $k$ is the length of
+$\mathbf{a}$ and $\mathbf{b}$. Since $n^*$ is non-standard, for each
+standard $k$ we have that $n^* - k >0$, and the set $\mathcal{I}$
+witnesses the fact that $\Struct{M_{n^*}} \simeq_p
+\Struct{N_{n^*}}$. But by Theorem~\ref{thm:abstract-p-isom},
+$\Struct{M_{n^*}}$ is $L$-equivalent to $\Struct{N_{n^*}}$, a
+contradiction.
+\end{proof}
+
+
+%% ===================================================================
+%% META.12: Equivalence of Proof Systems (THM-DED002)
+%% Sources: NEW-CONTENT
+%% ===================================================================
+
+\section{Equivalence of Proof Systems} \label{META.12}
+
+We have introduced four architectures for deriving theorems of
+classical first-order logic: axiomatic (Hilbert-style) deduction
+(see DEF-DED005, \S\ref{DED.2}), natural deduction
+(see DEF-DED006, \S\ref{DED.3}), the sequent calculus
+(see DEF-DED007, \S\ref{DED.4}), and analytic tableaux
+(see DEF-DED008, \S\ref{DED.5}).  Despite their very different
+structures, all four systems derive exactly the same formulas.
+
+\begin{thm}[Equivalence of Proof Systems] % THM-DED002
+\label{THM-DED002}
+For classical first-order logic, the following are equivalent for any
+set of sentences~$\Gamma$ and sentence~$!A$:
+\begin{enumerate}
+\item $\Gamma \Proves_H !A$ \quad (derivable in the Hilbert calculus);
+\item $\Gamma \Proves_{ND} !A$ \quad (derivable in natural deduction);
+\item The sequent $\Gamma \Sequent !A$ is derivable in the sequent
+  calculus;
+\item The tableau for $\Gamma \cup \{\lnot !A\}$ closes.
+\end{enumerate}
+All four proof system architectures derive exactly the same formulas.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+One establishes a cycle of mutual simulations.
+
+\textbf{Hilbert $\Rightarrow$ Natural Deduction.}  Every axiom schema
+of the Hilbert calculus is derivable in natural deduction (using
+introduction rules to construct proofs of the corresponding tautological
+schemas).  Modus ponens corresponds to an application of
+$\lif$-elimination.  Hence any Hilbert derivation can be transformed
+step-by-step into a natural deduction derivation.
+
+\textbf{Natural Deduction $\Rightarrow$ Sequent Calculus.}  Each
+introduction rule of natural deduction corresponds to a right rule of
+the sequent calculus, and each elimination rule corresponds to a left
+rule followed by a cut.  Discharged assumptions in natural deduction
+become formulas on the left side of the sequent.  The translation
+proceeds by induction on the structure of the natural deduction
+derivation tree.
+
+\textbf{Sequent Calculus $\Rightarrow$ Tableaux.}  A sequent
+derivation can be read ``upside down'' as a closed tableau.  An initial
+sequent $!A \Sequent !A$ corresponds to a branch containing both $!A$
+and $\lnot !A$, and hence closed.  Left and right rules of the sequent
+calculus correspond to the tableau expansion rules for signed formulas.
+Branching in the sequent calculus (e.g., $\lor$-right, $\land$-left)
+corresponds to branching in the tableau.
+
+\textbf{Tableaux $\Rightarrow$ Hilbert.}  A closed tableau for $\Gamma
+\cup \{\lnot !A\}$ witnesses the unsatisfiability of $\Gamma \cup
+\{\lnot !A\}$.  By soundness of tableaux (see \S\ref{DED.5}) we have
+$\Gamma \Entails !A$, and by the Completeness Theorem
+(Theorem~\ref{CP-002}), $\Gamma \Proves_H !A$.
+
+Alternatively, each direction can be verified by a direct syntactic
+translation.  The indirect route via soundness and completeness gives
+the result with less effort: since each system is sound and complete
+with respect to the same semantics, they derive the same formulas.
+\end{proof}
+
+The indirect argument deserves emphasis.  By the Soundness Theorem
+(Theorem~\ref{CP-001}), for each system $S$ we have: if $\Gamma
+\Proves_S !A$ then $\Gamma \Entails !A$.  By the Completeness Theorem
+(Theorem~\ref{CP-002}), for each system $S$: if $\Gamma \Entails !A$
+then $\Gamma \Proves_S !A$.  Chaining these two facts for any pair of
+systems $S_1$ and $S_2$ yields: $\Gamma \Proves_{S_1} !A$ iff $\Gamma
+\Proves_{S_2} !A$.  Thus the equivalence is an immediate corollary of
+soundness and completeness, and does not require an explicit syntactic
+simulation---though such simulations are of independent interest for
+understanding the computational relationships between proof systems.

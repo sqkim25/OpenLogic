@@ -1,0 +1,836 @@
+\chapter{Syntax} \label{ch:syn}
+
+%% ===================================================================
+%% SYN.1: Languages and Symbols
+%% ===================================================================
+
+\section{Languages and Symbols} \label{SYN.1}
+
+Expressions of first-order logic are built up from a basic vocabulary
+containing \emph{variables}, \emph{constant symbols},
+\emph{predicate symbols}, and sometimes \emph{function symbols}.  From
+them, together with logical connectives, quantifiers, and punctuation
+symbols such as parentheses and commas, \emph{terms} and
+\emph{formulas} are formed.
+
+Predicate symbols are names for properties and relations, constant
+symbols are names for individual objects, and function symbols are
+names for mappings.  These, except for the identity
+predicate~$\eq$, are the \emph{non-logical symbols} and together make
+up a language.  Any first-order language~$\Lang L$ is determined by
+its non-logical symbols.  In the most general case, $\Lang L$ contains
+infinitely many symbols of each kind.
+
+In the general case, we make use of the following symbols in
+first-order logic: % PRIM-SYN001
+
+\begin{enumerate}
+\item \textbf{Logical symbols} % PRIM-SYN003, PRIM-SYN004
+\begin{enumerate}
+\item Logical connectives: $\lnot$ (negation), $\land$ (conjunction),
+  $\lor$ (disjunction), $\lif$ (conditional), $\liff$
+  (biconditional), $\lforall$ (universal quantifier), $\lexists$
+  (existential quantifier).
+\item The propositional constant for falsity~$\lfalse$.
+\item The propositional constant for truth~$\ltrue$.
+\item The two-place identity predicate~$\eq$. % PRIM-SYN018
+\item A denumerable set of variables: $\Obj v_0$, $\Obj v_1$, $\Obj
+  v_2$, \dots % PRIM-SYN002
+\end{enumerate}
+\item \textbf{Non-logical symbols}, making up the \emph{standard
+  language} of first-order logic
+\begin{enumerate}
+\item A denumerable set of $n$-place predicate symbols for each $n>0$: $\Obj
+  A^n_0$, $\Obj A^n_1$, $\Obj A^n_2$, \dots % PRIM-SYN007, PRIM-SYN008
+\item A denumerable set of constant symbols: $\Obj c_0$, $\Obj c_1$, $\Obj
+  c_2$, \dots % PRIM-SYN005
+\item A denumerable set of $n$-place function symbols for each $n>0$:
+  $\Obj f^n_0$, $\Obj f^n_1$, $\Obj f^n_2$, \dots % PRIM-SYN006
+\end{enumerate}
+\item Punctuation marks: (, ), and the comma.
+\end{enumerate}
+
+Most of our definitions and results will be formulated for the full
+standard language of first-order logic.  However, depending on the
+application, we may also restrict the language to only a few
+predicate symbols, constant symbols, and function symbols.
+
+\begin{defn}[Language] % PRIM-SYN009
+\label{PRIM-SYN009}
+A first-order \emph{language}~$\Lang L$ is determined by its
+non-logical symbols: a set of predicate symbols, a set of constant
+symbols, and a set of function symbols, each function and predicate
+symbol having a fixed \emph{arity} $n \geq 1$ (the number of
+arguments it takes).  Formally:
+\[
+  \Lang L = \langle \mathcal{C}, \mathcal{F}, \mathcal{R},
+  \mathrm{ar} \rangle
+\]
+where $\mathcal{C}$ is a set of constant symbols, $\mathcal{F}$ is a
+set of function symbols, $\mathcal{R}$ is a set of predicate symbols,
+and $\mathrm{ar}$ assigns arities to the function and predicate
+symbols.  The logical symbols (connectives, quantifiers, variables,
+identity, and punctuation) are shared across all languages.
+\end{defn}
+
+\begin{ex}
+The language~$\Lang L_A$ of arithmetic contains a single two-place
+predicate symbol~$<$, a single constant symbol~$\Obj 0$, one one-place
+function symbol~$\prime$, and two two-place function symbols~$+$
+and~$\times$.  Officially: $\Lang L_A = \langle \{\Obj 0\}, \{
+\prime, +, \times\}, \{<\}, \mathrm{ar} \rangle$ with
+$\mathrm{ar}(\prime) = 1$ and $\mathrm{ar}(+) = \mathrm{ar}(\times) =
+\mathrm{ar}(<) = 2$.
+\end{ex}
+
+\begin{rem}
+We treat all the propositional operators and both quantifiers as
+primitive symbols of the language.  One could instead choose a smaller
+stock of primitive symbols and treat the other logical operators as
+defined.  Truth-functionally complete sets of Boolean operators
+include $\{ \lnot, \lor \}$, $\{ \lnot, \land \}$, and $\{ \lnot,
+\lif\}$; any one of these, combined with either quantifier, yields an
+expressively complete first-order language.  In this text, we keep all
+connectives and both quantifiers as primitive for convenience.
+\end{rem}
+
+
+%% ===================================================================
+%% SYN.2: Terms and Formulas
+%% ===================================================================
+
+\section{Terms and Formulas} \label{SYN.2}
+
+Once a first-order language~$\Lang L$ is given, we can define
+expressions built up from the basic vocabulary of~$\Lang L$.  These
+include in particular \emph{terms} and \emph{formulas}.
+
+\begin{defn}[Terms] % PRIM-SYN010, AX-SYN001
+\label{PRIM-SYN010}
+The set of \emph{terms}~$\Trm[L]$ of~$\Lang L$ is
+defined inductively by:
+\begin{enumerate}
+\item Every variable is a term.
+\item Every constant symbol of~$\Lang L$ is a term.
+\item If $f$ is an $n$-place function symbol and $t_1$, \dots, $t_n$
+  are terms, then $\Atom{f}{t_1, \ldots, t_n}$ is a term.
+\item Nothing else is a term.
+\end{enumerate}
+A term containing no variables is a \emph{closed term}.
+\end{defn}
+
+\begin{defn}[Formulas] % PRIM-SYN011, PRIM-SYN012, AX-SYN002
+\label{PRIM-SYN012}
+The set of \emph{formulas}~$\Frm[L]$ of the language~$\Lang L$
+is defined inductively as follows:
+\begin{enumerate}
+\item $\lfalse$ is an atomic formula.
+
+\item $\ltrue$ is an atomic formula.
+
+\item If $R$ is an $n$-place predicate symbol of~$\Lang L$ and $t_1$, \dots,
+  $t_n$ are terms of~$\Lang L$, then $\Atom{R}{t_1,\ldots, t_n}$ is an
+  atomic formula.
+
+\item If $t_1$ and $t_2$ are terms of~$\Lang L$, then $\Atom{\eq}{t_1, t_2}$
+  is an atomic formula.
+
+\item If $!A$ is a formula, then $\lnot !A$ is
+  a formula.
+
+\item If $!A$ and $!B$ are formulas, then $(!A \land
+  !B)$ is a formula.
+
+\item If $!A$ and $!B$ are formulas, then $(!A \lor !B)$
+  is a formula.
+
+\item If $!A$ and $!B$ are formulas, then $(!A \lif !B)$
+  is a formula.
+
+\item If $!A$ and $!B$ are formulas, then $(!A \liff !B)$
+  is a formula.
+
+\item If $!A$ is a formula and $x$ is a variable,
+  then $\lforall[x][!A]$ is a formula.
+
+\item If $!A$ is a formula and $x$ is a variable,
+  then $\lexists[x][!A]$ is a formula.
+
+\item Nothing else is a formula.
+\end{enumerate}
+\end{defn}
+
+By convention, we write $\eq$ between its arguments and leave out the
+parentheses: $\eq[t_1][t_2]$ is an abbreviation for
+$\Atom{\eq}{t_1,t_2}$.  Moreover, $\lnot \Atom{\eq}{t_1,t_2}$ is
+abbreviated as $\eq/[t_1][t_2]$. When writing a formula $(!B \ast !C)$
+constructed from $!B$, $!C$ using a two-place connective~$\ast$, we
+will often leave out the outermost pair of parentheses and write
+simply~$!B \ast !C$.
+
+We write $!A \ident !B$ to express syntactic identity between strings of
+symbols, i.e., $!A \ident !B$ iff $!A$ and $!B$ are strings of symbols
+of the same length and which contain the same symbol in each place.
+
+\begin{rem}[Propositional fragment] % AX-SYN003
+\label{AX-SYN003}
+Propositional (PL) formulas are the fragment of FOL formulas built
+from propositional variables $\Obj p_0, \Obj p_1, \ldots$ using only
+connectives---no quantifiers, function symbols, or predicate symbols
+appear.  Formally, the set $\Frm[L_0]$ of PL formulas is defined by:
+(i)~every propositional variable $\Obj p_i$ is an atomic formula;
+(ii)~the formation rules for connectives apply as above (clauses 5--9);
+(iii)~the quantifier clauses are omitted.
+\end{rem}
+
+As terms and formulas are built up from basic elements via inductive
+definitions, we can use the following induction principles to prove
+things about them.
+
+\begin{lem}[Principle of induction on terms] % DEF-SYN005 (terms)
+    \label{DEF-SYN005:terms}
+    Let $\Lang L$ be a first-order language.
+    If some property~$P$ is such that
+    %
+    \begin{enumerate}
+        \item it holds for every variable~$v$,
+        %
+        \item it holds for every constant symbol~$a$ of~$\Lang L$, and
+        %
+        \item it holds for $f(t_1,\dotsc,t_n)$ whenever it holds for
+        $t_1$,~\dots, $t_n$ and $f$~is an $n$-place
+            function symbol of~$\Lang L$
+    \end{enumerate}
+    (assuming $t_1$,~\dots, $t_n$ are terms of~$\Lang{L}$),
+    then $P$ holds for every term in~$\Trm[L]$.
+\end{lem}
+
+\begin{lem}[Principle of induction on formulas] % DEF-SYN005 (formulas)
+    \label{DEF-SYN005}
+    Let $\Lang L$ be a first-order language.
+    If some property~$P$ holds for all the atomic formulas
+    and is such that
+    %
+    \begin{enumerate}
+        \item it holds for $\lnot !A$ whenever it
+            holds for~$!A$;
+        \item it holds for $(!A \land !B)$
+            whenever it holds for $!A$ and~$!B$;
+        \item it holds for $(!A \lor !B)$
+            whenever it holds for $!A$ and~$!B$;
+        \item it holds for $(!A \lif !B)$
+            whenever it holds for $!A$ and~$!B$;
+        \item it holds for $(!A \liff !B)$
+            whenever it holds for $!A$ and~$!B$;
+        \item it holds for $\lexists[x][!A]$
+            whenever it holds for~$!A$;
+        \item it holds for $\lforall[x][!A]$
+            whenever it holds for~$!A$;
+  \end{enumerate}
+  (assuming $!A$ and $!B$ are formulas of~$\Lang{L}$),
+  then $P$ holds for all formulas in~$\Frm[L]$.
+\end{lem}
+
+%%% Subformulas (from fol/syn/sbf --- KEEP)
+
+It is often useful to talk about the formulas that ``make up'' a
+given formula.  We call these its \emph{subformulas}.  Any
+formula counts as a subformula of itself; a subformula of $!A$
+other than $!A$ itself is a \emph{proper subformula}.
+
+\begin{defn}[Immediate subformula] % PRIM-SYN017
+\label{PRIM-SYN017}
+If $!A$ is a formula, the \emph{immediate subformulas}
+of $!A$ are defined as follows:
+\begin{enumerate}
+\item Atomic formulas have no immediate subformulas.
+
+\item If $!A \ident \lnot !B$, the only immediate
+    subformula of $!A$ is~$!B$.
+
+\item If $!A \ident (!B \ast !C)$, the immediate subformulas of
+  $!A$ are $!B$ and $!C$ ($\ast$ is any one of the two-place
+  connectives).
+
+\item If $!A \ident \lforall[x][!B]$, the only immediate
+    subformula of $!A$ is~$!B$.
+
+\item If $!A \ident \lexists[x][!B]$, the only immediate
+    subformula of $!A$ is~$!B$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Proper subformula]
+\label{PRIM-SYN017:proper}
+If $!A$ is a formula, the \emph{proper subformulas}
+of $!A$ are defined recursively as follows:
+\begin{enumerate}
+\item Atomic formulas have no proper subformulas.
+
+\item If $!A \ident \lnot !B$, the proper subformulas of
+    $!A$ are~$!B$ together with all proper subformulas
+    of~$!B$.
+
+\item If $!A \ident (!B \ast !C)$, the proper subformulas of
+  $!A$ are $!B$, $!C$, together with all proper subformulas
+  of $!B$ and those of~$!C$.
+
+\item If $!A \ident \lforall[x][!B]$, the proper
+    subformulas of $!A$ are~$!B$ together with all proper
+    subformulas of~$!B$.
+
+\item If $!A \ident \lexists[x][!B]$, the proper
+    subformulas of $!A$ are~$!B$ together with all proper
+    subformulas of~$!B$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Subformula]
+\label{PRIM-SYN017:all}
+The subformulas of $!A$ are $!A$ itself together with all its
+proper subformulas.
+\end{defn}
+
+\begin{rem}
+The subformula relation is transitive: if $!C$ is a subformula of
+$!B$ and $!B$ is a subformula of $!A$, then $!C$ is a subformula
+of~$!A$.
+\end{rem}
+
+%%% Subterms (from DOMAIN-SYN DEF-SYN008)
+
+\begin{defn}[Subterm] % DEF-SYN008
+\label{DEF-SYN008}
+The \emph{subterms} of a term $t$ are defined recursively:
+\begin{enumerate}
+\item $t$ is a subterm of~$t$.
+\item If $f(t_1, \ldots, t_n)$ is a subterm of $s$, then each $t_i$
+  is a subterm of~$s$.
+\end{enumerate}
+\end{defn}
+
+%%% Main operator (from fol/syn/mai --- CONDENSE)
+
+\begin{defn}[Main operator] % DEF (OL-specific, useful vocabulary)
+\label{def:main-op}
+The \emph{main operator} of a formula~$!A$ is
+defined as follows:
+\begin{enumerate}
+\item If $!A$ is atomic, $!A$ has no main operator.
+\item If $!A \ident \lnot !B$, the main operator of $!A$
+  is~$\lnot$.
+\item If $!A \ident (!B \land !C)$, the main operator of
+  $!A$ is~$\land$.
+\item If $!A \ident (!B \lor !C)$, the main operator of
+  $!A$ is~$\lor$.
+\item If $!A \ident (!B \lif !C)$, the main operator of
+  $!A$ is~$\lif$.
+\item If $!A \ident (!B \liff !C)$, the main operator of
+  $!A$ is~$\liff$.
+\item If $!A \ident \lforall[x][!B]$, the main operator
+  of $!A$ is~$\lforall$.
+\item If $!A \ident \lexists[x][!B]$, the main operator of
+  $!A$ is~$\lexists$.
+\end{enumerate}
+\end{defn}
+
+%%% Formula complexity (FORMALIZE from DOMAIN-SYN DEF-SYN007)
+
+\begin{defn}[Formula complexity] % DEF-SYN007
+\label{DEF-SYN007}
+The \emph{complexity} (or \emph{rank}) of a formula~$!A$, written
+$\mathrm{cx}(!A)$, is a natural number defined by structural recursion:
+\begin{enumerate}
+\item If $!A$ is atomic, then $\mathrm{cx}(!A) = 0$.
+\item $\mathrm{cx}(\lnot !B) = \mathrm{cx}(!B) + 1$.
+\item $\mathrm{cx}((!B \ast !C)) = \max(\mathrm{cx}(!B),
+  \mathrm{cx}(!C)) + 1$, where $\ast$ is any binary connective.
+\item $\mathrm{cx}(\lforall[x][!B]) = \mathrm{cx}(!B) + 1$.
+\item $\mathrm{cx}(\lexists[x][!B]) = \mathrm{cx}(!B) + 1$.
+\end{enumerate}
+For instance, $\mathrm{cx}(P(x)) = 0$, $\mathrm{cx}(\lnot P(x)) = 1$,
+and $\mathrm{cx}(P(x) \lif \lforall[y][Q(y)]) = 2$.
+\end{defn}
+
+%%% Formation sequences (from fol/syn/fseq --- CONDENSE)
+
+An alternative, bottom-up approach to the construction of formulas
+uses \emph{formation sequences}, which make explicit the step-by-step
+process by which a formula is built.
+
+\begin{defn}[Formation sequences for terms] % DEF-SYN006 (terms)
+\label{DEF-SYN006:terms}
+A finite sequence of $\Lang L$-strings $\tuple{t_0,\dotsc,t_n}$ is a
+\emph{formation sequence} for a term $t$ if $t \ident t_n$ and for all
+$i \leq n$, either $t_i$ is a variable or a constant symbol, or $\Lang
+L$ contains a $k$-ary function symbol~$f$ and there exist
+$m_0,\dotsc,m_k < i$ such that $t_i \ident f(t_{m_0},\dotsc,t_{m_k})$.
+\end{defn}
+
+\begin{defn}[Formation sequences for formulas] % DEF-SYN006 (formulas)
+\label{DEF-SYN006}
+A finite sequence of $\Lang L$-strings $\tuple{!A_0,\dotsc,!A_n}$
+is a \emph{formation sequence} for~$!A$ if $!A \ident !A_n$ and
+for all $i \leq n$, either $!A_i$ is an atomic formula or there
+exist $j,k < i$ and a variable~$x$ such that one of the following
+holds:
+\begin{enumerate}
+    \item $!A_i \ident \lnot !A_j$.
+    \item $!A_i \ident (!A_j \land !A_k)$.
+    \item $!A_i \ident (!A_j \lor !A_k)$.
+    \item $!A_i \ident (!A_j \lif !A_k)$.
+    \item $!A_i \ident (!A_j \liff !A_k)$.
+    \item $!A_i \ident \lforall[x][!A_j]$.
+    \item $!A_i \ident \lexists[x][!A_j]$.
+\end{enumerate}
+\end{defn}
+
+\begin{thm} % DEF-SYN006 equivalence
+\label{DEF-SYN006:equiv}
+$\Frm[L]$ is the set of all $\Lang L$-strings~$!A$ such that
+there exists a formula formation sequence for~$!A$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+One direction follows by induction on formulas: every formula
+in~$\Frm[L]$ has a formation sequence (concatenate sequences for the
+immediate subformulas, then append the formula itself).  The
+converse is proved by strong induction on the length of the formation
+sequence.
+\end{proof}
+
+
+%% ===================================================================
+%% SYN.3: Variables and Scope
+%% ===================================================================
+
+\section{Variables and Scope} \label{SYN.3}
+
+\begin{defn}[Free occurrences of a variable] % PRIM-SYN014
+\label{PRIM-SYN014}
+The \emph{free} occurrences of a variable in a formula are defined
+inductively as follows:
+\begin{enumerate}
+\item If $!A$ is atomic, all variable occurrences in
+  $!A$ are free.
+
+\item If $!A \ident \lnot !B$, the free variable
+  occurrences of $!A$ are exactly those of $!B$.
+
+\item If $!A \ident (!B \ast !C)$, the free
+  variable occurrences of $!A$ are those in $!B$
+  together with those in~$!C$.
+
+\item If $!A \ident \lforall[x][!B]$, the free variable
+  occurrences in $!A$ are all of those in~$!B$ except for
+  occurrences of~$x$.
+
+\item If $!A \ident \lexists[x][!B]$, the free variable
+  occurrences in $!A$ are all of those in~$!B$ except for
+  occurrences of~$x$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Free variables] % DEF-SYN003
+\label{DEF-SYN003}
+The set $\FV(!A)$ of \emph{free variables} of a formula~$!A$ is the
+set of variables that have at least one free occurrence in~$!A$.
+Explicitly:
+\begin{enumerate}
+\item If $!A \ident R(t_1, \ldots, t_n)$, then $\FV(!A) = \mathrm{Var}(t_1) \cup \cdots \cup \mathrm{Var}(t_n)$, where $\mathrm{Var}(t)$ is the set of variables occurring in term~$t$.
+\item $\FV(\lnot !A) = \FV(!A)$.
+\item $\FV((!A \ast !B)) = \FV(!A) \cup \FV(!B)$, where $\ast$ is any binary connective.
+\item $\FV(\lforall[x][!A]) = \FV(!A) \setminus \{x\}$.
+\item $\FV(\lexists[x][!A]) = \FV(!A) \setminus \{x\}$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Bound variables] % PRIM-SYN015
+\label{PRIM-SYN015}
+An occurrence of a variable in a formula~$!A$ is \emph{bound} if
+it is not free.
+\end{defn}
+
+\begin{defn}[Scope] % PRIM-SYN016
+\label{PRIM-SYN016}
+If $\lforall[x][!B]$ is an occurrence of a subformula
+in a formula~$!A$, then the corresponding occurrence of~$!B$ in~$!A$
+is called the \emph{scope} of the corresponding occurrence
+of~$\lforall[x]$.  Similarly for $\lexists[x]$.
+
+If $!B$ is the scope of a quantifier occurrence
+$\lforall[x]$ or $\lexists[x]$ in~$!A$, then the free occurrences of
+$x$ in~$!B$ are bound in $\lforall[x][!B]$ and
+$\lexists[x][!B]$, respectively. We say that these
+occurrences are \emph{bound by} the
+mentioned quantifier occurrence.
+\end{defn}
+
+\begin{ex}
+Consider the formula~$!A$:
+\[
+\lforall[\Obj v_0][\underbrace{(\Atom{\Obj A^1_0}{\Obj v_0} \lif
+    \Atom{\Obj A^2_0}{\Obj v_0, \Obj v_1})}_{!B}] \lif \lexists[\Obj
+  v_1][\underbrace{(\Atom{\Obj A^2_1}{\Obj v_0, \Obj v_1} \lor \lforall[\Obj v_0][\overbrace{\lnot \Atom{\Obj A^1_1}{\Obj v_0}}^{!D}])}_{!C}]
+\]
+$!B$ is the scope of the first $\lforall[\Obj v_0]$, $!C$ is the scope
+of $\lexists[\Obj v_1]$, and $!D$ is the scope of the second
+$\lforall[\Obj v_0]$.  The first $\lforall[\Obj v_0]$ binds the
+occurrences of $\Obj v_0$ in~$!B$, $\lexists[\Obj v_1]$ binds the occurrence
+of $\Obj v_1$ in $!C$, and the second $\lforall[\Obj v_0]$ binds the
+occurrence of $\Obj v_0$ in~$!D$.  The first occurrence of $\Obj v_1$
+and the third occurrence of $\Obj v_0$ are free in~$!A$. The last
+occurrence of $\Obj v_0$ is free in $!D$, but bound in $!C$ and~$!A$.
+\end{ex}
+
+\begin{defn}[Sentence] % PRIM-SYN013
+\label{PRIM-SYN013}
+A formula~$!A$ is a \emph{sentence} iff it
+contains no free occurrences of variables; equivalently, iff $\FV(!A)
+= \emptyset$.
+\end{defn}
+
+
+%% ===================================================================
+%% SYN.4: Substitution
+%% ===================================================================
+
+\section{Substitution} \label{SYN.4}
+
+\begin{defn}[Substitution in a term] % DEF-SYN001 (terms)
+\label{DEF-SYN001:terms}
+We define $\Subst{s}{t}{x}$, the result of \emph{substituting} $t$
+for every occurrence of~$x$ in $s$, recursively:
+\begin{enumerate}
+\item If $s \ident c$ for a constant symbol~$c$, then $\Subst{s}{t}{x}$ is just $s$.
+
+\item If $s \ident y$ where $y$ is a variable and $y \not\ident x$, then $\Subst{s}{t}{x}$ is also just~$s$.
+
+\item If $s \ident x$, then $\Subst{s}{t}{x}$ is~$t$.
+
+\item If $s \ident \Atom{f}{t_1, \dots, t_n}$, then $\Subst{s}{t}{x}$ is
+  $\Atom{f}{\Subst{t_1}{t}{x}, \dots, \Subst{t_n}{t}{x}}$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Free for] % (capture-avoidance condition)
+\label{def:free-for}
+A term~$t$ is \emph{free for} $x$ in $!A$ if none of the free
+occurrences of~$x$ in $!A$ occur in the scope of a quantifier that
+binds a variable in~$t$.
+\end{defn}
+
+\begin{ex} ~
+\begin{enumerate}
+\item $\Obj v_8$ is free for $\Obj v_1$ in $\lexists[\Obj
+  v_3]\Atom{\Obj A^2_4}{\Obj v_3,\Obj v_1}$.
+
+\item $\Obj f^2_1(\Obj v_1, \Obj v_2)$ is \emph{not} free for $\Obj
+  v_0$ in $\lforall[\Obj v_2]\Atom{\Obj A^2_4}{\Obj v_0,\Obj v_2}$.
+\end{enumerate}
+\end{ex}
+
+\begin{defn}[Substitution in a formula] % DEF-SYN001
+\label{DEF-SYN001}
+If $!A$ is a formula, $x$~is a variable, and $t$~is a term
+free for~$x$ in~$!A$, then $\Subst{!A}{t}{x}$ is the result of
+substituting $t$ for all free occurrences of~$x$ in~$!A$.
+\begin{enumerate}
+\item If $!A \ident \lfalse$, then $\Subst{!A}{t}{x}$ is
+    $\lfalse$.
+
+\item If $!A \ident \ltrue$, then $\Subst{!A}{t}{x}$ is
+    $\ltrue$.
+
+\item If $!A \ident \Atom{P}{t_1,\dots,
+    t_n}$, then $\Subst{!A}{t}{x}$ is $\Atom{P}{\Subst{t_1}{t}{x},
+    \dots, \Subst{t_n}{t}{x}}$.
+
+\item If $!A \ident \eq[t_1][t_2]$, then $\Subst{!A}{t}{x}$ is
+  $\Subst{t_1}{t}{x} = \Subst{t_2}{t}{x}$.
+
+\item If $!A \ident \lnot !B$, then $\Subst{!A}{t}{x}$ is
+    $\lnot \Subst{!B}{t}{x}$.
+
+\item If $!A \ident (!B \land
+    !C)$, then $\Subst{!A}{t}{x}$ is $(\Subst{!B}{t}{x} \land
+    \Subst{!C}{t}{x})$.
+
+\item If $!A \ident (!B \lor
+    !C)$, then $\Subst{!A}{t}{x}$ is $(\Subst{!B}{t}{x} \lor
+    \Subst{!C}{t}{x})$.
+
+\item If $!A \ident (!B \lif
+    !C)$, then $\Subst{!A}{t}{x}$ is $(\Subst{!B}{t}{x} \lif
+    \Subst{!C}{t}{x})$.
+
+\item If $!A \ident (!B \liff
+    !C)$, then $\Subst{!A}{t}{x}$ is $(\Subst{!B}{t}{x} \liff
+    \Subst{!C}{t}{x})$.
+
+\item If $!A \ident \lforall[y][!B]$, then $\Subst{!A}{t}{x}$
+    is $\lforall[y][\Subst{!B}{t}{x}]$, provided $y$ is a variable
+    other than $x$; otherwise $\Subst{!A}{t}{x}$
+    is just $!A$.
+
+\item If $!A \ident \lexists[y][!B]$, then $\Subst{!A}{t}{x}$
+    is $\lexists[y][\Subst{!B}{t}{x}]$, provided $y$ is a variable
+    other than $x$; otherwise $\Subst{!A}{t}{x}$
+    is just $!A$.
+\end{enumerate}
+\end{defn}
+
+Note that substitution may be vacuous: if $x$ does not occur in $!A$
+at all, then $\Subst{!A}{t}{x}$ is just~$!A$.
+
+The restriction that $t$ must be free for~$x$ in~$!A$ is necessary to
+exclude cases where a free variable in~$t$ is ``captured'' by a
+quantifier upon substitution.  For instance, if $!A \ident
+\lexists[y][x < y]$ and $t \ident y$, then $\Subst{!A}{t}{x}$ would
+be $\lexists[y][y < y]$---the free variable $y$ has been captured by
+$\lexists[y]$, which changes the meaning.  We prevent this by
+requiring that none of the free variables in~$t$ end up bound by a
+quantifier in~$!A$.
+
+We use the following convention: if $!A$ is a formula which may
+contain the variable~$x$ free, we write~$!A(x)$; then $!A(t)$ is
+short for $\Subst{!A}{t}{x}$.
+
+%%% Simultaneous Substitution (NEW-CONTENT from DOMAIN-SYN DEF-SYN002)
+
+\begin{defn}[Simultaneous substitution] % DEF-SYN002
+\label{DEF-SYN002}
+Let $!A$ be a formula, let $x_1, \ldots, x_n$ be distinct variables,
+and let $t_1, \ldots, t_n$ be terms.  The \emph{simultaneous
+substitution} $!A[t_1/x_1, \ldots, t_n/x_n]$ is the result of
+replacing, in a single step, every free occurrence of each~$x_i$
+in~$!A$ by the corresponding term~$t_i$.  The substitution is proper
+provided each $t_i$ is free for $x_i$ in~$!A$.
+
+Simultaneous substitution differs from iterated single substitution
+when the substituted terms contain variables that are themselves being
+replaced.  For example, $P(x,y)[y/x, x/y] = P(y, x)$ (the variables
+are swapped), whereas the iterated substitution $P(x,y)[y/x][x/y] =
+P(y,y)[x/y] = P(x,x)$ gives a different result.
+\end{defn}
+
+%%% Alphabetic Variant (NEW-CONTENT from DOMAIN-SYN DEF-SYN004)
+
+\begin{defn}[Alphabetic variant] % DEF-SYN004
+\label{DEF-SYN004}
+Two formulas $!A$ and $!B$ are \emph{alphabetic variants} (written
+$!A \equiv_\alpha !B$) if one can be obtained from the other by
+consistently renaming bound variables, without introducing variable
+capture.  That is, $!A$ and $!B$ differ only in the names of their
+bound variables, with each renaming being a consistent bijection on
+bound variable names that does not cause any free variable to become
+bound.  For instance, $\lforall[x][P(x)]$ and $\lforall[y][P(y)]$
+are alphabetic variants, since replacing the bound variable~$x$ by~$y$
+throughout gives one formula from the other.
+\end{defn}
+
+\begin{rem}[Uniform substitution in PL]
+In propositional logic, \emph{uniform substitution} replaces every
+occurrence of a propositional variable~$\Obj p_i$ by a formula~$!B$
+throughout~$!A$.  Formally, $\Subst{!A}{!B}{\Obj p_i}$ denotes the
+result of replacing each occurrence of $\Obj p_i$ by~$!B$ in~$!A$.
+This is a purely propositional operation: since propositional
+variables have no internal structure, there is no notion of ``free
+for'' and no risk of variable capture.  In the FOL setting, uniform
+substitution is subsumed by the general substitution operation (see
+DEF-SYN001, \S\ref{DEF-SYN001}).
+\end{rem}
+
+
+%% ===================================================================
+%% SYN.5: Arithmetic Hierarchy
+%% ===================================================================
+
+\section{Arithmetic Hierarchy} \label{SYN.5}
+
+In the language of arithmetic~$\Lang L_A$, it is useful to single out
+syntactic classes of formulas defined by the pattern of quantifiers
+they contain.  These classes---the $\Delta_0$, $\Sigma_1$, and
+$\Pi_1$ formulas---play a central role in the study of
+incompleteness.
+
+\begin{defn}[Bounded quantification] % DEF-SYN009
+\label{DEF-SYN009}
+A \emph{bounded existential formula} is one of the form
+$\lexists[x][(x < t \land !A(x))]$ where $t$ is any term, which we
+conventionally write as $\bexists{x < t}{!A(x)}$.
+A \emph{bounded universal formula} is one of the form
+$\lforall[x][(x < t \lif !A(x))]$ where $t$ is any term, which we
+conventionally write as $\bforall{x < t}{!A(x)}$.
+\end{defn}
+
+\begin{defn}[$\Delta_0$, $\Sigma_1$, and $\Pi_1$ formulas] % DEF-SYN009, DEF-SYN010, DEF-SYN011
+\label{DEF-SYN010}
+\leavevmode
+\begin{enumerate}
+\item A formula~$!B$ is \emph{$\Delta_0$} if it is built up from atomic
+formulas using only propositional connectives and bounded
+quantification.
+
+\item A formula~$!A$ is \emph{$\Sigma_1$} if $!A \ident \lexists[x][!B(x)]$
+where $!B$ is $\Delta_0$.
+
+\item A formula~$!A$ is \emph{$\Pi_1$} if $!A \ident \lforall[x][!B(x)]$
+where $!B$ is $\Delta_0$.
+\end{enumerate}
+\end{defn}
+
+
+%% ===================================================================
+%% SYN.6: Theorems
+%% ===================================================================
+
+\section{Theorems} \label{SYN.6}
+
+%%% Unique Readability (from fol/syn/unq --- KEEP)
+
+The way we defined formulas guarantees that every formula has
+a \emph{unique reading}, i.e., there is essentially only one way of
+constructing it according to our formation rules for formulas and
+only one way of ``interpreting'' it.  If this were not so, we would
+have ambiguous formulas, i.e., formulas that have more than
+one reading or interpretation---and that is clearly something we want
+to avoid.  But more importantly, without this property, most of the
+definitions and proofs we are going to give will not go through.
+
+Perhaps the best way to see why unique readability matters is to
+consider what would happen with bad formation rules.  For instance, if
+we omitted parentheses and allowed: ``If $!A$ and $!B$ are formulas,
+then so is $!A \lif !B$,'' then starting from an atomic formula $!D$
+we could form $!D \lif !D \lif !D$ in two ways: taking $!A = !D$ and
+$!B = !D \lif !D$, or taking $!A = !D \lif !D$ and $!B = !D$.  This
+would make the main operator ambiguous (the first vs.\ the second
+occurrence of~$\lif$), and recursive definitions on formulas would
+be ill-defined.
+
+\begin{lem}
+The number of left and right parentheses in a formula~$!A$ are
+equal.
+\end{lem}
+
+\begin{proof}
+By induction on the construction of $!A$.  Let $l(!A)$ be the number
+of left parentheses and $r(!A)$ the number of right parentheses
+in~$!A$, and $l(t)$, $r(t)$ similarly for terms.
+
+For atomic formulas: if $!A \ident \lfalse$ or $!A \ident \ltrue$,
+then both counts are~$0$.  If $!A \ident \Atom{R}{t_1,\dots,t_n}$,
+then $l(!A) = 1 + l(t_1) + \dots + l(t_n) = 1 + r(t_1) + \dots +
+r(t_n) = r(!A)$, using the fact that $l(t) = r(t)$ for any term~$t$.
+If $!A \ident \eq[t_1][t_2]$, then $l(!A) = l(t_1) + l(t_2) =
+r(t_1) + r(t_2) = r(!A)$.
+
+For the inductive cases: if $!A \ident \lnot !B$, then by hypothesis
+$l(!B) = r(!B)$, so $l(!A) = l(!B) = r(!B) = r(!A)$.  If $!A \ident
+(!B \ast !C)$, then $l(!A) = 1 + l(!B) + l(!C) = 1 + r(!B) + r(!C) =
+r(!A)$.  If $!A \ident \lforall[x][!B]$ or $!A \ident
+\lexists[x][!B]$, then $l(!A) = l(!B) = r(!B) = r(!A)$.
+\end{proof}
+
+\begin{prop}[Unique readability for atomic formulas] % THM-SYN002 (partial)
+\label{THM-SYN002}
+If $!A$ is an atomic formula, then it satisfies one, and only one
+of the following conditions.
+\begin{enumerate}
+\item $!A \ident \lfalse$.
+\item $!A \ident \ltrue$.
+\item $!A \ident \Atom{R}{t_1,\dots,t_n}$ where $R$ is an $n$-place
+  predicate symbol, $t_1$, \dots, $t_n$ are terms, and each of $R$,
+  $t_1$, \dots, $t_n$ is uniquely determined.
+\item $!A \ident \eq[t_1][t_2]$ where $t_1$ and $t_2$ are uniquely
+  determined terms.
+\end{enumerate}
+\end{prop}
+
+\begin{prop}[Unique Readability] % THM-SYN001
+\label{THM-SYN001}
+Every formula satisfies one, and only one of the following conditions.
+\begin{enumerate}
+\item $!A$ is atomic.
+
+\item $!A$ is of the form $\lnot !B$.
+
+\item $!A$ is of the form $(!B \land !C)$.
+
+\item $!A$ is of the form $(!B \lor !C)$.
+
+\item $!A$ is of the form $(!B \lif !C)$.
+
+\item $!A$ is of the form $(!B \liff !C)$.
+
+\item $!A$ is of the form $\lforall[x][!B]$.
+
+\item $!A$ is of the form $\lexists[x][!B]$.
+\end{enumerate}
+Moreover, in each case $!B$, or $!B$ and $!C$, are uniquely
+determined.  This means that, e.g., there are no different pairs $!B$,
+$!C$ and $!B'$, $!C'$ so that $!A$ is both of the form
+$(!B \lif !C)$ and $(!B' \lif !C')$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+The proof proceeds in four steps:
+\begin{enumerate}
+\item \emph{Balanced parentheses}: Every formula has equal numbers of
+  left and right parentheses (proved above).
+\item \emph{Prefix-freeness}: No proper prefix of a formula is itself
+  a formula.  (Proved by induction: every proper initial segment of a
+  formula has strictly more left parentheses than right ones.)
+\item \emph{Unique atomic parsing}: Atomic formulas are uniquely
+  parsed (Proposition~\ref{THM-SYN002}).
+\item \emph{Main result}: Suppose $!A \ident (!B \ast !C)$ and also
+  $!A \ident (!B' \mathbin{\ast'} !C')$.  If $!B \ident !B'$, then
+  clearly $\ast = {\ast'}$ and $!C \ident !C'$.  Otherwise, one of
+  $!B$, $!B'$ is a proper prefix of the other, contradicting
+  prefix-freeness.
+\end{enumerate}
+\end{proof}
+
+\begin{rem}[PL unique readability]
+Unique readability holds equally for propositional formulas
+in~$\Frm[L_0]$, since PL formulas are a special case of FOL formulas
+(with the quantifier clauses vacuously absent).
+\end{rem}
+
+%%% Structural Induction/Recursion Principles (FORMALIZE from THM-SYN004)
+
+\begin{thm}[Structural induction and recursion principles] % THM-SYN004
+\label{THM-SYN004}
+\leavevmode
+\begin{enumerate}
+\item \textbf{Induction.}  If a property $P$ holds for all atomic
+  formulas and is preserved by every formation rule (negation,
+  binary connectives, quantification), then $P$ holds for all
+  formulas.  Formally:
+  \begin{multline*}
+  [\forall \text{ atomic } !A\; P(!A)] \;\land\;
+  [\forall !A\; (P(!A) \to P(\lnot !A))] \;\land \\
+  [\forall !A\, \forall !B\; (P(!A) \land P(!B) \to P((!A \ast !B)))]
+  \;\land\;
+  [\forall !A\, \forall x\; (P(!A) \to P(\lforall[x][!A]))] \\
+  \;\to\; \forall !A\; P(!A).
+  \end{multline*}
+
+\item \textbf{Recursion.}  Any definition by structural recursion on
+  formulas---specifying the value for atomic formulas and how to
+  combine values across each formation rule---determines a
+  \emph{unique} function on~$\Frm[L]$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Part~(1) follows from the fact that $\Frm[L]$ is inductively
+defined: it is the smallest set of strings closed under the formation
+rules.  If the set $S = \{!A \in \Frm[L] : P(!A)\}$ is also closed
+under the formation rules, then $\Frm[L] \subseteq S$, so $P$ holds
+for all formulas.
+
+Part~(2) follows from unique readability (Proposition~\ref{THM-SYN001}):
+since each formula has a unique outermost construction step, the
+recursive clauses never conflict, and the function is well-defined.
+\end{proof}

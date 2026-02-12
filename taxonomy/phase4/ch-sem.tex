@@ -1,0 +1,1168 @@
+\chapter{Semantics} \label{ch:sem}
+
+%% ===================================================================
+%% SEM.1: Structures
+%% Sources: fol/syn/str (KEEP), fol/syn/cov (CONDENSE)
+%% ===================================================================
+
+\section{Structures} \label{SEM.1}
+
+First-order languages are, by themselves, \emph{uninterpreted}: the
+constant symbols, function symbols, and predicate symbols have no specific
+meaning attached to them.  Meanings are given by specifying
+a \emph{structure}. It specifies the
+\emph{domain}, i.e., the objects which the constant symbols pick out, the
+function symbols operate on, and the quantifiers range over. In addition,
+it specifies which constant symbols pick out which objects, how
+a function symbol maps objects to objects, and which objects the
+predicate symbols apply to.  Structures are the basis for
+\emph{semantic} notions in logic, e.g., the notion of consequence,
+validity, satisfiability. They are variously called ``structures,''
+``interpretations,'' or ``models'' in the literature.
+
+\begin{defn}[Structures] % PRIM-SEM001, PRIM-SEM002, PRIM-SEM003
+\label{PRIM-SEM001}
+A \emph{structure}~$\Struct M$ for a language
+$\Lang{L}$ of first-order logic consists of the following elements:
+\begin{enumerate}
+\item \emph{Domain:} a non-empty set, $\Domain M$. \label{PRIM-SEM002}
+\item \emph{Interpretation of constant symbols:} for each constant symbol~$c$ of
+  $\Lang{L}$, an element $\Assign{c}{M} \in \Domain M$.
+  \label{PRIM-SEM003}
+\item \emph{Interpretation of predicate symbols:} for each $n$-place
+  predicate symbol~$R$ of $\Lang{L}$ (other than $\eq$), an $n$-place
+  relation $\Assign{R}{M} \subseteq \Domain{M}^n$.
+\item \emph{Interpretation of function symbols:} for each $n$-place
+  function symbol~$f$ of $\Lang{L}$, an $n$-place function $\Assign{f}{M}
+  \colon \Domain{M}^n \to \Domain{M}$.
+\end{enumerate}
+\end{defn}
+
+\begin{ex}
+A structure~$\Struct M$ for the language of arithmetic consists of a
+set, an element of $\Domain M$, $\Assign{\Obj 0}{M}$, as
+interpretation of the constant symbol~$\Obj 0$, a one-place function
+$\Assign{\Obj \prime}{M} \colon \Domain{M} \to \Domain M$, two
+two-place functions $\Assign{\Obj +}{M}$ and $\Assign{\Obj
+  \times}{M}$, both $\Domain M^2 \to \Domain M$, and a two-place
+relation $\Assign{\Obj <}{M} \subseteq \Domain{M}^2$.
+
+An obvious example of such a structure is the following:
+\begin{enumerate}
+\item $\Domain N = \Nat$
+\item $\Assign{\Obj 0}{N} = 0$
+\item $\Assign{\Obj \prime}{N}(n) = n + 1$ for all $n \in \Nat$
+\item $\Assign{\Obj +}{N}(n, m) = n + m$ for all $n, m \in \Nat$
+\item $\Assign{\Obj \times}{N}(n, m) = n\cdot m$ for all $n, m \in \Nat$
+\item $\Assign{\Obj <}{N} = \Setabs{\tuple{n, m}}{n \in \Nat, m \in
+  \Nat, n < m}$
+\end{enumerate}
+The structure~$\Struct N$ for $\Lang L_A$ so defined is called the
+\emph{standard model of arithmetic}, because it interprets the
+non-logical constants of~$\Lang L_A$ exactly how you would expect.
+\end{ex}
+
+The stipulations we make as to what counts as a structure impact
+our logic. For example, the choice to prevent empty domains ensures
+that $\lexists[x][(!A(x) \lor \lnot !A(x))]$ is
+valid. Allowing empty domains or names that do not refer leads to
+\emph{free logic}.\footnote{In free logic, existential generalization
+requires an additional premise: $!A(a)$ and $\lexists[x][\eq[x][a]]$,
+therefore $\lexists[x][!A(x)]$.}
+
+%%% Value of Closed Terms (from fol/syn/cov — CONDENSE)
+
+We can assign values to closed terms (terms containing no variables)
+using only the structure, without needing a variable assignment.
+
+\begin{defn}[Value of closed terms] % PRIM-SEM006 (closed-term case)
+\label{PRIM-SEM006:closed}
+If $t$ is a closed term of the language~$\Lang L$ and $\Struct M$ is a
+structure for~$\Lang L$, the \emph{value}~$\Value{t}{M}$ is
+defined as follows:
+\begin{enumerate}
+\item If $t$ is just the constant symbol~$c$, then $\Value{c}{M} = \Assign{c}{M}$.
+\item If $t$ is of the form $\Atom{f}{t_1, \ldots, t_n}$, then
+  \[
+  \Value{t}{M} = \Assign{f}{M}(\Value{t_1}{M}, \ldots,
+  \Value{t_n}{M}).
+  \]
+\end{enumerate}
+\end{defn}
+
+A structure is \emph{covered} if every element of the domain is the
+value of some closed term.
+
+
+%% ===================================================================
+%% SEM.2: Satisfaction and Truth
+%% Sources: fol/syn/sat (ABSORB:pl/syn/val), fol/syn/ass (CONDENSE)
+%% ===================================================================
+
+\section{Satisfaction and Truth} \label{SEM.2}
+
+The basic notion that relates expressions such as terms and
+formulas, on the one hand, and structures on the other, are
+those of \emph{value} of a term and \emph{satisfaction} of
+a formula.  Informally, the value of a term is an element of
+a structure---if the term is just a constant, its value is the
+object assigned to the constant by the structure, and if it is
+built up using function symbols, the value is computed from the
+values of constants and the functions assigned to the functions in
+the term.  A formula is \emph{satisfied} in a structure if the
+interpretation given to the predicates makes the formula true in
+the domain of the structure. This notion of satisfaction is
+specified inductively: the specification of the structure directly
+states when atomic formulas are satisfied, and we define when a
+complex formula is satisfied depending on the main connective or
+quantifier and whether or not the immediate subformulas are
+satisfied.
+
+The case of the quantifiers is a bit tricky, as the
+immediate subformula of a quantified formula has a free
+variable, and structures don't specify the values of
+variables.  In order to deal with this difficulty, we
+introduce \emph{variable assignments} and define satisfaction not with
+respect to a structure alone, but with respect to a structure
+plus a variable assignment.
+
+\begin{defn}[Variable Assignment] % PRIM-SEM004
+\label{PRIM-SEM004}
+A \emph{variable assignment}~$s$ for a structure~$\Struct{M}$ is a
+function which maps each variable to an element of~$\Domain M$,
+i.e., $s\colon \Var \to \Domain M$.
+\end{defn}
+
+A structure assigns a value to each constant symbol, and a
+variable assignment to each variable.  But we want to use terms built
+up from them to also name elements of the domain.  For this we
+define the value of terms inductively. For constant symbols and
+variables the value is just as the structure or the variable
+assignment specifies it; for more complex terms it is computed
+recursively using the functions the structure assigns to the
+function symbols.
+
+\begin{defn}[Value of Terms] % PRIM-SEM006
+\label{PRIM-SEM006}
+If $t$ is a term of the language~$\Lang L$, $\Struct M$ is a
+structure for~$\Lang L$, and $s$ is a variable assignment
+for~$\Struct M$, the \emph{value}~$\Value{t}{M}[s]$ is defined as
+follows:
+\begin{enumerate}
+\item If $t$ is a constant symbol~$c$, then $\Value{c}{M}[s] = \Assign{c}{M}$.
+\item If $t$ is a variable~$x$, then $\Value{x}{M}[s] = s(x)$.
+\item If $t = \Atom{f}{t_1, \ldots, t_n}$, then
+\[
+\Value{t}{M}[s] = \Assign{f}{M}(\Value{t_1}{M}[s], \ldots,
+\Value{t_n}{M}[s]).
+\]
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[$x$-Variant] % PRIM-SEM005
+\label{PRIM-SEM005}
+If $s$ is a variable assignment for a structure~$\Struct M$, then any
+variable assignment~$s'$ for~$\Struct M$ which differs from~$s$ at most
+in what it assigns to~$x$ is called an \emph{$x$-variant} of~$s$.  If
+$s'$ is an $x$-variant of~$s$ we write $\varAssign{s'}{s}{x}$.
+\end{defn}
+
+Note that an $x$-variant of an assignment~$s$ does not \emph{have} to
+assign something different to~$x$.  In fact, every assignment counts
+as an $x$-variant of itself.
+
+\begin{defn}
+  If $s$ is a variable assignment for a structure~$\Struct M$
+  and $m \in \Domain{M}$, then the assignment~$\Subst{s}{m}{x}$ is the
+  variable assignment defined by
+  \[\Subst{s}{m}{x}(y) = \begin{cases}
+    m & \text{if } y \ident x\\
+    s(y) & \text{otherwise}.
+  \end{cases}\]
+\end{defn}
+
+In other words, $\Subst{s}{m}{x}$ is the particular $x$-variant of~$s$
+which assigns the domain element~$m$ to~$x$, and assigns the same
+things to variables other than~$x$ that $s$ does.
+
+\begin{defn}[Satisfaction] % PRIM-SEM007, DEF-SEM001
+\label{PRIM-SEM007}
+\label{DEF-SEM001}
+Satisfaction of a formula~$!A$ in a structure~$\Struct M$
+relative to a variable assignment~$s$, in symbols:
+$\Sat{M}{!A}[s]$, is defined recursively as follows. (We write
+$\Sat/{M}{!A}[s]$ to mean ``not $\Sat{M}{!A}[s]$.'')
+\begin{enumerate}
+\item $\Sat{M}{\Atom{R}{t_1, \dots, t_n}}[s]$
+  iff $\langle \Value{t_1}{M}[s], \dots, \Value{t_n}{M}[s] \rangle \in
+  \Assign{R}{M}$.
+
+\item $\Sat{M}{\eq[t_1][t_2]}[s]$ iff
+  $\Value{t_1}{M}[s] = \Value{t_2}{M}[s]$.
+
+\item $\Sat{M}{\lnot !B}[s]$ iff
+    $\Sat/{M}{!B}[s]$.
+
+\item $\Sat{M}{(!B \land !C)}[s]$ iff $\Sat{M}{!B}[s]$
+    and $\Sat{M}{!C}[s]$.
+
+\item $\Sat{M}{(!B \lor !C)}[s]$ iff
+    $\Sat{M}{!B}[s]$ or $\Sat{M}{!C}[s]$ (or both).
+
+\item $\Sat{M}{(!B \lif !C)}[s]$ iff $\Sat/{M}{!B}[s]$
+    or $\Sat{M}{!C}[s]$ (or both).
+
+\item $\Sat{M}{(!B \liff !C)}[s]$ iff either both
+    $\Sat{M}{!B}[s]$ and $\Sat{M}{!C}[s]$, or neither $\Sat{M}{!B}[s]$
+    nor $\Sat{M}{!C}[s]$.
+
+\item $\Sat{M}{\lforall[x][!B]}[s]$ iff for every
+    element~$m \in \Domain M$, $\Sat{M}{!B}[\Subst{s}{m}{x}]$.
+
+\item $\Sat{M}{\lexists[x][!B]}[s]$ iff for at least
+  one element~$m \in \Domain M$, $\Sat{M}{!B}[\Subst{s}{m}{x}]$.
+\end{enumerate}
+\end{defn}
+
+The variable assignments are important in the quantifier clauses. We
+cannot define satisfaction of $\lforall[x][!B(x)]$ by ``for all $m \in
+\Domain{M}$, $\Sat{M}{!B(m)}$,'' because if $m \in
+\Domain M$, it is not a symbol of the language, and so $!B(m)$~is not
+a formula (that is, $\Subst{!B}{m}{x}$ is undefined).  We also
+cannot assume that we have constant symbols or terms available that name
+every element of~$\Struct{M}$, since there is nothing in the
+definition of structures that requires it.  Variable assignments
+allow us to link variables directly with elements of the domain,
+resolving this difficulty.
+
+\begin{rem}[PL Specialization] % PRIM-SEM015
+\label{PRIM-SEM015}
+For propositional logic, a \emph{truth-value assignment} (or
+\emph{valuation}) $v \colon \mathrm{PropVar} \to \{0,1\}$ replaces
+the structure-plus-variable-assignment pair. Satisfaction reduces to:
+$v \vDash p$ iff $v(p) = 1$; the connective clauses are the same as
+above (without quantifier clauses). Propositional satisfaction is
+thus the quantifier-free fragment of first-order satisfaction.
+\end{rem}
+
+%%% Satisfaction depends only on free variables (from fol/syn/ass — CONDENSE)
+
+The value of a term~$t$, and whether or not a formula~$!A$ is
+satisfied in a structure with respect to~$s$, only depend on the
+assignments~$s$ makes to the variables in~$t$ and the free
+variables of~$!A$.
+
+The value of a term depends only on the values of its variables:
+if $s_1$ and $s_2$ agree on all variables occurring in~$t$, then
+$\Value{t}{M}[s_1] = \Value{t}{M}[s_2]$.
+
+\begin{prop}
+\label{prop:satindep}
+If the free variables in $!A$ are among $x_1$, \dots,~$x_n$, and
+$s_1(x_i) = s_2(x_i)$ for $i = 1$, \dots,~$n$, then $\Sat{M}{!A}[s_1]$
+iff $\Sat{M}{!A}[s_2]$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+By induction on the complexity of $!A$. The base case uses the
+corresponding result for terms. For connectives, apply the induction
+hypothesis to subformulas (whose free variables are among those
+of~$!A$). For the quantifier case $\lexists[x][!B]$: if
+$\Sat{M}{!B}[\Subst{s_1}{m}{x}]$ for some~$m$, then
+$\Subst{s_1}{m}{x}$ and $\Subst{s_2}{m}{x}$ agree on the free
+variables of~$!B$ (which are among $x_1, \ldots, x_n, x$), so the
+induction hypothesis gives
+$\Sat{M}{!B}[\Subst{s_2}{m}{x}]$. Similarly for $\lforall[x][!B]$.
+\end{proof}
+
+Sentences have no free variables, so any two variable assignments
+assign the same things to all the (zero) free variables of any
+sentence. Therefore:
+
+\begin{cor}
+\label{cor:sat-sentence}
+If $!A$ is a sentence and $s$ a variable assignment, then
+$\Sat{M}{!A}[s]$ iff $\Sat{M}{!A}[s']$ for every variable
+assignment~$s'$.
+\end{cor}
+
+This justifies the following definition.
+
+\begin{defn}[Truth in a Structure] % PRIM-SEM008
+\label{PRIM-SEM008}
+If $!A$ is a sentence, we say that a structure~$\Struct M$
+\emph{satisfies}~$!A$, $\Sat{M}{!A}$, iff $\Sat{M}{!A}[s]$ for all
+variable assignments~$s$.
+\end{defn}
+
+If $\Sat{M}{!A}$, we also simply say that \emph{$!A$ is true
+in~$\Struct{M}$.}
+
+\begin{defn}[Satisfaction for sets of sentences] % PRIM-SEM011 (alternative formulation)
+\label{defn:sat-set}
+If $\Gamma$ is a set of sentences, we say that
+a structure~$\Struct M$ \emph{satisfies}~$\Gamma$,
+$\Sat{M}{\Gamma}$, iff $\Sat{M}{!A}$ for all $!A \in \Gamma$.
+\end{defn}
+
+\begin{prop}
+\label{prop:sentence-sat-true}
+  Let $\Struct{M}$ be a structure, $!A$ be a sentence, and $s$ a
+  variable assignment.  $\Sat{M}{!A}$ iff $\Sat{M}{!A}[s]$.
+\end{prop}
+
+
+%% ===================================================================
+%% SEM.3: Validity and Consequence
+%% Sources: fol/syn/sem (ABSORB:pl/syn/sem)
+%% ===================================================================
+
+\section{Validity and Consequence} \label{SEM.3}
+
+Given the definition of structures for first-order languages, we can
+define some basic semantic properties of and relationships between
+sentences.  The simplest of these is the notion of \emph{validity} of
+a sentence.  A sentence is valid if it is satisfied in every
+structure.  Valid sentences are those that are satisfied regardless of
+how the non-logical symbols in it are interpreted.  Valid sentences
+are therefore also called \emph{logical truths}---they are true, i.e.,
+satisfied, in any structure and hence their truth depends only on the
+logical symbols occurring in them and their syntactic structure, but not
+on the non-logical symbols or their interpretation.
+
+\begin{defn}[Validity] % PRIM-SEM009
+\label{PRIM-SEM009}
+A sentence $!A$ is \emph{valid}, $\Entails !A$, iff $\Sat{M}{!A}$ for every
+structure~$\Struct M$.
+\end{defn}
+
+\begin{defn}[Entailment] % PRIM-SEM010
+\label{PRIM-SEM010}
+A set of sentences~$\Gamma$ \emph{entails} a sentence~$!A$, $\Gamma
+\Entails !A$, iff for every structure~$\Struct M$ with
+$\Sat{M}{\Gamma}$, $\Sat{M}{!A}$.
+\end{defn}
+
+\begin{defn}[Satisfiability] % DEF-SEM002
+\label{DEF-SEM002}
+A set of sentences~$\Gamma$ is \emph{satisfiable} if $\Sat{M}{\Gamma}$
+for some structure~$\Struct M$.  If $\Gamma$ is not satisfiable it is
+called \emph{unsatisfiable}.
+\end{defn}
+
+\begin{defn}[Model] % PRIM-SEM011
+\label{PRIM-SEM011}
+Let $\Gamma$ be a set of sentences in a language~$\Lang L$.  We
+say that a structure~$\Struct M$ \emph{is a model of}~$\Gamma$ if
+$\Sat{M}{!A}$ for all $!A \in \Gamma$.
+\end{defn}
+
+\begin{defn}[Semantic Consistency] % DEF-SEM004
+\label{DEF-SEM004}
+A set of sentences~$\Gamma$ is \emph{semantically consistent} if it is
+satisfiable, i.e., if it has at least one model. This is the semantic
+counterpart of syntactic consistency (see \S\ref{DED.1}).
+\end{defn}
+
+We record some basic relationships:
+
+\begin{itemize}
+\item $\Gamma \Entails !A$ iff $\Gamma \cup \{\lnot !A\}$ is unsatisfiable.
+\item (Monotonicity) If $\Gamma \subseteq \Gamma'$ and $\Gamma \Entails !A$,
+  then $\Gamma' \Entails !A$.
+\item (Semantic Deduction Theorem) $\Gamma \cup \{!A\} \Entails !B$ iff
+  $\Gamma \Entails !A \lif !B$.
+\end{itemize}
+
+\begin{rem}[PL Specialization: Tautology] % DEF-SEM009
+\label{DEF-SEM009}
+A propositional formula is a \emph{tautology} if it is true under
+every truth-value assignment. This specializes first-order validity to
+propositional structures: a tautology is a formula valid under all
+valuations $v \colon \mathrm{PropVar} \to \{0,1\}$.
+\end{rem}
+
+\begin{rem}[PL Specialization: PL Consequence] % DEF-SEM010
+\label{DEF-SEM010}
+PL entailment $\Gamma \vDash_{\mathrm{PL}} !A$ specializes first-order
+entailment to propositional structures: every truth-value assignment
+making all formulas in~$\Gamma$ true also makes~$!A$ true.
+\end{rem}
+
+
+%% ===================================================================
+%% SEM.4: Models and Theories
+%% Sources: fol/mat/exs (CONDENSE), fol/mat/int (DISTRIBUTE — DEF-SEM007)
+%% ===================================================================
+
+\section{Models and Theories} \label{SEM.4}
+
+\begin{defn}[Semantic Completeness of a Theory] % DEF-SEM005
+\label{DEF-SEM005}
+A theory $T$ is \emph{semantically complete} iff for every
+sentence~$!A$ in its language, either $T \Entails !A$ or
+$T \Entails \lnot !A$.
+\end{defn}
+
+Note that semantic completeness of a theory is \emph{not} the same as
+the Completeness Theorem (see \S\ref{META.2}), which states that
+$\Gamma \Entails !A$ implies $\Gamma \Proves !A$.
+
+\begin{defn}[Theory of a Structure] % DEF-SEM006
+\label{DEF-SEM006}
+Given a structure~$\Struct M$, the \emph{theory} of
+$\Struct{M}$ is the set $\Theory{M}$ of sentences
+that are true in $\Struct{M}$, i.e., $\Theory{M} =
+\Setabs{!A}{\Sat{M}{!A}}$.
+\end{defn}
+
+We also use the term ``theory'' informally to refer to sets
+of sentences having an intended interpretation, whether deductively
+closed or not.
+
+\begin{prop}
+\label{prop:ThM-complete}
+For any $\Struct{M}$, $\Theory{M}$ is semantically complete.
+\end{prop}
+
+\begin{proof}
+For any sentence~$!A$ either $\Sat{M}{!A}$ or $\Sat{M}{\lnot !A}$,
+so either $!A \in \Theory{M}$ or $\lnot !A \in \Theory{M}$.
+\end{proof}
+
+\begin{defn}[Definable Set] % DEF-SEM007
+\label{DEF-SEM007}
+A subset of $\Domain{M}^n$ is \emph{definable} (in $\Struct{M}$)
+if there is a formula $!A(x_1, \ldots, x_n)$ with free variables
+$x_1, \ldots, x_n$ such that the subset equals
+$\Setabs{\langle a_1, \ldots, a_n \rangle \in
+\Domain{M}^n}{\Sat{M}{!A}[\Subst{s}{a_1}{x_1}, \ldots,
+\Subst{s}{a_n}{x_n}]}$.
+\end{defn}
+
+\begin{defn}[Elementary Equivalence] % DEF-SEM008
+\label{DEF-SEM008}
+Given two structures $\Struct{M}$ and $\Struct M'$ for the same
+language~$\Lang{L}$, we say that $\Struct{M}$ is \emph{elementarily
+  equivalent to} $\Struct M'$, written $\Struct{M} \equiv \Struct M'$,
+if and only if for every sentence~$!A$ of~$\Lang{L}$,
+$\Sat{M}{!A}$ iff $\Sat{M'}{!A}$.
+\end{defn}
+
+\begin{prop}
+\label{prop:equiv}
+  If $\Sat{N}{!A}$ for every $!A \in \Theory{M}$, then
+  $\Struct{M} \equiv \Struct{N}$.
+\end{prop}
+
+\begin{proof}
+Since $\Sat{N}{!A}$ for all $!A \in \Theory{M}$, $\Theory{M} \subseteq
+\Theory{N}$. If $\Sat{N}{!A}$, then $\Sat/{N}{\lnot !A}$, so $\lnot !A
+\notin \Theory{M}$. Since $\Theory{M}$ is complete, $!A \in
+\Theory{M}$. So, $\Theory{N} \subseteq \Theory{M}$, and we have
+$\Struct{M} \equiv \Struct{N}$.
+\end{proof}
+
+\begin{rem}
+\label{rem:R}
+  Consider $\Struct{R} = \langle\Real, <\rangle$, the structure
+  whose domain is the set $\Real$ of the real numbers, in the language
+  comprising only a 2-place predicate symbol interpreted as the $<$
+  relation over the reals. Clearly $\Struct{R}$ is uncountable;
+  however, since $\Theory{R}$ is obviously consistent, by the
+  L\"owenheim--Skolem theorem (see \S\ref{META.4}) it has a countable model, say
+  $\Struct{S}$, and by the above proposition, $\Struct{R}
+  \equiv \Struct{S}$. Moreover, since $\Struct{R}$ and $\Struct{S}$
+  are not isomorphic, this shows that the converse of
+  the Isomorphism Lemma (Theorem~\ref{THM-SEM001}) fails in general:
+  elementary equivalence does not imply isomorphism.
+\end{rem}
+
+\begin{defn}[Axiomatized Theory]
+\label{defn:axiomatized-theory}
+A set of sentences~$\Gamma$ is \emph{closed} iff, whenever
+$\Gamma \Entails !A$ then $!A \in \Gamma$.  The \emph{closure} of a set
+of sentences~$\Gamma$ is $\Setabs{!A}{\Gamma \Entails !A}$.
+We say that~$\Gamma$ is \emph{axiomatized by} a set of
+sentences~$\Delta$ if $\Gamma$ is the closure of~$\Delta$.
+\end{defn}
+
+
+%% ===================================================================
+%% SEM.5: Arithmetic Models
+%% Sources: inc/int/def (DISTRIBUTE — DEF-SEM017, DEF-SEM018),
+%%          inc/tcp/itp (CONDENSE — DEF-SEM019 remark),
+%%          mod/mar/stm, mod/mar/nst, mod/mar/mpa, mod/mar/cmp
+%% ===================================================================
+
+\section{Arithmetic Models} \label{SEM.5}
+
+\begin{defn}[Standard Model of Arithmetic] % DEF-SEM017
+\label{DEF-SEM017}
+The \emph{standard model of arithmetic} is the structure~$\Struct
+N$ defined as follows:
+\begin{enumerate}
+\item $\Domain N = \Nat$
+\item $\Assign{\Obj 0}{N} = 0$
+\item $\Assign{\Obj \prime}{N}(n) = n + 1$ for all $n \in \Nat$
+\item $\Assign{\Obj +}{N}(n, m) = n + m$ for all $n, m \in \Nat$
+\item $\Assign{\Obj \times}{N}(n, m) = n\cdot m$ for all $n, m \in \Nat$
+\item $\Assign{\Obj <}{N} = \Setabs{\tuple{n, m}}{n \in \Nat, m \in
+  \Nat, n < m}$
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[True Arithmetic] % DEF-SEM018
+\label{DEF-SEM018}
+The theory of \emph{true arithmetic} is the set of sentences
+satisfied in the standard model of arithmetic, i.e.,
+\[
+\Th{TA} = \Setabs{!A}{\Sat{N}{!A}}.
+\]
+\end{defn}
+
+$\Th{TA}$ is a theory (closed under entailment), for whenever $\Th{TA} \Entails !A$, $!A$ is
+satisfied in every structure which satisfies~$\Th{TA}$. Since
+$\Sat{N}{\Th{TA}}$, we have that~$\Sat{N}{!A}$, and so $!A \in \Th{TA}$.
+
+\begin{rem}[Interpretability] % DEF-SEM019
+\label{DEF-SEM019}
+Informally, an interpretation of a language $\Lang{L_1}$ in another
+language $\Lang{L_2}$ involves defining the universe, relation symbols,
+and function symbols of $\Lang{L_1}$ with formulas in $\Lang{L_2}$.
+One can show: if a theory~$\Th{T}$ is consistent with the
+interpretation of Robinson's $\Th{Q}$ (see \S\ref{DED.6}), then $\Th{T}$ is
+undecidable, and no consistent extension of $\Th{T}$ is decidable. In
+particular, there is no decidable or complete consistent axiomatizable extension of $\Th{ZFC}$.
+\end{rem}
+
+
+%% ===================================================================
+%% SEM.6: Model-Theoretic Concepts
+%% Sources: mod/bas/red, mod/bas/sub, mod/bas/iso, mod/bas/thm,
+%%          mod/bas/dlo, mod/bas/ove
+%% ===================================================================
+
+\section{Model-Theoretic Concepts} \label{SEM.6}
+
+%%% Reducts and Expansions (from mod/bas/red — CONDENSE)
+
+\subsection*{Reducts and Expansions}
+
+Often it is useful or necessary to compare languages which have
+symbols in common, as well as structures for these languages.  The
+most common case is when all the symbols in a language~$\Lang{L}$
+are also part of a language~$\Lang{L'}$, i.e., $\Lang{L} \subseteq
+\Lang{L'}$.
+
+\begin{defn}[Reduct and Expansion]
+\label{defn:reduct}
+Suppose $\Lang L \subseteq \Lang L'$, $\Struct M$ is an
+$\Lang L$-structure and $\Struct M'$ is an $\Lang L'$-structure.
+$\Struct M$ is the \emph{reduct} of $\Struct M'$ to $\Lang L$, and
+$\Struct M'$ is an \emph{expansion} of $\Struct M$ to $\Lang L'$ iff
+\begin{enumerate}
+\item $\Domain{M} = \Domain{M'}$;
+\item For every constant symbol~$c \in \Lang L$, $\Assign{c}{M} =
+  \Assign{c}{M'}$;
+\item For every function symbol~$f \in \Lang L$, $\Assign{f}{M} =
+  \Assign{f}{M'}$;
+\item For every predicate symbol~$P \in \Lang L$, $\Assign{P}{M} =
+  \Assign{P}{M'}$.
+\end{enumerate}
+\end{defn}
+
+If $\Struct{M}$ is a reduct of $\Struct{M'}$, then for all
+$\Lang{L}$-sentences~$!A$, $\Sat{M}{!A}$ iff $\Sat{M'}{!A}$.
+
+When we have an $\Lang{L}$-structure $\Struct{M}$, and $\Lang{L'} =
+\Lang{L} \cup \{P\}$ is the expansion of $\Lang{L}$ obtained by adding
+a single $n$-place predicate symbol~$P$, and $R \subseteq \Domain{M}^n$
+is an $n$-place relation, then we write $\Expan{M}{R}$ for the
+expansion~$\Struct{M'}$ of~$\Struct{M}$ with $\Assign{P}{M'} = R$.
+
+%%% Substructures (from mod/bas/sub — KEEP)
+
+\subsection*{Substructures}
+
+The domain of a structure~$\Struct{M}$ may be a subset of
+another~$\Struct{M'}$.  But we should obviously only consider
+$\Struct{M}$ a ``part'' of $\Struct{M'}$ if not only $\Domain{M}
+\subseteq \Domain{M'}$, but $\Struct{M}$ and $\Struct{M'}$ ``agree''
+in how they interpret the symbols of the language at least on the
+shared part~$\Domain{M}$.
+
+\begin{defn}[Substructure] % PRIM-SEM013
+\label{PRIM-SEM013}
+Given structures $\Struct M$ and $\Struct M'$ for the same
+language~$\Lang L$, we say that $\Struct M$ is a \emph{substructure}
+of $\Struct M'$, and $\Struct M'$ an \emph{extension} of $\Struct M$,
+written $\Struct M \substruct \Struct M'$, iff
+\begin{enumerate}
+\item $\Domain{M} \subseteq \Domain{M'}$;
+\item For each constant $c \in \Lang L$, $\Assign{c}{M} =
+    \Assign{c}{M'}$;
+\item For each $n$-place function symbol $f \in \Lang L$,
+  $\Assign{f}{M}(a_1, \dots, a_n) = \Assign{f}{M'}(a_1, \dots, a_n)$
+  for all $a_1$, \dots, $a_n \in \Domain{M}$;
+\item For each $n$-place predicate symbol $R \in \Lang L$, $\langle
+  a_1, \dots, a_n\rangle \in \Assign{R}{M}$ iff $\langle a_1, \dots,
+  a_n\rangle \in \Assign{R}{M'}$ for all $a_1$, \dots, $a_n \in
+  \Domain{M}$.
+\end{enumerate}
+\end{defn}
+
+\begin{rem}
+\label{rem:substructure}
+If the language contains no constant or function symbols, then any
+non-empty $N \subseteq \Domain{M}$ determines a substructure~$\Struct{N}$ of
+$\Struct M$ with domain~$\Domain{N} = N$ by putting $\Assign{R}{N} =
+\Assign{R}{M} \cap N^n$.
+\end{rem}
+
+%%% Homomorphisms (NEW-CONTENT from DOMAIN-SEMANTICS)
+
+\subsection*{Homomorphisms}
+
+\begin{defn}[Homomorphism] % PRIM-SEM014
+\label{PRIM-SEM014}
+A function $h \colon \Domain{M} \to \Domain{M'}$ between structures
+$\Struct{M}$ and $\Struct{M'}$ for the same language~$\Lang{L}$ is a
+\emph{homomorphism} if:
+\begin{enumerate}
+\item For every constant symbol $c$: $h(\Assign{c}{M}) = \Assign{c}{M'}$;
+\item For every $n$-place function symbol $f$:
+  $h(\Assign{f}{M}(a_1, \ldots, a_n)) = \Assign{f}{M'}(h(a_1), \ldots, h(a_n))$;
+\item For every $n$-place predicate symbol $R$:
+  $\langle a_1, \ldots, a_n \rangle \in \Assign{R}{M} \Rightarrow
+  \langle h(a_1), \ldots, h(a_n) \rangle \in \Assign{R}{M'}$.
+\end{enumerate}
+A homomorphism is weaker than an isomorphism: it need not be bijective,
+and it preserves relations in one direction only (it need not reflect them).
+\end{defn}
+
+%%% Embedding (NEW-CONTENT from DOMAIN-SEMANTICS)
+
+\begin{defn}[Embedding] % DEF-SEM016
+\label{DEF-SEM016}
+An \emph{embedding} $h \colon \Domain{M} \hookrightarrow \Domain{M'}$
+between structures $\Struct{M}$ and $\Struct{M'}$ for the same
+language~$\Lang{L}$ is an injective homomorphism that also
+\emph{reflects} relations: for every $n$-place predicate symbol $R$,
+\[
+\langle a_1, \ldots, a_n \rangle \in \Assign{R}{M} \quad\text{iff}\quad
+\langle h(a_1), \ldots, h(a_n) \rangle \in \Assign{R}{M'}.
+\]
+Every isomorphism is a surjective embedding; every embedding is a
+homomorphism that additionally reflects atomic formulas.
+\end{defn}
+
+%%% Isomorphism (from mod/bas/iso — KEEP)
+
+\subsection*{Isomorphism}
+
+First-order structures can be alike in one of two ways. One way in
+which they can be alike is that they make the same sentences
+true---we call such structures \emph{elementarily equivalent}
+(Definition~\ref{DEF-SEM008}). But structures can be very different and still
+make the same sentences true---for instance, one can be countable and
+the other not.  So another, stricter, aspect in which structures can
+be alike is if they are fundamentally the same, in the sense that they
+only differ in the objects that make them up, but not in their
+structural features.
+
+\begin{defn}[Isomorphism] % PRIM-SEM012
+\label{PRIM-SEM012}
+Given two structures $\Struct{M}$ and
+$\Struct M'$ for the same language~$\Lang L$, we say that
+$\Struct{M}$ is \emph{isomorphic to}~$\Struct M'$, written $\Struct{M}
+\simeq \Struct M'$, if and only if there is a function $h \colon
+\Domain{M} \to \Domain{M'}$ such that:
+\begin{enumerate}
+\item $h$ is injective: if $h(x) = h(y)$ then $x = y$;
+\item $h$ is surjective: for every $y \in \Domain{M'}$ there
+  is $x \in \Domain{M}$ such that $h(x) = y$;
+\item For every constant symbol $c$:
+  $h(\Assign{c}{M}) = \Assign{c}{M'}$;
+\item For every $n$-place predicate symbol~$P$:
+  \[
+  \tuple{a_1, \dots, a_n}\in \Assign{P}{M} \quad\text{iff}\quad
+  \tuple{h(a_1), \dots, h(a_n)} \in \Assign{P}{M'};
+  \]
+\item For every $n$-place function symbol $f$:
+  \[
+  h(\Assign{f}{M}(a_1, \dots, a_n)) =
+  \Assign{f}{M'}(h(a_1), \dots, h(a_n)).
+  \]
+\end{enumerate}
+\end{defn}
+
+\begin{thm}[Isomorphism Lemma] % THM-SEM001
+\label{THM-SEM001}
+If $\Struct{M} \iso \Struct M'$ then $\Struct{M} \equiv
+\Struct{M'}$.
+\end{thm}
+
+\begin{proof}
+Let $h$ be an isomorphism of $\Struct{M}$ onto $\Struct M'$. For any
+assignment~$s$, $h \circ s$ is the composition of $h$ and $s$, i.e.,
+the assignment in $\Struct{M'}$ such that $(h \circ s)(x) = h(s(x))$.
+By induction on $t$ and $!A$ one proves the stronger claims:
+\begin{enumerate}
+  \item[a.] $h(\Value{t}{M}[s]) = \Value{t}{M'}[h\circ s]$.
+  \item[b.] $\Sat{M}{!A}[s]$ iff $\Sat{M'}{!A}[h \circ s]$.
+\end{enumerate}
+Part (a) is proved by induction on the complexity of~$t$.
+\begin{enumerate}
+\item If $t \ident c$, then $h(\Value{c}{M}[s]) = h(\Assign{c}{M}) = \Assign{c}{M'} =
+  \Value{c}{M'}[h \circ s]$.
+\item If $t \ident x$, then $h(\Value{x}{M}[s]) =
+  h(s(x)) = (h \circ s)(x) = \Value{x}{M'}[h \circ s]$.
+\item If $t \ident f(t_1, \dots, t_n)$, then by induction hypothesis
+  $h(\Value{t_i}{M}[s]) = \Value{t_i}{M'}[h\circ s]$ for each $i$, so
+  \begin{align*}
+    h(\Value{t}{M}[s])
+    & = h(\Assign{f}{M}(\Value{t_1}{M}[s], \dots, \Value{t_n}{M}[s])) \\
+    & = \Assign{f}{M'}(h(\Value{t_1}{M}[s]), \dots,
+    h(\Value{t_n}{M}[s])) \\
+    & = \Assign{f}{M'}(\Value{t_1}{M'}[h \circ s], \dots,
+    \Value{t_n}{M'}[h \circ s]) \\
+    & = \Value{t}{M'}[h\circ s].
+  \end{align*}
+\end{enumerate}
+Part (b) is proved by induction on the complexity of~$!A$.
+If $!A$ is a sentence, the assignments~$s$ and $h \circ s$ are
+irrelevant, and we have $\Sat{M}{!A}$ iff $\Sat{M'}{!A}$.
+\end{proof}
+
+\begin{defn}
+An \emph{automorphism} of a structure $\Struct{M}$ is an isomorphism
+of $\Struct{M}$ onto itself.
+\end{defn}
+
+\begin{defn}[Elementary Substructure] % DEF-SEM011
+\label{DEF-SEM011}
+$\Struct{M}$ is an \emph{elementary substructure} of $\Struct{M'}$,
+written $\Struct{M} \preccurlyeq \Struct{M'}$, if $\Struct{M}$ is a
+substructure of $\Struct{M'}$ and for every formula
+$!A(x_1, \ldots, x_n)$ and all $a_1, \ldots, a_n \in \Domain{M}$:
+$\Sat{M}{!A}[a_1, \ldots, a_n]$ iff $\Sat{M'}{!A}[a_1, \ldots, a_n]$.
+\end{defn}
+
+%%% Diagram (NEW-CONTENT from DOMAIN-SEMANTICS)
+
+\subsection*{Diagrams}
+
+\begin{defn}[Diagram] % DEF-SEM012
+\label{DEF-SEM012}
+Let $\Struct{M}$ be a structure for $\Lang{L}$. Expand $\Lang{L}$ to
+$\Lang{L}_M = \Lang{L} \cup \{c_a : a \in \Domain{M}\}$ by adding a
+new constant symbol~$c_a$ for each element~$a$ of the domain. The
+\emph{atomic diagram} of $\Struct{M}$ is the set
+\[
+\mathrm{Diag}(\Struct{M}) = \Setabs{!A}{!A \text{ is atomic or negated
+    atomic in } \Lang{L}_M \text{ and } \Sat{M}{!A}}.
+\]
+The \emph{elementary diagram} of $\Struct{M}$ is the set
+\[
+\mathrm{ElDiag}(\Struct{M}) = \Setabs{!A}{!A \in
+  \mathrm{Sent}(\Lang{L}_M) \text{ and } \Sat{M}{!A}}.
+\]
+Any model of $\mathrm{Diag}(\Struct{M})$ contains an isomorphic copy
+of $\Struct{M}$ (via the map $a \mapsto c_a^{\Struct{M}}$), and any
+model of $\mathrm{ElDiag}(\Struct{M})$ contains an elementary
+extension of $\Struct{M}$.
+\end{defn}
+
+%%% Type (NEW-CONTENT from DOMAIN-SEMANTICS)
+
+\begin{defn}[Complete Type] % DEF-SEM013
+\label{DEF-SEM013}
+Let $\Struct{M}$ be a structure for $\Lang{L}$ and $A \subseteq
+\Domain{M}$. A \emph{complete $n$-type over $A$} is a maximal
+consistent set~$p$ of formulas $!A(x_1, \ldots, x_n)$ with
+parameters from $A$ that is finitely satisfiable in $\Struct{M}$.
+The set of all complete $n$-types over $A$ is denoted
+$S_n^{\Struct{M}}(A)$. Types classify the possible ``behaviors'' of
+$n$-tuples in models extending~$\Struct{M}$.
+\end{defn}
+
+%%% Ultraproduct (NEW-CONTENT from DOMAIN-SEMANTICS)
+
+\subsection*{Ultraproducts}
+
+\begin{defn}[Ultraproduct] % DEF-SEM015
+\label{DEF-SEM015}
+Given a family of structures $\{\Struct{M}_i\}_{i \in I}$ for the
+same language~$\Lang{L}$ and an ultrafilter $\mathcal{U}$ on $I$, the
+\emph{ultraproduct} $\prod_{i \in I} \Struct{M}_i / \mathcal{U}$ is
+the structure with domain
+\[
+\prod_{i \in I} \Domain{M_i} \big/ {\sim_{\mathcal{U}}},
+\]
+where $f \sim_{\mathcal{U}} g$ iff $\{i \in I : f(i) = g(i)\} \in
+\mathcal{U}$. Constant, function, and predicate symbols are
+interpreted componentwise modulo~$\mathcal{U}$. When all
+$\Struct{M}_i = \Struct{M}$, the construction is called an
+\emph{ultrapower} of $\Struct{M}$.
+\end{defn}
+
+Ultraproducts provide a purely model-theoretic proof of compactness
+(see CP-003, \S\ref{META.3}): a set of sentences is satisfiable iff
+every finite subset is, by taking an ultraproduct of the finite-subset
+models. This avoids completeness entirely.
+
+%%% Categoricity (from mod/bas/dlo — KEEP, with DEF-SEM014 added)
+
+\subsection*{Categoricity and Dense Linear Orders}
+
+\begin{defn}[Categoricity] % DEF-SEM014
+\label{DEF-SEM014}
+A theory~$T$ is \emph{$\kappa$-categorical} if all models of~$T$ of
+cardinality~$\kappa$ are isomorphic. By the L\"owenheim--Skolem
+theorem, no theory with infinite models is categorical in all
+cardinalities.
+\end{defn}
+
+\begin{defn}[Dense Linear Ordering]
+  A \emph{dense linear ordering without endpoints} is a structure
+  $\Struct{M}$ for the language containing a single 2-place
+  predicate symbol~$<$ satisfying the following sentences:
+  \begin{enumerate}
+  \item $\lforall[x][\lnot x < x]$ \hfill (irreflexivity)
+  \item $\lforall[x][\lforall[y][\lforall[z][(x < y \lif (y < z \lif x
+    <z ))]]]$ \hfill (transitivity)
+  \item $\lforall[x][\lforall[y][(x< y \lor \eq[x][y] \lor y < x)]]$ \hfill (totality)
+  \item $\lforall[x][\lexists[y][x < y]]$ \hfill (no greatest element)
+  \item $\lforall[x][\lexists[y][y < x]]$ \hfill (no least element)
+  \item $\lforall[x][\lforall[y][(x < y \lif \lexists[z][(x < z \land
+        z < y)])]]$ \hfill (density)
+ \end{enumerate}
+\end{defn}
+
+\begin{thm}[Cantor]
+\label{thm:cantorQ}
+  Any two countable dense linear orderings without
+  endpoints are isomorphic.
+\end{thm}
+
+\begin{proof}
+  Let $\Struct{M_1}$ and $\Struct{M_2}$ be countable dense linear
+  orderings without endpoints, with ${<_1} = \Assign{<}{M_1}$ and ${<_2} =
+  \Assign{<}{M_2}$, and let $\PIso{I}$ be the set of all partial
+  isomorphisms between them. $\PIso{I}$ is not empty since at least
+  $\emptyset \in \PIso{I}$. We show that $\PIso{I}$ satisfies the
+  Back-and-Forth property.
+
+  To show $\PIso{I}$ satisfies the Forth property, let $p \in
+  \PIso{I}$ and let $p(a_i) = b_i$ for $i = 1$, \dots,~$n$, and
+  without loss of generality suppose $a_1 <_1 a_2 <_1 \cdots <_1
+  a_n$. Given $a \in \Domain{M_1}$, find $b \in \Domain{M_2}$ as
+  follows:
+  \begin{enumerate}
+  \item if $a <_1 a_1$ let $b \in \Domain{M_2}$ be such that $b <_2
+    b_1$;
+  \item if $a_n <_1 a$ let $b \in \Domain{M_2}$ be such that $b_n <_2 b$;
+ \item if $a_i <_1 a <_1 a_{i+1}$ for some $i$, then let $b \in
+   \Domain{M_2}$ be such that $b_i <_2 b <_2 b_{i+1}$.
+  \end{enumerate}
+  It is always possible to find a $b$ with the desired property since
+  $\Struct{M_2}$ is a dense linear ordering without endpoints. Define
+  $q = p \cup \{ \langle a, b \rangle \}$ so that $q \in \PIso{I}$ is
+  the desired extension of $p$. The Back property is similar. By
+  the back-and-forth theorem (applied to countable structures),
+  $\Struct{M_1} \iso \Struct{M_2}$.
+\end{proof}
+
+The theory of dense linear orders without endpoints is thus
+$\aleph_0$-categorical.
+
+\begin{rem}
+  Let $\Struct{S}$ be any countable dense linear ordering without
+  endpoints. Then by Cantor's theorem, $\Struct{S} \iso
+  \Struct{Q}$, where $\Struct{Q} = (\Rat, <)$. Now consider the
+  structure~$\Struct{R} =
+  (\Real, <)$ from Remark~\ref{rem:R}. There is
+  a countable structure~$\Struct{S}$ such that $\Struct{R}
+  \equiv \Struct{S}$. But $\Struct{S}$ is a countable dense
+  linear ordering without endpoints, and so it is isomorphic (and
+  hence elementarily equivalent) to $\Struct{Q}$. By
+  transitivity of elementary equivalence, $\Struct{R} \equiv
+  \Struct{Q}$.
+\end{rem}
+
+%%% Standard and Non-Standard Models of Arithmetic
+%%% (from mod/mar/stm, mod/mar/nst, mod/mar/mpa, mod/mar/cmp — CONDENSE)
+
+\subsection*{Standard and Non-Standard Models of Arithmetic}
+
+A structure for $\Lang{L_A}$ is \emph{standard} if it is
+isomorphic to~$\Struct{N}$.
+
+\begin{prop}
+\label{prop:standard-domain}
+If a structure~$\Struct{M}$ is standard,
+then its domain is the set of values of the standard numerals, i.e.,
+$\Domain{M} = \Setabs{\Value{\num{n}}{M}}{n \in \Nat}$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+Since $\Struct{M}$ is standard, there is an isomorphism $g \colon \Nat
+\to \Domain{M}$. Then $g(n) = g(\Value{\num{n}}{N}) =
+\Value{\num{n}}{M}$, and $g$ is surjective.
+\end{proof}
+
+\begin{prop}
+\label{prop:thq-standard}
+If $\Sat{M}{\Th{Q}}$, and $\Domain{M} = \Setabs{\Value{\num{n}}{M}}{n
+  \in \Nat}$, then $\Struct{M}$ is standard.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+The function $g(n) = \Value{\num{n}}{M}$ is surjective by hypothesis
+and injective because $\Th{Q} \Proves \eq/[\num{n}][\num{m}]$ whenever
+$n \neq m$, so $\Sat{M}{\eq/[\num{n}][\num{m}]}$. One verifies that
+$g$ is an isomorphism by checking that $\Th{Q}$ proves the relevant
+identities for $\Obj{0}$, $\prime$, $+$, $\times$, and $<$.
+\end{proof}
+
+A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{non-standard}
+if it is not isomorphic to~$\Struct{N}$. The elements $x \in
+\Domain{M}$ which are equal to $\Value{\num{n}}{M}$ for some $n \in
+\Nat$ are called \emph{standard numbers} (of $\Struct{M}$), and those
+not, \emph{non-standard numbers}.
+
+If a structure~$\Struct{M}$ for $\Lang{L_A}$ contains a
+non-standard number, $\Struct{M}$ is non-standard.
+
+\begin{prop}
+$\Th{TA}$ has a countable non-standard model.
+\end{prop}
+
+\begin{proof}
+Expand $\Lang{L_A}$ by a new constant symbol~$c$ and consider the set of
+sentences
+\[
+\Gamma = \Th{TA} \cup \{\eq/[c][\num{0}], \eq/[c][\num{1}],
+\eq/[c][\num{2}], \dots\}
+\]
+Any model~$\Struct{M^c}$ of~$\Gamma$ would contain an element~$x =
+\Assign{c}{M}$ which is non-standard, since $x \neq
+\Value{\num{n}}{M}$ for all $n \in \Nat$. Also, obviously,
+$\Sat{M^c}{\Th{TA}}$, since $\Th{TA} \subseteq \Gamma$. If we turn
+$\Struct{M^c}$ into a structure~$\Struct{M}$ for $\Lang{L_A}$
+simply by forgetting about~$c$, its domain still contains the
+non-standard~$x$, and also~$\Sat{M}{\Th{TA}}$.
+
+We use the compactness theorem to show that~$\Gamma$ has a model. Consider any finite subset $\Gamma_0 \subseteq
+\Gamma$. Suppose $k$ is
+the largest number so that $\eq/[c][\num{k}] \in \Gamma_0$. Define
+$\Struct{N_k}$ by expanding~$\Struct{N}$ to include the
+interpretation~$\Assign{c}{N_k} = k+1$. Then $\Sat{N_k}{\Gamma_0}$,
+since $c$ does not occur in~$\Th{TA}$, and $\Value{c}{N_k} = k+1 \neq n$
+for $n \le k$. Thus every finite subset of~$\Gamma$ is
+satisfiable, so by compactness, $\Gamma$ is satisfiable.
+\end{proof}
+
+%%% Block structure of non-standard models of PA
+
+In a non-standard model~$\Struct{M}$ of $\Th{PA}$, the ordering
+$\Assign{<}{M}$ is a linear strict order. The element
+$\Assign{\Obj{0}}{M}$ is least, every element has a unique successor
+and (except for $\Assign{\Obj{0}}{M}$) a unique predecessor, and all
+standard elements are less than all non-standard elements.
+
+Every non-standard element~$x$ is contained in a \emph{block}~$[x]$
+consisting of all elements reachable from~$x$ by finitely many
+applications of successor and predecessor. Each block has no least and
+no greatest element. Distinct blocks are disjoint and respect the
+ordering: if $x < y$ and $[x] \neq [y]$, then $u < v$ for all $u \in
+[x]$ and $v \in [y]$.
+
+\begin{prop}
+\label{prop:blocks-dense}
+The ordering of the non-standard blocks is dense: if $x < y$ and
+$[x] \neq [y]$, then there is a block $[z]$ distinct from both that is
+between them.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+$\Th{PA}$ proves that every element is divisible by~$2$ (possibly with
+remainder). If $x$ is non-standard, the ``average'' $z$ of $x$
+and~$y$ satisfies $x < z < y$ and $[z] \neq [x]$, $[z] \neq [y]$.
+\end{proof}
+
+The non-standard blocks are therefore ordered like the rationals: they
+form a countable dense linear ordering without endpoints.  By
+Cantor's theorem (Theorem~\ref{thm:cantorQ}), any two such orderings are isomorphic. It follows
+that for any two countable non-standard models $\Struct{M}_1$ and
+$\Struct{M_2}$ of true arithmetic, their reducts to the language
+containing $<$ and $=$ only are isomorphic. However, they need not be
+isomorphic in the full language of arithmetic, as there are
+non-isomorphic ways to define addition and multiplication.
+
+\begin{defn}[Computable Structure]
+\label{defn:computable-structure}
+A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{computable} iff
+  $\Domain{M} = \Nat$ and $\Assign{\prime}{M}$, $\Assign{+}{M}$,
+  $\Assign{\times}{M}$ are computable functions and $\Assign{<}{M}$ is
+  a decidable relation.
+\end{defn}
+
+\begin{thm}[Tennenbaum's Theorem]
+\label{thm:tennenbaum}
+$\Struct{N}$ is the only computable model of~$\Th{PA}$.
+\end{thm}
+
+%%% Overspill (from mod/bas/ove — CONDENSE)
+
+\subsection*{Overspill}
+
+A classical application of the compactness theorem is the overspill
+principle.
+
+\begin{thm}[Overspill]
+\label{thm:overspill}
+If a set $\Gamma$ of sentences has arbitrarily
+large finite models, then it has an infinite model.
+\end{thm}
+
+\begin{proof}
+Expand the language of $\Gamma$ by adding countably many new constants
+$c_0$, $c_1$, \dots\ and consider $\Gamma \cup \{c_i \neq c_j :
+i \neq j\}$. Since $\Gamma$ has arbitrarily large finite models,
+every finite subset of this expanded set is satisfiable. By compactness, the whole set has a
+model $\Struct M$ whose domain
+must be infinite, since it satisfies all inequalities $c_i \neq c_j$.
+\end{proof}
+
+\begin{prop}
+\label{prop:inf-not-fo}
+There is no sentence $!A$ of any first-order language that is true in
+a structure~$\Struct M$ if and only if the domain $\Domain{M}$ of
+the structure is infinite.
+\end{prop}
+
+\begin{proof}
+If there were such a $!A$, its negation $\lnot !A$ would be true in
+all and only the finite structures, and it would therefore have
+arbitrarily large finite models but lack an infinite model,
+contradicting the overspill theorem.
+\end{proof}
+
+
+%% ===================================================================
+%% SEM.7: Theorems
+%% Sources: fol/syn/ext (KEEP)
+%% ===================================================================
+
+\section{Theorems} \label{SEM.7}
+
+\subsection*{The Coincidence Lemma}
+
+Extensionality, sometimes called relevance, can be expressed
+informally as follows: the only factors that bear upon the
+satisfaction of formula~$!A$ in a structure~$\Struct M$
+relative to a variable assignment~$s$, are the size of the
+domain and the assignments made by~$\Struct M$ and~$s$ to the
+elements of the language that actually appear in~$!A$.
+
+One immediate consequence is that where two
+structures~$\Struct M$ and~$\Struct M'$ agree on all the elements
+of the language appearing in a sentence~$!A$ and have the same
+domain,~$\Struct M$ and~$\Struct M'$ must also agree on whether or not
+$!A$ itself is true.
+
+\begin{prop}[Extensionality / Coincidence Lemma] % THM-SEM002
+\label{THM-SEM002}
+  Let $!A$ be a formula, and $\Struct M_1$ and $\Struct M_2$ be
+  structures with $\Domain{M_1} = \Domain{M_2}$, and $s$ a
+  variable assignment on $\Domain{M_1} = \Domain{M_2}$.  If
+  $\Assign{c}{M_1} = \Assign{c}{M_2}$, $\Assign{R}{M_1}=\Assign{R}{M_2}$,
+  and $\Assign{f}{M_1} = \Assign{f}{M_2}$ for every constant symbol~$c$,
+  relation symbol~$R$, and function symbol $f$ occurring in~$!A$, then
+  $\Sat{M_1}{!A}[s]$ iff $\Sat{M_2}{!A}[s]$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+  First prove (by induction on~$t$) that for every term,
+  $\Value{t}{M_1}[s] = \Value{t}{M_2}[s]$.  Then prove the proposition
+  by induction on~$!A$, making use of the claim just proved for the
+  induction basis (where $!A$ is atomic).
+\end{proof}
+
+\begin{cor}[Extensionality for Sentences]
+\label{cor:extensionality-sent}
+  Let $!A$ be a sentence and $\Struct{M_1}$, $\Struct{M_2}$ as in
+  the Coincidence Lemma. Then $\Sat{M_1}{!A}$ iff $\Sat{M_2}{!A}$.
+\end{cor}
+
+\begin{proof}
+Follows from the Coincidence Lemma by Corollary~\ref{cor:sat-sentence}.
+\end{proof}
+
+\subsection*{The Substitution Lemma}
+
+Moreover, the value of a term, and whether or not a structure
+satisfies a formula, only depend on the values of its subterms.
+
+\begin{prop}[Substitution Lemma for Terms] % THM-SYN003 (terms)
+\label{THM-SYN003:terms}
+Let $\Struct M$ be a structure, $t$ and $t'$ terms, and $s$ a
+variable assignment. Then $\Value{\Subst{t}{t'}{x}}{M}[s] =
+\Value{t}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}]$.
+\end{prop}
+
+\begin{proof}
+By induction on~$t$.
+\begin{enumerate}
+\item If $t$ is a constant, say, $t\ident c$, then $\Subst{t}{t'}{x} =
+  c$, and $\Value{c}{M}[s] = \Assign{c}{M} =
+  \Value{c}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}]$.
+
+\item If $t$ is a variable other than~$x$, say, $t \ident y$, then
+  $\Subst{t}{t'}{x} = y$, and $\Value{y}{M}[s] =
+  \Value{y}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}]$ since
+  $\varAssign{s}{\Subst{s}{\Value{t'}{M}[s]}{x}}{x}$.
+
+\item If $t \ident x$, then $\Subst{t}{t'}{x} = t'$. But
+  $\Value{x}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}] = \Value{t'}{M}[s]$ by
+  definition of~$\Subst{s}{\Value{t'}{M}[s]}{x}$.
+
+\item If $t \ident \Atom{f}{t_1,\dots,t_n}$ then by the
+  definition of substitution and the induction hypothesis:
+\begin{align*}
+  \Value{\Subst{t}{t'}{x}}{M}[s]
+& = \Assign{f}{M}(\Value{\Subst{t_1}{t'}{x}}{M}[s], \dots,
+    \Value{\Subst{t_n}{t'}{x}}{M}[s])\\
+& = \Assign{f}{M}(\Value{t_1}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}], \dots,
+   \Value{t_n}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}])\\
+& = \Value{t}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}].
+\end{align*}
+\end{enumerate}
+\end{proof}
+
+\begin{prop}[Substitution Lemma for Formulas] % THM-SYN003 (formulas)
+\label{THM-SYN003:formulas}
+Let $\Struct M$ be
+a structure, $!A$ a formula, $t'$~a term, and $s$~a variable
+assignment. Then $\Sat{M}{\Subst{!A}{t'}{x}}[s]$ iff
+$\Sat{M}{!A}[\Subst{s}{\Value{t'}{M}[s]}{x}]$.
+\end{prop}
+
+\begin{proof}
+By induction on~$!A$, parallel to the proof for terms.
+\end{proof}
+
+The point of the Substitution Lemma is the following. Suppose we have
+a term $t$ or a formula~$!A$ and some term~$t'$, and we want to know
+the value of $\Subst{t}{t'}{x}$ or whether or not $\Subst{!A}{t'}{x}$
+is satisfied in a structure~$\Struct M$ relative to a variable
+assignment~$s$. Then we can either perform the substitution first and
+then consider the value or satisfaction relative to $\Struct{M}$
+and~$s$, or we can first determine the value~$m = \Value{t'}{M}[s]$ of
+$t'$ in $\Struct{M}$ relative to~$s$, change the variable assignment
+to~$\Subst{s}{m}{x}$ and then consider the value of~$t$ in
+$\Struct{M}$ and~$\Subst{s}{m}{x}$, or whether
+$\Sat{M}{!A}[\Subst{s}{m}{x}]$. The Substitution Lemma guarantees
+that the answer will be the same, whichever way we do it.

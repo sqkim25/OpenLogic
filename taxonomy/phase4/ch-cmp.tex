@@ -1,0 +1,2031 @@
+\chapter{Computation} \label{ch:cmp}
+
+%% ===================================================================
+%% CMP.1: Recursive Functions
+%% ===================================================================
+
+\section{Recursive Functions} \label{CMP.1}
+
+We now develop the theory of computable functions on the natural
+numbers, beginning with the primitive recursive functions and extending
+to the partial recursive functions via unbounded search.  The primitive
+recursive functions form a robust class closed under composition and
+primitive recursion, but they do not exhaust the computable functions.
+To capture computability in full, we must allow partial functions and
+the $\mu$-operator.
+
+\subsection{Partial and total functions} \label{CMP.1.1}
+
+We work throughout with functions whose domain and codomain are
+subsets of $\Nat$.  A function may fail to be defined on some inputs;
+we make this precise.
+
+\begin{defn}[Partial function] % DEF-CMP001
+\label{DEF-CMP001}
+A \emph{partial function} $f\colon \Nat^k \pto \Nat$ is a function
+from a subset of $\Nat^k$ to $\Nat$.  We write $f(\vec{x}) \fdefined$
+to mean that $f$ is defined at $\vec{x}$ (i.e., $\vec{x}$ is in the
+domain of $f$), and $f(\vec{x}) \fundefined$ to mean that $f$ is not
+defined at $\vec{x}$.  We write $f(\vec{x}) \simeq g(\vec{x})$ to
+mean that either both $f(\vec{x})$ and $g(\vec{x})$ are undefined, or
+both are defined and equal.
+\end{defn}
+
+\begin{defn}[Total function] % DEF-CMP002
+\label{DEF-CMP002}
+A partial function $f\colon \Nat^k \pto \Nat$ is \emph{total} if
+$f(\vec{x}) \fdefined$ for every $\vec{x} \in \Nat^k$, i.e., if
+its domain is all of $\Nat^k$.
+\end{defn}
+
+We adopt the convention that if $h$ and $g_0, \dots, g_k$ are all
+partial functions, then $h(g_0(\vec{x}), \dots, g_k(\vec{x}))$ is
+defined if and only if each $g_i$ is defined at $\vec{x}$, and $h$ is
+defined at $g_0(\vec{x}), \dots, g_k(\vec{x})$.
+
+\subsection{Composition and primitive recursion} \label{CMP.1.2}
+
+\begin{defn}[Composition] % PRIM-CMP001a
+\label{DEF-CMP-COMP}
+Suppose $f$ is a $k$-place function, and $g_0$, \dots, $g_{k-1}$ are
+$k$ functions which are all $n$-place.  The function defined by
+\emph{composition from $f$ and $g_0$, \dots,~$g_{k-1}$} is the
+$n$-place function~$h$ defined by
+\[
+h(x_0, \dots, x_{n-1}) =
+f(g_0(x_0, \dots, x_{n-1}), \dots, g_{k-1}(x_0, \dots, x_{n-1})).
+\]
+\end{defn}
+
+Together with the projection functions $\Proj{n}{i}(x_0, \dots,
+x_{n-1}) = x_i$, composition provides sufficient flexibility to
+rearrange, duplicate, or discard arguments.  For instance, a
+three-place function $g(x_0, y, z) = \Succ(z)$ can be defined as
+$g(x_0, y, z) = \Succ(\Proj{3}{2}(x_0, y, z))$.
+
+\begin{defn}[Primitive recursion] % PRIM-CMP002
+\label{PRIM-CMP002}
+Suppose $f$ is a $k$-place function ($k \geq 1$) and $g$ is a
+$(k+2)$-place function.  The function defined by \emph{primitive
+  recursion from $f$ and $g$} is the $(k+1)$-place function~$h$
+defined by the equations
+\begin{align*}
+  h(x_0, \dots, x_{k-1}, 0) & = f(x_0, \dots, x_{k-1}) \\
+  h(x_0, \dots, x_{k-1}, y+1) & = g(x_0, \dots, x_{k-1}, y, h(x_0,
+  \dots, x_{k-1}, y))
+\end{align*}
+\end{defn}
+
+\begin{defn}[Primitive recursive function] % PRIM-CMP002
+\label{PRIM-CMP002-SET}
+The set of \emph{primitive recursive functions} is the set of
+functions from $\Nat^n$ to $\Nat$, defined inductively by the
+following clauses:
+\begin{enumerate}
+\item $\Zero$ is primitive recursive.
+\item $\Succ$ is primitive recursive.
+\item Each projection function $\Proj{n}{i}$ is primitive recursive.
+\item If $f$ is a $k$-place primitive recursive function and $g_0$,
+  \dots,~$g_{k-1}$ are $n$-place primitive recursive functions, then
+  the composition of $f$ with $g_0$, \dots,~$g_{k-1}$ is primitive
+  recursive.
+\item If $f$ is a $k$-place primitive recursive function and $g$ is a
+  $k+2$-place primitive recursive function, then the function defined
+  by primitive recursion from $f$ and $g$ is primitive recursive.
+\end{enumerate}
+Equivalently, the set of primitive recursive functions is the smallest
+set containing $\Zero$, $\Succ$, and the projection
+functions~$\Proj{n}{j}$, and which is closed under composition and
+primitive recursion.
+\end{defn}
+
+
+\subsection{Primitive recursive relations} \label{CMP.1.3}
+
+\begin{defn}[Characteristic function] % DEF-CMP003
+\label{DEF-CMP003}
+The \emph{characteristic function} of a relation $R(\vec{x})$ is the
+function
+\[
+\Char{R}(\vec{x}) = \begin{cases}
+  1 & \text{if $R(\vec{x})$} \\
+  0 & \text{otherwise.}
+\end{cases}
+\]
+A relation $R(\vec{x})$ is said to be \emph{primitive recursive} if
+its characteristic function $\Char{R}$ is primitive recursive.
+\end{defn}
+
+For example, the relation $\fn{IsZero}(x)$, which holds if and only
+if $x = 0$, corresponds to the function $\Char{\fn{IsZero}}$ defined
+by primitive recursion: $\Char{\fn{IsZero}}(0) = 1$ and
+$\Char{\fn{IsZero}}(x+1) = 0$.  The equality relation $x = y$ is
+primitive recursive, defined by $\fn{IsZero}(\left|x - y\right|)$,
+and the ordering $x \leq y$ is primitive recursive, defined by
+$\fn{IsZero}(x \tsub y)$.
+
+\begin{prop} \label{PROP-CMP-BOOL}
+The set of primitive recursive relations is closed under Boolean
+operations, that is, if $P(\vec{x})$ and $Q(\vec{x})$ are primitive
+recursive, so are
+\begin{enumerate}
+\item $\lnot P(\vec{x})$
+\item $P(\vec{x}) \land Q(\vec{x})$
+\item $P(\vec{x}) \lor Q(\vec{x})$
+\item $P(\vec{x}) \lif Q(\vec{x})$
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Suppose $P(\vec{x})$ and $Q(\vec{x})$ are primitive recursive, i.e.,
+their characteristic functions $\Char{P}$ and $\Char{Q}$ are.  We
+have to show that the characteristic functions of $\lnot P(\vec{x})$,
+etc., are also primitive recursive.
+\[
+\Char{\lnot P}(\vec{x}) = \begin{cases}
+  0 & \text{if $\Char{P}(\vec{x}) = 1$}\\
+  1 & \text{otherwise}
+\end{cases}
+\]
+We can define $\Char{\lnot P}(\vec{x})$ as $1 \tsub \Char{P}(\vec{x})$.
+\[
+\Char{P \land Q}(\vec{x}) = \begin{cases}
+  1 & \text{if $\Char{P}(\vec{x}) = \Char{Q}(\vec{x}) = 1$}\\
+  0 & \text{otherwise}
+\end{cases}
+\]
+We can define $\Char{P \land Q}(\vec{x})$ as $\Char{P}(\vec{x})
+\cdot \Char{Q}(\vec{x})$ or as $\fn{min}(\Char{P}(\vec{x}),
+\Char{Q}(\vec{x}))$.  Similarly,
+\begin{align*}
+  \Char{P \lor Q}(\vec{x}) & = \fn{max}(\Char{P}(\vec{x}),
+  \Char{Q}(\vec{x})) \text{ and}\\
+  \Char{P \lif Q}(\vec{x}) & = \fn{max}(1 \tsub \Char{P}(\vec{x}),
+  \Char{Q}(\vec{x})).
+\end{align*}
+\end{proof}
+
+\begin{prop} \label{PROP-CMP-BQUANT}
+The set of primitive recursive relations is closed under bounded
+quantification, i.e., if $R(\vec{x}, z)$ is a primitive recursive
+relation, then so are the relations
+\begin{align*}
+  & \bforall{z < y}{R(\vec{x}, z)} \text{ and}\\
+  & \bexists{z < y}{R(\vec{x}, z)}.
+\end{align*}
+$\bforall{z < y}{R(\vec{x}, z)}$ holds of $\vec{x}$ and $y$ if and
+only if $R(\vec{x}, z)$ holds for every~$z$ less than~$y$, and
+similarly for $\bexists{z < y}{R(\vec{x}, z)}$.
+\end{prop}
+
+\begin{proof}
+By convention, we take $\bforall{z < 0}{R(\vec{x}, z)}$ to be true
+(for the trivial reason that there are no $z$ less than~$0$) and
+$\bexists{z < 0}{R(\vec{x}, z)}$ to be false.  A bounded universal
+quantifier functions like an iterated minimum: if
+$P(\vec{x}, y) \defiff \bforall{z < y}{R(\vec{x}, z)}$ then
+$\Char{P}(\vec{x}, y)$ can be defined by
+\begin{align*}
+  \Char{P}(\vec{x}, 0) & = 1\\
+  \Char{P}(\vec{x}, y+1) & = \fn{min}(\Char{P}(\vec{x}, y),
+  \Char{R}(\vec{x}, y)).
+\end{align*}
+Bounded existential quantification can similarly be defined using
+$\fn{max}$.  Alternatively, it can be defined from bounded universal
+quantification, using the equivalence $\bexists{z < y}{R(\vec{x}, z)}
+\liff \lnot \bforall{z < y}{\lnot R(\vec{x}, z)}$.  Note that a
+bounded quantifier of the form $\bexists{x \leq y}{\dots x \dots}$ is
+equivalent to $\bexists{x < y+1}{\dots x \dots}$.
+\end{proof}
+
+\begin{prop}[Definition by cases] \label{PROP-CMP-CASES}
+If $g_0(\vec{x})$, \dots,~$g_m(\vec{x})$ are primitive recursive
+functions, and $R_0(\vec{x})$, \dots, $R_{m-1}(\vec{x})$ are
+primitive recursive relations, then the function $f$ defined by
+\[
+f(\vec{x}) = \begin{cases}
+    g_0(\vec{x}) & \text{if $R_0(\vec{x})$} \\
+    g_1(\vec{x}) & \text{if $R_1(\vec{x})$ and not $R_0(\vec{x})$} \\
+    \vdots & \\
+    g_{m-1}(\vec{x}) & \text{if $R_{m-1}(\vec{x})$ and none of the
+      previous hold} \\
+    g_m(\vec{x}) & \text{otherwise}
+\end{cases}
+\]
+is also primitive recursive.
+\end{prop}
+
+\begin{proof}
+The conditional function $\fn{cond}(x,y,z)$, defined by
+$\fn{cond}(0,y,z) = y$ and $\fn{cond}(x+1,y,z) = z$, is primitive
+recursive.  When $m = 1$, the function $f$ is just
+$f(\vec{x}) = \fn{cond}(\Char{\lnot R_0}(\vec{x}), g_0(\vec{x}),
+g_1(\vec{x}))$.  For $m$ greater than $1$, one composes definitions of
+this form.
+\end{proof}
+
+
+\subsection{Bounded minimization} \label{CMP.1.4}
+
+\begin{prop} \label{PROP-CMP-BMIN}
+If $R(\vec{x}, z)$ is primitive recursive, so is the function
+$m_R(\vec{x}, y)$ which returns the least~$z$ less than~$y$ such that
+$R(\vec{x}, z)$ holds, if there is one, and $y$ otherwise.  We write
+this function as
+\[
+\bmin{z < y}{R(\vec{x}, z)}.
+\]
+\end{prop}
+
+\begin{proof}
+Since there is no $z < 0$, we have $m_R(\vec{x}, 0) = 0$.  For the
+successor case, there are three possibilities: (1) there is a $z < y$
+such that $R(\vec{x}, z)$, so $m_R(\vec{x}, y+1) = m_R(\vec{x}, y)$;
+(2) there is no such $z < y$ but $R(\vec{x}, y)$ holds, so
+$m_R(\vec{x}, y+1) = y$; (3) there is no $z < y+1$ such that
+$R(\vec{x}, z)$, so $m_R(\vec{x}, y+1) = y+1$.  Thus:
+\begin{align*}
+m_R(\vec{x}, 0) & = 0\\
+m_R(\vec{x}, y+1) & = \begin{cases}
+  m_R(\vec{x}, y) & \text{if $m_R(\vec{x}, y) \neq y$}\\
+  y & \text{if $m_R(\vec{x}, y) = y$ and $R(\vec{x}, y)$}\\
+  y+1 & \text{otherwise.}
+\end{cases}
+\end{align*}
+This is a definition by primitive recursion combined with definition by
+cases from primitive recursive relations, so $m_R$ is primitive
+recursive.
+\end{proof}
+
+Bounded minimization finds the least witness below a given bound.  In
+contrast, the unbounded search operator (introduced next) searches
+without any bound and may therefore fail to terminate, taking us out of
+the realm of primitive recursive functions.
+
+
+\subsection{Computability of primitive recursive functions} \label{CMP.1.5}
+
+\begin{prop} \label{PROP-CMP-PRCOMP}
+Every primitive recursive function is computable.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+The basic functions $\Zero$, $\Succ$, and $\Proj{n}{i}$ are
+computable.  Composition preserves computability: to compute
+$h(\vec{x}) = f(g_0(\vec{x}), \dots, g_{k-1}(\vec{x}))$, first
+compute each $g_i(\vec{x})$ and then apply $f$.  Primitive recursion
+preserves computability: to compute $h(\vec{x}, y)$, successively
+compute $h(\vec{x}, 0)$, $h(\vec{x}, 1)$, \dots, until reaching
+$h(\vec{x}, y)$.  Since each step is computable, so is the result.
+\end{proof}
+
+
+\subsection{Partial recursive functions and unbounded search}
+\label{CMP.1.6}
+
+We now extend the primitive recursive functions by allowing partial
+functions and adding the unbounded search operator.
+
+\begin{defn}[Unbounded search / $\mu$-recursion] % PRIM-CMP003
+\label{PRIM-CMP003}
+If $f(x, \vec{z})$ is any partial function on the natural numbers,
+define $\umin{x}{f(x, \vec{z})}$ to be
+\begin{quote}
+the least $x$ such that $f(0, \vec{z}), f(1, \vec{z}), \dots,
+f(x, \vec{z})$ are all defined, and $f(x, \vec{z}) = 0$, if such an
+$x$ exists,
+\end{quote}
+with the understanding that $\umin{x}{f(x, \vec{z})}$ is undefined
+otherwise.
+
+If $R(x, \vec{z})$ is any relation, $\umin{x}{R(x, \vec{z})}$ is
+defined to be $\umin{x}{(1 \tsub \Char{R}(x, \vec{z}))}$, i.e., the
+least $x$ such that $R(x, \vec{z})$ holds.
+\end{defn}
+
+Computationally, the procedure for computing $\umin{x}{f(x, \vec{z})}$
+amounts to computing $f(0, \vec{z}), f(1, \vec{z}), f(2, \vec{z}),
+\dots$ until a value of~$0$ is returned.  If any intermediate
+computation does not halt, neither does the computation of
+$\umin{x}{f(x, \vec{z})}$.
+
+\begin{defn}[Partial recursive function] % PRIM-CMP001
+\label{PRIM-CMP001}
+The set of \emph{partial recursive functions} is the smallest set of
+partial functions from the natural numbers to the natural numbers (of
+various arities) containing zero, successor, and projections, and
+closed under composition, primitive recursion, and unbounded search.
+\end{defn}
+
+\begin{defn}[Recursive function] % DEF-CMP002
+\label{DEF-CMP002-REC}
+The set of \emph{recursive functions} (also called \emph{total
+  recursive functions}) is the set of partial recursive functions that
+are total.
+\end{defn}
+
+
+%% ===================================================================
+%% CMP.2: Turing Machines
+%% ===================================================================
+
+\section{Turing Machines} \label{CMP.2}
+
+We now introduce Turing machines, an independent model of computation
+that approaches computability from a concrete, mechanical perspective
+rather than the function-algebraic perspective of the recursive
+functions.
+
+\subsection{Definition of Turing machines} \label{CMP.2.1}
+
+\begin{defn}[Turing machine] % PRIM-CMP004
+\label{PRIM-CMP004}
+A \emph{Turing machine} $M$ is a tuple $\langle Q, \Sigma, q_0,
+\delta\rangle$ consisting of
+\begin{enumerate}
+\item a finite set of \emph{states}~$Q$,
+\item a finite \emph{alphabet} $\Sigma$ which includes $\TMendtape$
+  and $\TMblank$,
+\item an \emph{initial state}~$q_0 \in Q$,
+\item a finite \emph{instruction set}~$\delta\colon Q \times \Sigma
+  \pto Q \times \Sigma \times \{\TMleft, \TMright, \TMstay\}$.
+\end{enumerate}
+The partial function~$\delta$ is also called the \emph{transition
+  function} of~$M$.
+\end{defn}
+
+We assume the tape is infinite in one direction only.  The
+symbol~$\TMendtape$ serves as a marker for the left end of the tape,
+making it possible for programs to detect when they are at the
+leftmost square.
+
+
+\subsection{Configurations and computations} \label{CMP.2.2}
+
+\begin{defn}[Configuration] % DEF-CMP-CONFIG
+\label{DEF-CMP-CONFIG}
+A \emph{configuration} of Turing machine $M = \tuple{Q, \Sigma, q_0,
+  \delta}$ is a triple $\tuple{C, m, q}$ where
+\begin{enumerate}
+\item $C \in \Sigma^*$ is a finite sequence of symbols from $\Sigma$,
+\item $m \in \Nat$ is a number $< \len{C}$, and
+\item $q \in Q$.
+\end{enumerate}
+Intuitively, the sequence~$C$ is the content of the tape (from the
+leftmost square to the last non-blank or previously visited square),
+$m$~is the position of the read/write head, and $q$ is the current
+state of the machine.
+\end{defn}
+
+\begin{defn}[Initial configuration] % DEF-CMP-INITCONFIG
+\label{DEF-CMP-INITCONFIG}
+The \emph{initial configuration} of $M$ for input $I \in \Sigma^*$ is
+\[
+\tuple{\TMendtape \concat I, 1, q_0}.
+\]
+\end{defn}
+
+\begin{defn}[Yields in one step] % DEF-CMP-YIELD
+\label{DEF-CMP-YIELD}
+We say that a configuration $\tuple{C, m, q}$ \emph{yields the
+  configuration $\tuple{C', m', q'}$ in one step} (according to~$M$)
+iff
+\begin{enumerate}
+\item the $m$-th symbol of $C$ is $\sigma$,
+\item the instruction set of $M$ specifies $\delta(q, \sigma) =
+  \tuple{q', \sigma', D}$,
+\item the $m$-th symbol of $C'$ is $\sigma'$, and
+\item\begin{enumerate}
+  \item $D = L$ and $m' = m - 1$ if $m > 0$, otherwise $m' = 0$, or
+  \item $D = R$ and $m' = m + 1$, or
+  \item $D = N$ and $m' = m$,
+\end{enumerate}
+\item if $m' = \len{C}$, then $\len{C'} = \len{C} + 1$ and the
+  $m'$-th symbol of $C'$ is~$\TMblank$; otherwise
+  $\len{C'} = \len{C}$,
+\item for all $i$ such that $i < \len{C}$ and $i \neq m$,
+  $C'(i) = C(i)$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Run, halting, output] % DEF-CMP-RUN
+\label{DEF-CMP-RUN}
+A \emph{run of $M$ on input~$I$} is a sequence $C_i$ of
+configurations of $M$, where $C_0$ is the initial configuration of $M$
+for input~$I$, and each $C_i$ yields $C_{i+1}$ in one step.
+
+We say that $M$ \emph{halts on input $I$ after $k$ steps} if $C_k =
+\tuple{C, m, q}$, the $m$th symbol of~$C$ is~$\sigma$, and
+$\delta(q, \sigma)$ is undefined.  In that case, the \emph{output}
+of~$M$ for input~$I$ is~$O$, where $O$ is a string of symbols not
+ending in~$\TMblank$ such that $C = \TMendtape \concat O \concat
+\TMblank^j$ for some~$j \in \Nat$.
+\end{defn}
+
+
+\subsection{Unary representation and computation of functions}
+\label{CMP.2.3}
+
+We represent natural numbers on the tape using unary notation: if
+$n \in \Nat$, let $\TMstroke^n$ be the empty sequence if $n = 0$, and
+otherwise the sequence consisting of exactly $n$~$\TMstroke$'s.
+
+\begin{defn}[Turing computation of a total function] % DEF-CMP-TMCOMP
+\label{DEF-CMP-TMCOMP}
+A Turing machine~$M$ \emph{computes} the function
+$f\colon \Nat^k \to \Nat$ iff $M$~halts on input
+\[
+\TMstroke^{n_1} \TMblank \TMstroke^{n_2} \TMblank \cdots \TMblank
+\TMstroke^{n_k}
+\]
+with output $\TMstroke^{f(n_1, \dots, n_k)}$.
+\end{defn}
+
+\begin{defn}[Turing computation of a partial function] % DEF-CMP-TMPCOMP
+\label{DEF-CMP-TMPCOMP}
+A Turing machine~$M$ computes the partial function
+$f\colon \Nat^k \pto \Nat$ iff
+\begin{enumerate}
+  \item $M$ halts on input
+    $\TMstroke^{n_1} \concat \TMblank \concat \cdots
+    \concat \TMblank \concat \TMstroke^{n_k}$ with output
+    $\TMstroke^{m}$ if $f(n_1, \dots, n_k) = m$.
+  \item $M$ does not halt at all, or halts with an output that is not
+    a single block of~$\TMstroke$'s, if $f(n_1, \dots, n_k)$ is
+    undefined.
+\end{enumerate}
+\end{defn}
+
+
+\subsection{Disciplined machines} \label{CMP.2.4}
+
+\begin{defn}[Disciplined Turing machine] % DEF-CMP-DISC
+\label{DEF-CMP-DISC}
+A Turing machine~$M$ is \emph{disciplined} iff
+\begin{enumerate}
+    \item it has a designated single halting state~$h$,
+    \item it halts, if it halts at all, while scanning square~$1$,
+    \item it never erases the $\TMendtape$ symbol on square~$0$, and
+    \item it never attempts to move left from square~$0$.
+\end{enumerate}
+\end{defn}
+
+\begin{prop} \label{PROP-CMP-DISC}
+For every Turing machine~$M$, there is a disciplined Turing
+machine~$M'$ which halts with output~$O$ if $M$~halts with output~$O$,
+and does not halt if $M$~does not halt.  In particular, any function
+$f\colon \Nat^n \to \Nat$ computable by a Turing machine is also
+computable by a disciplined Turing machine.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+If $M$ halts in a state other than a designated halting state, add a
+new state~$h$ and transition to it.  If $M$ halts with the head not on
+square~$1$, add instructions to move the head left until the tape-end
+marker is found, then move one square right, then halt.  The other
+conditions (not erasing $\TMendtape$, not moving left from square~$0$)
+can be enforced similarly by adding a bounded number of extra states.
+\end{proof}
+
+
+\subsection{Combining Turing machines} \label{CMP.2.5}
+
+Given Turing machines $M = \tuple{Q, \Sigma, q_0, \delta}$ and
+$M' = \tuple{Q', \Sigma', q_0', \delta'}$, the \emph{sequential
+  composition} $M \frown M'$ is constructed as follows: renumber the
+states of~$M'$ so that $Q \cap Q' = \emptyset$; the states of
+$M \frown M'$ are $Q \cup Q'$; the alphabet is $\Sigma \cup \Sigma'$;
+the start state is~$q_0$; and the transition function is
+\[
+\delta''(q, \sigma) = \begin{cases}
+  \delta(q, \sigma) & \text{if $q \in Q$
+    and $\delta(q,\sigma)$ is defined}\\
+  \tuple{q_0', \sigma, \TMstay} & \text{if $q \in Q$
+    and $\delta(q,\sigma)$ is undefined}\\
+  \delta'(q, \sigma) & \text{if $q \in Q'$.}
+\end{cases}
+\]
+The idea is that when $M$ would halt (i.e., $\delta$ is undefined), the
+combined machine instead enters the start state of~$M'$ and continues.
+
+\begin{prop} \label{PROP-CMP-COMBINE}
+If $M$ and $M'$ are disciplined and compute the functions
+$f\colon \Nat^k \to \Nat$ and $f'\colon \Nat \to \Nat$, respectively,
+then $M \frown M'$ is disciplined and computes~$\comp{f}{f'}$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+Since $M$ is disciplined, when it halts with output
+$f(n_1, \dots, n_k) = m$, the head is scanning square~$1$.  Entering
+the start state of~$M'$ at that point, $M'$ then computes $f'(m)$ and
+halts on square~$1$.  The other conditions of
+\cref{DEF-CMP-DISC} are preserved by the construction.
+\end{proof}
+
+
+\subsection{The Church--Turing thesis} \label{CMP.2.6}
+
+\begin{defn}[Church--Turing thesis] % PRIM-CMP005
+\label{PRIM-CMP005}
+The \emph{Church--Turing Thesis} states that anything computable via
+an effective procedure is Turing computable.
+\end{defn}
+
+The Church--Turing thesis is supported by the fact that every proposed
+precise model of effective computability---Turing machines, the
+$\lambda$-calculus, partial recursive functions, register machines,
+Post production systems, Markov algorithms, and others---turns out to
+compute exactly the same class of functions.  The thesis is invoked in
+two ways: first, as justification that an informal procedure described
+in ``pseudo-code'' could in principle be implemented by a Turing
+machine; second, and more importantly, to conclude that functions
+which provably cannot be computed by any Turing machine cannot be
+computed by \emph{any} effective procedure whatsoever.
+
+\begin{rem}[Equivalence of computation models] % THM-CMP001
+\label{THM-CMP001}
+Turing machines, partial recursive functions, the $\lambda$-calculus,
+unlimited register machines, and all other standard models of
+computation define exactly the same class of computable (partial)
+functions.  This convergence of independent formalizations constitutes
+the primary evidence for the Church--Turing thesis.
+\end{rem}
+
+
+%% ===================================================================
+%% CMP.3: Decidability
+%% ===================================================================
+
+\section{Decidability} \label{CMP.3}
+
+We now lift the notion of computability from functions to sets and
+relations.  A set is \emph{decidable} (computable) if its
+characteristic function is computable; it is \emph{semi-decidable}
+(computably enumerable) if there is a computable procedure that
+eventually confirms membership for elements of the set, but may fail
+to terminate for non-members.
+
+\subsection{Computable sets} \label{CMP.3.1}
+
+\begin{defn}[Computable / decidable set] % PRIM-CMP006
+\label{PRIM-CMP006}
+Let $S$ be a set of natural numbers.  Then $S$ is \emph{computable}
+(equivalently, \emph{decidable}) iff its characteristic
+function~$\Char{S}$ is computable, i.e., the function
+\[
+\Char{S}(x) = \begin{cases}
+  1 & \text{if $x \in S$} \\
+  0 & \text{otherwise}
+\end{cases}
+\]
+is computable.  Similarly, a relation $R(x_0, \dots, x_{k-1})$ is
+computable iff its characteristic function is computable.
+\end{defn}
+
+Note the distinction: the computation of a partial function returns
+the output of the function for input values at which the function is
+defined; the computation for a decidable set always halts and returns
+either~$1$ or~$0$, indicating membership.
+
+
+\subsection{Computably enumerable sets} \label{CMP.3.2}
+
+\begin{defn}[Computably enumerable set] % PRIM-CMP007
+\label{PRIM-CMP007}
+A set $S$ is \emph{computably enumerable} (abbreviated \emph{c.e.};
+also called \emph{recursively enumerable} or \emph{r.e.}) if it is
+empty or the range of a computable function.
+\end{defn}
+
+If $S$ is the range of the computable function~$f$, then
+$S = \{f(0), f(1), f(2), \dots\}$, and $f$ can be seen as
+``enumerating'' the elements of~$S$.  The enumeration need not be in
+increasing order, and repetitions are allowed.
+
+Any computable set is computably enumerable.  For if $S$ is
+computable and non-empty, let $a$ be any element of~$S$ and define
+\[
+f(x) = \begin{cases}
+  x & \text{if $\Char{S}(x) = 1$} \\
+  a & \text{otherwise.}
+\end{cases}
+\]
+Then $f$ is computable and $S$ is the range of~$f$.
+
+
+\subsection{Equivalent characterizations of c.e.\ sets} \label{CMP.3.3}
+
+\begin{thm} % DEF-CMP010
+\label{DEF-CMP010}
+Let $S$ be a set of natural numbers.  Then the following are
+equivalent:
+\begin{enumerate}
+\item\label{ce:ce} $S$ is computably enumerable.
+\item\label{ce:ran-pc} $S$ is the range of a \emph{partial}
+  computable function.
+\item\label{ce:ran-prim} $S$ is empty or the range of a primitive
+  recursive function.
+\item\label{ce:domain} $S$ is the \emph{domain} of a partial
+  computable function.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+Since every primitive recursive function is computable and every
+computable function is partial computable,
+\ref{ce:ran-prim}~$\Rightarrow$~\ref{ce:ce} and
+\ref{ce:ce}~$\Rightarrow$~\ref{ce:ran-pc}.  (If $S$ is empty, it is
+the range of the partial computable function that is nowhere defined.)
+It suffices to show that \ref{ce:ran-pc}~$\Rightarrow$~\ref{ce:ran-prim}
+and that \ref{ce:ce}~$\Leftrightarrow$~\ref{ce:domain}.
+
+\medskip\noindent\textbf{\ref{ce:ran-pc}~$\Rightarrow$~\ref{ce:ran-prim}:}
+Suppose $S$ is the range of the partial computable function
+$\cfind{e}$.  If $S$ is empty, we are done.  Otherwise, let $a$ be any
+element of~$S$.  By Kleene's normal form theorem (see DEF-CMP-NF,
+\S CMP.4),
+\[
+\cfind{e}(x) = U(\umin{s}{T(e, x, s)}).
+\]
+In particular, $\cfind{e}(x) \fdefined$ and equals $y$ if and only if
+there is an~$s$ such that $T(e, x, s)$ and $U(s) = y$.  Define
+$f(z)$ by
+\[
+f(z) = \begin{cases}
+  U((z)_1) & \text{if $T(e, (z)_0, (z)_1)$} \\
+  a        & \text{otherwise.}
+\end{cases}
+\]
+Then $f$ is primitive recursive, because $T$ and $U$ are.  We show
+$S$ is the range of~$f$.  In the forward direction, if $y \in S$,
+then $y$ is in the range of $\cfind{e}$, so for some $x$ and~$s$,
+$T(e, x, s)$ holds and $U(s) = y$; but then $y = f(\tuple{x, s})$.
+Conversely, if $y$ is in the range of~$f$, then either $y = a \in S$,
+or for some~$z$, $T(e, (z)_0, (z)_1)$ and $U((z)_1) = y$; in the
+latter case $\cfind{e}((z)_0) \fdefined = y$, so $y \in S$.
+
+\medskip\noindent\textbf{\ref{ce:ce}~$\Rightarrow$~\ref{ce:domain}:}
+Suppose $S$ is the range of a computable function~$f$, i.e.,
+$S = \Setabs{y}{\text{for some } x, \, f(x) = y}$.
+Let
+\[
+g(y) = \umin{x}{(f(x) = y)}.
+\]
+Then $g$ is a partial computable function, and $g(y)$ is defined if and
+only if for some~$x$, $f(x) = y$.  So the domain of~$g$ is the range
+of~$f$, which is~$S$.
+
+\medskip\noindent\textbf{\ref{ce:domain}~$\Rightarrow$~\ref{ce:ce}:}
+Suppose $S$ is the domain of the partial computable
+function~$\cfind{e}$, i.e.,
+$S = \Setabs{x}{\cfind{e}(x) \fdefined}$.
+If $S$ is empty, we are done; otherwise, let $a$ be any element
+of~$S$.  Define $f$ by
+\[
+f(z) = \begin{cases}
+  (z)_0 & \text{if $T(e, (z)_0, (z)_1)$} \\
+  a     & \text{otherwise.}
+\end{cases}
+\]
+Then a number $x$ is in the range of~$f$ if and only if
+$\cfind{e}(x) \fdefined$, i.e., if and only if $x \in S$.
+\end{proof}
+
+Clause~\ref{ce:domain} provides a convenient way of enumerating the
+c.e.\ sets: for each~$e$, let $W_e$ denote the domain of $\cfind{e}$,
+i.e., % DEF-CMP004
+\[
+W_e = \Setabs{x}{\cfind{e}(x) \fdefined}.
+\]
+Then if $A$ is any computably enumerable set, $A = W_e$ for some~$e$.
+
+\begin{thm}[$\exists$-characterization of c.e.\ sets] % DEF-CMP010b
+\label{DEF-CMP010b}
+A set $S$ is computably enumerable if and only if there is a
+computable relation $R(x, y)$ such that
+\[
+S = \Setabs{x}{\lexists[y][R(x, y)]}.
+\]
+\end{thm}
+
+\begin{proof}
+In the forward direction, suppose $S$ is computably enumerable.  Then
+for some~$e$, $S = W_e$.  For this value of~$e$ we can write
+\[
+S = \Setabs{x}{\lexists[y][T(e, x, y)]}.
+\]
+In the reverse direction, suppose
+$S = \Setabs{x}{\lexists[y][R(x, y)]}$.  Define $f$ by
+\[
+f(x) \simeq \umin{y}{R(x, y)}.
+\]
+Then $f$ is partial computable, and $S$ is the domain of~$f$.
+\end{proof}
+
+
+\subsection{Closure properties of c.e.\ sets} \label{CMP.3.4}
+
+\begin{thm} \label{THM-CMP-CECLOSURE}
+Suppose $A$ and $B$ are computably enumerable.  Then so are
+$A \cap B$ and $A \cup B$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Suppose $A$ is the domain of $\cfind{d}$ and $B$ is the domain of
+$\cfind{e}$.  Then $A \cap B$ is the domain of the partial function
+$\cfind{d}(x) + \cfind{e}(x)$ (both must halt for the sum to be
+defined).  For $A \cup B$, define
+$p(x) = \umin{y}{(T(d, x, y) \lor T(e, x, y))}$; then $A \cup B$ is
+the domain of~$p$, since $p$ halts whenever either $\cfind{d}$ or
+$\cfind{e}$ halts.
+\end{proof}
+
+
+\subsection{C.e.\ sets are not closed under complement} \label{CMP.3.5}
+
+\begin{thm} \label{THM-CMP-CECOMP}
+Let $A$ be any set of natural numbers.  Then $A$ is computable if and
+only if both $A$ and $\Complement{A}$ are computably enumerable.
+\end{thm}
+
+\begin{proof}
+The forward direction is straightforward: if $A$ is computable, then
+$\Complement{A}$ is also computable (since $\Char{\Complement{A}} =
+1 \tsub \Char{A}$), and so both are c.e.
+
+In the reverse direction, suppose $A$ and $\Complement{A}$ are both
+computably enumerable.  Let $A$ be the domain of~$\cfind{d}$, and let
+$\Complement{A}$ be the domain of~$\cfind{e}$.  Define $h$ by
+\[
+h(x) = \umin{s}{(T(d, x, s) \lor T(e, x, s))}.
+\]
+On input~$x$, $h$ searches for either a halting computation
+of~$\cfind{d}$ or a halting computation of~$\cfind{e}$.  Since every
+$x$ is in either $A$ or $\Complement{A}$, one of these searches must
+succeed, so $h$ is total computable.  Now for every~$x$: $x \in A$ if
+and only if $T(d, x, h(x))$, i.e., if $\cfind{d}$ is the one that
+halts.  Since $T(d, x, h(x))$ is a computable relation, $A$ is
+computable.
+\end{proof}
+
+
+\subsection{Non-computable sets} \label{CMP.3.6}
+
+\begin{thm} \label{THM-CMP-K0}
+Let $K_0 = \Setabs{\tuple{e, x}}{\cfind{e}(x) \fdefined}$.  Then
+$K_0$ is computably enumerable but not computable.
+\end{thm}
+
+\begin{proof}
+To see that $K_0$ is computably enumerable, note that it is the
+domain of the function~$f$ defined by
+\[
+f(z) = \umin{y}{(\len{z} = 2 \land T((z)_0, (z)_1, y))}.
+\]
+For, if $\cfind{e}(x)$ is defined, $f(\tuple{e, x})$ finds a halting
+computation sequence; if $\cfind{e}(x)$ is undefined, so is
+$f(\tuple{e, x})$; and if $z$ doesn't code a pair, then $f(z)$ is
+also undefined.
+
+The fact that $K_0$ is not computable is the undecidability of the
+halting problem: if $K_0$ were decidable, one could decide for any
+program~$e$ and input~$x$ whether $\cfind{e}(x)$ halts, contradicting
+the halting problem (see CMP.4).
+\end{proof}
+
+The set $K_0$ is the \emph{halting set}: $\tuple{e, x} \in K_0$ iff
+$\cfind{e}$ is defined on input~$x$.
+
+\begin{thm} \label{THM-CMP-K}
+The \emph{self-halting set} $K = \Setabs{e}{\cfind{e}(e) \fdefined}$
+is computably enumerable but not decidable.
+\end{thm}
+
+\begin{proof}
+Suppose $K$ is decidable, i.e., its characteristic function $\Char{K}$
+is computable.  Define
+\[
+d(e) = \begin{cases}
+  1 & \text{if $\Char{K}(e) = 0$}\\
+  \fundefined & \text{otherwise.}
+\end{cases}
+\]
+Let $k$ be the index of~$d$, i.e., $d \simeq \cfind{k}$.  Then
+$d(k) \simeq \cfind{k}(k)$.  But by definition, $d(k) \fdefined$ iff
+$\Char{K}(k) = 0$ iff $k \notin K$ iff
+$\cfind{k}(k) \fundefined$---a contradiction.
+
+$K$ is c.e.\ because it is the domain of $f(x) = \umin{y}{T(x, x, y)}$.
+\end{proof}
+
+\begin{cor} \label{COR-CMP-KBAR}
+$\Complement{K_0}$ is not computably enumerable.
+\end{cor}
+
+\begin{proof}
+We know that $K_0$ is computably enumerable but not computable.  If
+$\Complement{K_0}$ were computably enumerable, then $K_0$ would be
+computable by \cref{THM-CMP-CECOMP}, contradicting
+\cref{THM-CMP-K0}.
+\end{proof}
+
+
+%% ===================================================================
+%% CMP.4: Diagonalization and Halting
+%% ===================================================================
+
+\section{Diagonalization and Halting} \label{CMP.4}
+
+Diagonalization is one of the most powerful techniques in the theory of
+computation.  It was first used by Cantor to show that the set of real
+numbers is uncountable, and it was adapted by G\"odel and Turing to
+establish fundamental limits on what can be computed.  In this section
+we use diagonalization to prove that the halting problem is unsolvable,
+and that there is no universal computable function for the total
+computable functions.
+
+\subsection{No universal computable function} \label{CMP.4.1}
+
+Although there is a partial computable function that is universal for
+the partial computable functions (see \cref{PRIM-CMP012} below), there
+is no total computable function that is universal for the total
+computable functions.
+
+\begin{thm} % PRIM-CMP010
+\label{PRIM-CMP010}
+There is no universal computable function.  In other words, any
+function $\fn{Un}'(k, x)$ which is such that if $f(x)$ is a total
+computable function, then there is a natural number~$k$ such that
+$f(x) = \fn{Un}'(k,x)$ for every~$x$, is not computable.
+\end{thm}
+
+\begin{proof}
+The proof is a simple diagonalization: if $\fn{Un}'(k,x)$ were total
+and computable, then
+\[
+d(x) = \fn{Un}'(x, x) + 1
+\]
+would also be total and computable.  However, by definition, $d(k)$ is
+not equal to $\fn{Un}'(k,k)$.  Hence, for every $k$, the values of
+$d(x)$ and~$\fn{Un}'(k, x)$ differ for at least one~$x$, namely $x = k$.
+\end{proof}
+
+The normal form theorem (see \cref{DEF-CMP-NF}) shows that we can get
+around this diagonalization argument, but only at the expense of
+allowing the universal function to be partial.  That is, $\fn{Un}$ is
+universal for the total computable functions, it just isn't total.  The
+diagonalization argument does not work in the partial case.
+
+\begin{rem}[Diagonalization for primitive recursive functions]
+\label{REM-CMP-DIAGNPR}
+The same technique shows that the primitive recursive functions do not
+exhaust the computable functions.  One can effectively enumerate all
+unary primitive recursive functions $f_0, f_1, f_2, \dots$ (by
+assigning codes to their definitions; see PRIM-CMP011, \S CMP.5).  The
+function $h(x) = f_x(x) + 1$ is then computable but not primitive
+recursive, since it differs from each $f_i$ at argument~$i$.
+\end{rem}
+
+
+\subsection{The halting problem} \label{CMP.4.2}
+
+Assume we have fixed an enumeration of Turing machine descriptions
+$M_1, M_2, M_3, \dots$  (see \cref{PRIM-CMP011}).  Each Turing machine
+thus receives an \emph{index}: its place in the enumeration.  We know
+that there must be non-Turing-computable functions---the set of Turing
+machine descriptions is enumerable, but the set of all functions from
+$\Nat$ to $\Nat$ is not.  But we can find specific examples of
+non-computable functions.
+
+\begin{defn}[Halting function] % PRIM-CMP008
+\label{PRIM-CMP008}
+The \emph{halting function}~$h$ is defined as
+\[
+h(e,n) =
+\begin{cases}
+  0 & \text{if machine~$M_e$ does not halt for input $n$} \\
+  1 & \text{if machine~$M_e$ halts for input $n$}
+\end{cases}
+\]
+\end{defn}
+
+\begin{defn}[Halting problem] % PRIM-CMP008
+\label{PRIM-CMP008-PROB}
+The \emph{Halting Problem} is the problem of determining (for any $e$,
+$n$) whether the Turing machine~$M_e$ halts for an input of~$n$
+strokes.
+\end{defn}
+
+We show that $h$ is not Turing-computable by showing that a related
+function~$s$ is not Turing-computable.  This proof relies on the fact
+that anything computable by a Turing machine can be computed by a
+disciplined Turing machine (\cref{DEF-CMP-DISC}), and the fact that
+two Turing machines can be combined into a single machine
+(\cref{PROP-CMP-COMBINE}).
+
+\begin{defn}
+The function~$s$ is defined as
+\[
+s(e) =
+\begin{cases}
+  0 & \text{if machine~$M_e$ does not halt for input $e$} \\
+  1 & \text{if machine~$M_e$ halts for input $e$}
+\end{cases}
+\]
+\end{defn}
+
+\begin{lem} \label{LEM-CMP-SNOTCOMP}
+The function~$s$ is not Turing computable.
+\end{lem}
+
+\begin{proof}
+We suppose, for contradiction, that the function~$s$ is Turing
+computable.  Then there would be a Turing machine~$S$ that
+computes~$s$. We may assume, without loss of generality, that when $S$
+halts, it does so while scanning the first square (i.e., that it is
+disciplined).  This machine can be ``hooked up'' to another
+machine~$J$, which halts if it is started on input~$0$ (i.e., if it
+reads $\TMblank$ in the initial state while scanning the square to the
+right of the end-of-tape symbol), and otherwise wanders off to the
+right, never halting. $S \concat J$, the machine created by hooking
+$S$ to~$J$, is a Turing machine, so it is $M_e$ for some~$e$ (i.e., it
+appears somewhere in the enumeration). Start $M_e$ on an input of~$e$
+$\TMstroke$s. There are two possibilities: either $M_e$ halts or it
+does not halt.
+\begin{enumerate}
+\item Suppose $M_e$ halts for an input of $e$ $\TMstroke$s. Then $s(e)
+  = 1$. So $S$, when started on~$e$, halts with a single $\TMstroke$
+  as output on the tape.  Then $J$ starts with a $\TMstroke$ on the
+  tape. In that case $J$ does not halt. But $M_e$ is the machine $S
+  \concat J$, so it should do exactly what $S$ followed by $J$ would
+  do (i.e., in this case, wander off to the right and never halt).  So
+  $M_e$ cannot halt for an input of $e$ $\TMstroke$'s.
+
+\item Now suppose $M_e$ does not halt for an input of $e$
+  $\TMstroke$s.  Then $s(e) = 0$, and $S$, when started on input~$e$,
+  halts with a blank tape.  $J$,~when started on a blank tape,
+  immediately halts.  Again, $M_e$ does what $S$ followed by~$J$ would
+  do, so $M_e$ must halt for an input of $e$ $\TMstroke$'s.
+\end{enumerate}
+In each case we arrive at a contradiction with our assumption. This
+shows there cannot be a Turing machine~$S$: $s$~is not Turing
+computable.
+\end{proof}
+
+\begin{thm}[Unsolvability of the Halting Problem] % THM-CMP002
+\label{THM-CMP002}
+The halting problem is unsolvable, i.e., the function~$h$ is not Turing
+computable.
+\end{thm}
+
+\begin{proof}
+Suppose $h$ were Turing computable, say, by a Turing machine~$H$. We
+could use $H$ to build a Turing machine that computes~$s$: First, make
+a copy of the input (separated by a~$\TMblank$ symbol). Then move back
+to the beginning, and run~$H$.  We can clearly make a machine that
+does the former, and if $H$ existed, we would be able to ``hook it up''
+to such a copier machine to get a new machine which would determine if
+$M_e$ halts on input~$e$, i.e., computes~$s$. But we've already shown
+that no such machine can exist. Hence, $h$~is also not Turing
+computable.
+\end{proof}
+
+\begin{rem}[Halting problem for partial recursive functions]
+\label{REM-CMP-HALTPRF}
+The same result holds in the setting of partial recursive functions.
+Let $\fn{Un}(e,x)$ denote the universal partial computable function.
+Define
+\[
+h(e, x) =
+\begin{cases}
+1 & \text{if $\fn{Un}(e, x)$ is defined} \\
+0 & \text{otherwise.}
+\end{cases}
+\]
+Then $h$ is not computable.  One proof goes via the no-universal-function
+result (\cref{PRIM-CMP010}): if $h$ were computable, one could define a
+total computable $\fn{Un}'(e,x)$ agreeing with $\fn{Un}$ wherever the latter
+is defined (by returning $0$ when $h(e,x)=0$), contradicting
+\cref{PRIM-CMP010}.  An alternative, more direct proof proceeds by
+diagonalization: define $g(x)$ to equal $0$ when $h(x,x)=0$ and be
+undefined otherwise. Then $g$ is partial computable, so $g \simeq
+\cfind{e}$ for some~$e$, and asking whether $g(e)$ is defined leads to
+a contradiction.
+\end{rem}
+
+
+%% ===================================================================
+%% CMP.5: Coding and Universality
+%% ===================================================================
+
+\section{Coding and Universality} \label{CMP.5}
+
+We now develop the machinery of G\"odel numbering, which allows us to
+treat syntactic objects---terms, formulas, derivations, and
+programs---as natural numbers.  This opens the door to the normal form
+theorem, the universal Turing machine, the $s$-$m$-$n$ theorem,
+arithmetization of proof predicates, and the representability theorem.
+
+\subsection{Sequence coding} \label{CMP.5.1}
+
+The set of primitive recursive functions is remarkably robust, and we
+can extend its power further with a coding of finite sequences of
+natural numbers as single natural numbers.  We identify the
+sequence $\langle a_0, a_1, \dots, a_k \rangle$ with the number
+\[
+p_0^{a_0+1} \cdot p_1^{a_1+1} \cdot p_2^{a_2+1} \cdot \dots \cdot
+p_k^{a_k+1},
+\]
+where $p_i$ is the $i$th prime.  Adding one to the exponents
+ensures that, e.g., $\langle 2, 7, 3\rangle$ and $\langle 2, 7, 3,
+0, 0 \rangle$ have distinct codes.  The Fundamental Theorem of
+Arithmetic guarantees that this mapping is injective.
+
+The operations of determining the length $\len{s}$ of a sequence~$s$,
+extracting its $i$th element $(s)_i$, appending an element
+$\fn{append}(s,a)$, and concatenating two sequences $s \concat t$, are
+all primitive recursive.  We can also bound the code of a sequence of
+length~$k$ with elements at most~$x$ by
+$\fn{sequenceBound}(x,k) = p_{k-1}^{k \cdot (x+1)}$.
+
+
+\subsection{Kleene's normal form theorem} \label{CMP.5.2}
+
+\begin{thm}[Kleene's Normal Form Theorem] % THM-CMP004
+\label{THM-CMP004}
+\label{DEF-CMP-NF}
+There is a primitive recursive relation $T(e, x, s)$ and a primitive
+recursive function $U(s)$, with the following property: if $f$ is any
+partial recursive function, then for some~$e$,
+\[
+f(x) \simeq U(\umin{s}{T(e, x, s)})
+\]
+for every $x$.
+\end{thm}
+
+Every partial recursive function has an \emph{index}~$e$---intuitively,
+a number coding its program or definition.  If $f(x) \fdefined$, the
+computation can be recorded and coded by some number~$s$, and the fact
+that $s$ codes the computation of~$f$ on input~$x$ can be checked
+primitive recursively.  Consequently, $T(e,x,s)$ (``the function with
+index~$e$ has a computation for input~$x$ coded by~$s$'') is primitive
+recursive, and the output can be extracted from~$s$ by the primitive
+recursive function~$U$.
+
+\begin{defn}[Index / program] % DEF-CMP005
+\label{DEF-CMP005}
+The normal form theorem shows that only a single unbounded search is
+required for the definition of any partial recursive function.  We use
+the numbers~$e$ as ``names'' of partial recursive functions, and write
+$\cfind{e}$ for the function~$f$ defined by the equation
+$\cfind{e}(x) \simeq U(\umin{s}{T(e, x, s)})$.
+Note that any partial recursive function can have more than one
+index---in fact, every partial recursive function has infinitely many
+indices.
+\end{defn}
+
+
+\subsection{Enumerating Turing machines} \label{CMP.5.3}
+
+Every Turing machine can be described by a finite sequence of positive
+integers encoding its states, alphabet, start state, and instructions.
+By considering only \emph{standard} machines (where states and symbols
+are positive integers), we can canonically encode any Turing machine as
+an element of $(\PosInt)^*$.  Since $(\PosInt)^*$ is enumerable, so is
+the set of standard Turing machine descriptions.
+
+\begin{defn}[Index of a Turing machine] % DEF-CMP005
+\label{DEF-CMP005-TM}
+If $M$ is the $e$th Turing machine (in our fixed enumeration), we say
+that $e$ is an \emph{index} of~$M$.  We write $M_e$ for the $e$th
+Turing machine.
+\end{defn}
+
+A machine may have more than one index; for example, two descriptions
+of~$M$ that list the instructions in different orders will have
+different indices.  Given the enumeration, we can effectively compute
+the description of~$M$ from its index and vice versa.
+
+\begin{thm} \label{THM-CMP-UNCOMPEXIST}
+There are functions from $\Nat$ to~$\Nat$ which are not Turing
+computable.
+\end{thm}
+
+\begin{proof}
+The set of descriptions of standard Turing machines is a subset of
+$(\PosInt)^*$, so it is enumerable.  The set of all Turing computable
+functions is therefore also enumerable.  But the set of all functions
+from $\Nat$ to $\Nat$ is not enumerable.  So there must be functions
+that are not Turing computable.
+\end{proof}
+
+
+\subsection{The universal Turing machine} \label{CMP.5.4}
+
+\begin{thm}[Universal Turing machine] % PRIM-CMP012
+\label{PRIM-CMP012}
+There is a \emph{universal Turing machine}~$U$ which, when started on
+input $\tuple{e,n}$:
+\begin{enumerate}
+  \item halts iff $M_e$ halts on input~$n$, and
+  \item if $M_e$ halts with output $m$, so does~$U$.
+\end{enumerate}
+$U$ thus computes the function $f\colon \Nat \times \Nat \pto \Nat$
+given by $f(e,n) = m$ if $M_e$ started on input~$n$ halts with
+output~$m$, and undefined otherwise.
+\end{thm}
+
+\begin{proof}
+We describe how $U$ works and invoke the Church--Turing thesis.  When
+$U$ starts, its tape contains a block of $e$~$\TMstroke$'s followed by
+a block of $n$~$\TMstroke$'s.  It first ``decodes'' the index~$e$,
+producing the description of~$M_e$ (a list of instruction
+$5$-tuples).  Then $U$ sets up the initial configuration: it records
+the start state of~$M_e$ and the initial head position, and converts
+the input into coded symbols on a simulated ``tape.''
+
+$U$ now simulates $M_e$ step by step:
+\begin{enumerate}
+  \item Find the current head position~$k$.
+  \item Read the coded symbol at position~$k$ on the simulated tape.
+  \item Find the instruction matching the current state and symbol.
+  \item Write the new symbol at position~$k$.
+  \item Update the stored state to the new state.
+  \item Adjust the stored head position (increment or decrement
+    according to the direction).
+  \item Repeat.
+\end{enumerate}
+If $M_e$ never halts, then $U$ never halts either.  If $M_e$ halts
+(i.e., no instruction matches the current state/symbol pair), then $U$
+decodes the simulated tape contents back into a unary output and halts.
+\end{proof}
+
+
+\subsection{The $s$-$m$-$n$ theorem} \label{CMP.5.5}
+
+\begin{thm}[$s$-$m$-$n$ theorem] % THM-CMP004
+\label{THM-CMP004-SMN}
+  For each pair of natural numbers $n$ and~$m$, there is a primitive
+  recursive function~$s^m_n$ such that for every sequence
+  $e$, $a_0$, \dots, $a_{m-1}$, $y_0$, \dots, $y_{n-1}$, we have
+  \[
+  \cfind{s^m_n(e, a_0, \dots, a_{m-1})}[n](y_0, \dots, y_{n-1}) \simeq
+  \cfind{e}[m+n](a_0, \dots, a_{m-1}, y_0, \dots, y_{n-1}).
+\]
+\end{thm}
+
+It is helpful to think of $s^m_n$ as acting on \emph{programs}.  The
+function $s^m_n$ takes a program~$e$ for an $(m+n)$-ary function, as
+well as fixed inputs $a_0, \dots, a_{m-1}$, and returns a program
+$s^m_n(e, a_0, \dots, a_{m-1})$ for the $n$-ary function of the
+remaining arguments.  In Turing machine terms,
+$s^m_n(e, a_0, \dots, a_{m-1})$ is the machine that, on input
+$y_0, \dots, y_{n-1}$, prepends $a_0, \dots, a_{m-1}$ to the input
+string and runs~$e$.  Each $s^m_n$ is a primitive recursive function that
+finds a code for the appropriate machine.
+
+
+\subsection{Representing Turing machines in first-order logic}
+\label{CMP.5.6}
+
+To connect computation to logic, we show how to represent the behavior
+of a Turing machine~$M$ on input~$w$ by a sentence of first-order
+logic.
+
+\begin{defn}[Language $\Lang{L}_M$] % DEF-CMP009
+\label{DEF-CMP009}
+Given a Turing machine $M = \tuple{Q, \Sigma, q_0, \delta}$, the
+language~$\Lang{L}_M$ consists of:
+\begin{enumerate}
+\item A two-place predicate symbol $\Obj Q_q(x, y)$ for every state~$q \in
+  Q$.  Intuitively, $\Obj Q_q(\num{m}, \num{n})$ expresses ``after $n$
+  steps, $M$ is in state~$q$ scanning the $m$th square.''
+\item A two-place predicate symbol $\Obj S_\sigma(x, y)$ for every
+  symbol~$\sigma\in \Sigma$.  Intuitively, $\Obj S_\sigma(\num{m},
+  \num{n})$ expresses ``after $n$ steps, the $m$th square contains
+  symbol~$\sigma$.''
+\item A constant symbol $\Obj 0$, a one-place function symbol~$\prime$,
+  and a two-place predicate symbol~$<$.
+\end{enumerate}
+\end{defn}
+
+The sentence $!T(M, w)$ consists of axioms for $\Obj{0}$, $\prime$,
+and $<$ (ensuring $\lforall[x][x < x']$ and transitivity), axioms
+describing the input configuration, and axioms describing the
+transition from one configuration to the next.  For each instruction
+$\delta(q_i, \sigma) = \tuple{q_j, \sigma', D}$ there is a universally
+quantified sentence stating that if $M$ is in state~$q_i$ scanning a
+square containing~$\sigma$, then after one more step, the state is
+$q_j$, the symbol on that square is~$\sigma'$, the head has moved
+according to~$D$, and all other squares are unchanged.
+
+The sentence $!E(M, w)$ asserts that $M$ eventually reaches a halting
+configuration:
+$\lexists[x][\lexists[y][(\bigvee_{\tuple{q,\sigma} \in X}
+(\Obj Q_q(x,y) \land \Obj S_\sigma(x,y)))]]$, where $X$ is the set of
+state/symbol pairs on which $\delta$ is undefined.
+
+
+\subsection{Verification lemmas} \label{CMP.5.7}
+
+Let $!C(M, w, n)$ be the sentence describing the configuration of~$M$
+run on~$w$ after $n$~steps: it specifies the state, head position,
+and contents of every tape square.
+
+\begin{lem} \label{LEM-CMP-HALTCFG}
+If $M$ run on input~$w$ is in a halting configuration after $n$ steps,
+then $!C(M, w, n) \Entails !E(M, w)$.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+If $M$ halts after $n$ steps in state~$q$ scanning square~$m$
+containing~$\sigma$ with $\delta(q,\sigma)$ undefined, then $!C(M,w,n)$
+includes conjuncts $\Obj Q_q(\num{m},\num{n})$ and
+$\Obj S_\sigma(\num{m},\num{n})$.  Since $\tuple{q,\sigma} \in X$,
+these imply $!E(M,w)$ by existential generalization.
+\end{proof}
+
+\begin{lem} \label{LEM-CMP-CONFIGENT}
+For each $n$, if $M$ has not halted after $n$ steps, $!T(M, w)
+\Entails !C(M, w, n)$.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+By induction on~$n$.  The base case ($n=0$) holds because the
+conjuncts of $!C(M,w,0)$ are conjuncts of $!T(M,w)$.  For the
+inductive step, suppose $!T(M,w) \Entails !C(M,w,n)$ and $M$ has not
+halted.  The transition axiom corresponding to the instruction
+executed at step~$n$, together with $!C(M,w,n)$, entails all conjuncts
+of $!C(M,w,n+1)$.  Unchanged squares follow from the frame axiom
+$!A(x,y)$; if the head visits a new square, the axiom
+$\lforall[x][x < x']$ and transitivity establish the required
+properties.
+\end{proof}
+
+\begin{lem} \label{LEM-CMP-VALIDHALT}
+If $M$ halts on input~$w$, then $!T(M, w) \lif !E(M, w)$ is valid.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+If $M$ halts after $k$ steps, then by \cref{LEM-CMP-CONFIGENT},
+$!T(M,w) \Entails !C(M,w,k)$, and by \cref{LEM-CMP-HALTCFG},
+$!C(M,w,k) \Entails !E(M,w)$.
+\end{proof}
+
+\begin{lem} \label{LEM-CMP-HALTVALID}
+If $\Entails !T(M, w) \lif !E(M, w)$, then $M$ halts on input~$w$.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+Construct a structure~$\Struct{M}$ with domain~$\Nat$ that interprets
+$\Obj 0$ as~$0$, $\prime$ as successor, $<$ as less-than, and $\Obj
+Q_q$, $\Obj S_\sigma$ according to the actual run of~$M$ on~$w$.
+Then $\Sat{M}{!T(M,w)}$ by construction.  If $\Entails !T(M,w) \lif
+!E(M,w)$, then $\Sat{M}{!E(M,w)}$, which means there exist $m, n \in
+\Nat$ such that $M$ is in a halting configuration after $n$~steps.
+\end{proof}
+
+
+\subsection{Arithmetization of syntax} \label{CMP.5.8}
+
+We now show that syntactic objects of first-order logic can be coded as
+natural numbers, and that the relevant properties are primitive
+recursive.
+
+\begin{defn}[Symbol code and G\"odel number] % PRIM-CMP011
+\label{PRIM-CMP011}
+If $s$ is a symbol of the language~$\Lang{L}$, its \emph{symbol
+  code}~$\scode{s}$ is defined as follows: logical symbols receive
+codes $\tuple{0, i}$ for various~$i$; the $i$th variable~$\Obj v_i$
+receives $\scode{\Obj v_i} = \tuple{1, i}$; the $i$th constant
+symbol~$\Obj c_i$ receives $\tuple{2, i}$; the $i$th $n$-ary
+function symbol~$\Obj f_i^n$ receives $\tuple{3, n, i}$; and the
+$i$th $n$-ary predicate symbol~$\Obj P_i^n$ receives $\tuple{4, n,
+  i}$.  If $s_0, \dots, s_{n-1}$ is a sequence of symbols, its
+\emph{G\"odel number} is $\tuple{\scode{s_0}, \dots,
+  \scode{s_{n-1}}}$.
+\end{defn}
+
+\begin{rem}
+The relations $\fn{Fn}(x,n)$ (``$x$ codes an $n$-ary function
+symbol'') and $\fn{Pred}(x,n)$ (``$x$ codes an $n$-ary predicate
+symbol'') are primitive recursive.
+\end{rem}
+
+The following properties are all primitive recursive (each is
+established by bounded search over formation sequences or codes):
+
+\begin{prop} \label{PROP-CMP-TERMPRIM}
+The relation $\fn{Term}(x)$, which holds iff $x$ is the G\"odel number
+of a term, is primitive recursive.  So is $\fn{num}(n) = \Gn{\num{n}}$.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+A number $x$ is the G\"odel number of a term iff there is a formation
+sequence $s_0, \dots, s_{k-1}$ of terms ending in the expression coded
+by~$x$.  Each $s_i$ is either a variable, a constant, or is built from
+earlier terms by a function symbol.  The code of the formation sequence
+is bounded by $p_{k-1}^{k(x+1)}$ where $k = \len{x}$, so the check
+involves only bounded quantification.  The function $\fn{num}(n)$ is
+defined by primitive recursion: $\fn{num}(0) = \Gn{\Obj 0}$ and
+$\fn{num}(n+1) = \Gn{\prime(} \concat \fn{num}(n) \concat \Gn{)}$.
+\end{proof}
+
+\begin{prop} \label{PROP-CMP-FRMPRIM}
+The relations $\fn{Frm}(x)$ (``$x$ is the G\"odel number of a
+formula'') and $\fn{Sent}(x)$ (``$x$ is the G\"odel number of a
+sentence'') are primitive recursive.
+\end{prop}
+
+\begin{prop} \label{PROP-CMP-SUBSTPRIM}
+There is a primitive recursive function $\fn{Subst}(x, y, z)$ such that
+$\fn{Subst}(\Gn{!A}, \Gn{t}, \Gn{u}) = \Gn{\Subst{!A}{t}{u}}$.
+\end{prop}
+
+
+\subsection{The proof predicate} \label{CMP.5.9}
+
+We now arithmetize derivations.  Since derivations are structured
+syntactic objects (trees of sequents or sequences of formulas), they
+can be coded as numbers.  The details depend on the proof system
+chosen---sequent calculus ($\Log{LK}$), natural deduction, or axiomatic
+derivations---but the result is the same in each case.
+
+\begin{defn}[G\"odel number of a derivation] % DEF-CMP012
+\label{DEF-CMP012}
+A derivation~$\pi$ receives a G\"odel number $\Gn{\pi}$ by recursively
+coding its structure.  For sequent calculus: an initial sequent $\Gamma
+\Sequent \Delta$ is coded as $\tuple{0, \Gn{\Gamma \Sequent \Delta}}$;
+a one-premise inference is coded as $\tuple{1, \Gn{\pi_1}, \Gn{\Gamma
+    \Sequent \Delta}, k}$ where $k$ identifies the rule; and similarly
+for two-premise inferences.  Analogous codings exist for natural
+deduction and axiomatic derivations.
+\end{defn}
+
+\begin{prop} \label{PROP-CMP-CORRECT}
+The property $\fn{Correct}(p)$, which holds iff the last inference in
+the derivation with G\"odel number~$p$ is a correct application of a
+rule, is primitive recursive.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+For each rule~$R$, the relation $\fn{FollowsBy}_R(p)$ checks that the
+end-sequent of~$p$ follows from the premises by a correct application
+of~$R$.  This involves verifying the structure of the G\"odel numbers
+using bounded quantification and the primitive recursive functions for
+sequence manipulation, $\fn{Frm}$, $\fn{Subst}$, etc.  The property
+$\fn{Correct}(p)$ is the disjunction of all $\fn{FollowsBy}_R(p)$
+together with the case that $p$ codes an initial sequent.
+\end{proof}
+
+\begin{prop} \label{PROP-CMP-DERIV}
+The relation $\fn{Deriv}(p)$, which holds if $p$ is the G\"odel number
+of a correct derivation, is primitive recursive.
+\end{prop}
+
+\begin{prop}[Proof predicate] % DEF-CMP012
+\label{PROP-CMP-PRF}
+Suppose $\Gamma$ is a primitive recursive set of sentences.  Then the
+relation $\Prf[\Gamma](x, y)$ expressing ``$x$ is the code of a
+derivation of~$!A$ from~$\Gamma$ and $y$ is the G\"odel number
+of~$!A$'' is primitive recursive.
+\end{prop}
+
+\begin{rem}[Variant proof systems]
+The above results hold for sequent calculus, natural deduction, and
+axiomatic proof systems.  The internal details of the coding differ
+(trees vs.\ sequences, treatment of discharge labels, etc.), but in
+every case $\fn{Deriv}$ and $\Prf[\Gamma]$ are primitive recursive.
+The key ingredients are the same: primitive recursive checking of each
+inference step, and bounded search over sub-derivations.
+\end{rem}
+
+
+\subsection{Representability in $\Th{Q}$} \label{CMP.5.10}
+
+\begin{defn}[Representable function] % DEF-CMP009
+\label{DEF-CMP009-REP}
+A function $f(x_0, \dots, x_k)$ is \emph{representable in $\Th{Q}$}
+if there is a formula $!A_f(x_0, \dots, x_k, y)$ such that whenever
+$f(n_0, \dots, n_k) = m$, then:
+\begin{enumerate}
+\item $\Th{Q} \Proves !A_f(\num{n_0}, \dots, \num{n_k}, \num{m})$, and
+\item $\Th{Q} \Proves \lforall[y][(!A_f(\num{n_0}, \dots, \num{n_k},
+  y) \lif y = \num{m})]$.
+\end{enumerate}
+\end{defn}
+
+\begin{defn}[Representable relation]
+\label{DEF-CMP-REPREL}
+A relation $R(x_0,\dots,x_k)$ is \emph{representable in $\Th{Q}$} if
+there is a formula $!A_R(x_0,\dots,x_k)$ such that whenever
+$R(n_0,\dots,n_k)$ is true, $\Th{Q} \Proves !A_R(\num{n_0}, \dots,
+\num{n_k})$, and whenever $R(n_0,\dots,n_k)$ is false, $\Th{Q} \Proves
+\lnot !A_R(\num{n_0}, \dots, \num{n_k})$.
+\end{defn}
+
+The representability theorem establishes a deep connection between
+computability and provability.
+
+\begin{thm}[Representability theorem] % DEF-CMP009
+\label{THM-CMP-REPCOMP}
+A function is representable in $\Th{Q}$ if and only if it is computable.
+A relation is representable in $\Th{Q}$ if and only if it is computable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+\textbf{Representable $\Rightarrow$ computable:} If $f$ is represented
+by $!A_f$, we compute $f(n_0, \dots, n_k)$ by searching through all
+derivations from $\Th{Q}$ until we find one proving
+$!A_f(\num{n_0}, \dots, \num{n_k}, \num{m})$ for some~$m$.  Since the
+proof predicate $\Prf[\Th{Q}]$ is primitive recursive, the search can
+be formalized as a regular minimization.
+
+\textbf{Computable $\Rightarrow$ representable:} We show that the
+basic functions ($\Zero$, $\Succ$, $\Proj{n}{i}$, $\Add$, $\Mult$,
+$\Char{=}$) are representable, and that representable functions are
+closed under composition and regular minimization.  Primitive recursion
+is handled via the beta function, as follows.
+
+The basic functions are represented by their natural formulas: $\Zero$
+by $\eq[y][\Obj{0}]$, $\Succ$ by $\eq[y][x']$, $\Proj{n}{i}$ by
+$\eq[y][x_i]$, $\Add$ by $\eq[y][(x_0 + x_1)]$, $\Mult$ by $\eq[y][(x_0
+\times x_1)]$, and $\Char{=}$ by
+$(\eq[x_0][x_1] \land \eq[y][\num{1}]) \lor (\eq/[x_0][x_1] \land
+\eq[y][\num{0}])$.  That these work requires showing, for instance,
+that $\Th{Q} \Proves \eq[(\num{n} + \num{m})][\num{n+m}]$ (by
+induction on~$m$ using axioms $!Q_4$ and $!Q_5$) and that $\Th{Q}$
+proves distinct numerals unequal (by induction using axioms $!Q_1$ and
+$!Q_2$).
+
+Closure under composition: if $!A_f$ represents~$f$ and $!A_{g_i}$
+represents~$g_i$, then
+$\lexists[y_0][\dots\lexists[y_{k-1}][(!A_{g_0}(\vec{x}, y_0) \land
+    \dots \land !A_{g_{k-1}}(\vec{x}, y_{k-1}) \land !A_f(y_0, \dots,
+    y_{k-1}, z))]]$
+represents $h(\vec{x}) = f(g_0(\vec{x}), \dots, g_{k-1}(\vec{x}))$.
+
+Closure under regular minimization: if $!A_g$ represents~$g$, then
+$!A_g(y, z, \Obj{0}) \land \lforall[w][(w < y \lif \lnot !A_g(w, z,
+  \Obj{0}))]$ represents $f(z) = \umin{x}{[g(x,z) = 0]}$.  The proof
+uses lemmas showing that $\Th{Q}$ proves $\lforall[x][\lnot x <
+  \Obj{0}]$, that $\Th{Q}$ proves $x < \num{n+1} \lif (\eq[x][\Obj{0}]
+\lor \dots \lor \eq[x][\num{n}])$, and that $\Th{Q}$ proves
+trichotomy for numerals.
+\end{proof}
+
+
+\subsection{The beta function} \label{CMP.5.11}
+
+\begin{lem}[Beta function lemma] % DEF-CMP013
+\label{DEF-CMP013}
+There is a function $\beta(d,i)$ such that for every sequence $a_0,
+\dots, a_n$ there is a number~$d$ such that for every $i \le n$,
+$\beta(d,i) = a_i$.  Moreover, $\beta$ can be defined from the basic
+functions using just composition and regular minimization.
+\end{lem}
+
+The function $\beta$ provides a way of decoding finite sequences
+without using primitive recursion.  It is defined using the Chinese
+Remainder Theorem (Sunzi's Theorem): given $a_0, \dots, a_n$, let $j =
+\max(n, a_0 + 1, \dots, a_n + 1)$ and $m = \text{lcm}(1, \dots, j)$.
+Then $x_i = 1 + (i+1) \cdot m$ are pairwise relatively prime and each
+exceeds~$a_i$.  By Sunzi's Theorem, there exists~$d_0$ with $d_0
+\equiv a_i \pmod{x_i}$ for each~$i$.  Setting $d = J(d_0, m)$ (where
+$J$ is the pairing function) and $\beta(d, i) = \fn{rem}(1 + (i+1)
+\cdot L(d), K(d))$ gives the required decoding.
+
+Using $\beta$, primitive recursion can be simulated by regular
+minimization: if $h(\vec{x}, 0) = f(\vec{x})$ and $h(\vec{x}, y+1) =
+g(\vec{x}, y, h(\vec{x}, y))$, then $h(\vec{x}, y) = \beta(\hat{h}(\vec{x},
+y), y)$ where $\hat{h}(\vec{x}, y) = \umin{d}{(\beta(d,0) = f(\vec{x})
+\land \bforall{i < y}{\beta(d, i+1) = g(\vec{x}, i, \beta(d, i))})}$.
+
+
+\subsection{Productive sets} \label{CMP.5.12}
+
+\begin{defn}[Productive set] % DEF-CMP007
+\label{DEF-CMP007}
+A set $A \subseteq \Nat$ is \emph{productive} if there exists a
+computable function~$f$ such that for every c.e.\ set $W_e \subseteq
+A$, we have $f(e) \in A \setminus W_e$.  Such a function~$f$ is called
+a \emph{productive function} for~$A$.
+\end{defn}
+
+Productive sets witness a strong form of non-computability: not only is
+a productive set not c.e., but given any c.e.\ approximation $W_e
+\subseteq A$, we can computably find a specific element that $W_e$
+misses.
+
+\begin{prop} \label{PROP-CMP-KBARPROD}
+The complement of $K = \Setabs{e}{\cfind{e}(e) \fdefined}$ is
+productive, with the identity function as a productive function.
+\end{prop}
+
+\begin{proof}
+Suppose $W_e \subseteq \Complement{K}$.  We must show $e \in
+\Complement{K} \setminus W_e$.  If $e \in W_e$, then since $W_e
+\subseteq \Complement{K}$, we have $e \in \Complement{K}$, i.e.,
+$\cfind{e}(e) \fundefined$.  But $e \in W_e$ means $\cfind{e}(e)
+\fdefined$, a contradiction.  So $e \notin W_e$.  If $e \in K$, then
+$\cfind{e}(e) \fdefined$, so $e \in W_e$ (since $W_e$ is the domain
+of~$\cfind{e}$), contradicting what we just showed.  So $e \in
+\Complement{K}$, and thus $e \in \Complement{K} \setminus W_e$.
+\end{proof}
+
+
+%% ===================================================================
+%% CMP.6: Computability Theory
+%% ===================================================================
+
+\section{Computability Theory} \label{CMP.6}
+
+Having established the basic framework of computability---recursive
+functions, Turing machines, decidability, coding, and
+universality---we now develop the structural theory.  The key tools are
+many-one reducibility, which provides a method for comparing the
+difficulty of decision problems, and the notions of complete c.e.\
+sets, axiomatizable theories, and computable inseparability.
+
+\subsection{Many-one reducibility} \label{CMP.6.1}
+
+\begin{defn}[Many-one reduction] % PRIM-CMP009
+\label{PRIM-CMP009}
+Let $A$ and $B$ be sets of natural numbers.  A computable
+function~$f\colon \Nat \to \Nat$ is a \emph{many-one reduction} of $A$
+to~$B$ iff, for every natural number~$x$,
+\[
+x \in A \quad \text{if and only if} \quad f(x) \in B.
+\]
+If such a reduction $f$ exists, we say that $A$ is \emph{many-one
+  reducible} to~$B$, written $A \leq_m B$.  If $A \leq_m B$ and $B
+\leq_m A$, then $A$ and $B$ are \emph{many-one equivalent}, written
+$A \equiv_m B$.
+\end{defn}
+
+As an example, the function $f(x) = \tuple{x,x}$ is a many-one
+reduction of $K = \Setabs{x}{\cfind{x}(x) \fdefined}$ to $K_0 =
+\Setabs{\tuple{e,x}}{\cfind{e}(x) \fdefined}$, since $x \in K$ iff
+$\cfind{x}(x) \fdefined$ iff $\tuple{x,x} \in K_0$.
+
+If $f$ happens to be injective, $A$ is said to be \emph{one-one
+  reducible} to~$B$.
+
+\begin{prop}[Transitivity] \label{PROP-CMP-TRANSRED}
+If $A \leq_m B$ and $B \leq_m C$, then $A \leq_m C$.
+\end{prop}
+
+\begin{proof}
+Composing a reduction of $A$ to~$B$ with a reduction of $B$ to~$C$
+yields a reduction of $A$ to~$C$: if $f$ reduces $A$ to~$B$ and $g$
+reduces $B$ to~$C$, then $\comp{f}{g}$ reduces $A$ to~$C$, since for
+every~$x$, $x \in A$ iff $f(x) \in B$ iff $g(f(x)) \in C$.
+\end{proof}
+
+\begin{prop}[Preservation under reduction] \label{PROP-CMP-REDUCE}
+Let $A$ and $B$ be any sets, and suppose $A \leq_m B$.
+\begin{enumerate}
+\item If $B$ is computably enumerable, so is~$A$.
+\item If $B$ is computable, so is~$A$.
+\end{enumerate}
+\end{prop}
+
+\begin{proof}
+Let $f$ be a many-one reduction from $A$ to~$B$.
+
+For (1): if $B$ is the domain of a partial computable function~$g$,
+then $A$ is the domain of~$\comp{f}{g}$, since $x \in A$ iff $f(x)
+\in B$ iff $g(f(x)) \fdefined$.
+
+For (2): note that $f$ is also a reduction of $\Complement{A}$ to
+$\Complement{B}$.  If $B$ is computable, then both $B$ and
+$\Complement{B}$ are c.e., so by (1), both $A$ and $\Complement{A}$
+are c.e., whence $A$ is computable by \cref{THM-CMP-CECOMP}.
+\end{proof}
+
+
+\subsection{Complete c.e.\ sets} \label{CMP.6.2}
+
+\begin{defn}[Complete c.e.\ set] % DEF-CMP008
+\label{DEF-CMP008}
+A set $A$ is a \emph{complete computably enumerable set} (under
+many-one reducibility) if
+\begin{enumerate}
+\item $A$ is computably enumerable, and
+\item for any other computably enumerable set $B$, $B \leq_m A$.
+\end{enumerate}
+\end{defn}
+
+In other words, complete c.e.\ sets are the ``hardest'' c.e.\ sets
+possible: they allow one to answer questions about \emph{any} c.e.\
+set.
+
+\begin{thm} \label{THM-CMP-KKCOMPLETE}
+$K$, $K_0$, and $K_1$ are all complete computably enumerable sets.
+\end{thm}
+
+\begin{proof}
+To see that $K_0$ is complete, let $B$ be any computably
+enumerable set.  Then for some index $e$,
+$B = W_e = \Setabs{x}{\cfind{e}(x) \fdefined}$.  Let $f$ be the
+function $f(x) = \tuple{e, x}$.  Then for every natural number $x$,
+$x \in B$ if and only if $f(x) \in K_0$.  In other words, $f$ reduces
+$B$ to~$K_0$.
+
+$K$ can be reduced to $K_0$ in the same way (via $x \mapsto
+\tuple{x,x}$), so $K$ is also complete by transitivity.
+
+To see that $K_1$ is complete, one shows that $K_0$ reduces to
+$K_1$ (via an $s$-$m$-$n$ argument), and then completeness follows by
+transitivity.
+\end{proof}
+
+
+\subsection{Totality is undecidable} \label{CMP.6.3}
+
+\begin{prop} \label{PROP-CMP-TOT}
+The set $\fn{Tot} = \Setabs{x}{\text{for every } y,\; \cfind{x}(y)
+  \fdefined}$ is not computable.
+\end{prop}
+
+\begin{proof}[Proof sketch]
+We reduce $K$ to $\fn{Tot}$.  Define $h(x,y) \simeq 0$ if $x \in K$,
+and $h(x,y) \fundefined$ otherwise (the function $h$ does not depend
+on~$y$: it simply simulates $\cfind{x}(x)$ and outputs $0$ if it
+halts).  By the $s$-$m$-$n$ theorem, there is a primitive recursive
+$k(x)$ such that $\cfind{k(x)}(y) = h(x,y)$.  Then $\cfind{k(x)}$ is
+total iff $x \in K$, so $k$ reduces $K$ to $\fn{Tot}$.
+\end{proof}
+
+
+\subsection{Axiomatizable theories} \label{CMP.6.4}
+
+\begin{defn}[Axiomatizable theory] % DEF-CMP011
+\label{DEF-CMP011}
+A theory~$\Gamma$ is \emph{axiomatizable} if it is axiomatized by a
+decidable set of axioms, i.e., $\Gamma = \Setabs{!A}{\Gamma_0 \Entails
+  !A}$ for some decidable set~$\Gamma_0$.
+\end{defn}
+
+Any theory with a finite set of axioms is axiomatizable (since finite
+sets are decidable).  Schematically axiomatized theories like Peano
+arithmetic $\Th{PA}$ are also axiomatizable, since one can effectively
+test whether a given sentence is an instance of the induction schema.
+
+\begin{lem} \label{LEM-CMP-AXTCE}
+If $\Th{T}$ is axiomatizable, then $\Th{T}$ is computably enumerable.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+If $A$ is a decidable set of axioms for $\Th{T}$, then $!A \in \Th{T}$
+iff there is a finite list of axioms $!B_1, \dots, !B_k$ in $A$ and a
+derivation of $(!B_1 \land \dots \land !B_k) \lif !A$ in first-order
+logic.  Since the set of all derivations is enumerable and we can
+check membership in~$A$ decidably, $\Th{T}$ is c.e.
+\end{proof}
+
+
+\subsection{Computable inseparability} \label{CMP.6.5}
+
+\begin{defn}[Computable inseparability] % DEF-CMP014
+\label{DEF-CMP014}
+Two disjoint sets $A$ and $B$ are \emph{computably inseparable} if
+there is no computable set $C$ such that $A \subseteq C$ and $B
+\subseteq \Complement{C}$.
+\end{defn}
+
+\begin{lem} \label{LEM-CMP-QQBARINSEP}
+$\Th{Q}$ and $\Th{\bar{Q}} = \Setabs{!A}{\Th{Q} \Proves \lnot !A}$
+are computably inseparable.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+Suppose $C$ is a computable set with $\Th{Q} \subseteq C$ and
+$\Th{\bar{Q}} \subseteq \Complement{C}$.  Define $R(x,y)$ to hold iff
+$x$ codes a formula~$!D(u)$ and $!D(\num{y}) \in C$.  Since $C$ is
+computable, $R$ is computable.  We show $R$ is a universal computable
+relation, contradicting the fact (established by diagonalization) that
+no such relation exists.  If $S(y)$ is any computable relation,
+represented by $!D_S(u)$ in $\Th{Q}$, then $S(n) \Rightarrow \Th{Q}
+\Proves !D_S(\num{n}) \Rightarrow !D_S(\num{n}) \in C \Rightarrow
+R(\Gn{!D_S(u)}, n)$, and $\lnot S(n) \Rightarrow \Th{Q} \Proves
+\lnot !D_S(\num{n}) \Rightarrow !D_S(\num{n}) \in \Th{\bar{Q}}
+\subseteq \Complement{C} \Rightarrow \lnot R(\Gn{!D_S(u)}, n)$.
+\end{proof}
+
+
+%% ===================================================================
+%% CMP.7: Theorems
+%% ===================================================================
+
+\section{Theorems} \label{CMP.7}
+
+We conclude the chapter with the central theorems of computability
+theory: Rice's theorem, the recursion (fixed-point) theorem, the
+unsolvability of the decision problem for first-order logic, and a
+collection of undecidability and incompleteness results for
+arithmetical theories.
+
+\subsection{Rice's theorem} \label{CMP.7.1}
+
+\begin{thm}[Rice's Theorem] % THM-CMP003
+\label{THM-CMP003}
+  Let $C$ be any set of partial computable functions, and let $A =
+  \Setabs{n}{\cfind{n} \in C}$.  If $A$ is computable, then either $C$
+  is empty or $C$ is the set of all partial computable functions.
+\end{thm}
+
+Rice's theorem says that no nontrivial \emph{index set} is decidable.
+It is important to understand what the theorem does and does not say.
+There are certainly computable questions about programs as syntactic
+objects (``does this program have more than 150 symbols?'').  Rice's
+theorem says that no nontrivial question about a program's
+\emph{behavior}---what function it computes---is decidable.  This
+includes questions like: does it halt on input~$0$?  Does it ever
+halt?  Does it ever output an even number?
+
+\begin{proof}
+Suppose $C$ is neither empty nor the set of all partial
+computable functions, and let $A$ be the set of indices of functions
+in~$C$.  We show that if $A$ were computable, we could solve the
+halting problem; so $A$~is not computable.
+
+Without loss of generality, assume that the nowhere-defined function
+$f$ is not in $C$ (otherwise, switch $C$ and its complement).  Let $g$
+be any function in~$C$.  Define
+\[
+h(x,y) \simeq
+\begin{cases}
+\text{undefined} & \text{if $\cfind{x}(x) \fundefined$} \\
+g(y) & \text{otherwise.}
+\end{cases}
+\]
+More precisely, $h(x,y) \simeq \Proj{2}{0}(g(y), \fn{Un}(x,x))$,
+which is defined and equals $g(y)$ exactly when both $\fn{Un}(x,x)$
+and $g(y)$ are defined.
+
+For a fixed~$x$: if $\cfind{x}(x)$ is undefined, then $h(x,y)$ is
+undefined for every~$y$, so $h_x$ acts like~$f$; if $\cfind{x}(x)$ is
+defined, then $h(x,y) \simeq g(y)$, so $h_x$ acts like~$g$.
+
+Since $h$ is partial computable, it equals $\cfind{e}$ for some~$e$.
+By the $s$-$m$-$n$ theorem, there is a primitive recursive~$s$ such
+that $\cfind{s(e,x)}(y) = h_x(y)$.  Now for each $x$: if
+$\cfind{x}(x) \fdefined$, then $\cfind{s(e,x)}$ computes~$g \in C$,
+so $s(e,x) \in A$; if $\cfind{x}(x) \fundefined$, then
+$\cfind{s(e,x)}$ computes~$f \notin C$, so $s(e,x) \notin A$.
+Hence $x \in K$ iff $s(e,x) \in A$.  If $A$ were computable, so would
+$K$---contradiction.
+\end{proof}
+
+\begin{cor} \label{COR-CMP-RICE}
+The following sets are undecidable:
+\begin{enumerate}
+\item $\Setabs{x}{\text{$17$ is in the range of $\cfind{x}$}}$,
+\item $\Setabs{x}{\text{$\cfind{x}$ is constant}}$,
+\item $\Setabs{x}{\text{$\cfind{x}$ is total}}$,
+\item $\Setabs{x}{\text{whenever $y < y'$, $\cfind{x}(y) \fdefined$,
+    and if $\cfind{x}(y') \fdefined$, then $\cfind{x}(y) <
+    \cfind{x}(y')$}}$.
+\end{enumerate}
+\end{cor}
+
+\begin{proof}
+These are all nontrivial index sets.
+\end{proof}
+
+
+\subsection{The recursion theorem} \label{CMP.7.2}
+
+The recursion theorem (also known as the fixed-point theorem) says
+that any computable transformation of programs has a fixed point.
+Think of it this way: given any partial computable $g(x,y)$, one can
+find a program~$e$ that computes $g_e(y) = g(e,y)$---a program whose
+behavior depends on its own code.  This is the theoretical basis for
+self-referential constructions such as quines (programs that print
+their own source code).
+
+\begin{lem} \label{LEM-CMP-FIXEDEQUIV}
+The following statements are equivalent:
+\begin{enumerate}
+\item For every partial computable function $g(x,y)$, there is an
+  index~$e$ such that for every~$y$,
+  $\cfind{e}(y) \simeq g(e,y)$.
+\item For every computable function~$f(x)$, there is an index~$e$ such
+  that for every~$y$,
+  $\cfind{e}(y) \simeq \cfind{f(e)}(y)$.
+\end{enumerate}
+\end{lem}
+
+\begin{proof}
+$(1) \Rightarrow (2)$: Given $f$, define $g(x,y) \simeq
+\fn{Un}(f(x),y)$ and apply (1).
+
+$(2) \Rightarrow (1)$: Given $g$, use the $s$-$m$-$n$ theorem to get
+$f$ such that $\cfind{f(x)}(y) \simeq g(x,y)$ and apply (2).
+\end{proof}
+
+\begin{thm}[Recursion Theorem / Fixed-Point Theorem] % THM-CMP005
+\label{THM-CMP005}
+For every partial computable function $g(x,y)$, there is an index~$e$
+such that for every~$y$,
+\[
+\cfind{e}(y) \simeq g(e,y).
+\]
+\end{thm}
+
+\begin{proof}
+Let $\fn{diag}(x)$ be a computable function such that
+$\cfind{\fn{diag}(x)}(y) \simeq \cfind{x}(x,y)$.
+Such a function exists by the $s$-$m$-$n$ theorem: define $s(x,y)
+\simeq \fn{Un}^2(x,x,y)$ and let $\fn{diag}$ satisfy
+$\cfind{\fn{diag}(x)}(y) \simeq s(x,y)$.
+
+Now define $l(x,y) \simeq g(\fn{diag}(x), y)$ and let $\gn{l}$ be an
+index for~$l$.  Set $e = \fn{diag}(\gn{l})$.  Then:
+\begin{align*}
+\cfind{e}(y) &\simeq \cfind{\fn{diag}(\gn{l})}(y)
+  \simeq \cfind{\gn{l}}(\gn{l}, y)
+  \simeq l(\gn{l}, y) \\
+  &\simeq g(\fn{diag}(\gn{l}), y)
+  \simeq g(e, y). \qedhere
+\end{align*}
+\end{proof}
+
+
+\subsection{Unsolvability of the decision problem} \label{CMP.7.3}
+
+\begin{thm} \label{THM-CMP-DECPROB}
+The decision problem is unsolvable: there is no Turing machine~$D$
+which, when started on a tape containing a sentence~$!B$ of
+first-order logic as input, eventually halts and outputs~$1$ iff $!B$
+is valid and $0$ otherwise.
+\end{thm}
+
+\begin{proof}
+Suppose the decision problem were solvable by a Turing machine~$D$.
+We construct a Turing machine~$E$ that, given input~$e$ and~$w$,
+computes the sentence $!T(M_e, w) \lif !E(M_e, w)$ (see
+\cref{DEF-CMP009}).  The machine $E \concat D$ then computes
+$!T(M_e,w) \lif !E(M_e,w)$ and runs~$D$ on the result.  By
+\cref{LEM-CMP-VALIDHALT} and \cref{LEM-CMP-HALTVALID}, $!T(M_e,w)
+\lif !E(M_e,w)$ is valid iff $M_e$ halts on input~$w$.  So $E \concat
+D$ solves the halting problem, contradicting \cref{THM-CMP002}.
+\end{proof}
+
+\begin{cor} \label{COR-CMP-UNDECSAT}
+It is undecidable whether an arbitrary sentence of first-order logic is
+satisfiable.
+\end{cor}
+
+\begin{proof}
+If satisfiability were decidable by~$S$, we could decide validity:
+given~$!B$, run $S$ on $\lnot !B$; then $!B$ is valid iff $\lnot !B$
+is unsatisfiable.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-VALIDCE}
+Validity of first-order sentences is semi-decidable: there is a Turing
+machine~$E$ which halts with output~$1$ iff $!B$ is valid, but does
+not halt otherwise.
+\end{thm}
+
+\begin{proof}
+All possible derivations can be generated one after another by an
+effective algorithm.  The machine~$E$ generates derivations and halts
+with output~$1$ when it finds one showing $\Proves !B$.  By
+soundness, if $E$ halts then $\Entails !B$.  By completeness, if
+$\Entails !B$ then such a derivation exists and will eventually be
+found.
+\end{proof}
+
+
+\subsection{Undecidability of arithmetic theories} \label{CMP.7.4}
+
+We now connect computability to the incompleteness phenomena.  The
+results below show that essentially any theory strong enough to
+represent computable functions is undecidable, and that axiomatizable
+extensions cannot be complete.
+
+\begin{thm} \label{THM-CMP-CONSDECRELS}
+If $\Gamma$ is a consistent theory that represents every decidable
+relation, then $\Gamma$ is not decidable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Suppose $\Gamma$ were decidable.  Enumerate all formulas with one free
+variable as $!A_0(x), !A_1(x), \dots$ and define $D =
+\Setabs{n}{\Gamma \Proves \lnot !A_n(\num{n})}$.  Since $\Gamma$ is
+decidable, $D$ is decidable.  Since $\Gamma$ represents all decidable
+relations, $D$ is represented by some $!A_d(x)$.  Then $d \in D$ leads
+to $\Gamma \Proves !A_d(\num{d})$ (since $!A_d$ represents~$D$) and
+$\Gamma \Proves \lnot !A_d(\num{d})$ (by definition of~$D$), making
+$\Gamma$ inconsistent.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-AXTCOMPDEC}
+If $\Gamma$ is axiomatizable and complete, then $\Gamma$ is decidable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+If $\Gamma$ is inconsistent, it is trivially decidable.  Otherwise,
+simultaneously search for a derivation of~$!A$ and a derivation
+of~$\lnot !A$ from the axioms of~$\Gamma$.  Since $\Gamma$ is
+complete, one search must succeed; since $\Gamma$ is consistent, the
+other cannot.
+\end{proof}
+
+\begin{cor}[Weak first incompleteness] \label{COR-CMP-WEAKINC}
+If $\Gamma$ is consistent, axiomatizable, and represents every
+decidable property, then $\Gamma$ is not complete.
+\end{cor}
+
+\begin{proof}
+If $\Gamma$ were complete, it would be decidable (since it is
+axiomatizable), contradicting \cref{THM-CMP-CONSDECRELS}.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-QCE}
+$\Th{Q}$ is c.e.\ but not decidable.  In fact, $\Th{Q}$ is a complete
+c.e.\ set.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+$\Th{Q}$ is c.e.\ since $\Th{Q} = \Setabs{y}{\lexists[x][\Prf[\Th{Q}](x,y)]}$
+and $\Prf[\Th{Q}]$ is primitive recursive.  To show c.e.-completeness,
+we reduce $K$ to $\Th{Q}$: since Kleene's predicate $T(e,x,s)$ is
+represented in $\Th{Q}$ by some~$!A_T$, we have $x \in K$ iff $\Th{Q}
+\Proves \lexists[s][!A_T(\num{x}, \num{x}, s)]$.  The function
+mapping $x$ to (a code for) $\lexists[s][!A_T(\num{x}, \num{x}, s)]$
+is a reduction of $K$ to~$\Th{Q}$.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-CONSQEXT}
+Let $\Th{T}$ be any consistent theory that includes $\Th{Q}$.  Then
+$\Th{T}$ is not decidable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+If $\Th{T}$ were consistent and decidable, we could define a universal
+computable relation $R(x,y)$: ``$x$ codes a formula $!D(u)$ and
+$\Th{T}$ proves $!D(\num{y})$.''  Since $\Th{T}$ extends $\Th{Q}$,
+every computable relation $S(y)$ represented by $!D_S(u)$ satisfies
+$S(n)$ iff $R(\Gn{!D_S(u)}, n)$.  But no universal computable
+relation exists (by diagonalization), so $\Th{T}$ is not decidable.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-CONSWITHQ}
+Let $\Th{T}$ be any theory in the language of arithmetic that is
+consistent with $\Th{Q}$ (i.e., $\Th{T} \cup \Th{Q}$ is
+consistent).  Then $\Th{T}$ is undecidable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Suppose $\Th{T}$ is decidable and consistent with~$\Th{Q}$.  Let $!E
+= !Q_1 \land \dots \land !Q_8$ be the conjunction of the axioms
+of~$\Th{Q}$, and define $C = \Setabs{!A}{\Th{T} \Proves !E \lif !A}$.
+Then $C$ is computable.  If $!A \in \Th{Q}$, then $\Proves !E \lif
+!A$, so $!A \in C$.  If $!A \in \Th{\bar{Q}}$, then $\Proves !E \lif
+\lnot !A$; if also $\Th{T} \Proves !E \lif !A$, then $\Th{T} \Proves
+\lnot !E$, contradicting consistency of $\Th{T} \cup \Th{Q}$.  So $!A
+\notin C$.  Thus $C$ computably separates $\Th{Q}$ and $\Th{\bar{Q}}$,
+contradicting \cref{LEM-CMP-QQBARINSEP}.
+\end{proof}
+
+\begin{thm} \label{THM-CMP-INTERP}
+Suppose $\Th{T}$ is a theory in a language in which one can interpret
+the language of arithmetic, in such a way that $\Th{T}$ is consistent
+with the interpretation of $\Th{Q}$.  Then $\Th{T}$ is undecidable.
+If $\Th{T}$ proves the interpretation of the axioms of $\Th{Q}$, then
+no consistent extension of $\Th{T}$ is decidable.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+The proof is a small modification of the proof of
+\cref{THM-CMP-CONSWITHQ}: a counterexample would yield a computable
+separation of $\Th{Q}$ and $\Th{\bar{Q}}$ via the interpretation.
+\end{proof}
+
+\begin{cor} \label{COR-CMP-ZFC}
+There is no decidable extension of $\Th{ZFC}$ (Zermelo--Fraenkel set
+theory with the axiom of choice).  In particular, there is no
+complete, consistent, axiomatizable extension of $\Th{ZFC}$.
+\end{cor}
+
+\begin{cor} \label{COR-CMP-FOLBIN}
+First-order logic for any language with a binary relation symbol is
+undecidable.
+\end{cor}
+
+\begin{rem}[Decidability boundary]
+\label{REM-CMP-DECBOUND}
+The undecidability of first-order logic extends to any language with
+two unary function symbols (since these can simulate a binary
+relation).  On the other hand, first-order logic for a language with
+only unary relation symbols and at most one unary function symbol is
+decidable.  Similarly, Presburger arithmetic---the set of sentences in
+the language $\Obj{0}$, $\prime$, $+$ true in $\Struct{N}$---is
+decidable (though computationally very expensive), while the set of
+true sentences in the language $\Obj{0}$, $\prime$, $\times$ is
+already undecidable.
+\end{rem}

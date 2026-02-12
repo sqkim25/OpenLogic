@@ -1,0 +1,167 @@
+\chapter{Extensions} \label{ch:ext}
+
+The preceding seven chapters establish a self-contained development of
+classical first-order logic: from set-theoretic foundations (CH-BST)
+through syntax, semantics, deduction, computation, metatheory, and formal
+set theory. This final chapter catalogues the principal directions in
+which the core framework can be extended. Each topic area is the subject
+of extensive treatment in the OpenLogic Project source material; we
+provide brief orientations and pointers.
+
+
+%% ===================================================================
+%% EXT.1: Modal Logic
+%% Sources: 69 normal-modal-logic/ + 16 applied-modal-logic/ sections
+%% ===================================================================
+
+\section{Modal Logic} \label{EXT.1}
+
+Modal logic extends propositional and first-order logic with operators
+expressing necessity~($\Box$) and possibility~($\Diamond$). The
+semantics is given by Kripke structures (relational models): a set of
+worlds, an accessibility relation, and a valuation at each world. A
+formula~$\Box\varphi$ holds at a world~$w$ iff $\varphi$ holds at every
+world accessible from~$w$. By varying the properties of the
+accessibility relation---reflexive, transitive, symmetric, Euclidean---one
+obtains the standard normal modal systems K, T, S4, and S5.
+Completeness, correspondence theory (frame conditions vs.\ axiom
+schemas), and filtration-based decidability proofs constitute the core
+metatheory. Applied extensions include epistemic logic (knowledge and
+belief), temporal logic (operators for future and past), and deontic
+logic (obligation and permission).
+
+\emph{Source material}: OpenLogic \texttt{content/normal-modal-logic/}
+(69~sections) and \texttt{content/applied-modal-logic/} (16~sections).
+
+
+%% ===================================================================
+%% EXT.2: Intuitionistic Logic
+%% Sources: 34 intuitionistic-logic/ sections
+%% ===================================================================
+
+\section{Intuitionistic Logic} \label{EXT.2}
+
+Intuitionistic logic rejects the law of excluded middle
+$\varphi \lor \lnot\varphi$ and the double-negation elimination rule
+$\lnot\lnot\varphi \to \varphi$, restricting provability to
+constructive reasoning. Its semantics can be given via Kripke models
+(with a partial order of information states), Heyting algebras, or the
+Brouwer--Heyting--Kolmogorov interpretation (proofs as constructions).
+Natural deduction and sequent calculus formulations are obtained by
+restricting the classical rules (e.g., allowing at most one formula in
+the succedent of sequent calculus sequents, or restricting
+\emph{reductio ad absurdum} in ND). The propositions-as-types correspondence (Curry--Howard
+isomorphism) connects intuitionistic proofs to typed lambda terms,
+establishing deep links between logic and computation.
+
+\emph{Source material}: OpenLogic \texttt{content/intuitionistic-logic/}
+(34~sections).
+
+
+%% ===================================================================
+%% EXT.3: Many-Valued Logic
+%% Sources: 25 many-valued-logic/ sections
+%% ===================================================================
+
+\section{Many-Valued Logic} \label{EXT.3}
+
+Many-valued logics generalize classical logic by allowing truth values
+beyond $\{\True, \False\}$. Three-valued logics
+({\L}ukasiewicz, Kleene, Priest) introduce a third value for
+``unknown,'' ``undefined,'' or ``both true and false.'' Continuous-valued
+logics ({\L}ukasiewicz infinite-valued, G\"odel logic, product logic)
+use the real interval $[0,1]$ as the truth-value set. The algebraic
+semantics is given by MV-algebras, Heyting algebras, or BL-algebras.
+Key metatheoretic results include completeness theorems for various
+axiomatic systems and the McNaughton theorem characterizing
+{\L}ukasiewicz logic functions as piecewise-linear functions on~$[0,1]$.
+
+\emph{Source material}: OpenLogic \texttt{content/many-valued-logic/}
+(25~sections).
+
+
+%% ===================================================================
+%% EXT.4: Second-Order Logic
+%% Sources: 20 second-order-logic/ sections
+%% ===================================================================
+
+\section{Second-Order Logic} \label{EXT.4}
+
+Second-order logic extends first-order logic by allowing quantification
+over predicate and function variables in addition to individual
+variables. Under the standard (or ``full'') semantics, second-order
+quantifiers range over all subsets (or all functions) on the domain.
+This dramatically increases expressive power: the natural numbers,
+the real numbers, and well-orderings are categorically axiomatizable
+in second-order logic. However, this power comes at a metatheoretic
+cost: the Completeness Theorem fails for the standard semantics
+(second-order validity is not axiomatizable), and the
+L\"owenheim--Skolem theorem fails. Under Henkin semantics (where
+second-order quantifiers range over a specified subcollection),
+completeness and compactness are restored, but categorical
+axiomatizability is lost.
+
+\emph{Source material}: OpenLogic \texttt{content/second-order-logic/}
+(20~sections).
+
+
+%% ===================================================================
+%% EXT.5: Lambda Calculus
+%% Sources: 44 lambda-calculus/ sections
+%% ===================================================================
+
+\section{Lambda Calculus} \label{EXT.5}
+
+The lambda calculus, introduced by Church in the 1930s, provides a
+formal system for defining and applying functions. The untyped lambda
+calculus uses three term constructors---variables, abstraction
+($\lambda x.\, M$), and application ($M\, N$)---with
+$\beta$-reduction ($(\lambda x.\, M)\, N \to M[N/x]$) as the
+fundamental computation rule. The Church--Rosser theorem guarantees
+confluence: if a term reduces in two different ways, both reduction
+paths can be completed to a common reduct. The simply-typed lambda
+calculus adds type annotations ($\lambda x{:}\alpha.\, M$) and
+guarantees strong normalization (every reduction sequence terminates),
+establishing a correspondence with intuitionistic propositional logic
+via the Curry--Howard isomorphism. Extensions to System~F
+(polymorphism), dependent types, and the calculus of constructions
+connect to modern proof assistants and programming language theory.
+
+\emph{Source material}: OpenLogic \texttt{content/lambda-calculus/}
+(44~sections).
+
+
+%% ===================================================================
+%% EXT.6: Other Extensions
+%% Sources: counterfactuals/ + methods/ + history/ + reference/
+%% ===================================================================
+
+\section{Other Extensions} \label{EXT.6}
+
+Several additional topics in the OpenLogic Project fall outside the
+core development but are of independent interest:
+
+\begin{itemize}
+\item \textbf{Counterfactual conditionals} (13~sections): Stalnaker
+  and Lewis semantics for counterfactuals using sphere models and
+  minimal-change semantics, addressing the failure of antecedent
+  strengthening, contraposition, and transitivity for the
+  counterfactual conditional.
+
+\item \textbf{Methods} (19~sections): Proof techniques and problem
+  sets designed for introductory logic courses, including induction
+  templates, proof strategies, and worked examples.
+
+\item \textbf{History of logic} (20~sections): Biographies of key
+  figures (Cantor, G\"odel, Turing, Tarski, Church, Gentzen, Robinson,
+  Noether, Peter, Russell, Zermelo) and historical developments in set
+  theory (Cantor on the line and the plane, space-filling curves,
+  infinitesimals, pathological sets).
+
+\item \textbf{Reference material} (3~sections): Notation summaries
+  and symbol tables.
+\end{itemize}
+
+\emph{Source material}: OpenLogic \texttt{content/counterfactuals/},
+\texttt{content/methods/}, \texttt{content/history/}, and
+\texttt{content/reference/}.

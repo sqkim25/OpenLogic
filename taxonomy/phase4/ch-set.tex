@@ -1,0 +1,1994 @@
+\chapter{Formal Set Theory} \label{ch:set}
+
+%% ===================================================================
+%% SET.1: The Language of Set Theory
+%% Sources: sth/z/sep (partial, language intro), FORMALIZE from domain spec
+%% ===================================================================
+
+\section{The Language of Set Theory} \label{SET.1}
+
+In Chapter~\ref{ch:bst} we developed set-theoretic foundations
+informally, treating sets as intuitively given collections of objects.
+We now turn to \emph{formal} set theory: a first-order theory in which
+every concept is defined from a single binary relation symbol, and
+every existence claim is justified by explicit axioms.
+
+\begin{defn}[Set (Formal)] % PRIM-SET001
+\label{PRIM-SET001}
+In ZFC, the variables of $\Lang{L}_\in$ range over \emph{sets}.
+Unlike the naive sets of Chapter~\ref{ch:bst}, formal sets are objects
+within a first-order theory: they exist only to the extent that the
+ZFC axioms guarantee their existence.
+\end{defn}
+
+The formal language of set theory is remarkably austere:
+
+\begin{defn}[Membership] % PRIM-SET002
+\label{PRIM-SET002}
+The language $\Lang{L}_\in = \{\in\}$ has a single binary relation
+symbol~$\in$. All set-theoretic concepts---subset, union, power set,
+ordinal, cardinal, function---are defined in terms of $\in$ and the
+logical connectives of first-order logic (see SYN.1--SYN.2,
+Chapter~\ref{ch:syn}).
+\end{defn}
+
+The notation $(\forall x \in A)\phi$ abbreviates $\forall x(x \in A
+\lif \phi)$, and $(\exists x \in A)\phi$ abbreviates $\exists x(x \in
+A \land \phi)$.
+
+\begin{rem} % PRIM-SET003
+\label{PRIM-SET003}
+It is sometimes useful to speak of \emph{classes}---collections that
+may be ``too large'' to be sets (for instance, the collection of all
+ordinals). Proper classes will be introduced in SET.3, where the
+Burali-Forti paradox motivates the distinction between sets and
+proper classes.
+\end{rem}
+
+
+%% ===================================================================
+%% SET.2: ZFC Axioms
+%% Sources: sth/story/extensionality (KEEP), sth/z/sep (KEEP),
+%%          sth/z/pairs (KEEP), sth/z/union (KEEP),
+%%          sth/z/powerset (KEEP), sth/z/infinity-again (KEEP),
+%%          sth/ordinals/replacement (KEEP),
+%%          sth/spine/foundation (CONDENSE),
+%%          sth/z/story (CONDENSE), sth/z/milestone (CONDENSE),
+%%          sth/ordinals/zfm (CONDENSE), sth/spine/zf (CONDENSE),
+%%          sth/z/arbintersections (CONDENSE),
+%%          sth/cardinals/zfc (CONDENSE)
+%% ===================================================================
+
+\section{ZFC Axioms} \label{SET.2}
+
+The axioms of ZFC are motivated by the \emph{cumulative-iterative
+conception} of set, which rests on three informal principles:
+\begin{enumerate}
+\item[] \stageshier. Every set is formed at some stage.
+\item[] \stagesord. Stages are ordered: some come \emph{before} others.
+\item[] \stagesacc. For any stage $S$, and for any sets which were
+formed \emph{before} stage~$S$: a set is formed at stage~$S$ whose
+members are exactly those sets. Nothing else is formed at stage~$S$.
+\end{enumerate}
+These informal principles do not constitute a formal theory, but they
+serve to justify each axiom we adopt. We will introduce additional
+stage-theoretic principles as needed.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.1  Extensionality
+%%% -----------------------------------------------------------------
+
+\subsection{Extensionality}
+
+The very first thing to say is that sets are individuated by their
+elements. More precisely:
+
+\begin{axiom}[Extensionality] % AX-SET001
+\label{AX-SET001}
+If sets $A$ and $B$ have the same elements, then $A$ and $B$ are
+the same set.
+\[
+  \lforall[A][\lforall[B][(\lforall[x][(x \in A \liff x \in B)] \lif
+  \eq[A][B])]]
+\]
+\end{axiom}
+
+The Axiom of Extensionality expresses the basic idea that a set is
+determined by its elements. (So sets might be contrasted with
+\emph{concepts}, where precisely the same objects might fall under many
+different concepts.)
+
+Why embrace this principle? Well, it is plausible to say that any
+denial of Extensionality is a decision to abandon anything which might
+even be called \emph{set theory}. Set theory is no more nor less than
+the theory of extensional collections.
+
+The real challenge, though, is to lay down principles which tell us
+\emph{which sets exist}. And it turns out that the only truly
+``obvious'' answer to this question is provably wrong.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.2  Separation
+%%% -----------------------------------------------------------------
+
+\subsection{Separation}
+
+We start with a principle to replace Naive Comprehension:
+
+\begin{axiom}[Scheme of Separation] % AX-SET006
+\label{AX-SET006}
+For every formula $\phi(x)$, this is an axiom: for any $A$, the set
+$\Setabs{x \in A}{\phi(x)}$ exists.
+\end{axiom}
+
+Note that this is not a single axiom. It is a \emph{scheme} of axioms.
+There are \emph{infinitely many} Separation axioms; one for every
+formula $\phi(x)$. The scheme can equally well be (and normally is)
+written down as follows:
+
+\begin{defish}
+For any formula $\phi(x)$ which does not contain ``$S$'', this is an
+axiom:
+\[
+	\forall A \exists S \forall x(x \in S \liff (\phi(x) \land x \in A)).
+\]
+\end{defish}
+
+The formulas~$\phi$ in the Separation axioms may have parameters.
+
+Separation is immediately justified by the cumulative-iterative
+conception. To see why, let $A$ be a set. So $A$ is formed by some
+stage~$S$ (by \stageshier). Since $A$ was formed at stage~$S$, all of
+$A$'s members were formed before stage $S$ (by \stagesacc). Now in
+particular, consider all the sets which are members of $A$ and which
+also satisfy $\phi$; clearly all of these sets, too, were formed
+before stage~$S$. So they are formed into a set $\Setabs{x \in
+A}{\phi(x)}$ at stage~$S$ too (by \stagesacc).
+
+Unlike Naive Comprehension, this avoids Russell's Paradox. For we
+cannot simply assert the existence of the set $\Setabs{x}{x \notin
+x}$. Rather, \emph{given} some set~$A$, we can assert the existence of
+the set $R_A = \Setabs{x \in A}{x \notin x}$. But all this proves is
+that $R_A \notin R_A$ and $R_A \notin A$, none of which is very
+worrying.
+
+However, Separation has an immediate and striking consequence: there is
+no \emph{universal} set, i.e., $\Setabs{x}{x = x}$ does not exist.
+For if $V$ were a universal set, then by Separation, $R = \Setabs{x
+\in V}{x \notin x} = \Setabs{x}{x \notin x}$ would exist,
+contradicting Russell's Paradox.
+
+The absence of a universal set---indeed, the open-endedness of the
+hierarchy of sets---is one of the most fundamental ideas behind the
+cumulative-iterative conception.
+
+Here are a few more consequences of Separation and Extensionality.
+
+\begin{prop} % AX-SET002
+\label{AX-SET002}
+If any set exists, then $\emptyset$ exists.
+\end{prop}
+
+\begin{proof}
+If $A$ is a set, $\emptyset = \Setabs{x \in A}{x \neq x}$ exists by Separation.
+\end{proof}
+
+\begin{rem}[Empty Set] \label{AX-SET002:rem}
+The existence of the empty set is thus \emph{derived} from Separation
+(given the existence of at least one set). In many formulations of ZFC,
+the Empty Set axiom is listed separately; in our development it follows
+from AX-SET006 (Separation, \S\ref{AX-SET006}).
+\end{rem}
+
+\begin{rem}[Intersection existence] \label{SET.2:arbint}
+Given Separation, if $A \neq \emptyset$, then $\bigcap A = \Setabs{x}{
+(\forall y \in A)\, x \in y}$ exists. For let $c \in A$; then $\bigcap
+A = \Setabs{x \in c}{(\forall y \in A)\, x \in y}$, which exists by
+Separation. Note that $\bigcap \emptyset$ would be the universal set
+(vacuously), so the condition $A \neq \emptyset$ is essential. More
+generally, definitions of the form $C = \bigcap \Setabs{X}{\phi(X)}$
+are justified whenever some witness $S$ with $\phi(S)$ can be exhibited:
+one simply defines $C = \Setabs{x \in S}{\forall X(\phi(X) \lif x \in
+X)}$ using Separation.
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.3  Pairing
+%%% -----------------------------------------------------------------
+
+\subsection{Pairing}
+
+\begin{axiom}[Pairs] % AX-SET003
+\label{AX-SET003}
+For any sets $a, b$, the set $\{a, b\}$ exists.
+\[
+	\forall a \forall b \exists P \forall x (x \in P \liff (x = a \lor x = b))
+\]
+\end{axiom}
+
+Here is how to justify this axiom, using the iterative conception.
+Suppose $a$ is available at stage $S$, and $b$ is available at stage
+$T$. Let $M$ be whichever of stages $S$ and $T$ comes later. Then
+since $a$ and $b$ are both available at stage $M$, the set $\{a,b\}$
+is a possible collection available at any stage after $M$.
+
+But why assume that there \emph{are} any stages after $M$? If there are
+none, then our justification will fail. So, to justify Pairs, we add
+another principle to the story:
+\begin{enumerate}
+	\item[] \stagessucc. There is no last stage.
+\end{enumerate}
+Even if this principle was not stated explicitly in the story of stages,
+it fits well with the basic idea that sets are formed in stages. We
+accept it in what follows, and with it, the Axiom of Pairs.
+
+\begin{rem}[Consequences of Pairing] \label{AX-SET003:consequences}
+For any sets $a$ and $b$, the following sets exist:
+\begin{enumerate}
+\item $\{a\}$ (the singleton): by Pairs, $\{a, a\}$ exists, which is
+$\{a\}$ by Extensionality.
+\item $a \cup b$ (binary union): by Pairs, $\{a, b\}$ exists; now $a
+\cup b = \bigcup \{a, b\}$ exists by Union (see below).
+\item $\tuple{a, b}$ (the ordered pair): $\{a\}$ exists by~(1); $\{a,
+b\}$ by Pairs; so $\{\{a\}, \{a, b\}\} = \tuple{a, b}$ exists by Pairs
+again.
+\end{enumerate}
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.4  Union
+%%% -----------------------------------------------------------------
+
+\subsection{Union}
+
+\begin{axiom}[Union] % AX-SET004
+\label{AX-SET004}
+For any set $A$, the set $\bigcup A = \Setabs{x}{(\exists b \in A)\, x
+\in b}$ exists.
+\[
+	\forall A \exists U \forall x(x \in U \liff (\exists b \in A)x \in b)
+\]
+\end{axiom}
+
+This axiom is also justified by the cumulative-iterative conception.
+Let $A$ be a set, so $A$ is formed at some stage $S$ (by \stageshier).
+Every member of $A$ was formed \emph{before} $S$ (by \stagesacc); so,
+reasoning similarly, every member of every member of $A$ was formed
+before $S$. Thus all of \emph{those} sets are available before $S$, to
+be formed into a set at $S$. And that set is just $\bigcup A$.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.5  Power Set
+%%% -----------------------------------------------------------------
+
+\subsection{Power Set}
+
+\begin{axiom}[Power Set] % AX-SET005
+\label{AX-SET005}
+For any set $A$, the set $\Pow{A} = \Setabs{x}{x \subseteq A}$ exists.
+\[
+	\forall A \exists P \forall x(x \in P \liff (\forall z \in x)z \in A)
+\]
+\end{axiom}
+
+Our justification is straightforward. Suppose $A$ is formed at stage
+$S$. Then all of $A$'s members were available before $S$ (by
+\stagesacc). So, reasoning as in our justification for Separation,
+every subset of $A$ is formed by stage $S$. So they are all available,
+to be formed into a single set, at any stage after $S$. And we know
+that there is some such stage, since $S$ is not the last stage (by
+\stagessucc). So $\Pow{A}$ exists.
+
+\begin{rem}[Cartesian products] \label{AX-SET005:products}
+Given any sets $A, B$, their Cartesian product $A \times B$ exists.
+This follows because $\Pow{\Pow{A \cup B}}$ exists by Power Set, and
+$A \times B$ can be carved out by Separation: $A \times B = \Setabs{z
+\in \Pow{\Pow{A \cup B}}}{(\exists x \in A)(\exists y \in B)\, z =
+\tuple{x, y}}$.
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.6  Infinity
+%%% -----------------------------------------------------------------
+
+\subsection{Infinity}
+
+We already have enough axioms to ensure that there are infinitely many
+sets (if there are any). For suppose some set exists, and so
+$\emptyset$ exists (by Proposition~\ref{AX-SET002}). Now for any
+set~$x$, the set $x \cup \{x\}$ exists by
+Remark~\ref{AX-SET003:consequences}. So, applying this a few times, we
+obtain sets as follows:
+\begin{enumerate}
+	\item[0.] $\emptyset$
+	\item[1.] $\{\emptyset\}$
+	\item[2.] $\{\emptyset, \{\emptyset\}\}$
+	\item[3.] $\{\emptyset, \{\emptyset\}, \{\emptyset, \{\emptyset\}\}\}$
+	\item[4.] $\{\emptyset, \{\emptyset\}, \{\emptyset, \{\emptyset\}\},
+	\{\emptyset, \{\emptyset\}, \{\emptyset, \{\emptyset\}\}\}\}$
+\end{enumerate}
+and we can check that each of these sets is distinct. It is not hard to
+verify that the set labelled ``$n$'' has exactly $n$ members, and
+(intuitively) is formed at the $n$th stage.
+
+But this gives us \emph{infinitely many} sets without guaranteeing that
+there is an \emph{infinite set}, i.e., a set with infinitely many
+members. And this really matters: unless we can find a (Dedekind)
+infinite set, we cannot construct a Dedekind algebra to serve as the
+natural numbers (compare PRIM-BST012, Dedekind algebra,
+Chapter~\ref{ch:bst}).
+
+The axioms we have laid down so far do \emph{not} guarantee the
+existence of any infinite set. So we lay down a new axiom:
+
+\begin{axiom}[Infinity] % Infinity axiom (no separate AX-SET ID in lean-outline; cf.\ AX-SET009 for Choice)
+\label{SET.2:infinity}
+There is a set, $I$, such that $\emptyset \in I$ and $x \cup \{x\} \in
+I$ whenever $x \in I$.
+\begin{align*}
+	\exists I( & (\exists o \in I)\forall x\ x \notin o \land {}\\
+	& (\forall x \in I)(\exists s \in I)\forall z(z \in s \liff (z \in x \lor z = x)))
+\end{align*}
+\end{axiom}
+
+It is easy to see that the set $I$ given to us by the Axiom of Infinity
+is Dedekind infinite. Its distinguished element is $\emptyset$, and the
+injection on $I$ is given by $s(x) = x \cup \{x\}$.
+
+\begin{defn}[$\omega$] % defines omega
+\label{SET.2:defnomega}
+Let $I$ be any set given to us by the Axiom of Infinity. Let $s$ be the
+function $s(x) = x \cup \{x\}$. Let $\omega =
+\closureofunder{s}{\emptyset}$. We call the members of $\omega$ the
+\emph{natural numbers}, and say that $n$ is the result of $n$-many
+applications of $s$ to $\emptyset$.
+\end{defn}
+
+To justify the Axiom of Infinity, we add another principle:
+\begin{enumerate}
+	\item[] \stagesinf. There is an infinite stage. That is, there is a
+	stage which (a) is not the first stage, (b) has some stages before
+	it, but (c) has no immediate predecessor.
+\end{enumerate}
+The Axiom of Infinity follows: natural number $n$ is formed at stage
+$n$, so $\omega$ is formed at the first infinite stage. Unlike
+\stagessucc, the principle \stagesinf{} is not ``forced upon us'' by
+the iterative conception---it seems perfectly coherent to think that the
+stages are ordered like the natural numbers. We simply accept
+\stagesinf{} in what follows.
+
+
+%%% -----------------------------------------------------------------
+%%% Milestone: Z^-
+%%% -----------------------------------------------------------------
+
+\begin{rem}[$\Zminus$: A Milestone] \label{SET.2:zminus}
+The theory $\Zminus$ has these axioms: Extensionality, Union, Pairs,
+Power Set, Infinity, and all instances of the Separation scheme.
+The name stands for \emph{Zermelo} set theory (minus Foundation, which
+we will come to below). Zermelo essentially formulated this theory in
+1908. $\Zminus$ is powerful enough to carry out an enormous amount of
+mathematics; in particular, the naive set-theoretic constructions of
+Chapter~\ref{ch:bst} can be made rigorous within~$\Zminus$.
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.7  Replacement
+%%% -----------------------------------------------------------------
+
+\subsection{Replacement}
+
+In order to prove that every well-ordering is isomorphic to some ordinal
+(a key result for ordinal theory in SET.3), we need a new axiom that
+goes beyond the power of~$\Zminus$.
+
+\begin{axiom}[Scheme of Replacement] % AX-SET007
+\label{AX-SET007}
+For any formula $\phi(x, y)$, the following is an axiom:
+\begin{quote}
+	for any $A$, if $(\forall x \in A)\lexists![y][\phi(x,y)]$, then
+	$\Setabs{y}{(\exists x \in A)\phi(x,y)}$ exists.
+\end{quote}
+\end{axiom}
+\noindent
+As with Separation, this is a scheme: it yields infinitely many axioms,
+for each of the infinitely many different $\phi$'s. It can equally well
+be written thus:
+
+\begin{defish}
+For any formula $\phi(x,y)$ which does not contain ``$B$'', the
+following is an axiom:
+\[
+\forall A[(\forall x \in A)\lexists![y][\phi(x,y)] \lif \exists B\forall y (y \in B \liff (\exists x \in A)\phi(x,y))]
+\]
+\end{defish}
+
+On first encounter this is quite a tangled formula. The following quick
+consequence gives a \emph{clearer} expression to the intuitive idea:
+for any term $\tau(x)$ and any set $A$, the set
+$\Setabs{\tau(x)}{x \in A} = \Setabs{y}{(\exists x \in A)\, y =
+\tau(x)}$ exists. This is because $\tau$ is a term, so $\forall x
+\lexists![y][\tau(x) = y]$. Thus ``Replacement'' is a good name: given
+a set $A$, you can form a new set $\Setabs{\tau(x)}{x \in A}$ by
+replacing every member of $A$ with its image under~$\tau$. Following
+the notation for the image of a set under a function, we might write
+$\funimage{\tau}{A}$ for $\Setabs{\tau(x)}{x \in A}$.
+
+Crucially, $\tau$ is a \emph{term}. It need not be a \emph{function}
+in the sense of a set of ordered pairs. If $f$ is a function (in that
+sense), then $\funimage{f}{A}$ is just a subset of $\ran{f}$, already
+guaranteed to exist by the axioms of~$\Zminus$. Replacement, by
+contrast, is a \emph{powerful} addition to our axioms.
+
+
+%%% -----------------------------------------------------------------
+%%% Milestone: ZF^-
+%%% -----------------------------------------------------------------
+
+\begin{rem}[$\ZFminus$: A Milestone] \label{SET.2:zfminus}
+The theory $\ZFminus$ adds all instances of the Replacement scheme
+to~$\Zminus$. The name stands for \emph{Zermelo--Fraenkel} set theory
+(minus Foundation). Fraenkel is credited with the formulation of
+Replacement in 1922, although the first precise formulation was due to
+Skolem in the same year.
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.2.8  Foundation
+%%% -----------------------------------------------------------------
+
+\subsection{Foundation}
+
+We are \emph{almost} done---but not \emph{quite}---because nothing in
+$\ZFminus$ guarantees that \emph{every} set is in some $V_\alpha$,
+i.e., that every set is formed at some stage.
+
+There is a fairly straightforward sense in which we don't \emph{care}
+whether there are sets outside the hierarchy (if there are any, we can
+simply ignore them). But we have motivated our \emph{concept} of set
+with the thought that every set is formed at some stage (see
+\stageshier). So we preclude the possibility of sets falling outside the
+hierarchy by adding a new axiom.
+
+Since the $V_\alpha$s are our stages, we might simply consider adding
+Regularity as an axiom:
+
+\begin{defish}
+\emph{Regularity.} $\forall A \exists \alpha\, A \subseteq V_\alpha$
+\end{defish}
+
+This would be perfectly reasonable. However, for technical reasons we
+instead adopt an alternative formulation:
+
+\begin{axiom}[Foundation] % AX-SET008
+\label{AX-SET008}
+$(\forall A \neq \emptyset)(\exists B \in A)\, A \cap B = \emptyset$.
+\end{axiom}
+
+The connection between Foundation and Regularity requires some work.
+The key notion is the \emph{transitive closure}:
+
+\begin{defn}[Transitive Closure] % transitive closure trcl(A)
+\label{SET.2:trcl}
+For each set $A$, let:
+\begin{align*}
+	\text{cl}_0(A) &= A,\\
+	\text{cl}_{n+1}(A) &= \bigcup \text{cl}_n(A),\\
+	\trcl{A} &= \bigcup_{n < \omega} \text{cl}_{n}(A).
+\end{align*}
+We call $\trcl{A}$ the \emph{transitive closure} of $A$.
+\end{defn}
+
+One can show that $A \subseteq \trcl{A}$ and that $\trcl{A}$ is a
+transitive set. Using Foundation and the transitive closure, one proves:
+
+\begin{thm}[Foundation entails Regularity] % THM: zfentailsregularity
+\label{SET.2:zfentailsregularity}
+Regularity holds in $\ZFminus + \text{Foundation}$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Fix $A$. Since $A \subseteq \trcl{A}$ and $\trcl{A}$ is transitive, it
+suffices to show that every transitive set is contained in some
+$V_\alpha$. Let $A$ be transitive, and suppose for contradiction that
+the set $D = \Setabs{x \in A}{\forall \delta\; x \nsubseteq V_\delta}$
+is non-empty. By Foundation, there is some $B \in D$ with $D \cap B =
+\emptyset$. Since $A$ is transitive, every element of $B$ is in $A$ but
+not in $D$, so every element of $B$ is contained in some $V_\delta$.
+Collecting these witnesses yields $B \subseteq V_\beta$ for some
+ordinal~$\beta$, contradicting $B \in D$.
+\end{proof}
+
+\begin{rem}[Foundation--Regularity equivalence] \label{SET.2:found-reg}
+In $\ZFminus$, Foundation and Regularity are equivalent. The converse
+direction (Regularity implies Foundation) is established using the
+notion of the rank of a set (see SET.3). Given $\ZFminus$, we can
+justify Foundation by noting that it is equivalent to Regularity, and
+Regularity follows immediately from \stageshier.
+
+The reason we take Foundation rather than Regularity as our official
+axiom is that Foundation can be stated without using the
+$V_\alpha$-hierarchy. The definition of the $V_\alpha$s relies on
+Transfinite Recursion, whose proof employs Replacement. So while
+Foundation and Regularity are equivalent modulo $\ZFminus$, they are
+\emph{not} equivalent modulo $\Zminus$; indeed, both $\Zminus$ and $\Z$
+are too weak to define the $V_\alpha$s, so Regularity (as formulated
+above) does not even make \emph{sense} in~$\Z$.
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% Milestones: Z, ZF
+%%% -----------------------------------------------------------------
+
+\begin{rem}[$\Z$ and $\ZF$: A Milestone] \label{SET.2:z-zf}
+The theory $\Z$ adds Foundation to $\Zminus$. Its axioms are:
+Extensionality, Union, Pairs, Power Set, Infinity, Foundation, and all
+instances of the Separation scheme. The theory $\ZF$ adds Foundation to
+$\ZFminus$; equivalently, $\ZF$ adds all instances of Replacement
+to~$\Z$. From now on we work in $\ZF$ (unless otherwise stated).
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% Milestone: ZFC
+%%% -----------------------------------------------------------------
+
+\begin{rem}[$\ZFC$: Final Milestone] \label{SET.2:zfc}
+The theory $\ZFC$ adds Well-Ordering to $\ZF$. Its axioms are:
+Extensionality, Union, Pairs, Power Set, Infinity, Foundation,
+Well-Ordering, and all instances of the Separation and Replacement
+schemes. The name stands for \emph{Zermelo--Fraenkel with Choice},
+because Well-Ordering turns out to be equivalent (modulo $\ZF$) to the
+Axiom of Choice. The Well-Ordering principle (AX-SET009) is stated in
+SET.4 after the ordinal theory needed to define cardinals, and proven
+equivalent to Choice in SET.6.
+\end{rem}
+
+
+%% ===================================================================
+%% SET.3: Ordinals
+%% Sources: sth/ordinals/wo (KEEP), sth/ordinals/iso (CONDENSE),
+%%          sth/ordinals/vn (KEEP), sth/ordinals/basic (KEEP),
+%%          sth/ordinals/ordtype (KEEP), sth/ordinals/opps (KEEP),
+%%          sth/spine/recursion (KEEP), sth/choice/hartogs (CONDENSE)
+%% ===================================================================
+
+\section{Ordinals} \label{SET.3}
+
+In SET.2 we postulated that there is an infinite stage of the
+hierarchy (\stagesinf). Given \stagessucc, the stages do not stop
+there: at the next stage after the first infinite stage, we form all
+possible collections of sets available at the first infinite stage; and
+repeat; and repeat. Implicitly, we have invoked a notion of number
+that extends \emph{beyond} the natural numbers---the notion of a
+\emph{transfinite ordinal}. The aim of this section is to make that
+idea rigorous: we define well-orderings, introduce von Neumann's
+ordinals, prove their fundamental properties (including transfinite
+induction and the Burali-Forti paradox), and develop the machinery of
+transfinite recursion.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.1  Well-Orderings
+%%% -----------------------------------------------------------------
+
+\subsection{Well-Orderings}
+
+\begin{defn}[Well-Ordering] % DEF-SET009
+\label{DEF-SET009}
+The relation $<$ \emph{well-orders} $A$ iff it meets these two
+conditions:
+\begin{enumerate}
+	\item $<$ is connected, i.e., for all $a, b \in A$, either $a < b$
+	or $a = b$ or $b < a$;
+	\item every non-empty subset of $A$ has a $<$-minimal element,
+	i.e., if $\emptyset \neq X \subseteq A$ then $(\exists m \in
+	X)(\forall z \in X)\, z \nless m$.
+\end{enumerate}
+\end{defn}
+
+\begin{prop} \label{SET.3:wo:strictorder}
+If $<$ well-orders $A$, then every non-empty subset of $A$ has a unique
+$<$-least member, and $<$ is irreflexive, asymmetric and transitive.
+\end{prop}
+
+\begin{proof}
+If $X$ is a non-empty subset of $A$, it has a $<$-minimal element
+$m$, i.e., $(\forall z \in X)\, z \nless m$. Since $<$ is connected,
+$(\forall z \in X)\, m \leq z$. So $m$ is the $<$-least element of $X$.
+
+For irreflexivity, fix $a \in A$; the $<$-least element of $\{a\}$ is
+$a$, so $a \nless a$. For transitivity, if $a < b < c$, then since
+$\{a, b, c\}$ has a $<$-least element, $a < c$. Asymmetry follows from
+irreflexivity and transitivity.
+\end{proof}
+
+\begin{prop}[Well-Ordering Induction] \label{SET.3:propwoinduction}
+If $<$ well-orders $A$, then for any formula $\phi(x)$:
+\[
+	\text{if }(\forall a \in A)((\forall b < a)\phi(b) \lif
+		\phi(a))\text{, then }(\forall a \in A)\phi(a).
+\]
+\end{prop}
+
+\begin{proof}
+Suppose $\lnot(\forall a \in A)\phi(a)$, i.e., $X = \Setabs{x \in
+A}{\lnot\phi(x)} \neq \emptyset$. Then $X$ has a $<$-minimal element,
+$a$. So $(\forall b < a)\phi(b)$ but $\lnot \phi(a)$.
+\end{proof}
+
+This last property should remind the reader of the principle of strong
+induction on the naturals: if $(\forall n \in \omega)((\forall m <
+n)\phi(m) \lif \phi(n))$, then $(\forall n \in \omega)\phi(n)$. It is
+this property that makes well-ordering such a \emph{robust} notion.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.2  Order-Isomorphisms
+%%% -----------------------------------------------------------------
+
+\subsection{Order-Isomorphisms}
+
+\begin{defn}[Order-Isomorphism] \label{SET.3:deforderiso}
+A \emph{well-ordering} is a pair $\tuple{A, <}$ such that $<$
+well-orders $A$. The well-orderings $\tuple{A, <}$ and $\tuple{B,
+\lessdot}$ are \emph{order-isomorphic} iff there is a bijection $f
+\colon A \to B$ such that $x < y$ iff $f(x) \lessdot f(y)$. In this
+case, we write $\ordeq{\tuple{A, <}}{\tuple{B, \lessdot}}$, and say
+that $f$ is an \emph{order-isomorphism} (or simply an
+\emph{isomorphism}).
+\end{defn}
+
+\begin{defn}[Initial Segment] \label{SET.3:definitseg}
+When $\tuple{A, <}$ is a well-ordering with $a \in A$, let $A_a =
+\Setabs{x \in A}{x < a}$. We say that $A_a$ is a proper \emph{initial
+segment} of $A$. Let $<_a$ be the restriction of $<$ to $A_a^2$.
+\end{defn}
+
+\begin{lem} \label{SET.3:wellordnotinitial}
+If $\tuple{A, <}$ is a well-ordering with $a \in A$, then
+$\ordneq{\tuple{A, <}}{\tuple{A_a, <_a}}$.
+\end{lem}
+
+\begin{proof}
+For reductio, suppose $f \colon A \to A_a$ is an isomorphism. Since $f$
+is a bijection and $A_a \subsetneq A$, let $b \in A$ be the $<$-least
+element such that $b \neq f(b)$. One shows that $(\forall x \in A)(x <
+b \liff x < f(b))$, from which $b = f(b)$ by the extensionality of
+strict linear orders, completing the reductio.
+\end{proof}
+
+\begin{lem} \label{SET.3:wellordinitialsegment}
+Let $\tuple{A, <}$ and $\tuple{B, \lessdot}$ be well-orderings. If $f
+\colon A \to B$ is an isomorphism and $a \in A$, then
+$\funrestrictionto{f}{A_{a}} : A_a \to B_{f(a)}$ is an isomorphism.
+\end{lem}
+
+\begin{lem} \label{SET.3:lemordsegments}
+Let $\tuple{A, <}$ and $\tuple{B, \lessdot}$ be well-orderings. If
+$\ordeq{\tuple{A_{a_1}, <_{a_1}}}{\tuple{B_{b_1}, \lessdot_{b_1}}}$
+and $\ordeq{\tuple{A_{{a_2}}, <_{a_2}}}{\tuple{B_{{b_2}},
+\lessdot_{b_2}}}$, then ${a_1} < {a_2}$ iff ${b_1} \lessdot {b_2}$.
+\end{lem}
+
+\begin{thm}[Comparability of Well-Orderings] \label{SET.3:woalwayscomparable}
+Given any two well-orderings, one is isomorphic to an initial segment
+(not necessarily proper) of the other.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Let $\tuple{A, <}$ and $\tuple{B, \lessdot}$ be well-orderings. Using
+Separation, let
+\[
+	f = \Setabs{\tuple{a, b} \in A \times B}{
+		\ordeq{\tuple{A_a, <_a}}{\tuple{B_b, \lessdot_b}}}.
+\]
+By Lemma~\ref{SET.3:lemordsegments}, $f$ preserves order. One shows
+that $\dom{f}$ is an initial segment of $A$ and $\ran{f}$ is an initial
+segment of $B$. If both were \emph{proper} initial segments, say
+$\dom{f} = A_a$ and $\ran{f} = B_b$, then $f \colon A_a \to B_b$ would
+be an isomorphism, forcing $\tuple{a, b} \in f$---a contradiction.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.3  Von Neumann's Ordinals
+%%% -----------------------------------------------------------------
+
+\subsection{Von Neumann's Ordinals}
+
+Theorem~\ref{SET.3:woalwayscomparable} gives rise to a thought: we could
+introduce certain objects, called \emph{order types}, to go proxy for
+the well-orderings. We would hope to secure:
+\begin{align*}
+	\ordtype{A, <} = \ordtype{B, \lessdot} &
+	\text{ iff } \ordeq{\tuple{A, <}}{\tuple{B, \lessdot}}\\
+	\ordtype{A, <} < \ordtype{B, \lessdot} &
+	\text{ iff }\ordeq{\tuple{A, <}}{\tuple{B_b, \lessdot_b}}\text{ for some }b \in B
+\end{align*}
+The most common way to achieve this---and the approach we follow---is
+to define order types via certain \emph{canonical} well-ordered sets,
+first introduced by von Neumann:
+
+\begin{defn}[Transitive Set] % DEF-SET002
+\label{DEF-SET002}
+The set $A$ is \emph{transitive} iff $(\forall x \in A)\, x \subseteq A$.
+\end{defn}
+
+\begin{defn}[Ordinal] % DEF-SET001
+\label{DEF-SET001}
+$A$ is an \emph{ordinal} iff $A$ is transitive and well-ordered by
+$\in$.
+\end{defn}
+
+In what follows, we use Greek letters for ordinals. It follows
+immediately from the definition that if $\alpha$ is an ordinal, then
+$\tuple{\alpha, \in_\alpha}$ is a well-ordering, where $\in_\alpha =
+\Setabs{\tuple{x, y} \in \alpha^2}{x \in y}$. So, abusing notation, we
+can say that $\alpha$ \emph{itself} is a well-ordering.
+
+Here are our first few ordinals:
+\[
+	\emptyset, \quad \{\emptyset\}, \quad
+	\{\emptyset, \{\emptyset\}\}, \quad
+	\{\emptyset, \{\emptyset\}, \{\emptyset, \{\emptyset\}\}\}, \quad \ldots
+\]
+These are exactly the sets that appeared in our Axiom of Infinity, i.e.,
+in the definition of $\omega$ (Definition~\ref{SET.2:defnomega}). This
+is no coincidence: von Neumann's construction treats natural numbers as
+ordinals, but allows for transfinite ordinals too.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.4  Basic Properties of the Ordinals
+%%% -----------------------------------------------------------------
+
+\subsection{Basic Properties of the Ordinals}
+
+\begin{lem} \label{SET.3:ordmemberord}
+Every element of an ordinal is an ordinal.
+\end{lem}
+
+\begin{proof}
+Let $\alpha$ be an ordinal with $b \in \alpha$. Since $\alpha$ is
+transitive, $b \subseteq \alpha$. So $\in$ well-orders $b$ as $\in$
+well-orders $\alpha$.
+
+To see that $b$ is transitive, suppose $x \in c \in b$. So $c \in
+\alpha$ as $b \subseteq \alpha$. Again, as $\alpha$ is transitive, $c
+\subseteq \alpha$, so that $x \in \alpha$. So $x, c, b \in \alpha$.
+Since $\in$ well-orders $\alpha$, $\in$ is transitive on $\alpha$ by
+Proposition~\ref{SET.3:wo:strictorder}. Hence $x \in c \in b$ gives $x
+\in b$. Generalising, $c \subseteq b$.
+\end{proof}
+
+\begin{thm}[Transfinite Induction] % DEF-SET005
+\label{DEF-SET005}
+For any formula $\phi(x)$:
+\[
+	\text{if }\exists \alpha \phi(\alpha)\text{, then }\exists \alpha(\phi(\alpha)
+	\land  (\forall \beta \in \alpha) \lnot \phi(\beta))
+\]
+where the displayed quantifiers are implicitly restricted to ordinals.
+\end{thm}
+
+\begin{proof}
+Suppose $\phi(\alpha)$, for some ordinal $\alpha$. If $(\forall \beta
+\in \alpha) \lnot \phi(\beta)$, then we are done. Otherwise, as
+$\alpha$ is an ordinal, it has some $\in$-least element which is
+$\phi$, and this is an ordinal by Lemma~\ref{SET.3:ordmemberord}.
+\end{proof}
+
+We can equally express Transfinite Induction as the scheme:
+\[
+\text{if }\forall \alpha((\forall \beta \in \alpha)\phi(\beta) \lif
+\phi(\alpha))\text{, then }\forall \alpha\phi(\alpha).
+\]
+
+\begin{thm}[Trichotomy] \label{SET.3:ordtrichotomy}
+$\alpha \in \beta \lor \alpha = \beta \lor \beta \in \alpha$, for any
+ordinals $\alpha$ and $\beta$.
+\end{thm}
+
+\begin{proof}
+The proof is by double induction, using Transfinite Induction
+(Theorem~\ref{DEF-SET005}) twice. Say that $x$ is \emph{comparable}
+with $y$ iff $x \in y \lor x = y \lor y \in x$.
+
+For induction, suppose that every ordinal in $\alpha$ is comparable with
+\emph{every} ordinal. For further induction, suppose that $\alpha$ is
+comparable with every ordinal in $\beta$. We show that $\alpha$ is
+comparable with $\beta$. By induction on $\beta$, it follows that
+$\alpha$ is comparable with every ordinal; and by induction on $\alpha$,
+\emph{every} ordinal is comparable with \emph{every} ordinal. It
+suffices to assume $\alpha \notin \beta$ and $\beta \notin \alpha$, and
+show $\alpha = \beta$.
+
+To show $\alpha \subseteq \beta$: fix $\gamma \in \alpha$; this is an
+ordinal by Lemma~\ref{SET.3:ordmemberord}. By the first induction
+hypothesis, $\gamma$ is comparable with $\beta$. But if $\gamma = \beta$
+or $\beta \in \gamma$, then $\beta \in \alpha$ (using transitivity of
+$\alpha$ if necessary), contrary to assumption; so $\gamma \in \beta$.
+Similar reasoning shows $\beta \subseteq \alpha$. So $\alpha = \beta$.
+\end{proof}
+
+We sometimes write $\alpha < \beta$ rather than $\alpha \in \beta$,
+since $\in$ behaves as an ordering relation on the ordinals.
+
+\begin{cor} \label{SET.3:corordtransitiveord}
+$A$ is an ordinal iff $A$ is a transitive set of ordinals.
+\end{cor}
+
+\begin{proof}
+\emph{Left-to-right.} By Lemma~\ref{SET.3:ordmemberord}.
+\emph{Right-to-left.} If $A$ is a transitive set of ordinals, then
+$\in$ well-orders $A$ by Transfinite Induction
+(Theorem~\ref{DEF-SET005}) and Trichotomy
+(Theorem~\ref{SET.3:ordtrichotomy}).
+\end{proof}
+
+Now, we glossed Theorems~\ref{DEF-SET005} and~\ref{SET.3:ordtrichotomy}
+as telling us that $\in$ well-orders the ordinals. However, we must be
+cautious, thanks to the following result:
+
+\begin{thm}[Burali-Forti Paradox] % PRIM-SET003
+\label{SET.3:buraliforti}
+There is no set of all the ordinals.
+\end{thm}
+
+\begin{proof}
+For reductio, suppose $O$ is the set of all ordinals. If $\alpha \in
+\beta \in O$, then $\alpha$ is an ordinal by
+Lemma~\ref{SET.3:ordmemberord}, so $\alpha \in O$. So $O$ is
+transitive, and hence $O$ is an ordinal by
+Corollary~\ref{SET.3:corordtransitiveord}. Hence $O \in O$,
+contradicting irreflexivity (Proposition~\ref{SET.3:wo:strictorder}).
+\end{proof}
+
+The Burali-Forti paradox shows that the ordinals form a \emph{proper
+class} (see Remark~\ref{PRIM-SET003}). Ordinals are sets which are
+individually well-ordered by membership, and collectively well-ordered
+by membership, without collectively constituting a set.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.5  Ordinals as Order-Types
+%%% -----------------------------------------------------------------
+
+\subsection{Ordinals as Order-Types}
+
+Armed with Replacement (AX-SET007, \S\ref{AX-SET007}), and so now
+working in $\ZFminus$, we can prove the key representation theorem:
+
+\begin{thm}[Ordinal Representation] \label{SET.3:thmOrdinalRepresentation}
+Every well-ordering is isomorphic to a unique ordinal.
+\end{thm}
+
+\begin{proof}
+Let $\tuple{A, <}$ be a well-ordering. By
+Theorem~\ref{SET.3:ordtrichotomy} and
+Lemma~\ref{SET.3:wellordnotinitial}, it is isomorphic to at most one
+ordinal. For reductio, suppose it is not isomorphic to \emph{any}
+ordinal. ``Make $\tuple{A, <}$ as small as possible'': if some proper
+initial segment $\tuple{A_a, <_a}$ is not isomorphic to any ordinal,
+let $a$ be least with that property and set $B = A_a$; otherwise let $B
+= A$.
+
+By construction, every proper initial segment of $B$ is isomorphic to
+some (unique) ordinal. By Replacement, the following set exists and is a
+function:
+\[
+	f = \Setabs{\tuple{\beta, b}}{b \in B\text{ and }
+	\ordeq{\beta}{\tuple{B_b, \lessdot_b}}}
+\]
+Clearly $\ran{f} = B$. By Lemma~\ref{SET.3:lemordsegments}, $f$
+preserves ordering. To show $\dom{f}$ is an ordinal, by
+Corollary~\ref{SET.3:corordtransitiveord} it suffices to show that
+$\dom{f}$ is transitive: if $\beta \in \dom{f}$, i.e.,
+$\ordeq{\beta}{\tuple{B_b, \lessdot_b}}$ for some $b$, and $\gamma \in
+\beta$, then $\gamma \in \dom{f}$ by
+Lemma~\ref{SET.3:wellordinitialsegment}; so $\beta \subseteq \dom{f}$.
+This is a contradiction.
+\end{proof}
+
+This licenses the following definition:
+
+\begin{defn}[Order Type] \label{SET.3:defordtype}
+If $\tuple{A, <}$ is a well-ordering, then its \emph{order type},
+$\ordtype{A, <}$, is the unique ordinal $\alpha$ such that
+$\ordeq{\tuple{A, <}}{\alpha}$.
+\end{defn}
+
+\begin{cor} \label{SET.3:ordtypesworklikeyouwant}
+Where $\tuple{A, <}$ and $\tuple{B, \lessdot}$ are well-orderings:
+\begin{align*}
+	\ordtype{A, <} = \ordtype{B, \lessdot}&\text{ iff }\ordeq{\tuple{A, <}}{\tuple{B, \lessdot}}\\
+	\ordtype{A, <} \in \ordtype{B, \lessdot}&\text{ iff }\ordeq{\tuple{A, <}}{\tuple{B_b, \lessdot_b}}\text{ for some }b \in B
+\end{align*}
+\end{cor}
+
+\begin{proof}
+The first claim holds by Trichotomy and
+Lemma~\ref{SET.3:wellordnotinitial}. For the second, let $\ordtype{A,
+<} = \alpha$ and $\ordtype{B, \lessdot} = \beta$, and let $f \colon
+\beta \to \tuple{B, \lessdot}$ be an isomorphism. Then:
+\begin{align*}
+	\alpha \in \beta &\text{ iff }\funrestrictionto{f}{\alpha} \colon
+	\alpha \to B_{f(\alpha)}\text{ is an isomorphism}\\
+	&\text{ iff }\ordeq{\tuple{A, <}}{\tuple{B_{f(\alpha)},
+	\lessdot_{f(\alpha)}}}\\
+	&\text{ iff }\ordeq{\tuple{A, <}}{\tuple{B_b, \lessdot_b}}\text{
+	for some $b \in B$}
+\end{align*}
+by Lemmas~\ref{SET.3:wellordinitialsegment}
+and~\ref{SET.3:lemordsegments}.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.6  Successor and Limit Ordinals
+%%% -----------------------------------------------------------------
+
+\subsection{Successor and Limit Ordinals}
+
+\begin{defn}[Successor and Limit Ordinal] % DEF-SET003, DEF-SET004
+\label{DEF-SET003}
+\label{DEF-SET004}
+For any ordinal $\alpha$, its \emph{successor} is $\ordsucc{\alpha} =
+\alpha \cup \{\alpha\}$. We say that $\alpha$ is a \emph{successor}
+ordinal if $\ordsucc{\beta} = \alpha$ for some ordinal $\beta$. We say
+that $\alpha$ is a \emph{limit} ordinal iff $\alpha$ is neither empty
+nor a successor ordinal.
+\end{defn}
+
+\begin{prop} \label{SET.3:succprops}
+For any ordinal $\alpha$: (1) $\alpha \in \ordsucc{\alpha}$;
+(2) $\ordsucc{\alpha}$ is an ordinal; (3) there is no ordinal $\beta$
+such that $\alpha \in \beta \in \ordsucc{\alpha}$.
+\end{prop}
+
+\begin{proof}
+Trivially, $\alpha \in \alpha \cup \{\alpha\} = \ordsucc{\alpha}$.
+Equally, $\ordsucc{\alpha}$ is a transitive set of ordinals, hence an
+ordinal by Corollary~\ref{SET.3:corordtransitiveord}. And $\alpha \in
+\beta \in \ordsucc{\alpha}$ is impossible, since then either $\beta \in
+\alpha$ or $\beta = \alpha$, contradicting irreflexivity.
+\end{proof}
+
+\begin{thm}[Simple Transfinite Induction] \label{SET.3:simpletransrecursion}
+Let $\phi(x)$ be a formula such that: (1) $\phi(\emptyset)$;
+(2) for any ordinal $\alpha$, if $\phi(\alpha)$ then
+$\phi(\ordsucc{\alpha})$; and (3) if $\alpha$ is a limit ordinal and
+$(\forall \beta \in \alpha)\phi(\beta)$, then $\phi(\alpha)$. Then
+$\forall \alpha\, \phi(\alpha)$.
+\end{thm}
+
+\begin{proof}
+Suppose there is some ordinal which is $\lnot\phi$; let $\gamma$ be the
+least such ordinal. Then either $\gamma = \emptyset$, or $\gamma =
+\ordsucc{\alpha}$ for some $\alpha$ such that $\phi(\alpha)$, or
+$\gamma$ is a limit ordinal and $(\forall \beta \in
+\gamma)\phi(\beta)$. In each case, we obtain a contradiction.
+\end{proof}
+
+\begin{defn}[Least Strict Upper Bound] \label{SET.3:defsupstrict}
+If $X$ is a set of ordinals, then $\supstrict(X) = \bigcup_{\alpha \in
+X} \ordsucc{\alpha}$.
+\end{defn}
+
+\begin{prop}
+If $X$ is a set of ordinals, $\supstrict(X)$ is the least ordinal
+greater than every ordinal in $X$.
+\end{prop}
+
+\begin{proof}
+Let $Y = \Setabs{\ordsucc{\alpha}}{\alpha \in X}$, so $\supstrict(X) =
+\bigcup Y$. Since ordinals are transitive and every element of an
+ordinal is an ordinal, $\supstrict(X)$ is a transitive set of ordinals,
+hence an ordinal by Corollary~\ref{SET.3:corordtransitiveord}.
+
+If $\alpha \in X$, then $\ordsucc{\alpha} \in Y$, so $\ordsucc{\alpha}
+\subseteq \bigcup Y = \supstrict(X)$, hence $\alpha \in \supstrict(X)$.
+So $\supstrict(X)$ is strictly greater than every ordinal in $X$.
+Conversely, if $\alpha \in \supstrict(X)$, then $\alpha \in
+\ordsucc{\beta} \in Y$ for some $\beta \in X$, so $\alpha \leq \beta
+\in X$. So $\supstrict(X)$ is the \emph{least} strict upper bound on
+$X$.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.7  Transfinite Recursion
+%%% -----------------------------------------------------------------
+
+\subsection{Transfinite Recursion}
+
+The overarching moral of this subsection is that Transfinite Induction
+plus Replacement guarantee the legitimacy of several versions of
+transfinite recursion.
+
+\begin{defn}[$\alpha$-Approximation] \label{SET.3:defapprox}
+Let $\tau(x)$ be a term; let $f$ be a function; let $\alpha$ be an
+ordinal. We say that $f$ is an \emph{$\alpha$-approximation} for $\tau$
+iff $\dom{f} = \alpha$ and $(\forall \beta \in \alpha)\, f(\beta) =
+\tau(\funrestrictionto{f}{\beta})$.
+\end{defn}
+
+\begin{lem}[Bounded Recursion] \label{SET.3:transrecursionfun}
+For any term $\tau(x)$ and any ordinal $\alpha$, there is a unique
+$\alpha$-approximation for $\tau$.
+\end{lem}
+
+\begin{proof}
+We first establish uniqueness. Let $g$ and $h$ be $\gamma$- and
+$\delta$-approximations, respectively. A transfinite induction on their
+arguments shows $g(\beta) = h(\beta)$ for any $\beta \in \dom{g} \cap
+\dom{h} = \min(\gamma, \delta)$. So approximations are unique (if they
+exist) and agree on all values.
+
+To establish existence, we use Simple Transfinite Induction
+(Theorem~\ref{SET.3:simpletransrecursion}) on ordinals $\delta \leq
+\alpha$.
+
+The empty function is trivially an $\emptyset$-approximation.
+
+If $g$ is a $\gamma$-approximation, then $g \cup \{\tuple{\gamma,
+\tau(g)}\}$ is a $\ordsucc{\gamma}$-approximation.
+
+If $\gamma$ is a limit ordinal and $g_\delta$ is a
+$\delta$-approximation for all $\delta < \gamma$, let $g =
+\bigcup_{\delta \in \gamma} g_\delta$. This is a function since the
+various $g_\delta$s agree on all values. And if $\delta \in \gamma$ then
+$g(\delta) = g_{\ordsucc{\delta}}(\delta) =
+\tau(\funrestrictionto{g_{\ordsucc{\delta}}}{\delta}) =
+\tau(\funrestrictionto{g}{\delta})$.
+\end{proof}
+
+\begin{thm}[General Recursion] % DEF-SET006, THM-SET002
+\label{DEF-SET006}
+\label{THM-SET002}
+For any term $\tau(x)$, we can explicitly define a term $\sigma(x)$
+such that $\sigma(\alpha) = \tau(\funrestrictionto{\sigma}{\alpha})$
+for any ordinal $\alpha$.
+\end{thm}
+
+\begin{proof}
+For each $\alpha$, by Lemma~\ref{SET.3:transrecursionfun} there is a
+unique $\alpha$-approximation, $f_\alpha$, for $\tau$. Define
+$\sigma(\alpha)$ as $f_{\ordsucc{\alpha}}(\alpha)$. Then:
+\begin{align*}
+	\sigma(\alpha) &=
+	f_{\ordsucc{\alpha}}(\alpha) \\&=
+	\tau(\funrestrictionto{f_{\ordsucc{\alpha}}}{\alpha}) \\&=
+	\tau(\Setabs{\tuple{\beta, f_{\ordsucc{\alpha}}(\beta)}}{\beta \in \alpha}) \\&=
+	\tau(\Setabs{\tuple{\beta, f_{\ordsucc{\beta}}(\beta)}}{\beta \in \alpha}) \\&=
+	\tau(\funrestrictionto{\sigma}{\alpha})
+\end{align*}
+noting that $f_{\ordsucc{\beta}}(\beta) =
+f_{\ordsucc{\alpha}}(\beta)$ for all $\beta < \alpha$, as in
+Lemma~\ref{SET.3:transrecursionfun}.
+\end{proof}
+
+Note that Theorem~\ref{DEF-SET006} is a \emph{schema}. Crucially, we
+cannot expect $\sigma$ to define a function (i.e., a set), since then
+$\dom{\sigma}$ would be the set of all ordinals, contradicting
+Burali-Forti (Theorem~\ref{SET.3:buraliforti}).
+
+\begin{thm}[Simple Recursion] \label{SET.3:simplerecursionschema}
+For any terms $\tau(x)$ and $\theta(x)$ and any set $A$, we can
+explicitly define a term $\sigma(x)$ such that:
+\begin{align*}
+	\sigma(\emptyset) &= A\\
+	\sigma(\ordsucc{\alpha}) &= \tau(\sigma(\alpha)) &&
+		\text{for any ordinal }\alpha\\
+	\sigma(\alpha) &= \theta(\ran{\funrestrictionto{\sigma}{\alpha}})&&
+	\text{when }\alpha\text{ is a limit ordinal}
+\end{align*}
+\end{thm}
+
+\begin{proof}
+Define a term $\xi(x)$ by:
+\[
+	\xi(x) =
+	\begin{cases}
+		A & \text{if $x$ is not a function whose}\\
+		  & \text{\quad domain is an ordinal; otherwise:}\\
+		\tau(x(\alpha)) & \text{if $\dom{x} = \ordsucc{\alpha}$}\\
+		\theta(\ran{x}) & \text{if $\dom{x}$ is a limit ordinal}
+	\end{cases}
+\]
+By Theorem~\ref{DEF-SET006}, there is a term $\sigma(x)$ such that
+$\sigma(\alpha) = \xi(\funrestrictionto{\sigma}{\alpha})$ for every
+ordinal $\alpha$; moreover, $\funrestrictionto{\sigma}{\alpha}$ is a
+function with domain $\alpha$. A Simple Transfinite Induction
+(Theorem~\ref{SET.3:simpletransrecursion}) confirms:
+$\sigma(\emptyset) = \xi(\emptyset) = A$;
+$\sigma(\ordsucc{\alpha}) =
+\xi(\funrestrictionto{\sigma}{\ordsucc{\alpha}}) =
+\tau(\sigma(\alpha))$; and when $\alpha$ is a limit,
+$\sigma(\alpha) = \xi(\funrestrictionto{\sigma}{\alpha}) =
+\theta(\ran{\funrestrictionto{\sigma}{\alpha}})$.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.3.8  Hartogs' Lemma
+%%% -----------------------------------------------------------------
+
+\subsection{Hartogs' Lemma}
+
+\begin{lem}[Hartogs' Lemma, in $\ZF$] \label{SET.3:HartogsLemma}
+For any set $A$, there is an ordinal $\alpha$ such that
+$\cardnless{\alpha}{A}$.
+\end{lem}
+
+\begin{proof}[Proof sketch]
+Using Separation, consider:
+\[
+	C = \Setabs{\tuple{B, R}}{B \subseteq A
+	\text{ and $\tuple{B, R}$ is a well-ordering}}.
+\]
+Using Replacement and
+Theorem~\ref{SET.3:thmOrdinalRepresentation}, form
+$\alpha = \Setabs{\ordtype{B, R}}{\tuple{B, R} \in C}$.
+By Corollary~\ref{SET.3:corordtransitiveord}, $\alpha$ is an ordinal
+(it is a transitive set of ordinals). If there were an injection $f
+\colon \alpha \to A$, then $\alpha = \ordtype{\ran{f}, R}$ for a
+suitable $R$, giving $\alpha \in \alpha$---a contradiction.
+\end{proof}
+
+\begin{rem}[Hartogs' Number] \label{SET.3:hartogsrem}
+The ordinal $\alpha$ produced in the proof is called the \emph{Hartogs
+number} of $A$, sometimes written $\aleph(A)$. It is the least ordinal
+that does not inject into $A$.
+\end{rem}
+
+
+%% ===================================================================
+%% SET.4: Cardinals
+%% Sources: sth/cardinals/cp (CONDENSE), sth/cardinals/cardsasords (KEEP),
+%%          sth/cardinals/classing (CONDENSE),
+%%          sth/choice/tarskiscott (CONDENSE),
+%%          sth/cardinals/alephs (CONDENSE if exists)
+%% ===================================================================
+
+\section{Cardinals} \label{SET.4}
+
+In SET.3, we introduced ordinals to calibrate \emph{well-orderings}.
+Two well-orderings have the same order type iff they are isomorphic. We
+now turn to a simpler notion: the \emph{size} of a set. Two sets have
+the same size iff they are equinumerous, i.e., iff there is a bijection
+between them (see Chapter~\ref{ch:bst}). Just as we introduced ordinals
+to calibrate order types, we now introduce \emph{cardinals} to
+calibrate size. Writing $\card{X}$ for the cardinality of $X$, we want
+cardinals to satisfy \emph{Cantor's Principle}:
+\[
+	\card{A} = \card{B} \text{ iff } \cardeq{A}{B}.
+\]
+
+
+%%% -----------------------------------------------------------------
+%%% SET.4.1  Cardinals as Ordinals
+%%% -----------------------------------------------------------------
+
+\subsection{Cardinals as Ordinals}
+
+Our theory of cardinals makes shameless use of our theory of ordinals:
+we define cardinals as certain specific ordinals.
+
+\begin{defn}[Cardinal Number] % DEF-SET007, DEF-SET008
+\label{DEF-SET007}
+\label{DEF-SET008}
+If $A$ can be well-ordered, then $\card{A}$ is the least ordinal
+$\gamma$ such that $\cardeq{A}{\gamma}$. For any ordinal $\gamma$, we
+say that $\gamma$ is a \emph{cardinal} iff $\gamma = \card{\gamma}$.
+\end{defn}
+
+There is a snag with Definition~\ref{DEF-SET007}: we would like
+$\card{A}$ to exist for \emph{every} set $A$, but the definition begins
+with a conditional---``if $A$ can be well-ordered''. If some set cannot
+be well-ordered, the definition fails to define $\card{A}$. So we need a
+guarantee that every set can be well-ordered:
+
+\begin{axiom}[Well-Ordering] % AX-SET009
+\label{AX-SET009}
+Every set can be well-ordered.
+\end{axiom}
+
+This guarantee is unavailable in $\ZF$ alone. The Well-Ordering axiom
+is the final axiom of $\ZFC$ (see Remark~\ref{SET.2:zfc}). Its
+equivalence to the Axiom of Choice will be established in SET.6
+(Theorem~\ref{THM-SET001}).
+
+Using Well-Ordering, it is straightforward to show that cardinals exist
+and behave well:
+
+\begin{lem} \label{SET.4:CardinalsExist}
+For every set $A$: (1) $\card{A}$ exists and is unique;
+(2) $\cardeq{\card{A}}{A}$; (3) $\card{A}$ is a cardinal, i.e.,
+$\card{A} = \card{\card{A}}$.
+\end{lem}
+
+\begin{proof}
+Fix $A$. By Well-Ordering (AX-SET009), there is a well-ordering
+$\tuple{A, R}$. By Theorem~\ref{SET.3:thmOrdinalRepresentation},
+$\tuple{A, R}$ is isomorphic to a unique ordinal $\beta$, so
+$\cardeq{A}{\beta}$. By Transfinite Induction, there is a uniquely
+least ordinal $\gamma$ such that $\cardeq{A}{\gamma}$. So $\card{A} =
+\gamma$, establishing (1) and (2). For (3), if $\delta \in \gamma$ then
+$\cardless{\delta}{A}$ by choice of $\gamma$, so also
+$\cardless{\delta}{\gamma}$ since equinumerosity is an equivalence
+relation. So $\gamma = \card{\gamma}$.
+\end{proof}
+
+\begin{lem} \label{SET.4:CardinalsBehaveRight}
+For any sets $A$ and $B$:
+\begin{align*}
+	\cardeq{A}{B} &\text{ iff } \card{A} = \card{B}\\
+	\cardle{A}{B} &\text{ iff } \card{A} \leq \card{B}\\
+	\cardless{A}{B}&\text{ iff } \card{A} < \card{B}
+\end{align*}
+\end{lem}
+
+\begin{proof}
+We prove left-to-right of the second claim; the other cases are
+similar. If $\cardle{A}{B}$, there is an injection $A \to B$. By
+Lemma~\ref{SET.4:CardinalsExist}, there are bijections $\card{A} \to A$
+and $B \to \card{B}$. Composing, we obtain an injection $\card{A} \to
+\card{B}$, giving $\card{A} \leq \card{B}$.
+\end{proof}
+
+\begin{rem}[Cantor's Principle] \label{SET.4:cantorprinciple}
+Lemma~\ref{SET.4:CardinalsBehaveRight} guarantees Cantor's Principle:
+$\card{A} = \card{B}$ iff $\cardeq{A}{B}$. It also yields a quick
+re-proof of Schr\"oder--Bernstein: if $\cardle{A}{B}$ and
+$\cardle{B}{A}$ then $\card{A} \leq \card{B}$ and $\card{B} \leq
+\card{A}$, so $\card{A} = \card{B}$ by Trichotomy. (This implicitly
+uses Replacement and Well-Ordering; the proof in Chapter~\ref{ch:bst}
+works in $\Zminus$.)
+\end{rem}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.4.2  Finite, Infinite, and Uncountable Cardinals
+%%% -----------------------------------------------------------------
+
+\subsection{Finite, Infinite, and Uncountable Cardinals}
+
+\begin{defn}[Finite and Infinite Sets] \label{SET.4:defnfinite}
+We say that $A$ is \emph{finite} iff $\card{A} \in \omega$, i.e.,
+$\card{A}$ is a natural number. Otherwise, $A$ is \emph{infinite}.
+\end{defn}
+
+Note that this definition assumes $\ZFC$, since we need Well-Ordering
+to guarantee $\card{A}$ exists. Without Well-Ordering, there can be
+sets that are neither finite nor Dedekind infinite (see SET.6 for the
+role of Choice).
+
+\begin{cor} \label{SET.4:omegaisacardinal}
+$\omega$ is the least infinite cardinal.
+\end{cor}
+
+\begin{proof}
+$\omega$ is a cardinal: it is Dedekind infinite, and if
+$\cardeq{\omega}{n}$ for any $n \in \omega$, then $n$ would be Dedekind
+infinite, a contradiction. Now $\omega$ is the least infinite cardinal
+by definition, since the finite cardinals are exactly the natural
+numbers.
+\end{proof}
+
+\begin{thm} \label{SET.4:NoLargestCardinal}
+There is no largest cardinal.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+For any cardinal $\cardfont{a}$, Cantor's Theorem (PRIM-BST017,
+Chapter~\ref{ch:bst}) gives $\cardless{\cardfont{a}}{\Pow{\cardfont{a}}}$.
+By Lemma~\ref{SET.4:CardinalsExist}, $\cardfont{a} <
+\card{\Pow{\cardfont{a}}}$.
+\end{proof}
+
+\begin{prop} \label{SET.4:unioncardinalscardinal}
+If every member of $X$ is a cardinal, then $\bigcup X$ is a cardinal.
+\end{prop}
+
+\begin{proof}
+It is easy to check that $\bigcup X$ is an ordinal. If $\alpha \in
+\bigcup X$, then $\alpha \in \cardfont{b} \in X$ for some cardinal
+$\cardfont{b}$. Since $\cardfont{b}$ is a cardinal,
+$\cardless{\alpha}{\cardfont{b}}$. Since $\cardfont{b} \subseteq
+\bigcup X$, we have $\cardle{\cardfont{b}}{\bigcup X}$, and so
+$\cardneq{\alpha}{\bigcup X}$. Generalising, $\bigcup X$ is a cardinal.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.4.3  Tarski--Scott Cardinals (Without Well-Ordering)
+%%% -----------------------------------------------------------------
+
+\subsection{Cardinals without Well-Ordering}
+
+\begin{rem}[Tarski--Scott Trick] \label{SET.4:tarskiscott}
+Cardinals can be developed \emph{without} Well-Ordering using the
+\emph{Tarski--Scott trick}: for any formula $\phi(x)$, let $[x :
+\phi(x)]$ be the set of all $x$ of least possible rank such that
+$\phi(x)$. Working in $\ZF$, one defines the \textsc{ts}-cardinality of
+$A$ as $\text{tsc}(A) = [x : \cardeq{A}{x}]$. This yields a
+well-behaved notion of cardinality without assuming Well-Ordering, at
+the cost of defining cardinals as \emph{sets of sets} rather than
+ordinals.
+\end{rem}
+
+
+%% ===================================================================
+%% SET.5: Advanced Topics
+%% Sources: sth/spine/valpha (KEEP), sth/spine/recursion (KEEP),
+%%          sth/spine/Valphabasic, rank, separation, height (CONDENSE),
+%%          sth/ord-arithmetic/addition, mult, expo, using-addition (CONDENSE),
+%%          sth/card-arithmetic/opps (KEEP), ch (KEEP),
+%%          sth/card-arithmetic/simp, expotough, fix (CONDENSE),
+%%          sth/replacement/strength, ref, refproofs, finiteaxiom (CONDENSE),
+%%          sth/choice/countablechoice, justifications (CONDENSE)
+%% ===================================================================
+
+\section{Advanced Topics} \label{SET.5}
+
+We now develop the major advanced topics of formal set theory: the von
+Neumann hierarchy $V_\alpha$, ordinal arithmetic, cardinal arithmetic,
+the Continuum Hypothesis, and the role of the Axiom of Choice.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.1  The Cumulative Hierarchy
+%%% -----------------------------------------------------------------
+
+\subsection{The Cumulative Hierarchy}
+
+With the machinery of transfinite recursion in hand, we can give a
+formal, \emph{internal} characterisation of the stages of the hierarchy.
+
+\begin{defn}[Von Neumann Hierarchy] % DEF-SET012
+\label{DEF-SET012}
+\begin{align*}
+	V_\emptyset &\defis \emptyset\\
+	V_{\ordsucc{\alpha}} &\defis \Pow{V_\alpha} &&
+	\text{for any ordinal }\alpha\\
+	V_{\alpha} &\defis \bigcup_{\gamma < \alpha} V_\gamma &&
+	\text{when }\alpha\text{ is a limit ordinal}
+\end{align*}
+\end{defn}
+
+This definition is legitimate by Simple Recursion
+(Theorem~\ref{SET.3:simplerecursionschema}): take $A = \emptyset$,
+$\tau(x) = \Pow{x}$, and $\theta(x) = \bigcup x$.
+
+\begin{lem} \label{SET.5:Valphabasicprops}
+For each ordinal $\alpha$: (1) $V_\alpha$ is transitive; (2) $V_\alpha$
+is potent (if $x \subseteq y \in V_\alpha$ then $x \in V_\alpha$);
+(3) if $\gamma \in \alpha$, then $V_\gamma \in V_\alpha$ (and hence
+$V_\gamma \subseteq V_\alpha$).
+\end{lem}
+
+\begin{proof}
+By simultaneous transfinite induction on $\alpha$. The case $\alpha =
+\emptyset$ is trivial. For successor $\alpha = \ordsucc{\beta}$:
+(3) if $\gamma \in \alpha$ then $V_\gamma \subseteq V_\beta$ by
+hypothesis, so $V_\gamma \in \Pow{V_\beta} = V_\alpha$; (2) if $A
+\subseteq B \in V_\alpha$ then $A \subseteq V_\beta$, so $A \in
+V_\alpha$; (1) if $x \in A \in V_\alpha$ then $x \in V_\beta$ and $x
+\subseteq V_\beta$ by the induction hypothesis, so $x \in V_\alpha$.
+For limit $\alpha$: (3) if $\gamma \in \alpha$ then $V_\gamma \in
+V_{\ordsucc{\gamma}} \subseteq V_\alpha$; (1) and (2) hold because a
+union of transitive (resp.\ potent) sets is transitive (resp.\ potent).
+\end{proof}
+
+\begin{defn}[Rank] \label{SET.5:defnsetrank}
+For each set $A$, $\setrank{A}$ is the least ordinal $\alpha$ such that
+$A \subseteq V_\alpha$.
+\end{defn}
+
+Ranks exist by Foundation (AX-SET008, \S\ref{AX-SET008}) and
+Regularity (Theorem~\ref{SET.2:zfentailsregularity}).
+
+\begin{prop} \label{SET.5:rankmemberslower}
+If $B \in A$, then $\setrank{B} \in \setrank{A}$.
+\end{prop}
+
+\begin{thm}[$\in$-Induction Scheme] \label{SET.5:eininduction}
+For any formula $\phi$:
+\[
+	\forall A((\forall x \in A)\phi(x) \lif \phi(A)) \lif \forall A\, \phi(A).
+\]
+\end{thm}
+
+\begin{proof}
+Suppose $\lnot\forall A\, \phi(A)$. By Transfinite Induction, there is
+some $A$ of least rank with $\lnot\phi(A)$. If $x \in A$ then
+$\setrank{x} \in \setrank{A}$ by Proposition~\ref{SET.5:rankmemberslower},
+so $\phi(x)$. Hence $(\forall x \in A)\phi(x)$ and $\lnot\phi(A)$.
+\end{proof}
+
+\begin{prop} \label{SET.5:ordsetrankalpha}
+$\setrank{\alpha} = \alpha$ for any ordinal $\alpha$.
+\end{prop}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.2  Ordinal Arithmetic
+%%% -----------------------------------------------------------------
+
+\subsection{Ordinal Arithmetic}
+
+We define addition, multiplication, and exponentiation on ordinals. Each
+can be defined synthetically (via an explicit well-ordered set and its
+order type) or recursively (via transfinite recursion equations). Both
+approaches yield the same result by
+Theorem~\ref{SET.3:thmOrdinalRepresentation}.
+
+\begin{defn}[Ordinal Addition] \label{SET.5:defordplus}
+The \emph{disjoint sum} of $A$ and $B$ is $A \disjointsum B = (A \times
+\{0\}) \cup (B \times \{1\})$. Define the \emph{reverse lexicographic
+ordering} $\rlexless$ on $\alpha \disjointsum \beta$ by:
+$\tuple{\alpha_1, \alpha_2} \rlexless \tuple{\beta_1, \beta_2}$ iff
+either $\alpha_2 \in \beta_2$, or both $\alpha_2 = \beta_2$ and
+$\alpha_1 \in \beta_1$. Then $\alpha \ordplus \beta =
+\ordtype{\alpha \disjointsum \beta, \rlexless}$.
+\end{defn}
+
+Ordinal addition satisfies the following recursion equations:
+\begin{align*}
+	\alpha \ordplus 0 &= \alpha\\
+	\alpha \ordplus (\beta \ordplus 1) &= (\alpha \ordplus \beta) \ordplus 1\\
+	\alpha \ordplus \beta &= \supstrict_{\delta < \beta}(\alpha \ordplus \delta)
+	&& \text{if $\beta$ is a limit ordinal}
+\end{align*}
+
+Addition is associative: $\alpha \ordplus (\beta \ordplus \gamma) =
+(\alpha \ordplus \beta) \ordplus \gamma$. It is \emph{not} commutative:
+$1 \ordplus \omega = \omega < \omega \ordplus 1$. Intuitively, placing
+one element \emph{before} an $\omega$-sequence does not change the order
+type (by a Hilbert's Hotel argument), but placing one element
+\emph{after} it does.
+
+\begin{defn}[Ordinal Multiplication] \label{SET.5:defordtimes}
+$\alpha \ordtimes \beta = \ordtype{\alpha \times \beta, \rlexless}$.
+Equivalently, by transfinite recursion:
+\begin{align*}
+	\alpha \ordtimes 0 &= 0\\
+	\alpha \ordtimes (\beta \ordplus 1) &=
+		(\alpha \ordtimes \beta) \ordplus \alpha\\
+	\alpha \ordtimes \beta &=
+		\supstrict_{\delta < \beta}(\alpha \ordtimes \delta) &&
+		\text{when $\beta$ is a limit ordinal}
+\end{align*}
+\end{defn}
+
+Multiplication is associative but \emph{not} commutative: $2 \ordtimes
+\omega = \omega < \omega \ordtimes 2$. It distributes over addition from
+the right: $\alpha \ordtimes (\beta \ordplus \gamma) = (\alpha
+\ordtimes \beta) \ordplus (\alpha \ordtimes \gamma)$.
+
+\begin{defn}[Ordinal Exponentiation] \label{SET.5:defordexpo}
+By transfinite recursion:
+\begin{align*}
+	\ordexpo{\alpha}{0} &= 1\\
+	\ordexpo{\alpha}{\beta \ordplus 1} &= \ordexpo{\alpha}{\beta}
+	\ordtimes \alpha\\
+	\ordexpo{\alpha}{\beta} &= \bigcup_{\delta < \beta}
+	\ordexpo{\alpha}{\delta} && \text{when $\beta$ is a limit ordinal}
+\end{align*}
+\end{defn}
+
+Ordinal exponentiation does not commute: $\ordexpo{2}{\omega} =
+\bigcup_{n < \omega} \ordexpo{2}{n} = \omega$, whereas
+$\ordexpo{\omega}{2} = \omega \ordtimes \omega$.
+
+\begin{lem}[Characterisation of Infinite Ordinals]
+\label{SET.5:ordinfinitycharacter}
+For any ordinal $\alpha$, the following are equivalent:
+(1) $\alpha \notin \omega$; (2) $\omega \leq \alpha$;
+(3) $1 \ordplus \alpha = \alpha$; (4) $\alpha$ and $\alpha \ordplus 1$
+are equinumerous; (5) $\alpha$ is Dedekind infinite.
+\end{lem}
+
+\begin{proof}
+$(1) \Rightarrow (2)$: By Trichotomy.
+$(2) \Rightarrow (3)$: Write $\alpha = \beta \ordplus \gamma$ where
+$\beta$ is a limit ordinal and $\gamma$ is least. Then $1 \ordplus
+\alpha = (1 \ordplus \beta) \ordplus \gamma = \beta \ordplus \gamma =
+\alpha$, using the fact that $1 \ordplus \beta =
+\supstrict_{\delta < \beta}(1 \ordplus \delta) = \beta$.
+$(3) \Rightarrow (4)$: There is a bijection $\alpha \disjointsum 1 \to
+1 \disjointsum \alpha$; compose with the isomorphism $1 \disjointsum
+\alpha \to \alpha$.
+$(4) \Rightarrow (5)$: A bijection $\alpha \disjointsum 1 \to \alpha$
+restricts to an injection $\alpha \to \alpha$ that is not surjective.
+$(5) \Rightarrow (1)$: No natural number is Dedekind infinite.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.3  Cardinal Arithmetic
+%%% -----------------------------------------------------------------
+
+\subsection{Cardinal Arithmetic}
+
+Since we do not need to keep track of order, cardinal arithmetic is
+rather easier to define than ordinal arithmetic.
+
+\begin{defn}[Cardinal Operations] \label{SET.5:defcardops}
+When $\cardfont{a}$ and $\cardfont{b}$ are cardinals:
+\begin{align*}
+	\cardfont{a} \cardplus \cardfont{b} &\defis
+	\card{\cardfont{a} \disjointsum \cardfont{b}}\\
+	\cardfont{a} \cardtimes \cardfont{b} &\defis
+	\card{\cardfont{a} \times \cardfont{b}}\\
+	\cardexpo{\cardfont{a}}{\cardfont{b}} &\defis
+	\card{\funfromto{\cardfont{b}}{\cardfont{a}}}
+\end{align*}
+where $\funfromto{X}{Y} = \Setabs{f}{f\text{ is a function }X \to Y}$.
+\end{defn}
+
+Cardinal addition and multiplication are commutative and associative
+(unlike their ordinal counterparts).
+
+\begin{lem} \label{SET.5:SizePowerset2Exp}
+$\card{\Pow{A}} = \cardexpo{2}{\card{A}}$, for any $A$.
+\end{lem}
+
+\begin{proof}
+For each $B \subseteq A$, define the characteristic function $\chi_B
+\in \funfromto{A}{2}$ by $\chi_B(x) = 1$ if $x \in B$, and
+$\chi_B(x) = 0$ otherwise. The map $B \mapsto \chi_B$ is a bijection
+$\Pow{A} \to \funfromto{A}{2}$.
+\end{proof}
+
+\begin{cor}[Cantor's Theorem in Cardinal Arithmetic] % THM-SET003, DEF-SET011
+\label{THM-SET003}\label{DEF-SET011}
+$\cardfont{a} < \cardexpo{2}{\cardfont{a}}$ for any
+cardinal~$\cardfont{a}$.
+\end{cor}
+
+\begin{proof}
+From Cantor's Theorem (PRIM-BST017, Chapter~\ref{ch:bst}) and
+Lemma~\ref{SET.5:SizePowerset2Exp}.
+\end{proof}
+
+\begin{thm} \label{SET.5:continuumis2aleph0}
+$\card{\Real} = \cardexpo{2}{\omega}$.
+\end{thm}
+
+\begin{proof}[Proof skeleton]
+Show $\cardle{\Pow{\omega}}{\Real}$ and $\cardle{\Real}{\Pow{\omega}}$;
+apply Schr\"oder--Bernstein to get $\cardeq{\Real}{\Pow{\omega}}$; then
+$\card{\Real} = \card{\Pow{\omega}} = \cardexpo{2}{\omega}$ by
+Lemma~\ref{SET.5:SizePowerset2Exp}.
+\end{proof}
+
+\begin{thm}[Simplification of Addition and Multiplication]
+\label{SET.5:cardplustimesmax}
+If $\cardfont{a}, \cardfont{b}$ are infinite cardinals, then
+$\cardfont{a} \cardtimes \cardfont{b} = \cardfont{a} \cardplus
+\cardfont{b} = \max(\cardfont{a}, \cardfont{b})$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+The key step is showing $\cardeq{\alpha}{\alpha \times \alpha}$ for any
+infinite ordinal $\alpha$. This uses the \emph{canonical ordering}
+$\canonord$ on pairs: $\tuple{\alpha_1, \alpha_2} \canonord
+\tuple{\beta_1, \beta_2}$ iff either $\max(\alpha_1, \alpha_2) <
+\max(\beta_1, \beta_2)$, or they have the same max and $\alpha_1 <
+\beta_1$, or same max and first coordinate and $\alpha_2 < \beta_2$.
+This is a well-ordering of $\alpha \times \alpha$. For the least
+infinite ordinal $\alpha$ for which $\cardeq{\alpha}{\alpha \times
+\alpha}$ fails, one shows $\alpha$ must be a cardinal, and each segment
+$\text{Seg}(\gamma_1, \gamma_2)$ in the canonical ordering has
+cardinality $< \alpha$, giving $\ordtype{\alpha \times \alpha,
+\canonord} \leq \alpha$, hence $\cardle{\alpha \times \alpha}{\alpha}$.
+The reverse injection is obvious, so Schr\"oder--Bernstein applies.
+
+Given this, without loss of generality let $\cardfont{a} =
+\max(\cardfont{a}, \cardfont{b})$. Then $\cardfont{a} \cardtimes
+\cardfont{a} = \cardfont{a} \leq \cardfont{a} \cardplus \cardfont{b}
+\leq \cardfont{a} \cardplus \cardfont{a} \leq \cardfont{a} \cardtimes
+\cardfont{a}$.
+\end{proof}
+
+\begin{prop} \label{SET.5:kappaunionkappasize}
+Let $\cardfont{a}$ be an infinite cardinal. For each $\beta \in
+\cardfont{a}$, let $X_\beta$ be a set with $\card{X_\beta} \leq
+\cardfont{a}$. Then $\card{\bigcup_{\beta \in \cardfont{a}} X_\beta}
+\leq \cardfont{a}$.
+\end{prop}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.4  Aleph and Beth Numbers
+%%% -----------------------------------------------------------------
+
+\subsection{Aleph and Beth Numbers}
+
+\begin{defn}[Aleph and Beth Numbers] % DEF-SET013
+\label{DEF-SET013}
+Where $\cardsucc{\cardfont{a}}$ is the least cardinal strictly greater
+than $\cardfont{a}$, we define two sequences by transfinite recursion:
+\begin{align*}
+	\aleph_{0} &\defis \omega &
+	\beth_{0} &\defis \omega\\
+	\aleph_{\alpha \ordplus 1} &\defis \cardsucc{(\aleph_{\alpha})} &
+	\beth_{\alpha+1} &\defis \cardexpo{2}{\beth_{\alpha}}\\
+	\aleph_{\alpha} &\defis \bigcup_{\beta < \alpha} \aleph_{\beta} &
+	\beth_{\alpha} &\defis \bigcup_{\beta < \alpha}\beth_{\beta}
+	& \text{when $\alpha$ is a limit ordinal}
+\end{align*}
+\end{defn}
+
+The definition of $\cardsucc{\cardfont{a}}$ is in order: for each
+cardinal $\cardfont{a}$, there is some cardinal greater than
+$\cardfont{a}$ (Theorem~\ref{SET.4:NoLargestCardinal}), and Transfinite
+Induction gives the \emph{least} such. The ``$\aleph$'' notation is due
+to Cantor; ``$\beth$'' is due to Peirce.
+
+\begin{prop}
+$\aleph_\alpha$ and $\beth_\alpha$ are cardinals for every ordinal
+$\alpha$. Moreover, every infinite cardinal is an $\aleph$: if
+$\cardfont{a}$ is an infinite cardinal, then $\cardfont{a} =
+\aleph_\gamma$ for some unique $\gamma$.
+\end{prop}
+
+\begin{proof}
+By transfinite induction. $\aleph_0 = \beth_0 = \omega$ is a cardinal
+by Corollary~\ref{SET.4:omegaisacardinal}; successors are cardinals by
+definition; limits are cardinals by
+Proposition~\ref{SET.4:unioncardinalscardinal}.
+
+For the second claim, induct on cardinals. If $\cardfont{a}$ is the
+successor of some $\cardfont{b} = \aleph_\gamma$, then $\cardfont{a} =
+\aleph_{\gamma+1}$. If $\cardfont{a}$ is not a cardinal successor, then
+$\cardfont{a} = \bigcup_{\cardfont{b} < \cardfont{a}} \cardfont{b} =
+\bigcup_{\cardfont{b} < \cardfont{a}} \aleph_{\gamma_\cardfont{b}} =
+\aleph_\gamma$ for a suitable limit $\gamma$.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.5  The Continuum Hypothesis
+%%% -----------------------------------------------------------------
+
+\subsection{The Continuum Hypothesis}
+
+Since every infinite cardinal is an $\aleph$, we ask: is every infinite
+cardinal a $\beth$? If so, infinite cardinals would ``play
+straightforwardly'' with powersets:
+
+\begin{defish}[Generalised Continuum Hypothesis] % DEF-SET015
+\label{DEF-SET015}
+GCH: $\aleph_\alpha = \beth_\alpha$, for all $\alpha$.
+\end{defish}
+
+If GCH held, cardinal exponentiation could be completely determined: for
+$\cardfont{b} < \cardfont{a}$, the value $\cardexpo{\cardfont{a}}{\cardfont{b}}$
+would be trapped by $\cardfont{a} \leq
+\cardexpo{\cardfont{a}}{\cardfont{b}} \leq \cardsucc{\cardfont{a}}$.
+
+But GCH is a \emph{hypothesis}, not a theorem. G\"odel (1938) proved
+that if $\ZFC$ is consistent, then so is $\ZFC + \text{GCH}$. The
+simplest non-trivial instance is:
+
+\begin{defish}[Continuum Hypothesis] \label{SET.5:CH}
+CH: $\aleph_1 = \beth_1$.
+\end{defish}
+
+Cohen (1963) proved that if $\ZFC$ is consistent, then so is $\ZFC +
+\lnot\text{CH}$. So the Continuum Hypothesis is \emph{independent} from
+$\ZFC$.
+
+The Continuum Hypothesis is so-called because ``the continuum'' is
+another name for the real line $\Real$.
+Theorem~\ref{SET.5:continuumis2aleph0} tells us $\card{\Real} = \beth_1$.
+So CH states there is no cardinal between $\aleph_0 = \beth_0$ (the
+cardinality of the natural numbers) and $\beth_1$ (the cardinality of
+the continuum).
+
+Two observations are worth emphasising. First, it does not immediately
+follow from independence that CH is indeterminate in truth value: perhaps
+additional natural axioms will settle it. G\"odel himself suggested this
+response. Second, the independence of CH is striking but not incredible:
+for all $\ZFC$ tells us, moving from a cardinal to its successor may
+involve a more refined tool than simply taking powersets.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.6  The Strength of Replacement
+%%% -----------------------------------------------------------------
+
+\subsection{The Strength of Replacement}
+
+We briefly note the strength of the Replacement scheme.
+
+\begin{thm} \label{SET.5:Znotomegaomega}
+$\Z$ is consistent with the non-existence of $\omega + \omega$.
+\end{thm}
+
+\begin{proof}[Proof sketch]
+Working in $\ZF$, consider $V_{\omega + \omega}$. One can show that for
+every axiom $\phi$ of $\Z$, we have $\ZF \vdash \phi^{V_{\omega +
+\omega}}$ (where $\phi^M$ restricts all quantifiers to $M$). But $\omega
++ \omega \notin V_{\omega + \omega}$ (since $\setrank{\omega + \omega} =
+\omega + \omega$ by Proposition~\ref{SET.5:ordsetrankalpha}). So $\Z$
+does not prove the existence of $\omega + \omega$.
+\end{proof}
+
+This is why Theorem~\ref{SET.3:thmOrdinalRepresentation} cannot be
+proved without Replacement: within $\Z$ one can define a well-ordering
+of order type $\omega + \omega$, but if $\omega + \omega$ does not
+exist, this well-ordering is not isomorphic to any ordinal.
+
+More broadly, Replacement forces the hierarchy to be very tall.
+
+\begin{thm}[Reflection Schema] \label{SET.5:reflectionschema}
+For any formula $\phi$:
+\[
+\forall \alpha \exists \beta > \alpha\, (\forall x_1, \ldots, x_n \in
+V_\beta)(\phi(x_1, \ldots, x_n) \liff \phi^{V_\beta}(x_1, \ldots, x_n))
+\]
+\end{thm}
+
+Montague (1961) and L\'evy (1960) showed that Replacement and
+Reflection are equivalent modulo $\Z$, so adding either gives $\ZF$.
+
+\begin{thm} \label{SET.5:zfnotfinitely}
+$\ZF$ is not finitely axiomatizable: if $\mathcal{T}$ is finite and
+$\mathcal{T} \vdash \ZF$, then $\mathcal{T}$ is inconsistent.
+\end{thm}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.7  Aleph-Fixed Points
+%%% -----------------------------------------------------------------
+
+\subsection{Fixed Points}
+
+The following results illustrate just how tall Replacement forces the
+hierarchy to be.
+
+\begin{prop}[$\aleph$-Fixed Point] \label{SET.5:alephfixed}
+There is a cardinal $\kappa$ such that $\kappa = \aleph_\kappa$.
+\end{prop}
+
+\begin{proof}
+Define by recursion: $\kappa_0 = 0$; $\kappa_{n+1} =
+\aleph_{\kappa_n}$; $\kappa = \bigcup_{n < \omega} \kappa_n$. Then
+$\kappa$ is a cardinal by Proposition~\ref{SET.4:unioncardinalscardinal},
+and $\kappa = \bigcup_{n < \omega} \kappa_{n+1} = \bigcup_{n < \omega}
+\aleph_{\kappa_n} = \bigcup_{\alpha < \kappa} \aleph_\alpha =
+\aleph_\kappa$.
+\end{proof}
+
+\begin{prop}[$\beth$-Fixed Point] \label{SET.5:bethfixed}
+There is a $\kappa$ such that $\kappa = \beth_\kappa$.
+\end{prop}
+
+\begin{proof}
+As in Proposition~\ref{SET.5:alephfixed}, using ``$\beth$'' in place of
+``$\aleph$''.
+\end{proof}
+
+\begin{prop} \label{SET.5:stagesize}
+$\card{V_{\omega + \alpha}} = \beth_\alpha$. If $\omega \ordtimes \omega
+\leq \alpha$, then $\card{V_\alpha} = \beth_\alpha$.
+\end{prop}
+
+\begin{cor}
+There is a $\kappa$ such that $\card{V_\kappa} = \kappa$.
+\end{cor}
+
+\begin{proof}
+Let $\kappa$ be a $\beth$-fixed point (Proposition~\ref{SET.5:bethfixed}).
+Then $\card{V_\kappa} = \beth_\kappa = \kappa$ by
+Proposition~\ref{SET.5:stagesize}.
+\end{proof}
+
+Intuitively, $V_\kappa$ is ``as wide as it is tall'': there are as many
+stages beneath it as there are elements of it. This is a
+Tristram-Shandy phenomenon: we move from one stage to the next by taking
+powersets, making the hierarchy much wider with each step, yet ``in the
+end'' the width catches up with the height.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.5.8  Choice and Countable Choice
+%%% -----------------------------------------------------------------
+
+\subsection{The Axiom of Choice}
+
+The Axiom of Well-Ordering (AX-SET009, \S\ref{AX-SET009}) has been
+essential to our development of cardinal arithmetic. We now discuss its
+justification and its relationship to other principles.
+
+\begin{defn}[Choice Function] \label{SET.5:defchoicefun}
+A function $f$ is a \emph{choice function} iff $f(x) \in x$ for all $x
+\in \dom{f}$. We say $f$ is a choice function \emph{for} $A$ iff
+$\dom{f} = A \setminus \{\emptyset\}$.
+\end{defn}
+
+\begin{axiom}[Choice] \label{SET.5:axiomchoice}
+Every set has a choice function.
+\end{axiom}
+
+The equivalence of Choice and Well-Ordering is established in SET.6
+(Theorem~\ref{THM-SET001}).
+
+\begin{defn}[Zorn's Lemma] % DEF-SET010
+\label{DEF-SET010}
+\emph{Zorn's Lemma} states: if every chain in a partially ordered set
+$P$ has an upper bound in $P$, then $P$ has a maximal element.
+\end{defn}
+
+Zorn's Lemma is equivalent (in $\ZF$) to both Choice and
+Well-Ordering (Theorem~\ref{THM-SET001}).
+
+\begin{rem}[Justification of Choice] \label{SET.5:choicejust}
+One intrinsic justification appeals to the cumulative-iterative
+conception. Let $A$'s elements be disjoint and non-empty. By
+\stageshier, $A$ is formed at some stage $S$. All elements of $\bigcup
+A$ are available before $S$. By \stagesacc, every possible collection of
+earlier-available sets exists at $S$. It is certainly \emph{possible} to
+select one element from each member of $A$---a choice set for $A$. So
+such a choice set exists. (For a careful development of this argument,
+see Potter (\S14.8).)
+\end{rem}
+
+\begin{rem}[Countable Choice] \label{SET.5:countablechoice}
+\emph{Countable Choice} states that every countable set has a choice
+function. This special case was used frequently by 19th-century
+mathematicians (including Dedekind and Cantor) without awareness of its
+role. Two notable consequences requiring Countable Choice: (1) every
+set is either finite or contains a countably infinite subset (Dedekind);
+(2) a countable union of countable sets is countable (Cantor). Both fail
+in $\ZF$ alone: Cohen proved it is consistent with $\ZF$ that some sets
+are incomparable with $\omega$; Feferman and Levy proved it is
+consistent with $\ZF$ that a countable union of countable sets has
+cardinality $\beth_1$.
+\end{rem}
+
+
+%% ===================================================================
+%% SET.6: Theorems
+%% Sources: sth/choice/wellorderingproblem (KEEP),
+%%          sth/choice/hartogs (CONDENSE)
+%% ===================================================================
+
+\section{Theorems} \label{SET.6}
+
+We close this chapter by establishing the fundamental equivalences that
+unify the theory.
+
+
+%%% -----------------------------------------------------------------
+%%% SET.6.1  Well-Ordering iff Choice
+%%% -----------------------------------------------------------------
+
+\subsection{Well-Ordering iff Choice}
+
+\begin{thm}[in $\ZF$] % THM-SET001
+\label{THM-SET001}
+The following are equivalent:
+\begin{enumerate}
+	\item Well-Ordering (AX-SET009): every set can be well-ordered.
+	\item Choice: every set has a choice function.
+	\item Zorn's Lemma (DEF-SET010): if every chain in a partially
+	ordered set $P$ has an upper bound in $P$, then $P$ has a maximal
+	element.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+\emph{Well-Ordering $\Rightarrow$ Choice.} Let $A$ be a set of sets.
+Then $\bigcup A$ exists by Union, and by Well-Ordering there is some
+$<$ which well-orders $\bigcup A$. Define $f(x) = \text{the $<$-least
+member of }x$. This is a choice function for $A$.
+
+\emph{Choice $\Rightarrow$ Well-Ordering.} Fix $A$. By Choice, there is
+a choice function $f$ for $\Pow{A} \setminus \{\emptyset\}$. Using
+Transfinite Recursion (Theorem~\ref{DEF-SET006}), define:
+\begin{align*}
+	g(0) &= f(A)\\
+	g(\alpha) &=
+		\begin{cases}
+			\text{stop} & \text{if }A = \funimage{g}{\alpha}\\
+			f(A \setminus \funimage{g}{\alpha}) & \text{otherwise}
+		\end{cases}
+\end{align*}
+Since $f$ is a choice function, for each $\alpha$ (when defined) we have
+$g(\alpha) = f(A \setminus \funimage{g}{\alpha}) \in A \setminus
+\funimage{g}{\alpha}$, so $g(\alpha) \notin \funimage{g}{\alpha}$. If
+$g(\alpha) = g(\beta)$ then $g(\beta) \notin \funimage{g}{\alpha}$,
+i.e., $\beta \notin \alpha$, and similarly $\alpha \notin \beta$. So
+$\alpha = \beta$ by Trichotomy, hence $g$ is injective.
+
+We must stop: i.e., there is some least $\alpha$ with $A =
+\funimage{g}{\alpha}$. For if not, then as $g$ is injective we would
+have $\cardless{\alpha}{\Pow{A} \setminus \{\emptyset\}}$ for every
+ordinal $\alpha$, contradicting Hartogs' Lemma
+(Lemma~\ref{SET.3:HartogsLemma}).
+
+Assembling these facts, $g$ is a bijection from some ordinal to $A$, and
+can be used to well-order $A$.
+
+\emph{Choice $\Leftrightarrow$ Zorn's Lemma.} This equivalence is a
+standard result; the proof that Choice implies Zorn's Lemma uses
+transfinite recursion to build a maximal chain. The converse constructs
+a choice function by applying Zorn's Lemma to a suitable partial order
+of partial choice functions.
+\end{proof}
+
+
+%%% -----------------------------------------------------------------
+%%% SET.6.2  Comparability of Sets
+%%% -----------------------------------------------------------------
+
+\subsection{Comparability of Sets}
+
+\begin{thm}[in $\ZF$] \label{SET.6:WOiffComparability}
+The following are equivalent:
+\begin{enumerate}
+	\item Well-Ordering.
+	\item Either $\cardle{A}{B}$ or $\cardle{B}{A}$, for any sets $A$
+	and $B$.
+\end{enumerate}
+\end{thm}
+
+\begin{proof}
+\emph{(1) $\Rightarrow$ (2).} Fix $A$ and $B$. By Well-Ordering, there
+are well-orderings $\tuple{A, R}$ and $\tuple{B, S}$. Let $f \colon
+\alpha \to \tuple{A, R}$ and $g \colon \beta \to \tuple{B, S}$ be
+isomorphisms. By Trichotomy, either $\alpha \subseteq \beta$ or $\beta
+\subseteq \alpha$. If $\alpha \subseteq \beta$, then $g^{-1} \circ
+(\funrestrictionto{f}{\alpha})$ is an injection $A \to B$, so
+$\cardle{A}{B}$; similarly in the other case.
+
+\emph{(2) $\Rightarrow$ (1).} Fix $A$; by Hartogs' Lemma
+(Lemma~\ref{SET.3:HartogsLemma}) there is an ordinal $\beta$ with
+$\cardnless{\beta}{A}$. By (2), $\cardle{A}{\beta}$. An injection $f
+\colon A \to \beta$ induces a well-ordering on $A$ via $a_1 < a_2$ iff
+$f(a_1) \in f(a_2)$.
+\end{proof}
+
+As an immediate consequence: if Well-Ordering fails, then some sets are
+\emph{literally incomparable} with regard to their size, and transfinite
+cardinal arithmetic becomes significantly more complex.
+
+
+%%% -----------------------------------------------------------------
+%%% Summary
+%%% -----------------------------------------------------------------
+
+\begin{rem}[Summary of SET.3--SET.6] \label{SET.6:summary}
+Working in $\ZF$, we developed the ordinals (von Neumann's construction)
+and proved the key structural theorems: Transfinite Induction
+(Theorem~\ref{DEF-SET005}), Trichotomy
+(Theorem~\ref{SET.3:ordtrichotomy}), Burali-Forti
+(Theorem~\ref{SET.3:buraliforti}), and Ordinal Representation
+(Theorem~\ref{SET.3:thmOrdinalRepresentation}). The machinery of
+transfinite recursion (Theorems~\ref{DEF-SET006}
+and~\ref{SET.3:simplerecursionschema}) enabled the definition of the
+cumulative hierarchy $V_\alpha$ (Definition~\ref{DEF-SET012}) and
+ordinal arithmetic. Adding the Well-Ordering axiom (AX-SET009,
+\S\ref{AX-SET009}) yielded $\ZFC$ and a robust theory of cardinals.
+Cardinal arithmetic
+(Theorem~\ref{SET.5:cardplustimesmax}) simplifies dramatically for
+infinite cardinals; but the Continuum Hypothesis
+(Definition~\ref{DEF-SET015}) remains independent of $\ZFC$. The
+equivalence of Well-Ordering, Choice, and Zorn's Lemma
+(Theorem~\ref{THM-SET001}) unifies the theory.
+\end{rem}

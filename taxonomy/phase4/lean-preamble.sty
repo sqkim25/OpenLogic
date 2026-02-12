@@ -1,0 +1,1085 @@
+% lean-preamble.sty
+% Preamble for the Lean Text of Mathematical Logic
+% Macro definitions extracted and adapted from the OpenLogic Project
+%
+% Sources:
+%   open-logic-config.sty  (mathematical notation macros)
+%   sty/open-logic-formulas.sty  (formula metavariable active-char system)
+%   sty/open-logic-book-envs.sty (theorem environments)
+%   sty/open-logic.sty  (Goedel corners, special symbols, oltableau)
+%
+
+\makeatletter
+% This file is self-contained: it declares all package dependencies
+% and provides every macro needed by the lean text without relying on
+% any OL infrastructure (no \olref, \ollabel, \settexttoken, \iftag, etc.)
+
+\NeedsTeXFormat{LaTeX2e}
+
+%% ===================================================================
+%%% Package Dependencies
+%% ===================================================================
+
+\RequirePackage[english]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{amsfonts}
+\RequirePackage{mathpazo}         % Palatino math
+\RequirePackage[scaled=0.95]{helvet}
+\RequirePackage{courier}
+\RequirePackage{xparse}           % \DeclareDocumentCommand
+\RequirePackage[OMLmathsfit]{isomath}  % \mathsfit for object-language symbols
+\RequirePackage{extarrows}        % \xLongrightarrow (parallel reduction)
+\RequirePackage{nicefrac}
+\RequirePackage{stmaryrd}         % \varolessthan and other symbols
+\RequirePackage{etoolbox}         % \docsvlist (used by formula lookup)
+\RequirePackage{graphicx}         % \reflectbox (used in \Gn)
+
+% Proof systems
+\RequirePackage{bussproofs}       % ND / SC proof trees
+\renewenvironment{prooftree}
+  {\begin{center}\bottomAlignProof}
+  {\DisplayProof\end{center}}
+% DeduceC: conclusion without inference line (from bussproofs-extra)
+% Simplified: render as noLine + UnaryInfC
+\newcommand{\DeduceC}[1]{\noLine\UnaryInfC{#1}}
+\RequirePackage[tableaux]{prooftrees}  % tableau truth trees
+
+% Theorem and box environments
+\RequirePackage{mdframed}         % defish boxes
+\RequirePackage{thmtools}         % theorem styling
+
+% TikZ
+\RequirePackage{tikz}
+\usetikzlibrary{arrows,automata,positioning,lindenmayersystems}
+
+% Cross-referencing (load last)
+\RequirePackage{hyperref}
+\RequirePackage{cleveref}
+
+% Additional symbol font (boxright, fishhookright, diamondright)
+\DeclareSymbolFont{symbolsC}{U}{ntxsyc}{m}{n}
+\DeclareMathSymbol{\boxright}{\mathbin}{symbolsC}{128}
+\DeclareMathSymbol{\diamondright}{\mathbin}{symbolsC}{132}
+\DeclareMathSymbol{\fishhookright}{\mathbin}{symbolsC}{74}
+
+
+%% ===================================================================
+%%% DeclareDocumentMacro -- zero-argument form (not provided by xparse)
+%% ===================================================================
+
+% In the OL source this is defined as \def; we replicate it here so
+% that all the macro definitions below compile without modification.
+\newcommand*{\DeclareDocumentMacro}[2]{\def#1{#2}}
+
+
+%% ===================================================================
+%%% Helper: \applytofirst
+%% ===================================================================
+
+% Apply #1 to the first token of #2 only, so that e.g.
+% \Struct{M_k} produces \mathfrak{M}_k rather than \mathfrak{M_k}.
+\def\applytofirst#1#2{{\expandafter#1#2}}
+
+
+%% ===================================================================
+%%% Formula Metavariables  (from open-logic-formulas.sty)
+%% ===================================================================
+
+% Provide \mathexclaim  (the literal ! glyph in math mode)
+\DeclareMathSymbol{\mathexclaim}{\mathord}{operators}{`!}%
+
+% Make ! active in math mode for formula metavariables
+{\catcode`!=\active
+\gdef!{\formula}
+\let\formula\relax % default: do nothing
+}
+\mathcode`\!="8000 % set ! active in math mode
+
+% \ollatinformulas -- formula metavars are A, B, C, ...
+\def\ollatinformulas{\let\formula\relax}
+
+% \olgreekformulas -- formula metavars are \varphi, \psi, \chi, ...
+\def\olgreekformulas
+{\gdef\formula{\lookup{A/\varphi,B/\psi,C/\chi,D/\theta,E/\alpha,F/\beta,G/\gamma,H/\delta,K/\xi,L/\zeta,O/\omega,R/\rho,S/\sigma,T/\tau}}}
+
+% \olalphagreekformulas -- formula metavars are \alpha, \beta, \gamma, ...
+\def\olalphagreekformulas
+{\gdef\formula{\lookup{A/\alpha,B/\beta,C/\gamma,D/\delta,E/\phi,F/\psi,G/\chi,H/\theta,K/\xi,L/\zeta,O/\omega,R/\rho,S/\sigma,T/\tau}}}
+
+% args -- format a list of arguments separated by commas
+\newcommand*{\args}[1]{%
+  \let\@argsep\@argsepinit
+  \@for\@arg:=#1\do{%
+    \@argsep\@arg}%
+}
+\def\@argsepinit{\let\@argsep\argsep}
+\newcommand{\argsep}{}
+
+% lookup -- look up #2 in list #1 (comma-separated key/value pairs)
+\def\@match#1/#2{\def\match@input{#1}\def\match@result{#2}}
+\newcommand*{\lookup}[2]{%
+  \def\lookup@input{#2}
+  \def\lookup@result{#2}%
+  \def\do##1{\@match##1\if\lookup@input\match@input
+    \let\lookup@result\match@result\fi}%
+  \docsvlist{#1}%
+  \lookup@result}
+
+% Default: use Greek formula metavariables
+\olgreekformulas
+
+% Prefer \varphi to \phi and \varepsilon to \epsilon
+\let\oldphi\phi
+\let\phi\varphi
+\let\oldepsilon\epsilon
+\let\epsilon\varepsilon
+
+
+%% ===================================================================
+%%% Goedel Corner Quotes  (from open-logic.sty)
+%% ===================================================================
+
+\newbox\gnBoxA
+\newdimen\gnCornerHgt
+\setbox\gnBoxA=\hbox{$\ulcorner$}
+\global\gnCornerHgt=\ht\gnBoxA
+\newdimen\gnArgHgt
+\def\gn #1{%
+\setbox\gnBoxA=\hbox{$#1$}%
+\gnArgHgt=\ht\gnBoxA%
+\ifnum     \gnArgHgt<\gnCornerHgt \gnArgHgt=0pt%
+\else \advance \gnArgHgt by -\gnCornerHgt%
+\fi \raise\gnArgHgt\hbox{$\ulcorner$} \box\gnBoxA %
+\raise\gnArgHgt\hbox{$\urcorner$}}
+
+
+%% ===================================================================
+%%% Logical Symbols
+%% ===================================================================
+
+% --- Truth Values ---
+
+\DeclareDocumentMacro \True {\ensuremath{\mathbb{T}}}
+\DeclareDocumentMacro \False {\ensuremath{\mathbb{F}}}
+\DeclareDocumentMacro \Indet {\ensuremath{\mathbb{I}}}
+\DeclareDocumentMacro \Undef {\ensuremath{\mathbb{U}}}
+
+% --- Propositional Constants and Connectives ---
+
+\DeclareDocumentMacro \lfalse {\bot}
+\DeclareDocumentMacro \ltrue {\top}
+
+% \lnot  -- negation (already provided by LaTeX; default \lnot)
+% \land  -- conjunction (already provided by LaTeX; default \land)
+% \lor   -- disjunction (already provided by LaTeX; default \lor)
+
+\DeclareDocumentMacro \lif {\mathbin{\rightarrow}}
+\DeclareDocumentMacro \liff {\mathbin{\leftrightarrow}}
+\DeclareDocumentMacro \cif {\boxright}           % counterfactual conditional
+\DeclareDocumentMacro \strictif {\fishhookright}  % strict conditional
+
+
+%% ===================================================================
+%%% Quantifiers
+%% ===================================================================
+
+% \lexists[x][!A(x)]  -- existential; \lexists! for unique existence
+\DeclareDocumentCommand \lexists { t{!} o o } {
+    \exists
+    \IfBooleanTF {#1}
+        \mathexclaim    % unique
+        \relax % not unique
+    \IfNoValueTF {#2}
+        \relax     % no arguments
+        { #2 } % one argument: variable
+    \IfNoValueTF {#3}
+        \relax
+        { \, #3 }      % two arguments: space and matrix
+}
+
+% \lforall[x][!A(x)]  -- universal
+\DeclareDocumentCommand \lforall { o o } {
+    \IfNoValueTF {#1}
+        { \forall }    % no arguments
+        { \forall #1 } % one argument: variable
+    \IfNoValueTF {#2}
+        \relax
+        { \, #2 }      % two arguments: space and matrix
+}
+
+% \eq[x][y] -- identity; \eq/ for negated
+\DeclareDocumentCommand \eq { t{/} o o } {
+  \IfNoValueTF {#3}
+    { \IfBooleanTF{#1}{ \neq }{ = } }
+    { \IfBooleanTF{#1}{ #2 \neq #3}{#2 = #3} }
+}
+
+
+%% ===================================================================
+%%% Proof and Derivation Symbols
+%% ===================================================================
+
+% Sequent symbols
+\DeclareDocumentMacro \Sequent {\Rightarrow}
+\DeclareDocumentMacro \nSequent {\mid}
+\DeclareDocumentMacro \fCenter {\ensuremath{\,\Sequent\,}}
+
+% Sequent calculus rule names
+\DeclareDocumentCommand \LeftR { m } {\ensuremath{{#1}\mathrm{L}}}
+\DeclareDocumentCommand \RightR { m } {\ensuremath{{#1}\mathrm{R}}}
+\DeclareDocumentCommand \iR { m m o} {\ensuremath{{#1\IfNoValueTF{#3}{}{_{#3}}}{#2}}}
+
+% Structural rules
+\DeclareDocumentMacro \Weakening {\ensuremath{\mathrm{W}}}
+\DeclareDocumentMacro \Contraction {\ensuremath{\mathrm{C}}}
+\DeclareDocumentMacro \Exchange {\ensuremath{\mathrm{X}}}
+\DeclareDocumentMacro \Cut {\ensuremath{\mathrm{Cut}}}
+
+% Natural deduction rule names
+\DeclareDocumentCommand \Intro { m } {\ensuremath{{#1}\mathrm{Intro}}}
+\DeclareDocumentCommand \Elim { m } {\ensuremath{{#1}\mathrm{Elim}}}
+
+% Absurdity rules
+\DeclareDocumentMacro \FalseInt {\ensuremath{\lfalse_I}}
+\DeclareDocumentMacro \FalseCl {\ensuremath{\lfalse_C}}
+
+% Discharge notation
+\DeclareDocumentCommand \Discharge { m m }{[#1]^{#2}}
+\DeclareDocumentCommand \DischargeRule { m m }{
+  \RightLabel{#1}
+  \LeftLabel{\scriptsize $#2$}
+}
+
+% Proof terms (intuitionistic logic)
+\DeclareDocumentCommand \typeof { m m } {#1^{#2}}
+\DeclareDocumentCommand \andi { m m } {\tuple{#1, #2}}
+\DeclareDocumentCommand \ande { m m } {\fn{p}_{#1}(#2)}
+\DeclareDocumentCommand \ori { m m m } {\fn{in}_{#1}^{#2}(#3)}
+\DeclareDocumentCommand \ore { m m m m m } {\fn{case}(#1, #2.#3, #4.#5)}
+\DeclareDocumentCommand \falsee { m m } {\fn{contr}_{#1}(#2)}
+
+% Axiomatic derivations
+\DeclareDocumentMacro \MP {\textsc{mp}}
+\DeclareDocumentMacro \QR {\textsc{qr}}
+\DeclareDocumentMacro \Hyp {\textsc{Hyp}}
+
+% Signed formulas
+\DeclareDocumentCommand \sFmla { m m o }{
+  \ensuremath{%
+    \IfNoValueTF{#3}{}{#3\,}%
+    \hbox to.8em{\ensuremath{#1}\hfil} #2}}
+
+\DeclareDocumentCommand \pFmla { m m m }{
+  \ensuremath{%
+    \hskip 3em{\llap{$#3$}\,}%
+    \hbox to1.3em{\ensuremath{#1}\hfil} #2}}
+
+% Tableau rule names
+\DeclareDocumentCommand \TRule { m m o }{%
+  \ensuremath{{#2}{#1}\IfNoValueTF{#3}{}{\, #3}}}
+
+\DeclareDocumentMacro \TAss {Assumption}
+
+
+%% ===================================================================
+%%% Substitution
+%% ===================================================================
+
+\DeclareDocumentCommand \subst { m m } {#1/#2}
+
+\DeclareDocumentCommand \SSubst { m m } {
+  #1[#2]}
+
+\DeclareDocumentCommand \Subst { m m m } {
+  #1[\subst{#2}{#3}]}
+
+\DeclareDocumentCommand \pSubst { m m m } {
+  #1[#2/#3]^{-}
+}
+
+
+%% ===================================================================
+%%% Satisfaction and Truth
+%% ===================================================================
+
+% \Sat[/]{M}{!A}[s]  -- satisfaction in a structure
+\DeclareDocumentCommand \Sat { t{/} m m o } {
+  \IfBooleanTF{#1}{
+    \IfNoValueTF {#4}
+        { \Struct{#2} \nvDash #3 }
+        { \Struct{#2}, #4 \nvDash #3}}{
+    \IfNoValueTF {#4}
+        { \Struct{#2} \vDash #3 }
+        { \Struct{#2}, #4 \vDash #3 }}
+}
+
+% Propositional satisfaction
+\DeclareDocumentCommand \pAssign { m } {\applytofirst{\mathfrak}{#1}}
+
+\DeclareDocumentCommand \pValue { m d() o}{
+  \overline{\pAssign{#1}}%
+  \IfNoValueTF{#3}{}{_{#3}}%
+  \IfNoValueTF {#2}{}{(#2)}
+}
+
+\DeclareDocumentCommand \pSat { t{/} m m o } {
+  \pAssign{#2}
+      \IfBooleanTF{#1}{\nvDash}{\vDash}%
+      \IfNoValueTF{#4}{}{_{#4}}
+  #3
+}
+
+% Truth functions
+\DeclareDocumentCommand \tf { m o } {
+      \widetilde{#1}%
+      \IfNoValueTF{#2}{}{_{#2}}
+}
+
+
+%% ===================================================================
+%%% Derivability
+%% ===================================================================
+
+% \Proves[L]  -- derivability; \Proves/ for negated
+\DeclareDocumentCommand \Proves { t{/} o } {
+  \IfBooleanTF {#1}{
+    \IfNoValueTF {#2}
+        { \nvdash }
+        { \nvdash_{#2} }}{
+    \IfNoValueTF {#2}
+        { \vdash }
+        { \vdash_{#2} }}
+}
+
+\DeclareDocumentCommand \Thms { m } {\mathrm{Thm}(#1)}
+\DeclareDocumentMacro \PAx { \mathrm{Ax}_0 }
+
+% \Entails[L]  -- semantic consequence; \Entails/ for negated
+\DeclareDocumentCommand \Entails { t{/} o } {
+  \IfBooleanTF {#1}{
+    \IfNoValueTF {#2}
+        { \nvDash }
+        { \nvDash_{#2} }}{
+    \IfNoValueTF {#2}
+        { \vDash }
+        { \vDash_{#2} }}
+}
+
+
+%% ===================================================================
+%%% Model Theory
+%% ===================================================================
+
+\DeclareDocumentCommand \Domain { m }{\left| \Struct{#1} \right|}
+
+\DeclareDocumentCommand \Assign { m m }{\mathord{#1^{\Struct{#2}}}}
+
+\DeclareDocumentCommand \varAssign { m m m o } {
+    \IfNoValueTF {#4}
+        { #1 \sim_{#3} #2 }
+        { #1 = #2[^{#4}/{#3}] }
+}
+
+\DeclareDocumentCommand \Value { m m o} {
+    \IfNoValueTF {#3}
+        { \mathrm{Val}^{\Struct{#2}}(#1) }
+        { \mathrm{Val}^{\Struct{#2}}_{#3}(#1) }
+}
+
+\DeclareDocumentMacro \substruct {\subseteq}
+
+\DeclareDocumentCommand \Theory { m } {\mathrm{Th}(\Struct{#1})}
+
+\DeclareDocumentCommand \Mod { o d() m } {
+  \IfNoValueTF {#2} {
+    \IfNoValueTF {#1}{
+      \mathrm{Mod}(#3) }{
+      \mathrm{Mod}^{\Lang{#1}}(#3) }}{
+    \IfNoValueTF {#1}{
+      \mathrm{Mod}_{#2}(#3)}{
+      \mathrm{Mod}_{#2}^{\Lang{#1}}(#3)}}
+}
+
+% Elementary equivalence
+\DeclareDocumentCommand \elemequiv { t{/} o } {
+  \IfBooleanTF {#1}{
+    \IfNoValueTF {#2}
+        { \not\equiv }
+        { \not\equiv_{#2} }}{
+    \IfNoValueTF {#2}
+        { \equiv }
+        { \equiv_{#2} }}
+}
+
+% Equivalence classes and representatives
+\DeclareDocumentCommand \eqc { m o } {
+  \IfNoValueTF {#2}
+  {[#1]}
+  {[#1]_{#2}}
+}
+
+\DeclareDocumentCommand \rep { m o } {
+  \IfNoValueTF {#2}
+  {\underline{#1}}
+  {{\underline{#1}}_{#2}}
+}
+
+% Isomorphism
+\DeclareDocumentCommand \iso { t{/} o } {
+  \IfBooleanTF {#1}{
+    \IfNoValueTF {#2}
+        { \not\simeq }
+        { \not\simeq_{#2} }}{
+    \IfNoValueTF {#2}
+        { \simeq }
+        { \simeq_{#2} }}
+}
+
+% Syntactic identity
+\DeclareDocumentMacro \ident {\equiv}
+
+% Quantifier rank
+\DeclareDocumentCommand \QuantRank { m } {\mathrm{qr}(#1)}
+
+% Expansion of a structure
+\DeclareDocumentCommand \Expan { m m } {(\Struct{#1}, #2)}
+
+% Non-standard arithmetic operations
+\DeclareDocumentMacro \nszero {\mathbf{z}}
+\DeclareDocumentMacro \nssucc {*}
+\DeclareDocumentMacro \nsplus {\oplus}
+\DeclareDocumentMacro \nstimes {\otimes}
+\DeclareDocumentMacro \nsless {\varolessthan}
+
+
+%% ===================================================================
+%%% Typesetting Commands for Logical Concepts
+%% ===================================================================
+
+% \Struct{M}  -- first-order structures (first token in Fraktur)
+\DeclareDocumentCommand \Struct { m }{\applytofirst{\mathfrak}{#1}}
+
+% \Lang{L}  -- languages (first token in calligraphic)
+\DeclareDocumentCommand \Lang { m }{\applytofirst{\mathcal}{#1}}
+
+% \Log{L}[subscript]  -- logics (boldface)
+\DeclareDocumentCommand \Log { m o }{\ensuremath{\mathbf{#1}
+\IfNoValueTF {#2}{}{_{#2}}}}
+
+% Named logics
+\DeclareDocumentMacro {\LogCL} {\Log{C}}
+\DeclareDocumentMacro {\LogIL} {\Log{I}}
+\DeclareDocumentMacro {\LogLuk} {\Log{\textbf{\L}}}
+\DeclareDocumentMacro {\LogGod} {\Log{G}}
+\DeclareDocumentMacro {\LogKs} {\Log{Ks}}
+\DeclareDocumentMacro {\LogKw} {\Log{Kw}}
+\DeclareDocumentMacro {\LogLP} {\Log{LP}}
+\DeclareDocumentMacro {\LogRM} {\Log{RM}}
+\DeclareDocumentMacro {\LogHal} {\Log{Hal}}
+
+% \Obj{x}  -- object-language symbols (sans-serif italics)
+\DeclareDocumentCommand \Obj { m }{\mathsfit{#1}}
+
+% \Atom{P}{t1,t2}  -- atomic formula
+\DeclareDocumentCommand \Atom { m m }{ \mathord{#1}(#2) }
+
+% \Ax{A}  -- axiom name
+\DeclareDocumentCommand \Ax { m } {\ensuremath{\mathrm{#1}}}
+
+% \PIso{I}  -- partial isomorphisms
+\DeclareDocumentCommand \PIso { m }{\mathcal{#1}}
+
+% \fn{func}  -- typeset a function name
+\DeclareDocumentCommand \fn { m } {\mathrm{#1}}
+
+% \Th{T}  -- typeset a theory name
+\DeclareDocumentCommand \Th { m } {\mathbf{#1}}
+
+
+%% ===================================================================
+%%% Sets of Expressions
+%% ===================================================================
+
+\DeclareDocumentMacro \Var { \mathrm{Var} }
+\DeclareDocumentMacro \PVar { \mathrm{At}_0 }
+
+\DeclareDocumentCommand \Trm { o } {
+    \IfNoValueTF {#1}
+        { \mathrm{Trm} }
+        { \mathrm{Trm}({\Lang #1}) }
+}
+
+\DeclareDocumentCommand \Frm { o } {
+    \IfNoValueTF {#1}
+        { \mathrm{Frm} }
+        { \mathrm{Frm}({\Lang #1}) }
+}
+
+\DeclareDocumentCommand \TrmSOL { o } {
+    \IfNoValueTF {#1}
+        { \mathrm{Trm}^2 }
+        { \mathrm{Trm}^2({\Lang #1}) }
+}
+
+\DeclareDocumentCommand \FrmSOL { o } {
+    \IfNoValueTF {#1}
+        { \mathrm{Frm}^2 }
+        { \mathrm{Frm}^2({\Lang #1}) }
+}
+
+\DeclareDocumentCommand \SubFrm { m } {
+        \mathrm{SFrm}({#1})
+}
+
+\DeclareDocumentCommand \FV { m } {
+        \mathrm{FV}({#1})
+}
+
+\DeclareDocumentCommand \Sent { o } {
+    \IfNoValueTF {#1}
+        { \mathrm{Sent} }
+        { \mathrm{Sent}({\Lang{#1}}) }
+}
+
+
+%% ===================================================================
+%%% Computability / Arithmetic
+%% ===================================================================
+
+\DeclareDocumentCommand \Proj { m m } {P^{#1}_{#2}}
+\DeclareDocumentMacro \Zero {\fn{zero}}
+\DeclareDocumentMacro \Succ {\fn{succ}}
+\DeclareDocumentMacro \Add {\fn{add}}
+\DeclareDocumentMacro \Mult {\fn{mult}}
+\DeclareDocumentMacro \Exp {\fn{exp}}
+\DeclareDocumentMacro \Pred {\fn{pred}}
+\DeclareDocumentMacro \tsub {\mathbin{\dot-}}
+
+\DeclareDocumentCommand \Char { m } {\chi_{#1}}
+
+\DeclareDocumentMacro \defis {=}
+\DeclareDocumentMacro \defiff {\Leftrightarrow}
+\DeclareDocumentMacro \concat {\frown}
+
+% Bounded/unbounded minimization and quantification
+\DeclareDocumentCommand \umin { m m } {\mu #1 \; #2}
+\DeclareDocumentCommand \bmin { m m } {(\fn{min} \; #1)\, #2}
+\DeclareDocumentCommand \bexists { m m } {(\exists #1)\; #2}
+\DeclareDocumentCommand \bforall { m m } {(\forall #1)\; #2}
+
+% Partial computable functions
+\DeclareDocumentCommand \cfind { m o } {%
+    \IfNoValueTF {#2}
+        { \varphi_{#1} }
+        { \varphi_{#1}^{#2} }
+}
+
+% Defined / undefined
+\DeclareDocumentMacro \fdefined {\downarrow}
+\DeclareDocumentMacro \fundefined {\uparrow}
+
+% Partial function arrow
+\DeclareDocumentMacro \pto {\mathrel{\ooalign{\hfil$\mapstochar\mkern
+      5mu$\hfil\cr$\to$}}}
+
+
+%% ===================================================================
+%%% Lambda Calculus
+%% ===================================================================
+
+% One-step reduction
+\DeclareDocumentCommand \redone { o } {
+  \IfNoValueTF {#1}
+  {\xrightarrow{}}
+  {\xrightarrow{#1}}
+}
+
+\DeclareDocumentMacro \aconvone {\redone[\alpha]}
+\DeclareDocumentMacro \bredone {\redone[\beta]}
+\DeclareDocumentMacro \eredone {\redone[\eta]}
+\DeclareDocumentMacro \beredone {\redone[\beta\eta]}
+\DeclareDocumentMacro \xredone {\redone[X]}
+
+% Multi-step reduction (double arrow)
+\DeclareDocumentCommand \xrightarrowdbl { o m } {
+  \IfNoValueTF {#1}
+  {\xrightarrow{#2} \mathrel{\mkern-14mu}\rightarrow}
+  {\xrightarrow[#1]{#2} \mathrel{\mkern-14mu}\rightarrow}
+}
+
+\DeclareDocumentCommand \red { o } {
+  \IfNoValueTF {#1}
+  {\xrightarrowdbl{}}
+  {\xrightarrowdbl{#1}}
+}
+
+\DeclareDocumentMacro \aconv {\red [\alpha]}
+\DeclareDocumentMacro \bred {\red [\beta]}
+\DeclareDocumentMacro \ered {\red [\eta]}
+\DeclareDocumentMacro \bered {\red [\beta\eta]}
+\DeclareDocumentMacro \xred {\red [X]}
+
+% Equivalence with label
+\DeclareDocumentCommand \equal { o } {
+  \IfNoValueTF {#1}
+  {\eq}
+  {\stackrel{#1}{\eq}}
+}
+
+\DeclareDocumentMacro \aeq {\equal [\alpha]}
+\DeclareDocumentMacro \eqs {\equiv}
+
+% Parallel reduction
+\DeclareDocumentCommand \redpar { o } {
+  \IfNoValueTF {#1}
+  {\xLongrightarrow{}}
+  {\xLongrightarrow{#1}}
+}
+
+\DeclareDocumentMacro \bredpar {\redpar [\beta]}
+\DeclareDocumentMacro \beredpar {\redpar [\beta\eta]}
+\DeclareDocumentMacro \eqa {\equal{\alpha}}
+\DeclareDocumentMacro \eqe {\equal{\eta}}
+\DeclareDocumentMacro \ext {\ensuremath{\mathit{ext}}}
+
+% Complete development
+\DeclareDocumentCommand \cd { o m } {
+  \IfNoValueTF {#1}
+  {{ #2 }^*}
+  {{ #2 }^{* {#1} }}
+}
+
+\DeclareDocumentCommand \bcd { m } {
+  \cd[\beta]{#1}
+}
+
+\DeclareDocumentCommand \becd { m } {
+  \cd[\beta\eta]{#1}
+}
+
+% Lambda abstract
+\DeclareDocumentCommand \lambd { o o } {
+    \IfNoValueTF {#1}
+        { \lambda }    % no arguments
+        { \lambda #1 } % one argument
+    \IfNoValueTF {#2}
+        \relax
+        { .\, #2 }      % two arguments
+}
+
+
+%% ===================================================================
+%%% Goedel Numbering and Arithmetic Predicates
+%% ===================================================================
+
+% \num{n}  -- numeral
+\DeclareDocumentCommand \num { m } {\overline{#1}}
+
+% \scode{s}  -- code for a symbol
+\DeclareDocumentCommand \scode { m } {\fn{c}_{#1}}
+
+% \Gn{!A}  -- Goedel number (sharp-sign notation)
+\DeclareDocumentCommand \Gn { m } {{^{\reflectbox{\tiny\#}}}{#1}{^{\mbox{\tiny\#}}}}
+
+% \gn{!A}  -- Goedel corner quotes (defined above in the corner-quotes section)
+
+% Proof / provability predicates
+\DeclareDocumentCommand \Prf { o } { \mathrm{Prf}\IfNoValueTF {#1} {} {_{#1}}}
+\DeclareDocumentCommand \OPrf { o } { \mathsf{Prf}\IfNoValueTF {#1} {} {_{#1}}}
+
+\DeclareDocumentCommand \Refut { o } { \mathrm{Ref}\IfNoValueTF {#1} {} {_{#1}}}
+\DeclareDocumentCommand \ORefut { o } { \mathsf{Ref}\IfNoValueTF {#1} {} {_{#1}}}
+
+\DeclareDocumentCommand \Prov { o } { \mathrm{Prov}\IfNoValueTF {#1} {} {_{#1}}}
+\DeclareDocumentCommand \OProv { o } { \mathsf{Prov}\IfNoValueTF {#1} {} {_{#1}}}
+
+\DeclareDocumentCommand \RProv { o } { \mathrm{RProv}\IfNoValueTF {#1} {} {_{#1}}}
+\DeclareDocumentCommand \ORProv { o } { \mathsf{RProv}\IfNoValueTF {#1} {} {_{#1}}}
+
+\DeclareDocumentCommand \OCon { o } { \mathsf{Con}\IfNoValueTF {#1} {} {_{#1}}}
+
+% Parthood predicate
+\DeclareDocumentCommand \Part { m m } {\Atom{\Obj P}{#1, #2}}
+
+% Factorial
+\DeclareDocumentCommand \fact {m} {#1\,\mathexclaim}
+
+
+%% ===================================================================
+%%% General Mathematics
+%% ===================================================================
+
+% --- Set-theoretic operators ---
+
+\DeclareDocumentCommand \Setabs { m m }{\{ #1 : #2 \}}
+\DeclareDocumentCommand \fregeext { m m }{\oldepsilon #1 \, #2 }
+\DeclareDocumentCommand \fregenum { m m }{\# #1 \, #2 }
+\DeclareDocumentCommand \Pow { m }{\wp(#1)}
+\DeclareDocumentCommand \dom { m }{\fn{dom}(#1)}
+\DeclareDocumentCommand \ran { m }{\fn{ran}(#1)}
+\DeclareDocumentCommand \len { m }{\fn{len}(#1)}
+\DeclareDocumentMacro \emptyseq {\Lambda}
+\DeclareDocumentMacro \restrict {\upharpoonright}
+\DeclareDocumentCommand \Complement { m } {\overline{#1}}
+\DeclareDocumentCommand \card { m } {\left| #1 \right|}
+\DeclareDocumentCommand \cardle { m m } {#1 \preceq #2}
+\DeclareDocumentCommand \cardless { m m } {#1 \prec #2}
+\DeclareDocumentCommand \cardeq { m m } {#1 \approx #2}
+
+% Tuples
+\DeclareDocumentMacro \openTuple {\langle}
+\DeclareDocumentMacro \closeTuple {\rangle}
+\DeclareDocumentCommand \tuple { m } {\openTuple #1 \closeTuple}
+
+% Composition
+\DeclareDocumentCommand \comp { m m }{#2 \circ #1}
+
+% Cut rank / max rank
+\DeclareDocumentCommand \cutrank { m }{\fn{cr}(#1)}
+\DeclareDocumentCommand \maxrank { m }{\fn{mr}(#1)}
+
+% --- Particular sets ---
+
+\DeclareDocumentMacro \Nat {\mathbb{N}}
+\DeclareDocumentMacro \Int {\mathbb{Z}}
+\DeclareDocumentMacro \PosInt {\mathbb{Z}^+}
+\DeclareDocumentMacro \Real {\mathbb{R}}
+\DeclareDocumentMacro \Rat {\mathbb{Q}}
+\DeclareDocumentMacro \Bin {\mathbb{B}}
+
+% Identity relation
+\DeclareDocumentCommand \Id { m } {\mathord{\mathrm{Id}_{#1}}}
+
+% --- Topological notions ---
+
+\DeclareDocumentCommand \Top { m }{\mathcal{#1}}
+\DeclareDocumentCommand \Interior { m }{\mathrm{Int}(#1)}
+
+% --- Turing Machine symbols ---
+
+\DeclareDocumentMacro \TMendtape {\triangleright}
+\DeclareDocumentMacro \TMblank {0}
+\DeclareDocumentMacro \TMstroke {1}
+\DeclareDocumentMacro \TMright {R}
+\DeclareDocumentMacro \TMleft {L}
+\DeclareDocumentMacro \TMstay {N}
+\DeclareDocumentCommand \TMtrans { m m m } {\ensuremath{#1, #2, #3}}
+
+
+%% ===================================================================
+%%% Modal Logic
+%% ===================================================================
+
+\DeclareDocumentCommand \mModel { m }{\applytofirst{\mathfrak}{#1}}
+
+\DeclareDocumentCommand \mSat { t{/} m m o } {%
+  \IfBooleanTF{#1}{%
+    \IfNoValueTF {#4}
+        { \mModel{#2} \nVdash #3 }
+        { \mModel{#2}, #4 \nVdash #3}}{%
+    \IfNoValueTF {#4}
+        { \mModel{#2} \Vdash #3 }
+        { \mModel{#2}, #4 \Vdash #3 }}}
+
+\DeclareDocumentCommand \mClass { m }{\mathcal{#1}}
+
+\DeclareDocumentMacro \Nec {\textsc{nec}}
+\DeclareDocumentMacro \RK {\textsc{rk}}
+\DeclareDocumentMacro \Dual {\textsc{dual}}
+\DeclareDocumentMacro \Taut {\textsc{taut}}
+\DeclareDocumentMacro \PL {\textsc{pl}}
+
+\DeclareDocumentCommand \Prop { m m } {
+  {[\!\![} #2 {]\!\!]_{\mModel{#1}}}
+}
+
+\DeclareDocumentMacro \ST {\mathord{\mathrm{ST}}}
+
+\DeclareDocumentCommand \mTrue { m }{\ensuremath{#1}}
+\DeclareDocumentCommand \mFalse { m }{\ensuremath{\lnot #1}}
+
+% Epistemic operators
+\DeclareDocumentMacro {\Knows} {\mathord{\mathsf{K}}}
+\DeclareDocumentMacro {\EKnows} {\mathord{\mathsf{E}}}
+\DeclareDocumentMacro {\CKnows} {\mathord{\mathsf{C}}}
+
+% Temporal operators
+\DeclareDocumentMacro {\Ptemp} {\mathord{\mathsf{P}}}
+\DeclareDocumentMacro {\Htemp} {\mathord{\mathsf{H}}}
+\DeclareDocumentMacro {\Ftemp} {\mathord{\mathsf{F}}}
+\DeclareDocumentMacro {\Gtemp} {\mathord{\mathsf{G}}}
+\DeclareDocumentMacro {\Since} {\mathord{\mathsf{S}}}
+\DeclareDocumentMacro {\Until} {\mathord{\mathsf{U}}}
+
+% TikZ style for modal models
+\tikzset{
+  modal/.style={>=stealth',
+    shorten >=1pt,
+    shorten <=1pt,
+    auto,
+    node distance=1.5cm,
+    label distance=2pt,
+    semithick},
+  every label/.style={phantom,align=left},
+  world/.style = {circle,draw,minimum size=0.5cm,fill=gray!15},
+  modal every node/.style={world},
+  point/.style={circle,draw,inner sep=0.5mm,fill=black},
+  phantom/.style={rectangle,inner sep=0pt,draw=none,fill=none},
+  reflexive above/.style={->,loop,looseness=7,in=60,out=120},
+  reflexive below/.style={->,loop,looseness=7,in=240,out=300},
+  reflexive left/.style={->,loop,looseness=7,in=150,out=210},
+  reflexive right/.style={->,loop,looseness=7,in=30,out=330}
+}
+
+
+%% ===================================================================
+%%% Set Theory Symbols  (from Tim Button's Open Set Theory)
+%% ===================================================================
+
+\DeclareDocumentMacro \unitline {\text{L}}
+\DeclareDocumentMacro \unitsquare {\text{S}}
+\newcommand{\onesphere}{\mathbf{S}}
+\newcommand\rotationsgroup{R}
+
+\DeclareDocumentCommand \cardneq { m m } {#1 \not\approx #2}
+\DeclareDocumentCommand \cardnless { m m } {#1 \npreceq #2}
+\DeclareDocumentCommand \ordeq { m m } {#1 \cong #2}
+\DeclareDocumentCommand \ordneq { m m } {#1 \ncong #2}
+\DeclareDocumentCommand \funimage { m m } {#1[#2]}
+
+\newcommand\closureofunder[2]{\mathrm{clo}_{#1}(#2)}
+\newcommand\Closureofunder[2]{\mathrm{Clo}_{#1}(#2)}
+\newcommand\equivrep[2]{[#1]_{#2}}
+\newcommand\equivclass[2]{#1/_{\!{#2}}}
+\newcommand\Intequiv{\sim}
+\newcommand\Ratequiv{\backsim}
+\newcommand\Realequiv{\Bumpeq}
+\newcommand\funrestrictionto[2]{#1\mathord{\restriction}_{#2}}
+\newcommand\isomorphic{\cong}
+\newcommand\nisomorphic{\ncong}
+\newcommand\precdot{\mathrel{\prec{\mkern -12mu \cdot}}}
+\newcommand\disjointsum{\sqcup}
+\newcommand\ordtype[1]{\mathrm{ord}(#1)}
+\newcommand\ordsucc[1]{#1^{+}}
+\newcommand\cardsucc[1]{#1^{\oplus}}
+\newcommand\rlexless{\mathrel{\sphericalangle}}
+\newcommand\canonord\lhd
+\newcommand\ordplus{+}
+\newcommand\ordtimes{\cdot}
+\newcommand\ordexpo[2]{#1^{(#2)}}
+\newcommand\cardplus{\oplus}
+\newcommand\cardtimes{\otimes}
+\newcommand\cardexpo[2]{#1^{#2}}
+\newcommand\funfromto[2]{{}^{#1}{#2}}
+\newcommand\setrank[1]{\mathrm{rank}(#1)}
+\DeclareMathOperator*{\supstrict}{\mathrm{lsub}}
+\DeclareMathOperator\lcm{\mathrm{lcm}}
+\newcommand\trcl[1]{\mathrm{trcl}(#1)}
+
+% Named set theories
+\newcommand\ZF{\Th{ZF}}
+\newcommand\SP{\Th{SP}}
+\newcommand\ZFC{\Th{ZFC}}
+\newcommand\Z{\Th{Z}}
+\newcommand\ZFminus{\ZF^{-}}
+\newcommand\Zminus{\Z^{-}}
+\newcommand\Zr{\Th{Zr}}
+\newcommand\LT{\Th{LT}}
+
+\newcommand\cardfont[1]{\mathfrak{#1}}
+
+% Hilbert curve (for set theory diagrams)
+\pgfdeclarelindenmayersystem{Hilbert curve}{
+	\rule{L -> +RF-LFL-FR+}
+	\rule{R -> -LF+RFR+FL-}}
+
+% Stage-theoretic principles (italic labels)
+\newcommand\stageshier{\emph{Stages-are-key}}
+\newcommand\stagesord{\emph{Stages-are-ordered}}
+\newcommand\stagesacc{\emph{Stages-accumulate}}
+\newcommand\stagessucc{\emph{Stages-keep-going}}
+\newcommand\stagesinf{\emph{Stages-hit-infinity}}
+\newcommand\limofsize{\emph{Limitation-of-size}}
+\newcommand\stagesinex{\emph{Stages-are-inexhaustible}}
+\newcommand\stagescofin{\emph{Stages-are-super-cofinal}}
+
+
+%% ===================================================================
+%%% Inductive Definitions Helper
+%% ===================================================================
+
+% \indcase{formula}{complex formula}{case text}
+%   Starred version for atomic case; ! version for exercise
+\DeclareDocumentCommand \indcase { s t{!} m m +m }{%
+  \DeclareDocumentMacro \indfrm {#3}%
+  \DeclareDocumentMacro \indfrmp {#3}%
+  \DeclareDocumentMacro \indcomplex {#4}%
+  \IfBooleanTF{#1}
+     {$#3$ is atomic: }{$#3 \ident #4$: }
+  \IfBooleanTF{#2}
+     {exercise.}
+     {#5}}
+
+
+%% ===================================================================
+%%% Theorem Environments  (from open-logic-book-envs.sty, adapted)
+%% ===================================================================
+
+% Define OLP colors (self-contained defaults: black / light grey)
+\@ifundefined{OLPltcolor}{%
+  \colorlet{OLPltcolor}{black!5}%
+}{}
+\@ifundefined{OLPdkcolor}{%
+  \colorlet{OLPdkcolor}{black}%
+}{}
+
+% Theorem box width
+\newlength{\thmwidth}
+\setlength{\thmwidth}{16pt}
+\addtolength{\thmwidth}{\textwidth}
+
+% mdframed styles
+\mdfdefinestyle{thmstyle}{backgroundcolor=OLPltcolor,
+  innerleftmargin=8pt,
+  innerrightmargin=8pt,
+  userdefinedwidth=\thmwidth,
+  everyline=true,
+  needspace=1cm,
+  splittopskip=2\topsep,
+  hidealllines=true,
+  beforesingleframe={\hskip-8pt},
+  beforebreak={\hskip-8pt}
+}
+
+\mdfdefinestyle{defstyle}{linecolor=OLPltcolor,
+  linewidth=2pt,
+  innerleftmargin=6pt,
+  innerrightmargin=6pt,
+  userdefinedwidth=\thmwidth,
+  everyline=true,
+  needspace=1cm,
+  beforesingleframe={\hskip-8pt},
+  beforebreak={\hskip-8pt}
+}
+
+\mdfdefinestyle{defishstyle}{linecolor=OLPltcolor,
+  linewidth=2pt,
+  innerleftmargin=6pt,
+  innertopmargin=6pt,
+  innerrightmargin=6pt,
+  userdefinedwidth=\thmwidth,
+  everyline=true,
+  needspace=1cm,
+  beforesingleframe={\hskip-8pt},
+  beforebreak={\hskip-8pt}
+}
+
+% Theorem-like environments (numbered within chapter)
+\declaretheorem[
+  style=plain,
+  name=Theorem,
+  mdframed={style=thmstyle},
+  numberwithin=chapter]{thm}
+
+\declaretheorem[
+  style=definition,
+  name=Example,
+  sibling=thm]{ex}
+
+\declaretheorem[
+  style=plain,
+  name=Lemma,
+  mdframed={style=thmstyle},
+  refname={Lemma,Lemmas},
+  sibling=thm]{lem}
+
+\declaretheorem[
+  style=plain,
+  name=Proposition,
+  mdframed={style=thmstyle},
+  sibling=thm]{prop}
+
+\declaretheorem[
+  style=plain,
+  name=Corollary,
+  mdframed={style=thmstyle},
+  refname={Corollary,Corollaries},
+  sibling=thm]{cor}
+
+\declaretheorem[
+  style=definition,
+  name=Definition,
+  mdframed={style=defstyle},
+  sibling=thm]{defn}
+
+\declaretheorem[
+  style=definition,
+  name=Problem,
+  numberwithin=chapter]{prob}
+
+\declaretheorem[
+  style=definition,
+  name=Axiom,
+  mdframed={style=defstyle},
+  unnumbered]{axiom}
+
+\declaretheorem[
+  style=remark,
+  name=Remark]{rem}
+
+\declaretheorem[
+  style=remark,
+  name=Note]{note}
+
+\declaretheorem[
+  style=remark,
+  name=Case]{case}
+
+\declaretheorem[
+  style=remark,
+  name=Convention,
+  mdframed={style=defstyle},
+  sibling=thm]{conv}
+
+% cleveref names
+\crefname{thm}{Theorem}{Theorems}
+\crefname{ex}{Example}{Examples}
+\crefname{defn}{Definition}{Definitions}
+\crefname{lem}{Lemma}{Lemmas}
+\crefname{prop}{Proposition}{Propositions}
+\crefname{prob}{Problem}{Problems}
+\crefname{rem}{Remark}{Remarks}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+
+
+%% ===================================================================
+%%% Special Environments
+%% ===================================================================
+
+% defish -- definition-like box for rules, etc.
+\newenvironment{defish}{\begin{mdframed}[style=defishstyle]}{\end{mdframed}}
+
+% derivation -- tabular environment for Hilbert-style proofs
+%   Three columns: line number, formula, justification
+\newenvironment{derivation}{%
+  ~\begin{trivlist}\item\begin{tabular}[b]{@{}rll@{}}}
+  {\end{tabular} \end{trivlist}}
+
+% oltableau -- wrapper for prooftrees tableaux
+\newenvironment{oltableau}{\center\tableau{}}
+               {\endtableau\endcenter}
+
+% probtag -- wrapper (tags are no-ops in the lean text)
+\newenvironment{probtag}[1]{\begin{prob}}{\end{prob}}
+
+
+%% ===================================================================
+%%% End of lean-preamble.sty
+%% ===================================================================
+
+\makeatother
+
+\endinput

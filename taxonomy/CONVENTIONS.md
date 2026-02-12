@@ -289,6 +289,9 @@ Single source of truth for all primitives and definitions across the taxonomy. U
 | DEF-SYN006 | Structural Recursion on Formulas | SYN | SEM, CMP |
 | DEF-SYN007 | Formula Complexity (Rank) | SYN | SEM, DED |
 | DEF-SYN008 | Subterm | SYN | SEM |
+| DEF-SYN009 | Bounded ($\Delta_0$) Formula | SYN | CMP |
+| DEF-SYN010 | $\Sigma_1$ Formula | SYN | CMP |
+| DEF-SYN011 | $\Pi_1$ Formula | SYN | CMP |
 | PRIM-SEM001 | Structure ($\mathfrak{A}$) | SEM | DED, SET, CMP |
 | PRIM-SEM002 | Domain ($\|\mathfrak{A}\|$) | SEM | DED, CMP |
 | PRIM-SEM003 | Interpretation | SEM | DED |
@@ -320,6 +323,9 @@ Single source of truth for all primitives and definitions across the taxonomy. U
 | DEF-SEM014 | Categoricity ($\kappa$-categorical) | SEM | SET |
 | DEF-SEM015 | Ultraproduct | SEM | SET |
 | DEF-SEM016 | Embedding | SEM | SET |
+| DEF-SEM017 | Standard Model of Arithmetic ($\mathfrak{N}$) | SEM | DED, CMP |
+| DEF-SEM018 | True Arithmetic ($\text{Th}(\mathfrak{N})$) | SEM | CMP |
+| DEF-SEM019 | Interpretability | SEM | DED |
 | PRIM-DED001 | Axiom Schema | DED | SEM, CMP |
 | PRIM-DED002 | Non-Logical Axiom | DED | SEM, SET |
 | PRIM-DED003 | Rule of Inference | DED | SEM, CMP |
@@ -340,6 +346,10 @@ Single source of truth for all primitives and definitions across the taxonomy. U
 | DEF-DED008 | Tableau System | DED | CMP |
 | DEF-DED009 | Derived Rule | DED | — |
 | DEF-DED010 | Admissible Rule | DED | — |
+| DEF-DED011 | Robinson Arithmetic ($Q$) | DED | CMP, SEM |
+| DEF-DED012 | Peano Arithmetic ($PA$) | DED | CMP, SEM |
+| DEF-DED013 | $\omega$-Consistency | DED | — |
+| DEF-DED014 | Derivability Conditions (Hilbert-Bernays-Lob) | DED | — |
 | PRIM-CMP001 | Computable (Recursive) Function | CMP | SEM, DED, SET |
 | PRIM-CMP002 | Primitive Recursive Function | CMP | DED, SET |
 | PRIM-CMP003 | $\mu$-Recursion | CMP | DED |
@@ -362,6 +372,10 @@ Single source of truth for all primitives and definitions across the taxonomy. U
 | DEF-CMP008 | Creative Set | CMP | — |
 | DEF-CMP009 | Representability | CMP | DED, SEM |
 | DEF-CMP010 | Recursive Enumerability (equiv. char.) | CMP | DED |
+| DEF-CMP011 | Axiomatizable Theory | CMP | DED, SEM |
+| DEF-CMP012 | Proof Predicate (Formalized $\text{Prf}$) | CMP | DED |
+| DEF-CMP013 | $\beta$-Function | CMP | — |
+| DEF-CMP014 | Computable Inseparability | CMP | DED |
 | PRIM-SET001 | Set (formal) | SET | SEM |
 | PRIM-SET002 | Membership ($\in$, formal) | SET | SYN |
 | PRIM-SET003 | Class (informal) | SET | — |
@@ -376,6 +390,10 @@ Single source of truth for all primitives and definitions across the taxonomy. U
 | DEF-SET009 | Well-Ordering | SET | SEM |
 | DEF-SET010 | Zorn's Lemma | SET | DED, SEM |
 | DEF-SET011 | Cantor's Theorem (formal) | SET | SEM |
+| DEF-SET012 | Von Neumann Hierarchy ($V_\alpha$) | SET | SEM |
+| DEF-SET013 | Aleph Numbers ($\aleph_\alpha$) | SET | SEM |
+| DEF-SET014 | Cofinality [Deferred] | SET | — |
+| DEF-SET015 | Continuum Hypothesis | SET | — |
 
 ---
 
