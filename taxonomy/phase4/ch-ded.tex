@@ -623,6 +623,8 @@ DED.2--DED.5.
 \end{enumerate}
 \end{prop}
 
+The analogous facts hold for disjunction:
+
 \begin{prop}
 \label{DED-prop:provability-lor}
 \begin{enumerate}
@@ -651,6 +653,9 @@ Detailed derivations appear in DED.2 (axiomatic), DED.3 (natural
 deduction), DED.4 (sequent calculus), and DED.5 (tableaux).
 \end{proof}
 
+Quantifiers interact with derivability through a generalization
+principle:
+
 \begin{thm}[Strong Generalization]
 \label{DED-thm:strong-generalization}
 If $c$ is a constant symbol not occurring in $\Gamma$ or $!A(x)$ and
@@ -664,6 +669,8 @@ its equivalent in other systems) gives $\Gamma \Proves \ltrue \lif
 \lforall[x][!A(x)]$.  By the deduction theorem again, $\Gamma \Proves
 \lforall[x][!A(x)]$.
 \end{proof}
+
+The basic quantifier derivability facts needed for completeness are:
 
 \begin{prop}
 \label{DED-prop:provability-quantifiers}
@@ -761,6 +768,21 @@ comprises all formulas of the following forms:
 If $!B$ and $!B \lif !A$ already occur in a derivation, then $!A$ is
 a correct inference step. We abbreviate this rule as~$\MP$.
 \end{defn}
+
+\begin{ex}\label{DED2-ex:lif-identity}
+Here is an axiomatic derivation of $\Proves p \lif p$:
+\begin{derivation}
+1. & $p \lif ((p \lif p) \lif p)$ & \eqref{ax:lif1}\\
+2. & $(p \lif ((p \lif p) \lif p)) \lif
+     ((p \lif (p \lif p)) \lif (p \lif p))$ & \eqref{ax:lif2}\\
+3. & $(p \lif (p \lif p)) \lif (p \lif p)$ & $\MP$, 1, 2\\
+4. & $p \lif (p \lif p)$ & \eqref{ax:lif1}\\
+5. & $p \lif p$ & $\MP$, 4, 3
+\end{derivation}
+Even this simple identity requires five lines, illustrating why
+axiomatic systems are easy to reason \emph{about} but hard to use
+directly.
+\end{ex}
 
 %%% -----------------------------------------------------------------
 %%% DED.2.2  Quantifier Axioms and Rules
@@ -1295,6 +1317,19 @@ is necessary to ensure soundness.
 In the above rules, $t$, $t_1$, and $t_2$ are closed terms. The
 $\Intro{\eq}$ rule derives $\eq[t][t]$ from no assumptions.
 
+\begin{ex}\label{DED3-ex:lif-identity}
+As a first example, here is a derivation of $p \lif p$ from no
+undischarged assumptions:
+\begin{prooftree}
+\AxiomC{$\Discharge{p}{1}$}
+\DischargeRule{\Intro{\lif}}{1}
+\UnaryInfC{$p \lif p$}
+\end{prooftree}
+The sole leaf is the assumption~$p$, discharged by $\Intro{\lif}$ at
+label~$1$.  Since no assumptions remain open, this is a derivation
+of $p \lif p$ from~$\emptyset$.
+\end{ex}
+
 %%% -----------------------------------------------------------------
 %%% DED.3.4  Derivations
 %%% -----------------------------------------------------------------
@@ -1756,6 +1791,19 @@ The rules for~$\eq$ are ($t_1$ and $t_2$ are closed terms):
 \DisplayProof
 \end{defish}
 
+\begin{ex}\label{DED4-ex:lif-identity}
+A derivation of the sequent $\Sequent p \lif p$:
+\begin{center}
+\Axiom$p \fCenter p$
+\RightLabel{\RightR{\lif}}
+\UnaryInf$\fCenter p \lif p$
+\DisplayProof
+\end{center}
+The topmost sequent $p \Sequent p$ is an initial sequent.  The
+$\RightR{\lif}$ rule moves~$p$ from the antecedent into the
+conditional on the succedent side.
+\end{ex}
+
 %%% -----------------------------------------------------------------
 %%% DED.4.5  Derivations
 %%% -----------------------------------------------------------------
@@ -1808,6 +1856,12 @@ $\Sequent \eq[t][t]$ are valid since $\Value{t}{M} = \Value{t}{M}$.
 
 If $n > 0$, we distinguish cases by the last inference.  By induction
 hypothesis the premise(s) are valid.
+
+The cases fall into three groups: structural rules (weakening,
+contraction, exchange, cut), propositional rules ($\lnot$, $\land$,
+$\lor$, $\lif$), and quantifier rules ($\lforall$, $\lexists$).  In
+each case the argument shows that validity is preserved from
+premise(s) to conclusion.
 
 \begin{enumerate}
 \item \emph{Weakening:} If the premise $\Gamma \Sequent \Delta$ is
@@ -2134,6 +2188,24 @@ In contrast to the other rules, $\TRule{\True}{\eq}$ and
 $\TRule{\False}{\eq}$ require two signed formulas already on the
 branch: both $\sFmla{\True}{\eq[t_1][t_2]}$ and $\sFmla{S}{!A(t_1)}$.
 
+\begin{ex}\label{DED5-ex:lif-identity}
+To show that $p \lif p$ is a tautology, we construct a tableau
+starting from $\sFmla{\False}{p \lif p}$:
+\begin{center}
+\begin{tabular}{rl}
+1. & $\sFmla{\False}{p \lif p}$ \\
+2. & $\sFmla{\True}{p}$ \hfill ($\TRule{\False}{\lif}$, 1)\\
+3. & $\sFmla{\False}{p}$ \hfill ($\TRule{\False}{\lif}$, 1)\\
+   & $\otimes$ \hfill (2, 3)
+\end{tabular}
+\end{center}
+The $\TRule{\False}{\lif}$ rule applied to line~1 produces both
+$\sFmla{\True}{p}$ and $\sFmla{\False}{p}$ on the same branch.
+Since $p$ appears with both signs, the branch closes~($\otimes$).
+Every branch being closed, the tableau is closed, confirming
+that $p \lif p$ is valid.
+\end{ex}
+
 %%% -----------------------------------------------------------------
 %%% DED.5.4  Tableaux
 %%% -----------------------------------------------------------------
@@ -2328,7 +2400,8 @@ assumptions---is a reformulation of the generic consistency notion of
 
 \section{Theories and Arithmetic} \label{DED.6}
 
-This section introduces the formal theories of arithmetic that serve
+The proof systems of DED.2--DED.5 provide the deductive machinery;
+this section introduces the formal theories of arithmetic that serve
 as the principal objects of study in the incompleteness theorems (see
 CH-BST, Boundedness). We define Robinson's~$\Th{Q}$, Peano
 Arithmetic~$\Th{PA}$, the notion of $\omega$-consistency, and the
@@ -2498,7 +2571,8 @@ Theorem (see CP-006, \S\ref{META.6}).
 
 \section{Theorems} \label{DED.7}
 
-This section collects the principal theorems of deduction theory.
+The proof systems and formal theories of the preceding sections
+support several deep results that bridge deduction and metatheory.
 
 %%% -----------------------------------------------------------------
 %%% DED.7.1  The Deduction Theorem
@@ -2658,6 +2732,13 @@ $\OProv[\Th{T}](\gn{!A}) \lif !A$ is called the \emph{reflection
 principle}; L\"ob's theorem says that a consistent theory can only
 derive those instances of the reflection principle where~$!A$ is
 already a theorem.
+
+\emph{Proof idea.}  Apply the fixed-point lemma to the formula
+$\OProv[\Th{T}](y) \lif !A$, obtaining a sentence~$!D$ with $\Th{T}
+\Proves !D \liff (\OProv[\Th{T}](\gn{!D}) \lif !A)$.  Informally,
+$!D$ says ``if I am provable, then $!A$.''  The derivability
+conditions P1--P3 then show $\Th{T} \Proves !D$, whence $\Th{T}
+\Proves !A$.
 
 \begin{proof}
 Suppose $!A$ is a sentence such that $\Th{T}$ derives

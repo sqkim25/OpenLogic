@@ -80,6 +80,14 @@ A set~$\Gamma$ of sentences is \emph{complete} iff for any
 sentence~$!A$, either $!A \in \Gamma$ or $\lnot !A \in \Gamma$.
 \end{defn}
 
+\begin{ex}\label{ex:complete-set}
+Let $\Struct{M}$ be any structure for~$\Lang{L}$.  The set
+$\Gamma = \{!A : \Sat{M}{!A}\}$ of all sentences true in~$\Struct{M}$
+is complete: for any sentence~$!A$, either $\Sat{M}{!A}$ (so $!A \in
+\Gamma$) or $\Sat{M}{\lnot !A}$ (so $\lnot !A \in \Gamma$).  It is
+also consistent, since $\Struct{M} \models \Gamma$.
+\end{ex}
+
 Complete consistent sets are central to the completeness proof: we will
 show that every consistent set of sentences~$\Gamma$ can be extended to
 a complete consistent set~$\Gamma^*$, from which a satisfying structure
@@ -179,6 +187,15 @@ A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
 \end{enumerate}
 \end{defn}
 
+\begin{ex}\label{ex:mcs}
+The set $\Gamma = \{!A : \Sat{M}{!A}\}$ from
+Example~\ref{ex:complete-set} is maximally consistent: it is
+consistent (since $\Struct{M} \models \Gamma$), and adding any
+$!B \notin \Gamma$ produces an inconsistent set, because $!B \notin
+\Gamma$ means $\Sat{M}{\lnot !B}$, so $\lnot !B \in \Gamma$, and
+$\Gamma \cup \{!B\} \Proves \lfalse$.
+\end{ex}
+
 Every maximally consistent set is complete and consistent; it therefore
 has all the properties established in Proposition~\ref{prop:ccs}.
 
@@ -207,6 +224,16 @@ A set $\Gamma$ of formulas of a language $\Lang {L}$ is
 free variable~$x$ there is a constant~$c \in \Lang{L}$ such
 that $\lexists[x][!A(x)] \lif !A(c) \in \Gamma$.
 \end{defn}
+
+\begin{ex}\label{ex:saturated-set}
+Let $\Lang{L}$ contain a constant~$c$ and a one-place
+predicate~$P$.  If a consistent set~$\Gamma$ contains
+$\lexists[x][\Atom{P}{x}]$ and also
+$\lexists[x][\Atom{P}{x}] \lif \Atom{P}{c}$, then $\Gamma$~has a
+``witness'' for its existential: the constant~$c$ tells us
+\emph{which} element satisfies~$P$.  A saturated set provides such
+witnesses for \emph{every} existential sentence it contains.
+\end{ex}
 
 The following definition will be used in the proof of the next lemma.
 
@@ -432,6 +459,16 @@ defined as follows:
   \]
 \end{enumerate}
 \end{defn}
+
+\begin{ex}\label{ex:term-model}
+Suppose $\Lang{L}$ contains a constant~$c$, a one-place function
+symbol~$f$, and a two-place predicate~$R$.  The closed terms
+of~$\Lang{L}$ are $c$, $f(c)$, $f(f(c))$, \dots.  In the term
+model~$\Struct{M}(\Gamma^*)$, the domain is $\{c, f(c), f(f(c)),
+\ldots\}$; the interpretation of~$f$ maps each term~$t$ to the
+term~$f(t)$; and $\tuple{s, t} \in \Assign{R}{M(\Gamma^*)}$ iff
+$\Atom{R}{s, t} \in \Gamma^*$.
+\end{ex}
 
 \begin{lem}
 \label{lem:val-in-termmodel} Let $\Struct M(\Gamma^*)$ be the term model
@@ -831,6 +868,17 @@ By the Completeness Theorem (\ref{CP-002}), since $\Gamma$~is
 consistent, it is satisfiable.
 \end{proof}
 
+\begin{ex}[De Bruijn--Erd\H{o}s]\label{ex:compactness-app}
+Every graph in which every finite subgraph is $k$-colorable is itself
+$k$-colorable.  To see this, let $\Lang{L}$ have a constant for each
+vertex and $k$ unary predicates $C_1, \ldots, C_k$.  For each
+vertex~$v$, include $C_1(v) \lor \cdots \lor C_k(v)$; for each
+edge~$\{u, v\}$ and color~$i$, include $\lnot(C_i(u) \land C_i(v))$.
+Every finite subset of this set mentions finitely many vertices, hence
+is satisfiable by hypothesis.  By the Compactness Theorem, the whole
+set is satisfiable---giving a $k$-coloring.
+\end{ex}
+
 
 %% ===================================================================
 %% META.4: Lowenheim-Skolem (CP-004)
@@ -873,6 +921,15 @@ the Completeness Theorem has a domain $\Domain{M}$ identical to the set
 of terms of the language~$\Lang L'$. So $\Struct{M}$ is
 denumerable, since $\Trm[L']$ is.
 \end{proof}
+
+\begin{rem}[Skolem's paradox]\label{rem:skolem-paradox}
+If ZFC is consistent, the L\"owenheim--Skolem theorem gives it an
+enumerable model~$\Struct{M}$.  Yet ZFC proves ``there exist
+uncountable sets.''  The resolution: $\Struct{M}$ thinks some set is
+uncountable because it lacks a witnessing bijection---the bijection
+exists outside~$\Struct{M}$ but not inside it.  ``Uncountable'' is
+not absolute but depends on the ambient model (Skolem, 1922).
+\end{rem}
 
 
 %% ===================================================================
@@ -1032,6 +1089,13 @@ A \emph{bounded universal formula} is one of the form
 $\lforall[x][(x < t \lif !A(x))]$ where $t$ is any term, which we
 conventionally write as $\bforall{x < t}{!A(x)}$.
 \end{defn}
+
+\begin{ex}\label{ex:bounded-quantifier}
+The formula $\bforall{x < \num{3}}{\Atom{P}{x}}$ abbreviates
+$\lforall[x][(x < \num{3} \lif \Atom{P}{x})]$.  In the standard
+model~$\Struct{N}$, this says that $P$ holds of $0$, $1$, and~$2$.
+It is a $\Delta_0$~formula since all quantifiers are bounded.
+\end{ex}
 
 \begin{rem}[$\Delta_0$, $\Sigma_1$, $\Pi_1$ formulas] % cf.\ DEF-SYN009, DEF-SYN010
 Recall (DEF-SYN009/010, \S\ref{SYN.5}): a formula is $\Delta_0$ if
@@ -1413,6 +1477,13 @@ $\OProv[\Th{T}](y)$.
 Let $\Th{T}$ be any consistent, axiomatizable theory
 extending $\Th{Q}$. Then $\Th{T}$ is not complete.
 \end{thm}
+
+\emph{Proof idea.}  Define a ``Rosser provability predicate''
+$\ORProv[\Th{T}](y)$ asserting ``$y$ has a proof shorter than any
+refutation of~$y$.''  Apply the fixed-point lemma to obtain a
+sentence~$!R$ asserting its own non-Rosser-provability.  Consistency
+alone (without $\omega$-consistency) suffices to show $\Th{T}
+\Proves/ !R$ and $\Th{T} \Proves/ \lnot !R$.
 
 \begin{proof}
 Recall that $\OProv[\Th{T}](y)$ is defined as $\lexists[x][\OPrf[\Th{T}](x,
@@ -2015,6 +2086,12 @@ as well, since $\Th{Q} \Proves !A$ iff $\Proves !T \lif !A$, where
 $!T$ is the conjunction of the axioms of~$\Th{Q}$.
 \end{proof}
 
+The previous sections established what first-order logic
+\emph{cannot} express---limits on decidability, completeness, and
+definability of specific theories.  We now turn to what first-order
+logic \emph{can} guarantee about the structure of valid implications:
+Craig's interpolation theorem and Beth's definability theorem reveal a
+strong modularity property of the entailment relation.
 
 %% ===================================================================
 %% META.9: Craig Interpolation (CP-011)
@@ -2045,6 +2122,15 @@ $\Delta$ if and only if $\Gamma \Entails !C$ and $\Delta \Entails
 \lnot !C$. If no such sentence exists, then $\Gamma$ and $\Delta$
 are \emph{inseparable}.
 \end{defn}
+
+\begin{ex}\label{ex:separation}
+Let $\Gamma = \{\Atom{P}{c}\}$ and $\Delta = \{\lnot \Atom{P}{c}\}$,
+where $P$ and $c$ occur in both languages.  Then $!C = \Atom{P}{c}$
+separates $\Gamma$ and~$\Delta$: $\Gamma \Entails \Atom{P}{c}$
+(trivially) and $\Delta \Entails \lnot \Atom{P}{c}$ (trivially).  In
+general, finding an interpolant whose vocabulary is common to both
+sides is much harder.
+\end{ex}
 
 \begin{lem}\label{lem:sep1}
 Suppose $\Lang{L}_0$ is the language containing every constant,
@@ -2126,6 +2212,14 @@ constant, function, and predicate (other than $\eq$) in
 $!C$ occurs both in $!A$ and~$!B$. The sentence $!C$ is called an
 \emph{interpolant} of $!A$ and~$!B$.
 \end{thm}
+
+\emph{Proof idea.}  We prove the contrapositive: if $\{!A\}$ and
+$\{\lnot !B\}$ are inseparable (no sentence in their common
+vocabulary entails one and refutes the other), then $!A \land \lnot
+!B$ is satisfiable, so $\not\Entails !A \lif !B$.  The key step
+uses Lindenbaum's lemma to extend both sets to maximally consistent
+sets that agree on the shared vocabulary, then constructs a single
+structure satisfying both.
 
 \begin{proof}
 Suppose $\Lang{L}_1$ is the language of $!A$ and $\Lang{L}_2$ is the
@@ -2337,6 +2431,12 @@ a formula~$!C(x_1, \dots, x_n)$ of $\Lang{L}$ such that
     x_n))]].
 \]
 \end{defn}
+
+The distinction matters: explicit definability gives a concrete
+formula~$!C$ equivalent to~$P$; implicit definability merely
+guarantees uniqueness---any two predicates satisfying the same axioms
+must be identical.  Beth's theorem (below) shows that, remarkably,
+these two notions coincide in first-order logic.
 
 \begin{defn}
 Suppose $\Lang{L}$ is a language not containing the
@@ -2723,6 +2823,14 @@ $!D_\Struct{N}$ is a disjunct in $!D$, and since $\Struct{N}
   $\tuple{L, \models_L} \le \tuple{F, \models}$ (so
   $\tuple{L, \models_L}$ is equivalent to first-order logic).
 \end{thm}
+
+\emph{Proof idea.}  Given an $L$-sentence~$!E$ over a finite
+relational language, use the back-and-forth characterization of
+elementary equivalence (Theorem~\ref{thm:b-n-f}) and a compactness
+argument to find~$n$ such that $!E$ cannot distinguish structures
+agreeing on all first-order sentences of quantifier rank~$\le n$.
+Then $!E$ is equivalent to a Boolean combination of such sentences,
+showing $\tuple{L, \models_L} \le \tuple{F, \models}$.
 
 \begin{proof}
 By Lemma~\ref{lem:lindstrom}, it suffices to show that for any $!E
