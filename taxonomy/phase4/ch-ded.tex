@@ -292,8 +292,7 @@ properties}. These are not defined by appeal to satisfaction in
 structures, but by appeal to the derivability or non-derivability of
 formulas. It was an important discovery, the content of the
 \emph{soundness} and \emph{completeness} theorems (see
-DEF-META001, Soundness, \S META.1 and THM-META002, Completeness, \S
-META.3), that these notions coincide.
+CP-001, Soundness, \S\ref{META.1} and CP-002, Completeness, \S\ref{META.2}), that these notions coincide.
 
 \begin{prop}[Reflexivity] % structural property
 \label{DED-prop:reflexivity}
@@ -400,7 +399,7 @@ $\Gamma \Proves !A$ for every~$!A$, then in particular $\Gamma
 
 We now establish a number of properties of the derivability relation.
 They are independently interesting, and each plays a role in the proof
-of the completeness theorem (see THM-META002, Completeness, \S META.3).
+of the completeness theorem (see CP-002, Completeness, \S\ref{META.2}).
 
 \begin{defn}[Syntactic Consistency] % DEF-DED001
 \label{DEF-DED001}
@@ -495,8 +494,8 @@ directly.
 \begin{rem}
 Every derived rule is admissible, but not conversely.  For example,
 the cut rule is admissible in the sequent calculus~$\Log{LK}$ (this is
-the content of the cut-elimination theorem, see THM-META004, Cut
-Elimination, \S META.4), but in a system with cut it is a primitive
+the content of the cut-elimination theorem, see CP-010, Cut
+Elimination, \S\ref{DED.4}), but in a system with cut it is a primitive
 (hence trivially derived) rule.  The distinction matters for proof
 search: derived rules can always be ``compiled away'' by inlining
 their justifying derivation, while admissible rules may require a
@@ -2485,8 +2484,8 @@ requires substantial formalization of proof theory inside~$\Th{T}$
 itself.
 
 The derivability conditions are the essential hypotheses for L\"ob's
-Theorem (see THM-DED007, \S DED.7) and the Second Incompleteness
-Theorem (see THM-BST003, \S BST.4).
+Theorem (see THM-DED007, \S\ref{DED.7}) and the Second Incompleteness
+Theorem (see CP-006, \S\ref{META.6}).
 
 
 %% ===================================================================
@@ -2702,8 +2701,8 @@ derivable in $\Th{T}$:
 
 \begin{rem}
 With L\"ob's theorem in hand, there is a short proof of the second
-incompleteness theorem (see THM-BST003, Second Incompleteness Theorem,
-\S BST.4).  Take $!A \defis \lfalse$.  If $\Th{T} \Proves
+incompleteness theorem (see CP-006, Second Incompleteness Theorem,
+\S\ref{META.6}).  Take $!A \defis \lfalse$.  If $\Th{T} \Proves
 \OProv[\Th{T}](\gn{\lfalse}) \lif \lfalse$, then by L\"ob's theorem
 $\Th{T} \Proves \lfalse$.  Contrapositively, if $\Th{T}$ is
 consistent, then $\Th{T} \Proves/ \OProv[\Th{T}](\gn{\lfalse}) \lif
