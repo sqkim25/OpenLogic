@@ -4,3 +4,10 @@ import LeanVerify.Hilbert
 import LeanVerify.Soundness
 import LeanVerify.Deduction
 import LeanVerify.Completeness
+import LeanVerify.BST
+import LeanVerify.SYN
+import LeanVerify.SEM
+import LeanVerify.DED
+import LeanVerify.CMP
+import LeanVerify.META
+import LeanVerify.SET
