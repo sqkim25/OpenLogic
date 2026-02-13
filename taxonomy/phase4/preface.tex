@@ -1,0 +1,211 @@
+%% preface.tex
+%% Preface for "A Lean Systematization of Mathematical Logic"
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+\section*{What This Book Is}
+
+This book presents the core of mathematical logic---from naive set
+theory through G\"odel's incompleteness theorems---as a single,
+self-contained development in which every concept is defined exactly
+once, every theorem is traceable to its primitives, and the dependency
+structure is explicit throughout.
+
+The material is drawn from the Open Logic Project's \textit{Open
+Logic: A Complete Text}, a collaboratively authored, open-source
+textbook covering propositional and first-order logic, model theory,
+computability, incompleteness, and set theory.  That text is modular
+by design, offering instructors flexibility to assemble custom
+courses.  The present volume takes the opposite approach: it
+\emph{compresses} the source material into a single linear narrative
+organized by a taxonomy of mathematical logic, eliminating redundancy
+and making every dependency visible.
+
+\section*{How It Is Organized}
+
+The taxonomy identifies six \emph{domains}---irreducible subject
+areas, each answering a single foundational question---plus a
+\emph{metatheory} layer that records how the domains interact.
+
+\begin{center}
+\begin{tabular}{@{}clp{7.5cm}@{}}
+\textbf{Ch.} & \textbf{Domain} & \textbf{Governing Question} \\[3pt]
+1 & BST & What naive set-theoretic objects does the metalanguage use? \\
+2 & SYN & How are well-formed expressions constructed? \\
+3 & SEM & How is meaning assigned to expressions? \\
+4 & DED & How are truths derived from assumptions? \\
+5 & CMP & What is effectively computable? \\
+6 & META & What are the properties of formal systems? \\
+7 & SET & What is the formal mathematical universe? \\
+8 & EXT & Where does the theory extend? \\
+\end{tabular}
+\end{center}
+
+\noindent
+The domains are not independent.  Their dependencies form the
+following graph:
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=2cm and 2.5cm,
+  domain/.style={
+    rectangle, rounded corners=4pt, draw, thick,
+    minimum width=2.2cm, minimum height=0.9cm,
+    font=\sffamily\small
+  },
+  meta/.style={
+    rectangle, rounded corners=4pt, draw, thick, dashed,
+    minimum width=2.2cm, minimum height=0.9cm,
+    font=\sffamily\small
+  },
+  arr/.style={->, thick, >=stealth},
+  darr/.style={->, thick, >=stealth, dashed}
+]
+
+% Level 0
+\node[domain] (bst) {BST};
+
+% Level 1
+\node[domain, above right=1.5cm and 1cm of bst] (syn) {SYN};
+\node[domain, above left=1.5cm and 1cm of bst] (cmp) {CMP};
+
+% Level 2
+\node[domain, above left=1.5cm and 0cm of syn] (sem) {SEM};
+\node[domain, above right=1.5cm and 0cm of syn] (ded) {DED};
+
+% Level 3
+\node[meta, above right=1.5cm and -0.5cm of sem] (meta) {META};
+
+% Level 4
+\node[domain, above=1.5cm of meta] (set) {SET};
+
+% Extensions
+\node[domain, right=2cm of set, fill=gray!10] (ext) {EXT};
+
+% Arrows (dependency = "uses")
+\draw[arr] (bst) -- (syn);
+\draw[arr] (bst) -- (cmp);
+\draw[arr] (syn) -- (sem);
+\draw[arr] (syn) -- (ded);
+\draw[arr] (bst) to[bend left=20] (sem);
+\draw[arr] (bst) to[bend right=20] (ded);
+\draw[darr] (sem) -- (meta);
+\draw[darr] (ded) -- (meta);
+\draw[darr] (cmp) to[bend left=30] (meta);
+\draw[arr] (meta) -- (set);
+\draw[darr] (set) -- (ext);
+
+% Labels
+\node[left=0.3cm of bst, font=\footnotesize\itshape, text=gray] {Level 0};
+\node[left=0.3cm of cmp, font=\footnotesize\itshape, text=gray] {Level 1};
+\node[left=0.3cm of sem, font=\footnotesize\itshape, text=gray] {Level 2};
+\node[right=0.3cm of meta, font=\footnotesize\itshape, text=gray]
+  {Composition};
+\node[left=1.7cm of set, font=\footnotesize\itshape, text=gray] {Level 3};
+
+\end{tikzpicture}
+\end{center}
+
+\noindent
+Solid arrows indicate definitional dependencies: SYN uses BST, SEM
+uses SYN, and so on.  Dashed arrows indicate \emph{composition
+patterns}---metatheorems that live at the intersection of two or more
+domains.  For instance, the Completeness Theorem (Chapter~6) connects
+SEM and DED but belongs to neither; it is a composition pattern.
+
+\medskip
+
+An important architectural feature is the two-level treatment of set
+theory:
+
+\begin{itemize}
+\item \textbf{BST (Level~0)} provides the naive set-theoretic
+  metalanguage---sets, functions, relations, cardinality---used to
+  \emph{build} the formal apparatus of logic.
+
+\item \textbf{SET (Level~1)} is Zermelo--Fraenkel set theory with
+  Choice, treated as a formal first-order theory \emph{within} the
+  apparatus.  Its axioms are sentences of $\Lang{L}_\in$, and its
+  theorems are derived using the proof systems of Chapter~4.
+\end{itemize}
+
+\noindent
+There is no circularity: Level-0 sets \emph{build} the system;
+Level-1 set theory is a \emph{subject of} the system.
+
+\section*{The Taxonomy in Numbers}
+
+The taxonomy catalogs \textbf{205 formal items} across the six
+domains: 74 primitives (concepts taken as given within their domain),
+60 definitions (concepts defined from primitives), 9 axioms
+(in formal set theory), and 62 theorems, lemmas, and propositions.
+These are connected by \textbf{13 composition patterns}---metatheorems
+such as Soundness (CP-001), Completeness (CP-002), Compactness
+(CP-003), and the Incompleteness Theorems (CP-005, CP-006)---that
+bridge domains.
+
+Every formal item carries a unique identifier (e.g.,
+\texttt{PRIM-SYN009} for the definition of a first-order language,
+\texttt{CP-002} for the Completeness Theorem).  The full registry and
+dependency specifications are maintained in the \texttt{taxonomy/}
+directory of the project repository.
+
+\section*{How to Read This Book}
+
+The chapters are arranged in dependency order: each chapter uses only
+material from earlier chapters.  A linear reading from Chapter~1
+through Chapter~7 encounters no forward references.
+
+Three reading paths are natural:
+
+\begin{enumerate}
+\item \textbf{Foundations first} (Chapters 1--4, then 6): Set
+  theory, syntax, semantics, deduction, completeness.  This is the
+  classical core of a first course in mathematical logic.
+
+\item \textbf{Computability and incompleteness} (Chapters 1--2, 4--6):
+  Syntax, deduction, computability, then the incompleteness theorems
+  in Chapter~6.  Semantics (Chapter~3) can be deferred.
+
+\item \textbf{Set theory} (Chapters 1, 3--4, 6--7): The path to
+  formal set theory, ordinals, and cardinals, using the metatheory
+  of Chapter~6 as a bridge.
+\end{enumerate}
+
+\noindent
+Chapter~8 (Extensions) is a brief guide to topics beyond the scope of
+this volume: modal logic, intuitionistic logic, many-valued logic,
+second-order logic, and the lambda calculus.
+
+\section*{Relation to the Source Material}
+
+This text is compiled from the Open Logic Project's \textit{Open
+Logic: A Complete Text}, released under a Creative Commons BY license.
+The systematization involved four phases:
+
+\begin{enumerate}
+\item \textbf{Taxonomy}: Identification of the six domains, their
+  primitives, and the composition patterns connecting them.
+\item \textbf{Mapping}: Every section of the source text was mapped
+  to one or more taxonomy items, identifying redundancies and gaps.
+\item \textbf{Compression}: Redundant treatments were merged,
+  redundant proofs were cut or condensed, and new bridging material
+  was written to unify the narrative.
+\item \textbf{Recomposition}: The compressed material was assembled
+  into the present volume, with uniform notation, consistent
+  cross-referencing, and a single dependency-ordered structure.
+\end{enumerate}
+
+\noindent
+The taxonomy, mapping, compression plan, and all quality-control
+audits are documented in the \texttt{taxonomy/} directory of the
+project repository at \texttt{github.com/sqkim25/OpenLogic}.
+
+\section*{Acknowledgments}
+
+This volume would not exist without the Open Logic Project and its
+contributors.  The original text, authored and maintained by
+Richard Zach and collaborators, represents years of careful exposition.
+We are grateful for their decision to release it as open-source
+educational material.
