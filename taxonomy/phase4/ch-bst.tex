@@ -505,7 +505,7 @@ its subsets has a minimal element.
 A \emph{tree} is a pair $T = \tuple{A, \le}$ such that $A$ is a set
 and $\le$ is a partial order on~$A$ with a unique minimal element
 $r \in A$ (called the \emph{root}) such that for all $x \in A$,
-the set $\Setabs{y}{y \le z}$ is well-ordered by~$\le$.
+the set $\Setabs{y}{y \le x}$ is well-ordered by~$\le$.
 \end{defn}
 
 \begin{defn}[Successors]
@@ -832,6 +832,8 @@ underlies the syntax of formal languages
 (see PRIM-SYN001, CH-SYN), while $A^\omega$ appears in
 diagonalisation arguments (\S\ref{BST.6}).
 
+With the machinery of sequences and numbers in place, we now develop
+the proof methods and recursive definitions that operate on these structures.
 
 %%% ===================================================================
 %%% BST.5  Induction and Recursion
@@ -876,7 +878,8 @@ $k \in \Nat$, then $P(n)$ holds for all $n \in \Nat$.
 
 \subsection{Structural Induction on Formulas}
 
-The set of formulas of a formal language is built from atomic formulas
+The set of formulas of a formal language (see \S\ref{SYN.2} for the
+formal definition) is built from atomic formulas
 by the formula-building functions: negation ($\lnot$), conjunction
 ($\land$), disjunction ($\lor$), conditional ($\lif$), biconditional
 ($\liff$), and quantification ($\lforall[]$, $\lexists[]$).  The set
@@ -981,9 +984,11 @@ some finite position.  We make this precise as follows.
 
 A surjection $f \colon \PosInt \to A$ gives the list $f(1), f(2), f(3), \dots$
 in which every element of~$A$ appears.  The list may contain repetitions;
-these can always be removed, yielding a bijection between $A$ and either
+these can always be removed (by skipping any $f(k)$ already
+listed), yielding a bijection between $A$ and either
 $\Nat$ or an initial segment $\{0, \dots, n\}$
-(equivalently, $\PosInt$ or $\{1, \dots, n\}$).
+(equivalently, $\PosInt$ or $\{1, \dots, n\}$),
+depending on whether $A$ is infinite or finite.
 
 \begin{defn}[Enumerable set] % PRIM-BST016 (part 2)
   \label{PRIM-BST016}

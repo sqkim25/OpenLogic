@@ -1020,7 +1020,8 @@ $\Delta_0$, $\Sigma_1$, and $\Pi_1$ formulas. Roughly speaking, a
 $\Sigma_1$ formula is one of the form $\lexists[x][!B(x)]$, where $!B$
 is constructed using only propositional connectives and bounded
 quantifiers. We shall show that if $!A$ is a $\Sigma_1$ sentence
-which is true in $\Struct{N}$, then $\Th{Q} \Proves !A$.
+which is true in $\Struct{N}$ (the standard model of arithmetic;
+see \S\ref{SEM.5}), then $\Th{Q} \Proves !A$.
 
 \begin{defn}[Bounded quantifiers] % DEF-INC015
 \label{DEF-INC015}
@@ -1032,16 +1033,13 @@ $\lforall[x][(x < t \lif !A(x))]$ where $t$ is any term, which we
 conventionally write as $\bforall{x < t}{!A(x)}$.
 \end{defn}
 
-\begin{defn}[$\Delta_0$, $\Sigma_1$, $\Pi_1$ formulas] % DEF-INC016, DEF-INC017
-\label{DEF-INC016}
-A formula $!B$ is $\Delta_0$ if it is built up from atomic
-formulas using only propositional connectives and bounded
-quantification.
-A formula $!A$ is $\Sigma_1$ if $!A \ident \lexists[x][!B(x)]$
-where $!B$ is $\Delta_0$.
-A formula $!A$ is $\Pi_1$ if $!A \ident \lforall[x][!B(x)]$
-where $!B$ is $\Delta_0$.
-\end{defn}
+\begin{rem}[$\Delta_0$, $\Sigma_1$, $\Pi_1$ formulas] % cf.\ DEF-SYN009, DEF-SYN010
+Recall (DEF-SYN009/010, \S\ref{SYN.5}): a formula is $\Delta_0$ if
+it is built from atomic formulas using only propositional connectives
+and bounded quantification; $\Sigma_1$ if it has the form
+$\lexists[x][!B(x)]$ with $!B$ being $\Delta_0$; and $\Pi_1$ if it
+has the form $\lforall[x][!B(x)]$ with $!B$ being $\Delta_0$.
+\end{rem}
 
 \begin{lem} \label{lem:q-proves-clterm-id}
 Suppose $t$ is a closed term such that
@@ -1075,7 +1073,7 @@ $\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1} + t_2]$, and then
 $\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1} + \num{n_2}]$
 by a second application of the rules for identity.
 By the fact that $\Th{Q}$ proves the standard addition identities
-(see DEF-CMP009, Representability, \S CMP.5),
+(see DEF-CMP009, Representability, \S\ref{CMP.5}),
 $\Th{Q} \Proves \eq[\num{n_1} + \num{n_2}][\num{n_1 + n_2}]$,
 so $\Th{Q} \Proves \eq[t_1 + t_2][\num{n_1 + n_2}]$.
 
@@ -1552,7 +1550,7 @@ predicate $\Prf[\Th{PA}](x,y)$ is computable and hence represented
 in~$\Th{Q}$ (and so, in~$\Th{PA}$). As before, we will take
 $\OPrf[\Th{PA}](x,y)$ to denote the formula representing the relation.
 Let $\OProv[\Th{PA}](y)$ be the formula
-$\lexists[x][\Prf[\Th{PA}](x,y)]$, which, intuitively says, ``$y$ is
+$\lexists[x][\OPrf[\Th{PA}](x,y)]$, which intuitively says, ``$y$ is
 derivable from the axioms of $\Th{PA}$.''  The reason we need a
 little bit more than the axioms of $\Th{Q}$ is we need to know that
 the theory we are using is strong enough to derive a few basic
@@ -1976,7 +1974,7 @@ is not recursive.
 Suppose it were.  Then we could solve the halting problem as follows:
 Given $e$ and $n$, we know that $\cfind{e}(n) \fdefined$ iff there is
 an~$s$ such that $T(e, n, s)$, where $T$ is Kleene's predicate from
-the Kleene Normal Form Theorem (see DEF-CMP005, \S CMP.3).
+the Kleene Normal Form Theorem (see DEF-CMP005, \S\ref{CMP.3}).
 Since $T$ is primitive recursive
 it is representable in~$\Th{Q}$ by a formula $!B_T$, that is, $\Th{Q}
 \Proves !B_T(\num{e}, \num{n}, \num{s})$ iff $T(e, n, s)$.  If $\Th{Q}

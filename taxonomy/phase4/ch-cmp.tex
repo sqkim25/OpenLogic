@@ -642,8 +642,8 @@ and that \ref{ce:ce}~$\Leftrightarrow$~\ref{ce:domain}.
 \medskip\noindent\textbf{\ref{ce:ran-pc}~$\Rightarrow$~\ref{ce:ran-prim}:}
 Suppose $S$ is the range of the partial computable function
 $\cfind{e}$.  If $S$ is empty, we are done.  Otherwise, let $a$ be any
-element of~$S$.  By Kleene's normal form theorem (see DEF-CMP-NF,
-\S CMP.4),
+element of~$S$.  By Kleene's normal form theorem (DEF-CMP005,
+\S\ref{CMP.4} below),
 \[
 \cfind{e}(x) = U(\umin{s}{T(e, x, s)}).
 \]
@@ -790,7 +790,7 @@ also undefined.
 The fact that $K_0$ is not computable is the undecidability of the
 halting problem: if $K_0$ were decidable, one could decide for any
 program~$e$ and input~$x$ whether $\cfind{e}(x)$ halts, contradicting
-the halting problem (see CMP.4).
+the halting problem (see \S\ref{CMP.4}).
 \end{proof}
 
 The set $K_0$ is the \emph{halting set}: $\tuple{e, x} \in K_0$ iff
@@ -839,10 +839,12 @@ computable by \cref{THM-CMP-CECOMP}, contradicting
 Diagonalization is one of the most powerful techniques in the theory of
 computation.  It was first used by Cantor to show that the set of real
 numbers is uncountable, and it was adapted by G\"odel and Turing to
-establish fundamental limits on what can be computed.  In this section
-we use diagonalization to prove that the halting problem is unsolvable,
-and that there is no universal computable function for the total
-computable functions.
+establish fundamental limits on what can be computed.  Several results
+in \S\ref{CMP.3} (e.g., the non-computability of~$K_0$) were stated
+using the halting problem; we now give the detailed proofs.  We use
+diagonalization to prove that the halting problem is unsolvable, and
+that there is no universal computable function for the total computable
+functions.
 
 \subsection{No universal computable function} \label{CMP.4.1}
 
@@ -881,7 +883,7 @@ diagonalization argument does not work in the partial case.
 The same technique shows that the primitive recursive functions do not
 exhaust the computable functions.  One can effectively enumerate all
 unary primitive recursive functions $f_0, f_1, f_2, \dots$ (by
-assigning codes to their definitions; see PRIM-CMP011, \S CMP.5).  The
+assigning codes to their definitions; see PRIM-CMP011, \S\ref{CMP.5}).  The
 function $h(x) = f_x(x) + 1$ is then computable but not primitive
 recursive, since it differs from each $f_i$ at argument~$i$.
 \end{rem}
@@ -996,18 +998,18 @@ The same result holds in the setting of partial recursive functions.
 Let $\fn{Un}(e,x)$ denote the universal partial computable function.
 Define
 \[
-h(e, x) =
+h(e, n) =
 \begin{cases}
-1 & \text{if $\fn{Un}(e, x)$ is defined} \\
+1 & \text{if $\fn{Un}(e, n)$ is defined} \\
 0 & \text{otherwise.}
 \end{cases}
 \]
 Then $h$ is not computable.  One proof goes via the no-universal-function
 result (\cref{PRIM-CMP010}): if $h$ were computable, one could define a
-total computable $\fn{Un}'(e,x)$ agreeing with $\fn{Un}$ wherever the latter
-is defined (by returning $0$ when $h(e,x)=0$), contradicting
+total computable $\fn{Un}'(e,n)$ agreeing with $\fn{Un}$ wherever the latter
+is defined (by returning $0$ when $h(e,n)=0$), contradicting
 \cref{PRIM-CMP010}.  An alternative, more direct proof proceeds by
-diagonalization: define $g(x)$ to equal $0$ when $h(x,x)=0$ and be
+diagonalization: define $g(n)$ to equal $0$ when $h(n,n)=0$ and be
 undefined otherwise. Then $g$ is partial computable, so $g \simeq
 \cfind{e}$ for some~$e$, and asking whether $g(e)$ is defined leads to
 a contradiction.
@@ -1443,14 +1445,14 @@ be formalized as a regular minimization.
 
 \textbf{Computable $\Rightarrow$ representable:} We show that the
 basic functions ($\Zero$, $\Succ$, $\Proj{n}{i}$, $\Add$, $\Mult$,
-$\Char{=}$) are representable, and that representable functions are
+the equality relation $=$) are representable, and that representable functions are
 closed under composition and regular minimization.  Primitive recursion
 is handled via the beta function, as follows.
 
 The basic functions are represented by their natural formulas: $\Zero$
 by $\eq[y][\Obj{0}]$, $\Succ$ by $\eq[y][x']$, $\Proj{n}{i}$ by
 $\eq[y][x_i]$, $\Add$ by $\eq[y][(x_0 + x_1)]$, $\Mult$ by $\eq[y][(x_0
-\times x_1)]$, and $\Char{=}$ by
+\times x_1)]$, and the equality relation $=$ by
 $(\eq[x_0][x_1] \land \eq[y][\num{1}]) \lor (\eq/[x_0][x_1] \land
 \eq[y][\num{0}])$.  That these work requires showing, for instance,
 that $\Th{Q} \Proves \eq[(\num{n} + \num{m})][\num{n+m}]$ (by
@@ -1619,6 +1621,10 @@ many-one reducibility) if
 In other words, complete c.e.\ sets are the ``hardest'' c.e.\ sets
 possible: they allow one to answer questions about \emph{any} c.e.\
 set.
+
+A further variant of the halting set is $K_1 = \Setabs{e}{\cfind{e}(0)
+\fdefined}$, which records those indices whose program halts on
+input~$0$.
 
 \begin{thm} \label{THM-CMP-KKCOMPLETE}
 $K$, $K_0$, and $K_1$ are all complete computably enumerable sets.

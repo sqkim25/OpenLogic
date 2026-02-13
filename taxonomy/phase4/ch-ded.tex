@@ -338,7 +338,7 @@ inference. Now consider the sequence
 !A_1, \dots, !A_k = !A, !B_1, \dots, !B_l = !B.
 \]
 This is a correct derivation of~$!B$ from $\Gamma \cup \Delta$
-since every $B_i = !A$ is now justified by the same rule which
+since every $!B_i = !A$ is now justified by the same rule which
 justifies~$!A_k = !A$.
 \end{proof}
 
@@ -436,7 +436,7 @@ we can derive~$\lfalse$ (via the axiom or rule $\lnot !A \lif (!A
 $\Gamma \cup \{\lnot !A\} \Proves \lfalse$.
 
 Now assume $\Gamma \cup \{\lnot !A\}$ is inconsistent.  By the
-deduction theorem (see THM-DED001, \S DED.7), $\Gamma \Proves \lnot
+deduction theorem (THM-DED001, proved for each system in \S\ref{DED.7} below), $\Gamma \Proves \lnot
 !A \lif \lfalse$.  Since $(\lnot !A \lif \lfalse) \lif \lnot\lnot !A$
 and $\lnot\lnot !A \lif !A$ are derivable, we obtain $\Gamma \Proves
 !A$ by modus ponens.
@@ -531,7 +531,7 @@ they guarantee that expanding a theory with new symbols and axioms does
 not prove new theorems in the original language.  This notion appears
 throughout the metatheory: definitional extensions are conservative,
 and the method of Henkin constants used in the completeness proof (see
-\S META.3) produces a conservative extension of the original theory.
+\S\ref{META.3}) produces a conservative extension of the original theory.
 \end{rem}
 
 %%% -----------------------------------------------------------------
@@ -554,7 +554,7 @@ consistent, then $!A \in \Gamma$.
 
 Maximally consistent sets are central to the completeness proof.
 Every consistent set of sentences is contained in a maximally
-consistent set (by Lindenbaum's Lemma, see THM-DED005, \S DED.7).
+consistent set (by Lindenbaum's Lemma, see THM-DED005, \S\ref{DED.7}).
 A maximally consistent set~$\Gamma$ contains, for each sentence~$!A$,
 either $!A$ or~$\lnot !A$.  This property is what allows us to
 construct a structure satisfying~$\Gamma$ in the completeness argument.
@@ -640,11 +640,13 @@ DED.2--DED.5.
 \end{prop}
 
 \begin{proof}[Proof sketch]
-The proofs of these facts depend on the particular proof system.  In
-axiomatic deduction, they follow from the logical axioms and modus
-ponens together with the deduction theorem. In natural deduction, they
-follow directly from the introduction and elimination rules. In the
-sequent calculus, they follow from the left and right logical rules.
+(1) In axiomatic deduction, modus ponens applied to $!A$ and the
+axiom $!A \lif !B$ immediately yields $!B$.  In natural deduction,
+$\lif$-elimination serves the same role.  In the sequent calculus,
+Left-$\lif$ gives $!B$ from $!A \lif !B$ and $!A$.
+(2) From $!B$ we derive $!A \lif !B$ by axiom~\eqref{ax:lif1} (or
+$\lif$-introduction / Right-$\lif$); from $\lnot !A$ we derive
+$!A \lif !B$ by axiom~\eqref{ax:lnot2} (or analogous rules).
 Detailed derivations appear in DED.2 (axiomatic), DED.3 (natural
 deduction), DED.4 (sequent calculus), and DED.5 (tableaux).
 \end{proof}
@@ -656,7 +658,7 @@ $\Gamma \Proves !A(c)$, then $\Gamma \Proves \lforall[x][!A(x)]$.
 \end{thm}
 
 \begin{proof}
-By the deduction theorem, $\Gamma \Proves \ltrue \lif !A(c)$.  Since
+By the deduction theorem (THM-DED001), $\Gamma \Proves \ltrue \lif !A(c)$.  Since
 $c$ does not occur in $\Gamma$ or~$\ltrue$, the quantifier rule (or
 its equivalent in other systems) gives $\Gamma \Proves \ltrue \lif
 \lforall[x][!A(x)]$.  By the deduction theorem again, $\Gamma \Proves
@@ -912,7 +914,7 @@ generically in \S\ref{DED.1}, now with explicit axiomatic proofs.
 \end{prop}
 
 \begin{proof}
-(1) From axiom~\eqref{ax:lnot1} we derive $\{\lnot !A\} \Proves !A
+(1) From axiom~\eqref{ax:lnot2} we derive $\{\lnot !A\} \Proves !A
 \lif \lfalse$ and $\{\lnot !B\} \Proves !B \lif \lfalse$.  By
 axiom~\eqref{ax:lor3} and the deduction theorem, $\{!A \lor !B, \lnot
 !A, \lnot !B\} \Proves \lfalse$.
@@ -2343,7 +2345,7 @@ The natural language in which to express facts of arithmetic is~$\Lang
 L_A$.  $\Lang L_A$ contains a single two-place predicate symbol~$<$, a
 single constant symbol~$\Obj 0$, one one-place function symbol~$\prime$,
 and two two-place function symbols~$+$ and~$\times$ (see
-PRIM-SYN009, Language, \S SYN.1 for the general notion of a
+PRIM-SYN009, Language, \S\ref{SYN.1} for the general notion of a
 first-order language).
 
 \begin{defn}[Robinson Arithmetic $\Th{Q}$] % DEF-DED011
@@ -2379,7 +2381,7 @@ ordering in terms of addition.
 $\Th{Q}$ is weak: it cannot even prove the commutativity of addition.
 Its importance lies in the fact that $\Th{Q}$ is strong enough to
 represent all computable functions and all decidable relations (see
-\S CMP.4), which is the key hypothesis of the incompleteness theorems.
+\S\ref{CMP.4}), which is the key hypothesis of the incompleteness theorems.
 Since any theory that extends~$\Th{Q}$ inherits this representability,
 the incompleteness theorems apply to a wide class of theories.
 
@@ -2404,7 +2406,7 @@ axioms of $\Th{Q}$ together with all instances of the induction schema.
 \end{defn}
 
 Every instance of the induction schema is true in the standard model
-of arithmetic~$\Struct{N}$ (see DEF-SEM012, Standard Model, \S SEM.5).
+of arithmetic~$\Struct{N}$ (see DEF-SEM012, Standard Model, \S\ref{SEM.5}).
 If $!A(x)$ defines a subset~$X_{!A}$ of~$\Nat$ in~$\Struct{N}$, then the
 induction schema asserts that if $0 \in X_{!A}$ and $X_{!A}$ is closed
 under the successor function, then $X_{!A} = \Nat$.
@@ -2440,7 +2442,7 @@ every $\omega$-consistent theory is consistent, but the converse fails.
 G\"odel's original 1931 proof of the first incompleteness theorem
 assumed $\omega$-consistency.  Rosser subsequently strengthened the
 result by replacing $\omega$-consistency with ordinary consistency (see
-THM-BST002, Rosser's Theorem, \S BST.3).
+Rosser's Theorem, \S\ref{META.5}).
 
 %%% -----------------------------------------------------------------
 %%% DED.6.4  Derivability Conditions
@@ -2646,7 +2648,7 @@ which is $!E(\gn{!E(x)})$, i.e.,~$!A$.
 \begin{thm}[L\"ob's Theorem] % THM-DED007 (authoritative: \S META.6)
 Let $\Th{T}$ be an axiomatizable theory extending $\Th{Q}$, and
 suppose $\OProv[\Th{T}](y)$ is a formula satisfying the derivability
-conditions P1--P3 (see DEF-DED014, \S DED.6). If $\Th{T}$ derives
+conditions P1--P3 (see DEF-DED014, \S\ref{DED.6}). If $\Th{T}$ derives
 $\OProv[\Th{T}](\gn{!A}) \lif !A$, then in fact $\Th{T}$ derives $!A$.
 \end{thm}
 

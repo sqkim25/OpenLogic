@@ -510,7 +510,7 @@ ordinal~$\beta$, contradicting $B \in D$.
 \begin{rem}[Foundation--Regularity equivalence] \label{SET.2:found-reg}
 In $\ZFminus$, Foundation and Regularity are equivalent. The converse
 direction (Regularity implies Foundation) is established using the
-notion of the rank of a set (see SET.3). Given $\ZFminus$, we can
+notion of the rank of a set (see \S\ref{SET.5}). Given $\ZFminus$, we can
 justify Foundation by noting that it is equivalent to Regularity, and
 Regularity follows immediately from \stageshier.
 
@@ -679,6 +679,16 @@ $\ordeq{\tuple{A_{a_1}, <_{a_1}}}{\tuple{B_{b_1}, \lessdot_{b_1}}}$
 and $\ordeq{\tuple{A_{{a_2}}, <_{a_2}}}{\tuple{B_{{b_2}},
 \lessdot_{b_2}}}$, then ${a_1} < {a_2}$ iff ${b_1} \lessdot {b_2}$.
 \end{lem}
+
+\begin{proof}[Proof sketch]
+If $a_1 < a_2$, then $A_{a_1} \subsetneq A_{a_2}$.
+The isomorphism $A_{a_2} \cong B_{b_2}$ restricts
+(by Lemma~\ref{SET.3:wellordinitialsegment}) to an isomorphism
+$A_{a_1} \cong (B_{b_2})_{b'}$ for some $b' \lessdot b_2$.
+Since isomorphisms between well-orderings are unique
+(by Lemma~\ref{SET.3:wellordnotinitial}), $b' = b_1$,
+giving $b_1 \lessdot b_2$.  The converse is symmetric.
+\end{proof}
 
 \begin{thm}[Comparability of Well-Orderings] \label{SET.3:woalwayscomparable}
 Given any two well-orderings, one is isomorphic to an initial segment
@@ -1321,7 +1331,10 @@ $\cardneq{\alpha}{\bigcup X}$. Generalising, $\bigcup X$ is a cardinal.
 Cardinals can be developed \emph{without} Well-Ordering using the
 \emph{Tarski--Scott trick}: for any formula $\phi(x)$, let $[x :
 \phi(x)]$ be the set of all $x$ of least possible rank such that
-$\phi(x)$. Working in $\ZF$, one defines the \textsc{ts}-cardinality of
+$\phi(x)$, where the \emph{rank} of a set is its position in the
+cumulative hierarchy $V_0 \subset V_1 \subset \cdots$
+(see \S\ref{SET.5}).
+Working in $\ZF$, one defines the \textsc{ts}-cardinality of
 $A$ as $\text{tsc}(A) = [x : \cardeq{A}{x}]$. This yields a
 well-behaved notion of cardinality without assuming Well-Ordering, at
 the cost of defining cardinals as \emph{sets of sets} rather than
@@ -1610,6 +1623,12 @@ Let $\cardfont{a}$ be an infinite cardinal. For each $\beta \in
 \leq \cardfont{a}$.
 \end{prop}
 
+\begin{proof}[Proof sketch]
+Each $X_\beta$ injects into $\cardfont{a}$, so $\bigcup_\beta X_\beta$
+injects into $\cardfont{a} \times \cardfont{a}$; by the preceding
+theorem, $\card{\cardfont{a} \times \cardfont{a}} = \cardfont{a}$.
+\end{proof}
+
 
 %%% -----------------------------------------------------------------
 %%% SET.5.4  Aleph and Beth Numbers
@@ -1751,6 +1770,15 @@ $\ZF$ is not finitely axiomatizable: if $\mathcal{T}$ is finite and
 $\mathcal{T} \vdash \ZF$, then $\mathcal{T}$ is inconsistent.
 \end{thm}
 
+\begin{proof}[Proof sketch]
+By Reflection, for any finite set of sentences $\mathcal{T} \subseteq
+\ZF$ there is a $\beta$ such that $V_\beta \models \mathcal{T}$.
+If $\mathcal{T}$ axiomatised all of $\ZF$, then $\ZF$ would prove
+``there exists a set model of $\mathcal{T}$,'' hence
+$\ZF \vdash \mathrm{Con}(\mathcal{T}) = \mathrm{Con}(\ZF)$.
+By the Second Incompleteness Theorem, $\ZF$ is then inconsistent.
+\end{proof}
+
 
 %%% -----------------------------------------------------------------
 %%% SET.5.7  Aleph-Fixed Points
@@ -1787,6 +1815,15 @@ As in Proposition~\ref{SET.5:alephfixed}, using ``$\beth$'' in place of
 $\card{V_{\omega + \alpha}} = \beth_\alpha$. If $\omega \ordtimes \omega
 \leq \alpha$, then $\card{V_\alpha} = \beth_\alpha$.
 \end{prop}
+
+\begin{proof}[Proof sketch]
+By transfinite induction on $\alpha$.  For the base,
+$V_\omega$ is countable, so $\card{V_\omega} = \aleph_0 = \beth_0$.
+At successor stages,
+$\card{V_{\omega+\alpha+1}} = 2^{\card{V_{\omega+\alpha}}}
+= 2^{\beth_\alpha} = \beth_{\alpha+1}$.
+At limits, take the union.
+\end{proof}
 
 \begin{cor}
 There is a $\kappa$ such that $\card{V_\kappa} = \kappa$.
@@ -1830,6 +1867,8 @@ The equivalence of Choice and Well-Ordering is established in SET.6
 
 \begin{defn}[Zorn's Lemma] % DEF-SET010
 \label{DEF-SET010}
+A \emph{chain} in a partially ordered set $P$ is a totally ordered
+subset of~$P$.
 \emph{Zorn's Lemma} states: if every chain in a partially ordered set
 $P$ has an upper bound in $P$, then $P$ has a maximal element.
 \end{defn}
