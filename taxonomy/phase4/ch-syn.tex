@@ -56,6 +56,7 @@ application, we may also restrict the language to only a few
 predicate symbols, constant symbols, and function symbols.
 
 \begin{defn}[Language] % PRIM-SYN009
+\index{language}\index{signature}
 \label{PRIM-SYN009}
 A first-order \emph{language}~$\Lang L$ is determined by its
 non-logical symbols: a set of predicate symbols, a set of constant
@@ -106,6 +107,7 @@ expressions built up from the basic vocabulary of~$\Lang L$.  These
 include in particular \emph{terms} and \emph{formulas}.
 
 \begin{defn}[Terms] % PRIM-SYN010, AX-SYN001
+\index{term}
 \label{PRIM-SYN010}
 The set of \emph{terms}~$\Trm[L]$ of~$\Lang L$ is
 defined inductively by:
@@ -120,6 +122,7 @@ A term containing no variables is a \emph{closed term}.
 \end{defn}
 
 \begin{defn}[Formulas] % PRIM-SYN011, PRIM-SYN012, AX-SYN002
+\index{formula}\index{formula!atomic}\index{formula!well-formed}
 \label{PRIM-SYN012}
 The set of \emph{formulas}~$\Frm[L]$ of the language~$\Lang L$
 is defined inductively as follows:
@@ -188,6 +191,7 @@ definitions, we can use the following induction principles to prove
 things about them.
 
 \begin{lem}[Principle of induction on terms] % DEF-SYN005 (terms)
+\index{structural induction!on terms}
     \label{DEF-SYN005:terms}
     Let $\Lang L$ be a first-order language.
     If some property~$P$ is such that
@@ -206,6 +210,7 @@ things about them.
 \end{lem}
 
 \begin{lem}[Principle of induction on formulas] % DEF-SYN005 (formulas)
+\index{structural induction!on formulas}
     \label{DEF-SYN005}
     Let $\Lang L$ be a first-order language.
     If some property~$P$ holds for all the atomic formulas
@@ -239,6 +244,7 @@ formula counts as a subformula of itself; a subformula of $!A$
 other than $!A$ itself is a \emph{proper subformula}.
 
 \begin{defn}[Immediate subformula] % PRIM-SYN017
+\index{subformula!immediate}
 \label{PRIM-SYN017}
 If $!A$ is a formula, the \emph{immediate subformulas}
 of $!A$ are defined as follows:
@@ -261,6 +267,7 @@ of $!A$ are defined as follows:
 \end{defn}
 
 \begin{defn}[Proper subformula]
+\index{subformula!proper}
 \label{PRIM-SYN017:proper}
 If $!A$ is a formula, the \emph{proper subformulas}
 of $!A$ are defined recursively as follows:
@@ -286,6 +293,7 @@ of $!A$ are defined recursively as follows:
 \end{defn}
 
 \begin{defn}[Subformula]
+\index{subformula}
 \label{PRIM-SYN017:all}
 The subformulas of $!A$ are $!A$ itself together with all its
 proper subformulas.
@@ -300,6 +308,7 @@ of~$!A$.
 %%% Subterms (from DOMAIN-SYN DEF-SYN008)
 
 \begin{defn}[Subterm] % DEF-SYN008
+\index{subterm}
 \label{DEF-SYN008}
 The \emph{subterms} of a term $t$ are defined recursively:
 \begin{enumerate}
@@ -312,6 +321,7 @@ The \emph{subterms} of a term $t$ are defined recursively:
 %%% Main operator (from fol/syn/mai --- CONDENSE)
 
 \begin{defn}[Main operator] % DEF (OL-specific, useful vocabulary)
+\index{main operator}
 \label{def:main-op}
 The \emph{main operator} of a formula~$!A$ is
 defined as follows:
@@ -337,6 +347,7 @@ defined as follows:
 %%% Formula complexity (FORMALIZE from DOMAIN-SYN DEF-SYN007)
 
 \begin{defn}[Formula complexity] % DEF-SYN007
+\index{formula complexity}\index{structural recursion}
 \label{DEF-SYN007}
 The \emph{complexity} (or \emph{rank}) of a formula~$!A$, written
 $\mathrm{cx}(!A)$, is a natural number defined by structural recursion:
@@ -359,6 +370,7 @@ uses \emph{formation sequences}, which make explicit the step-by-step
 process by which a formula is built.
 
 \begin{defn}[Formation sequences for terms] % DEF-SYN006 (terms)
+\index{formation sequence!for terms}
 \label{DEF-SYN006:terms}
 A finite sequence of $\Lang L$-strings $\tuple{t_0,\dotsc,t_n}$ is a
 \emph{formation sequence} for a term $t$ if $t \ident t_n$ and for all
@@ -368,6 +380,7 @@ $m_0,\dotsc,m_k < i$ such that $t_i \ident f(t_{m_0},\dotsc,t_{m_k})$.
 \end{defn}
 
 \begin{defn}[Formation sequences for formulas] % DEF-SYN006 (formulas)
+\index{formation sequence!for formulas}
 \label{DEF-SYN006}
 A finite sequence of $\Lang L$-strings $\tuple{!A_0,\dotsc,!A_n}$
 is a \emph{formation sequence} for~$!A$ if $!A \ident !A_n$ and
@@ -407,6 +420,7 @@ sequence.
 \section{Variables and Scope} \label{SYN.3}
 
 \begin{defn}[Free occurrences of a variable] % PRIM-SYN014
+\index{free variable!occurrence}\index{variable!free}
 \label{PRIM-SYN014}
 The \emph{free} occurrences of a variable in a formula are defined
 inductively as follows:
@@ -432,6 +446,7 @@ inductively as follows:
 \end{defn}
 
 \begin{defn}[Free variables] % DEF-SYN003
+\index{free variable}
 \label{DEF-SYN003}
 The set $\FV(!A)$ of \emph{free variables} of a formula~$!A$ is the
 set of variables that have at least one free occurrence in~$!A$.
@@ -446,12 +461,14 @@ Explicitly:
 \end{defn}
 
 \begin{defn}[Bound variables] % PRIM-SYN015
+\index{bound variable}\index{variable!bound}
 \label{PRIM-SYN015}
 An occurrence of a variable in a formula~$!A$ is \emph{bound} if
 it is not free.
 \end{defn}
 
 \begin{defn}[Scope] % PRIM-SYN016
+\index{scope}
 \label{PRIM-SYN016}
 If $\lforall[x][!B]$ is an occurrence of a subformula
 in a formula~$!A$, then the corresponding occurrence of~$!B$ in~$!A$
@@ -484,6 +501,7 @@ occurrence of $\Obj v_0$ is free in $!D$, but bound in $!C$ and~$!A$.
 \end{ex}
 
 \begin{defn}[Sentence] % PRIM-SYN013
+\index{sentence}
 \label{PRIM-SYN013}
 A formula~$!A$ is a \emph{sentence} iff it
 contains no free occurrences of variables; equivalently, iff $\FV(!A)
@@ -498,6 +516,7 @@ contains no free occurrences of variables; equivalently, iff $\FV(!A)
 \section{Substitution} \label{SYN.4}
 
 \begin{defn}[Substitution in a term] % DEF-SYN001 (terms)
+\index{substitution!in a term}
 \label{DEF-SYN001:terms}
 We define $\Subst{s}{t}{x}$, the result of \emph{substituting} $t$
 for every occurrence of~$x$ in $s$, recursively:
@@ -514,6 +533,7 @@ for every occurrence of~$x$ in $s$, recursively:
 \end{defn}
 
 \begin{defn}[Free for] % (capture-avoidance condition)
+\index{free for}
 \label{def:free-for}
 A term~$t$ is \emph{free for} $x$ in $!A$ if none of the free
 occurrences of~$x$ in $!A$ occur in the scope of a quantifier that
@@ -531,6 +551,7 @@ binds a variable in~$t$.
 \end{ex}
 
 \begin{defn}[Substitution in a formula] % DEF-SYN001
+\index{substitution}
 \label{DEF-SYN001}
 If $!A$ is a formula, $x$~is a variable, and $t$~is a term
 free for~$x$ in~$!A$, then $\Subst{!A}{t}{x}$ is the result of
@@ -599,6 +620,7 @@ short for $\Subst{!A}{t}{x}$.
 %%% Simultaneous Substitution (NEW-CONTENT from DOMAIN-SYN DEF-SYN002)
 
 \begin{defn}[Simultaneous substitution] % DEF-SYN002
+\index{substitution!simultaneous}
 \label{DEF-SYN002}
 Let $!A$ be a formula, let $x_1, \ldots, x_n$ be distinct variables,
 and let $t_1, \ldots, t_n$ be terms.  The \emph{simultaneous
@@ -617,6 +639,7 @@ P(y,y)[x/y] = P(x,x)$ gives a different result.
 %%% Alphabetic Variant (NEW-CONTENT from DOMAIN-SYN DEF-SYN004)
 
 \begin{defn}[Alphabetic variant] % DEF-SYN004
+\index{alphabetic variant}
 \label{DEF-SYN004}
 Two formulas $!A$ and $!B$ are \emph{alphabetic variants} (written
 $!A \equiv_\alpha !B$) if one can be obtained from the other by
@@ -659,6 +682,7 @@ $\Pi_1$ formulas---play a central role in the study of
 incompleteness.
 
 \begin{defn}[Bounded quantification] % DEF-SYN009
+\index{bounded quantification}\index{quantifier!bounded}
 \label{DEF-SYN009}
 A \emph{bounded existential formula} is one of the form
 $\lexists[x][(x < t \land !A(x))]$ where $t$ is any term, which we
@@ -669,6 +693,7 @@ conventionally write as $\bforall{x < t}{!A(x)}$.
 \end{defn}
 
 \begin{defn}[$\Delta_0$, $\Sigma_1$, and $\Pi_1$ formulas] % DEF-SYN009, DEF-SYN010, DEF-SYN011
+\index{arithmetic hierarchy}
 \label{DEF-SYN010}
 \leavevmode
 \begin{enumerate}
@@ -737,6 +762,7 @@ r(!A)$.  If $!A \ident \lforall[x][!B]$ or $!A \ident
 \end{proof}
 
 \begin{prop}[Unique readability for atomic formulas] % THM-SYN002 (partial)
+\index{unique readability!for atomic formulas}
 \label{THM-SYN002}
 If $!A$ is an atomic formula, then it satisfies one, and only one
 of the following conditions.
@@ -752,6 +778,7 @@ of the following conditions.
 \end{prop}
 
 \begin{prop}[Unique Readability] % THM-SYN001
+\index{unique readability}
 \label{THM-SYN001}
 Every formula satisfies one, and only one of the following conditions.
 \begin{enumerate}
@@ -786,7 +813,7 @@ The proof proceeds in four steps:
   a formula.  (Proved by induction: every proper initial segment of a
   formula has strictly more left parentheses than right ones.)
 \item \emph{Unique atomic parsing}: Atomic formulas are uniquely
-  parsed (Proposition~\ref{THM-SYN002}).
+  parsed (\cref{THM-SYN002}).
 \item \emph{Main result}: Suppose $!A \ident (!B \ast !C)$ and also
   $!A \ident (!B' \mathbin{\ast'} !C')$.  If $!B \ident !B'$, then
   clearly $\ast = {\ast'}$ and $!C \ident !C'$.  Otherwise, one of
@@ -804,6 +831,7 @@ in~$\Frm[L_0]$, since PL formulas are a special case of FOL formulas
 %%% Structural Induction/Recursion Principles (FORMALIZE from THM-SYN004)
 
 \begin{thm}[Structural induction and recursion principles] % THM-SYN004
+\index{structural induction}\index{structural recursion!principle}
 \label{THM-SYN004}
 \leavevmode
 \begin{enumerate}
@@ -834,7 +862,7 @@ rules.  If the set $S = \{!A \in \Frm[L] : P(!A)\}$ is also closed
 under the formation rules, then $\Frm[L] \subseteq S$, so $P$ holds
 for all formulas.
 
-Part~(2) follows from unique readability (Proposition~\ref{THM-SYN001}):
+Part~(2) follows from unique readability (\cref{THM-SYN001}):
 since each formula has a unique outermost construction step, the
 recursive clauses never conflict, and the function is well-defined.
 \end{proof}

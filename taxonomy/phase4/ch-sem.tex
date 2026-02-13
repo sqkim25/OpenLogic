@@ -22,6 +22,7 @@ validity, satisfiability. They are variously called ``structures,''
 
 \begin{defn}[Structures] % PRIM-SEM001, PRIM-SEM002, PRIM-SEM003
 \label{PRIM-SEM001}
+\index{structure}\index{domain}\index{interpretation}
 A \emph{structure}~$\Struct M$ for a language
 $\Lang{L}$ of first-order logic consists of the following elements:
 \begin{enumerate}
@@ -58,7 +59,7 @@ An obvious example of such a structure is the following:
   \Nat, n < m}$
 \end{enumerate}
 The structure~$\Struct N$ for $\Lang L_A$ so defined is called the
-\emph{standard model of arithmetic}, because it interprets the
+\emph{standard model of arithmetic},\index{standard model of arithmetic} because it interprets the
 non-logical constants of~$\Lang L_A$ exactly how you would expect.
 \end{ex}
 
@@ -77,6 +78,7 @@ using only the structure, without needing a variable assignment.
 
 \begin{defn}[Value of closed terms] % PRIM-SEM006 (closed-term case)
 \label{PRIM-SEM006:closed}
+\index{value of a term}
 If $t$ is a closed term of the language~$\Lang L$ and $\Struct M$ is a
 structure for~$\Lang L$, the \emph{value}~$\Value{t}{M}$ is
 defined as follows:
@@ -90,7 +92,7 @@ defined as follows:
 \end{enumerate}
 \end{defn}
 
-A structure is \emph{covered} if every element of the domain is the
+A structure is \emph{covered}\index{covered structure} if every element of the domain is the
 value of some closed term.
 
 
@@ -128,6 +130,7 @@ plus a variable assignment.
 
 \begin{defn}[Variable Assignment] % PRIM-SEM004
 \label{PRIM-SEM004}
+\index{variable assignment}\index{assignment}
 A \emph{variable assignment}~$s$ for a structure~$\Struct{M}$ is a
 function which maps each variable to an element of~$\Domain M$,
 i.e., $s\colon \Var \to \Domain M$.
@@ -144,6 +147,7 @@ function symbols.
 
 \begin{defn}[Value of Terms] % PRIM-SEM006
 \label{PRIM-SEM006}
+\index{value of a term}
 If $t$ is a term of the language~$\Lang L$, $\Struct M$ is a
 structure for~$\Lang L$, and $s$ is a variable assignment
 for~$\Struct M$, the \emph{value}~$\Value{t}{M}[s]$ is defined as
@@ -188,6 +192,7 @@ things to variables other than~$x$ that $s$ does.
 \begin{defn}[Satisfaction] % PRIM-SEM007, DEF-SEM001
 \label{PRIM-SEM007}
 \label{DEF-SEM001}
+\index{satisfaction}
 Satisfaction of a formula~$!A$ in a structure~$\Struct M$
 relative to a variable assignment~$s$, in symbols:
 $\Sat{M}{!A}[s]$, is defined recursively as follows. (We write
@@ -290,6 +295,7 @@ This justifies the following definition.
 
 \begin{defn}[Truth in a Structure] % PRIM-SEM008
 \label{PRIM-SEM008}
+\index{truth in a structure}
 If $!A$ is a sentence, we say that a structure~$\Struct M$
 \emph{satisfies}~$!A$, $\Sat{M}{!A}$, iff $\Sat{M}{!A}[s]$ for all
 variable assignments~$s$.
@@ -332,12 +338,14 @@ on the non-logical symbols or their interpretation.
 
 \begin{defn}[Validity] % PRIM-SEM009
 \label{PRIM-SEM009}
+\index{validity}
 A sentence $!A$ is \emph{valid}, $\Entails !A$, iff $\Sat{M}{!A}$ for every
 structure~$\Struct M$.
 \end{defn}
 
 \begin{defn}[Entailment] % PRIM-SEM010
 \label{PRIM-SEM010}
+\index{entailment}\index{logical consequence}
 A set of sentences~$\Gamma$ \emph{entails} a sentence~$!A$, $\Gamma
 \Entails !A$, iff for every structure~$\Struct M$ with
 $\Sat{M}{\Gamma}$, $\Sat{M}{!A}$.
@@ -345,6 +353,7 @@ $\Sat{M}{\Gamma}$, $\Sat{M}{!A}$.
 
 \begin{defn}[Satisfiability] % DEF-SEM002
 \label{DEF-SEM002}
+\index{satisfiability}\index{satisfiable}
 A set of sentences~$\Gamma$ is \emph{satisfiable} if $\Sat{M}{\Gamma}$
 for some structure~$\Struct M$.  If $\Gamma$ is not satisfiable it is
 called \emph{unsatisfiable}.
@@ -352,6 +361,7 @@ called \emph{unsatisfiable}.
 
 \begin{defn}[Model] % PRIM-SEM011
 \label{PRIM-SEM011}
+\index{model}
 Let $\Gamma$ be a set of sentences in a language~$\Lang L$.  We
 say that a structure~$\Struct M$ \emph{is a model of}~$\Gamma$ if
 $\Sat{M}{!A}$ for all $!A \in \Gamma$.
@@ -410,6 +420,7 @@ $\Gamma \Entails !A$ implies $\Gamma \Proves !A$.
 
 \begin{defn}[Theory of a Structure] % DEF-SEM006
 \label{DEF-SEM006}
+\index{theory!of a structure}
 Given a structure~$\Struct M$, the \emph{theory} of
 $\Struct{M}$ is the set $\Theory{M}$ of sentences
 that are true in $\Struct{M}$, i.e., $\Theory{M} =
@@ -432,6 +443,7 @@ so either $!A \in \Theory{M}$ or $\lnot !A \in \Theory{M}$.
 
 \begin{defn}[Definable Set] % DEF-SEM007
 \label{DEF-SEM007}
+\index{definability}\index{definable set}
 A subset of $\Domain{M}^n$ is \emph{definable} (in $\Struct{M}$)
 if there is a formula $!A(x_1, \ldots, x_n)$ with free variables
 $x_1, \ldots, x_n$ such that the subset equals
@@ -442,6 +454,7 @@ $\Setabs{\langle a_1, \ldots, a_n \rangle \in
 
 \begin{defn}[Elementary Equivalence] % DEF-SEM008
 \label{DEF-SEM008}
+\index{elementary equivalence}
 Given two structures $\Struct{M}$ and $\Struct M'$ for the same
 language~$\Lang{L}$, we say that $\Struct{M}$ is \emph{elementarily
   equivalent to} $\Struct M'$, written $\Struct{M} \equiv \Struct M'$,
@@ -474,7 +487,7 @@ $\Struct{M} \equiv \Struct{N}$.
   $\Struct{S}$, and by the above proposition, $\Struct{R}
   \equiv \Struct{S}$. Moreover, since $\Struct{R}$ and $\Struct{S}$
   are not isomorphic, this shows that the converse of
-  the Isomorphism Lemma (Theorem~\ref{THM-SEM001}) fails in general:
+  the Isomorphism Lemma (\cref{THM-SEM001}) fails in general:
   elementary equivalence does not imply isomorphism.
 \end{rem}
 
@@ -503,6 +516,7 @@ theories of arithmetic ($\Th{Q}$, $\Th{PA}$) introduced in
 
 \begin{defn}[Standard Model of Arithmetic] % DEF-SEM017
 \label{DEF-SEM017}
+\index{standard model of arithmetic}\index{model!standard arithmetic}
 The \emph{standard model of arithmetic} is the structure~$\Struct
 N$ defined as follows:
 \begin{enumerate}
@@ -518,6 +532,7 @@ N$ defined as follows:
 
 \begin{defn}[True Arithmetic] % DEF-SEM018
 \label{DEF-SEM018}
+\index{true arithmetic}
 The theory of \emph{true arithmetic} is the set of sentences
 satisfied in the standard model of arithmetic, i.e.,
 \[
@@ -561,6 +576,7 @@ are also part of a language~$\Lang{L'}$, i.e., $\Lang{L} \subseteq
 
 \begin{defn}[Reduct and Expansion]
 \label{defn:reduct}
+\index{reduct}\index{expansion}
 Suppose $\Lang L \subseteq \Lang L'$, $\Struct M$ is an
 $\Lang L$-structure and $\Struct M'$ is an $\Lang L'$-structure.
 $\Struct M$ is the \emph{reduct} of $\Struct M'$ to $\Lang L$, and
@@ -598,6 +614,7 @@ shared part~$\Domain{M}$.
 
 \begin{defn}[Substructure] % PRIM-SEM013
 \label{PRIM-SEM013}
+\index{substructure}
 Given structures $\Struct M$ and $\Struct M'$ for the same
 language~$\Lang L$, we say that $\Struct M$ is a \emph{substructure}
 of $\Struct M'$, and $\Struct M'$ an \emph{extension} of $\Struct M$,
@@ -630,6 +647,7 @@ $\Struct M$ with domain~$\Domain{N} = N$ by putting $\Assign{R}{N} =
 
 \begin{defn}[Homomorphism] % PRIM-SEM014
 \label{PRIM-SEM014}
+\index{homomorphism}
 A function $h \colon \Domain{M} \to \Domain{M'}$ between structures
 $\Struct{M}$ and $\Struct{M'}$ for the same language~$\Lang{L}$ is a
 \emph{homomorphism} if:
@@ -649,6 +667,7 @@ and it preserves relations in one direction only (it need not reflect them).
 
 \begin{defn}[Embedding] % DEF-SEM016
 \label{DEF-SEM016}
+\index{embedding}
 An \emph{embedding} $h \colon \Domain{M} \hookrightarrow \Domain{M'}$
 between structures $\Struct{M}$ and $\Struct{M'}$ for the same
 language~$\Lang{L}$ is an injective homomorphism that also
@@ -668,7 +687,7 @@ homomorphism that additionally reflects atomic formulas.
 First-order structures can be alike in one of two ways. One way in
 which they can be alike is that they make the same sentences
 true---we call such structures \emph{elementarily equivalent}
-(Definition~\ref{DEF-SEM008}). But structures can be very different and still
+(\cref{DEF-SEM008}). But structures can be very different and still
 make the same sentences true---for instance, one can be countable and
 the other not.  So another, stricter, aspect in which structures can
 be alike is if they are fundamentally the same, in the sense that they
@@ -677,6 +696,7 @@ structural features.
 
 \begin{defn}[Isomorphism] % PRIM-SEM012
 \label{PRIM-SEM012}
+\index{isomorphism}
 Given two structures $\Struct{M}$ and
 $\Struct M'$ for the same language~$\Lang L$, we say that
 $\Struct{M}$ is \emph{isomorphic to}~$\Struct M'$, written $\Struct{M}
@@ -703,6 +723,7 @@ $\Struct{M}$ is \emph{isomorphic to}~$\Struct M'$, written $\Struct{M}
 
 \begin{thm}[Isomorphism Lemma] % THM-SEM001
 \label{THM-SEM001}
+\index{isomorphism lemma}
 If $\Struct{M} \iso \Struct M'$ then $\Struct{M} \equiv
 \Struct{M'}$.
 \end{thm}
@@ -740,12 +761,13 @@ irrelevant, and we have $\Sat{M}{!A}$ iff $\Sat{M'}{!A}$.
 \end{proof}
 
 \begin{defn}
-An \emph{automorphism} of a structure $\Struct{M}$ is an isomorphism
+An \emph{automorphism}\index{automorphism} of a structure $\Struct{M}$ is an isomorphism
 of $\Struct{M}$ onto itself.
 \end{defn}
 
 \begin{defn}[Elementary Substructure] % DEF-SEM011
 \label{DEF-SEM011}
+\index{elementary substructure}\index{substructure!elementary}
 $\Struct{M}$ is an \emph{elementary substructure} of $\Struct{M'}$,
 written $\Struct{M} \preccurlyeq \Struct{M'}$, if $\Struct{M}$ is a
 substructure of $\Struct{M'}$ and for every formula
@@ -759,6 +781,7 @@ $\Sat{M}{!A}[a_1, \ldots, a_n]$ iff $\Sat{M'}{!A}[a_1, \ldots, a_n]$.
 
 \begin{defn}[Diagram] % DEF-SEM012
 \label{DEF-SEM012}
+\index{diagram}
 Let $\Struct{M}$ be a structure for $\Lang{L}$. Expand $\Lang{L}$ to
 $\Lang{L}_M = \Lang{L} \cup \{c_a : a \in \Domain{M}\}$ by adding a
 new constant symbol~$c_a$ for each element~$a$ of the domain. The
@@ -782,6 +805,7 @@ extension of $\Struct{M}$.
 
 \begin{defn}[Complete Type] % DEF-SEM013
 \label{DEF-SEM013}
+\index{type!complete}
 Let $\Struct{M}$ be a structure for $\Lang{L}$ and $A \subseteq
 \Domain{M}$. A \emph{complete $n$-type over $A$} is a maximal
 consistent set~$p$ of formulas $!A(x_1, \ldots, x_n)$ with
@@ -797,6 +821,7 @@ $n$-tuples in models extending~$\Struct{M}$.
 
 \begin{defn}[Ultraproduct] % DEF-SEM015
 \label{DEF-SEM015}
+\index{ultraproduct}
 Given a family of structures $\{\Struct{M}_i\}_{i \in I}$ for the
 same language~$\Lang{L}$ and an ultrafilter $\mathcal{U}$ on $I$, the
 \emph{ultraproduct} $\prod_{i \in I} \Struct{M}_i / \mathcal{U}$ is
@@ -822,6 +847,7 @@ models. This avoids completeness entirely.
 
 \begin{defn}[Categoricity] % DEF-SEM014
 \label{DEF-SEM014}
+\index{categoricity}
 A theory~$T$ is \emph{$\kappa$-categorical} if all models of~$T$ of
 cardinality~$\kappa$ are isomorphic. By the L\"owenheim--Skolem
 theorem, no theory with infinite models is categorical in all
@@ -829,6 +855,7 @@ cardinalities.
 \end{defn}
 
 \begin{defn}[Dense Linear Ordering]
+\index{dense linear ordering}
   A \emph{dense linear ordering without endpoints} is a structure
   $\Struct{M}$ for the language containing a single 2-place
   predicate symbol~$<$ satisfying the following sentences:
@@ -846,6 +873,7 @@ cardinalities.
 
 \begin{thm}[Cantor]
 \label{thm:cantorQ}
+\index{Cantor's theorem}
   Any two countable dense linear orderings without
   endpoints are isomorphic.
 \end{thm}
@@ -886,7 +914,7 @@ $\aleph_0$-categorical.
   endpoints. Then by Cantor's theorem, $\Struct{S} \iso
   \Struct{Q}$, where $\Struct{Q} = (\Rat, <)$. Now consider the
   structure~$\Struct{R} =
-  (\Real, <)$ from Remark~\ref{rem:R}. There is
+  (\Real, <)$ from \cref{rem:R}. There is
   a countable structure~$\Struct{S}$ such that $\Struct{R}
   \equiv \Struct{S}$. But $\Struct{S}$ is a countable dense
   linear ordering without endpoints, and so it is isomorphic (and
@@ -900,7 +928,7 @@ $\aleph_0$-categorical.
 
 \subsection*{Standard and Non-Standard Models of Arithmetic}
 
-A structure for $\Lang{L_A}$ is \emph{standard} if it is
+A structure for $\Lang{L_A}$ is \emph{standard}\index{model!standard} if it is
 isomorphic to~$\Struct{N}$.
 
 \begin{prop}
@@ -930,7 +958,7 @@ $g$ is an isomorphism by checking that $\Th{Q}$ proves the relevant
 identities for $\Obj{0}$, $\prime$, $+$, $\times$, and $<$.
 \end{proof}
 
-A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{non-standard}
+A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{non-standard}\index{model!non-standard}
 if it is not isomorphic to~$\Struct{N}$. The elements $x \in
 \Domain{M}$ which are equal to $\Value{\num{n}}{M}$ for some $n \in
 \Nat$ are called \emph{standard numbers} (of $\Struct{M}$), and those
@@ -998,7 +1026,7 @@ and~$y$ satisfies $x < z < y$ and $[z] \neq [x]$, $[z] \neq [y]$.
 
 The non-standard blocks are therefore ordered like the rationals: they
 form a countable dense linear ordering without endpoints.  By
-Cantor's theorem (Theorem~\ref{thm:cantorQ}), any two such orderings are isomorphic. It follows
+Cantor's theorem (\cref{thm:cantorQ}), any two such orderings are isomorphic. It follows
 that for any two countable non-standard models $\Struct{M}_1$ and
 $\Struct{M_2}$ of true arithmetic, their reducts to the language
 containing $<$ and $=$ only are isomorphic. However, they need not be
@@ -1007,6 +1035,7 @@ non-isomorphic ways to define addition and multiplication.
 
 \begin{defn}[Computable Structure]
 \label{defn:computable-structure}
+\index{computable structure}
 A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{computable} iff
   $\Domain{M} = \Nat$ and $\Assign{\prime}{M}$, $\Assign{+}{M}$,
   $\Assign{\times}{M}$ are computable functions and $\Assign{<}{M}$ is
@@ -1015,6 +1044,7 @@ A structure~$\Struct{M}$ for $\Lang{L_A}$ is \emph{computable} iff
 
 \begin{thm}[Tennenbaum's Theorem]
 \label{thm:tennenbaum}
+\index{Tennenbaum's theorem}
 $\Struct{N}$ is the only computable model of~$\Th{PA}$.
 \end{thm}
 
@@ -1027,6 +1057,7 @@ principle.
 
 \begin{thm}[Overspill]
 \label{thm:overspill}
+\index{overspill}
 If a set $\Gamma$ of sentences has arbitrarily
 large finite models, then it has an infinite model.
 \end{thm}
@@ -1079,6 +1110,7 @@ $!A$ itself is true.
 
 \begin{prop}[Extensionality / Coincidence Lemma] % THM-SEM002
 \label{THM-SEM002}
+\index{coincidence lemma}\index{extensionality}
   Let $!A$ be a formula, and $\Struct M_1$ and $\Struct M_2$ be
   structures with $\Domain{M_1} = \Domain{M_2}$, and $s$ a
   variable assignment on $\Domain{M_1} = \Domain{M_2}$.  If
@@ -1102,7 +1134,7 @@ $!A$ itself is true.
 \end{cor}
 
 \begin{proof}
-Follows from the Coincidence Lemma by Corollary~\ref{cor:sat-sentence}.
+Follows from the Coincidence Lemma by \cref{cor:sat-sentence}.
 \end{proof}
 
 \subsection*{The Substitution Lemma}
@@ -1112,6 +1144,7 @@ satisfies a formula, only depend on the values of its subterms.
 
 \begin{prop}[Substitution Lemma for Terms] % THM-SYN003 (terms)
 \label{THM-SYN003:terms}
+\index{substitution lemma}
 Let $\Struct M$ be a structure, $t$ and $t'$ terms, and $s$ a
 variable assignment. Then $\Value{\Subst{t}{t'}{x}}{M}[s] =
 \Value{t}{M}[\Subst{s}{\Value{t'}{M}[s]}{x}]$.

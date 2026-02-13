@@ -262,18 +262,14 @@ sub-grouping would significantly improve readability.
 - **Prose voice**: Generally consistent across chapters — formal but
   accessible, with occasional informal glosses. CH-SET is the most
   consistently well-motivated; CH-DED is the most reference-manual-like.
-- **Cross-reference style inconsistency**: CH-DED and CH-CMP use `\cref{}`
-  while other chapters use `Theorem~\ref{}`. Should standardize.
+- **Cross-reference style**: All chapters now use `\cref{}` (standardized).
 - **Proof-sketch labeling**: Consistently used across all chapters — good.
 
-### 3. `\cref` Inconsistency
+### 3. `\cref` Standardization (DONE)
 
-CH-DED and CH-CMP use `\cref{}` (auto-formatting) while CH-BST, CH-SYN,
-CH-SEM, CH-META, and CH-SET use `Theorem~\ref{}` / `Lemma~\ref{}`.
-This creates inconsistent output across the compiled book.
-
-**Recommendation**: Standardize to `\cref{}` throughout (requires one
-search-and-replace pass per chapter).
+All 7 chapter files now use `\cref{}` exclusively (193 total cross-references).
+Added `\crefname{cor}{Corollary}{Corollaries}` and `\crefname{chapter}{Chapter}{Chapters}`
+to the preamble. Zero manual `Type~\ref{}` patterns remain.
 
 ---
 
@@ -292,7 +288,7 @@ search-and-replace pass per chapter).
 | **7** | CH-CMP | Define `\cfind{e}` before first use (400-line gap) | Fixes NT gap |
 | **8** | CH-SEM | Add motivating paragraphs for SEM.4 and SEM.5 | Fixes MO gaps |
 | **9** | CH-SET | Expand Choice-iff-Zorn proof sketch | Fixes DN gap |
-| **10** | All | Standardize `\cref{}` vs `Theorem~\ref{}` | Style consistency |
+| **10** | All | ~~Standardize `\cref{}` vs `Theorem~\ref{}`~~ (DONE) | Style consistency |
 
 ---
 

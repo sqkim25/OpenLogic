@@ -20,6 +20,7 @@ count its elements. All that matters are what its elements
 are. We codify this in the following principle.
 
 \begin{defn}[Extensionality] % PRIM-BST001
+\index{extensionality}
 \label{PRIM-BST001}
   If $A$ and $B$ are sets, then $A = B$ iff
   every element of~$A$ is also an element of~$B$, and vice
@@ -60,6 +61,7 @@ We will often want to compare sets. One obvious kind of comparison
 is: \emph{everything in one set is in the other too}.
 
 \begin{defn}[Subset] % PRIM-BST003
+\index{subset}
 \label{PRIM-BST003}
 If every element of a set $A$ is also an element of~$B$, then we
 say that $A$ is a \emph{subset} of~$B$, and write $A \subseteq B$. If
@@ -81,6 +83,7 @@ Now we consider a certain kind of set: the set of all subsets of a
 given set.
 
 \begin{defn}[Power Set] % PRIM-BST015
+\index{power set}
 \label{PRIM-BST015}
 The set consisting of all subsets of a set~$A$ is called the
 \emph{power set of}~$A$, written $\Pow{A}$.
@@ -192,6 +195,7 @@ We can define ordered pairs in set theory using the Wiener--Kuratowski
 definition.
 
 \begin{defn}[Ordered pair] % PRIM-BST006
+\index{ordered pair}
 \label{PRIM-BST006}
 	$\tuple{a, b} = \{\{a\}, \{a, b\}\}$.
 \end{defn}
@@ -207,6 +211,7 @@ $\tuple{\tuple{\tuple{x,y},z},u}$, and so on. In general, we talk of
 \emph{ordered $n$-tuples} $\tuple{x_1, \dots, x_n}$.
 
 \begin{defn}[Cartesian product] % PRIM-BST007
+\index{Cartesian product}
 \label{PRIM-BST007}
 Given sets $A$ and $B$, their \emph{Cartesian product} $A \times B$ is
 defined by
@@ -231,6 +236,7 @@ formally in \S\ref{BST.4}.
 %%% Important Sets (from sfr/set/imp — CONDENSE: N only here)
 
 \begin{defn}[Natural Numbers] % PRIM-BST012
+\index{natural numbers}
 \label{PRIM-BST012}
 The set of \emph{natural numbers} is denoted $\Nat = \{0, 1, 2, 3,
 \ldots\}$.
@@ -268,6 +274,7 @@ to \emph{be} the $<$-relation on $\Nat$. This justifies the following
 definition:
 
 \begin{defn}[Binary relation] % PRIM-BST008
+\index{relation}
 \label{PRIM-BST008}
 A \emph{binary relation} on a set $A$ is a subset of~$A^{2}$. If $R
 \subseteq A^{2}$ is a binary relation on~$A$ and $x, y \in A$, we
@@ -363,6 +370,7 @@ transitive. Relations~$R$ that have all three of these properties are very
 common.
 
 \begin{defn}[Equivalence relation] % DEF-BST004
+\index{equivalence relation}
 \label{DEF-BST004}
 A relation $R \subseteq A^2$ that is reflexive, symmetric, and
 transitive is called an \emph{equivalence relation}. Elements $x$
@@ -376,6 +384,7 @@ related to one another; and no objects from different partitions
 relate to one another.
 
 \begin{defn}[Equivalence class]
+\index{equivalence class}
 Let $R \subseteq A^2$ be an equivalence relation. For each $x \in A$,
 the \emph{equivalence class} of $x$ in~$A$ is the set $\equivrep{x}{R}
 = \Setabs{y \in A}{Rxy}$. The \emph{quotient} of $A$ under~$R$ is
@@ -438,12 +447,15 @@ A relation which is both reflexive and transitive is called a
 \end{defn}
 
 \begin{defn}[Partial order] % DEF-BST005
+\index{partial order}
 \label{DEF-BST005}
 A preorder which is also anti-symmetric is called a
 \emph{partial order}.
 \end{defn}
 
 \begin{defn}[Linear order]
+\index{linear order}
+\index{total order}
 A partial order which is also connected is called a
 \emph{total order} or \emph{linear order.}
 \end{defn}
@@ -590,6 +602,7 @@ is a \emph{black box}: what matters is only what output is paired with
 what input, not the method for calculating the output.
 
 \begin{defn}[Function] % PRIM-BST009
+\index{function}
 \label{PRIM-BST009}
 A \emph{function} $f \colon A \to B$ is a mapping of each element
 of~$A$ to an element of~$B$.
@@ -625,6 +638,8 @@ We introduce a taxonomy for the most frequently encountered kinds of
 functions.
 
 \begin{defn}[Surjective function] % DEF-BST002
+\index{function!surjective}
+\index{surjection}
 \label{DEF-BST002}
 A function $f \colon A \rightarrow B$ is \emph{surjective} iff $B$
 is also the range of~$f$, i.e., for every $y \in B$ there is at least
@@ -636,6 +651,8 @@ We call such a function a surjection from $A$ to $B$.
 \end{defn}
 
 \begin{defn}[Injective function] % DEF-BST001
+\index{function!injective}
+\index{injection}
 \label{DEF-BST001}
 A function $f \colon A \rightarrow B$ is \emph{injective} iff for
 each $y \in B$ there is at most one $x \in A$ such that~$f(x) = y$. We
@@ -643,6 +660,8 @@ call such a function an injection from $A$ to~$B$.
 \end{defn}
 
 \begin{defn}[Bijection] % DEF-BST003
+\index{function!bijective}
+\index{bijection}
 \label{DEF-BST003}
 A function $f \colon A \to B$ is \emph{bijective} iff it is both
 surjective and injective. We call such a function
@@ -860,6 +879,7 @@ obtained from $0$ by finitely many applications of $s$.  This yields
 the principle of mathematical induction.
 
 \begin{defn}[Mathematical induction on $\Nat$] % PRIM-BST013
+\index{induction}
   \label{PRIM-BST013}
   If $0$ has property $P$, and $P$ is preserved under the successor
   function, then every natural number has property~$P$.
@@ -939,6 +959,7 @@ that $\closureofunder{f}{o}$ is $f$-closed, and that it is contained in
 every $f$-closed set that has $o$ as an element.
 
 \begin{defn}[Dedekind algebra] % DEF-BST007
+\index{Dedekind algebra}
   \label{DEF-BST007}
   A \emph{Dedekind algebra} is a triple $(A, f, o)$ where $A$ is a set,
   $f \colon A \to A$ is a function, and $o \in A$, satisfying:
@@ -991,6 +1012,8 @@ $\Nat$ or an initial segment $\{0, \dots, n\}$
 depending on whether $A$ is infinite or finite.
 
 \begin{defn}[Enumerable set] % PRIM-BST016 (part 2)
+\index{enumerable}
+\index{countable}
   \label{PRIM-BST016}
   A set~$A$ is \emph{enumerable} (also called \emph{countable}) iff
   $A = \emptyset$ or there is an enumeration of~$A$.
@@ -1129,6 +1152,9 @@ introduced by Cantor, shows that certain natural sets have ``more''
 elements than can be listed.
 
 \begin{thm}[$\Bin^\omega$ is non-enumerable]
+\index{diagonalization}
+\index{non-enumerable}
+\index{uncountable}
   \label{thm:nonenum-bin-omega}
   $\Bin^\omega$, the set of all infinite sequences of $0$'s and $1$'s,
   is non-enumerable.
@@ -1195,6 +1221,7 @@ To compare sizes of arbitrary sets---not just to classify them as
 of size equivalence.
 
 \begin{defn}[Equinumerosity] % DEF-BST009
+\index{equinumerosity}
   \label{DEF-BST009}
   $A$ is \emph{equinumerous} with $B$, written $\cardeq{A}{B}$, iff
   there is a bijection $f \colon A \to B$.
@@ -1208,6 +1235,7 @@ $\cardeq{A}{B}$, then $A$ is enumerable if and only if $B$ is.
 \subsection{Dedekind Infinite Sets}
 
 \begin{defn}[Dedekind infinite] % DEF-BST008
+\index{Dedekind infinite}
   \label{DEF-BST008}
   A set $A$ is \emph{Dedekind infinite} iff there is an injection from
   $A$ to a proper subset of $A$.  Equivalently, there exist some
@@ -1242,11 +1270,13 @@ relation $\cardless{\cdot}{\cdot}$ is irreflexive and transitive.
 Using these definitions, a set $A$ is enumerable iff
 $\cardle{A}{\Nat}$, and non-enumerable iff $\cardless{\Nat}{A}$.
 The non-enumerability of $\Pow{\Nat}$
-(Theorem~\ref{thm:nonenum-pownat}) can be restated as
+(\cref{thm:nonenum-pownat}) can be restated as
 $\cardless{\Nat}{\Pow{\Nat}}$.  Cantor proved that this
 phenomenon is perfectly general:
 
 \begin{thm}[Cantor's Theorem] % THM-BST001
+\index{Cantor's theorem}
+\index{cardinality}
   \label{THM-BST001}
   $\cardless{A}{\Pow{A}}$, for any set $A$.
 \end{thm}
@@ -1274,7 +1304,7 @@ Combining both parts: $\cardless{A}{\Pow{A}}$.
 \end{proof}
 
 The construction of the ``anti-diagonal'' set $D$ mirrors the diagonal
-argument in Theorem~\ref{thm:nonenum-pownat}, and was the inspiration for
+argument in \cref{thm:nonenum-pownat}, and was the inspiration for
 Russell's Paradox.
 
 \subsection{Schr\"oder-Bernstein}
@@ -1284,6 +1314,7 @@ sets.  For the converse direction---showing two sets have the
 \emph{same} size---the following deep result is essential.
 
 \begin{thm}[Schr\"oder-Bernstein]
+\index{Schroder-Bernstein theorem}
   \label{thm:schroder-bernstein}
   If $\cardle{A}{B}$ and $\cardle{B}{A}$, then $\cardeq{A}{B}$.
 \end{thm}

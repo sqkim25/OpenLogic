@@ -1,0 +1,206 @@
+%% notation-index.tex
+%% Notation Index for "A Lean Systematization of Mathematical Logic"
+
+\chapter*{Notation Index}
+\addcontentsline{toc}{chapter}{Notation Index}
+
+\noindent
+The following table collects the principal symbols used throughout this
+text.  Symbols are grouped by domain; page numbers refer to the first
+defining occurrence.
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Standard Sets
+%%% -----------------------------------------------------------------
+
+\subsection*{Standard Sets}
+\begin{tabular}{@{}lll@{}}
+$\Nat$ & Natural numbers & CH-BST \\
+$\Int$ & Integers & CH-BST \\
+$\PosInt$ & Positive integers & CH-BST \\
+$\Rat$ & Rational numbers & CH-BST \\
+$\Real$ & Real numbers & CH-BST \\
+$\Bin$ & Binary / Boolean values & CH-BST \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Set-Theoretic Notation (Naive)
+%%% -----------------------------------------------------------------
+
+\subsection*{Set-Theoretic Notation}
+\begin{tabular}{@{}lll@{}}
+$\Setabs{x}{\phi(x)}$ & Set comprehension $\{x : \phi(x)\}$ & CH-BST \\
+$\Pow{A}$ & Power set of $A$ & CH-BST \\
+$\tuple{a, b}$ & Ordered pair / tuple & CH-BST \\
+$A \times B$ & Cartesian product & CH-BST \\
+$\dom{f}$ & Domain of $f$ & CH-BST \\
+$\ran{f}$ & Range of $f$ & CH-BST \\
+$\comp{f}{g}$ & Composition $g \circ f$ & CH-BST \\
+$\card{A}$ & Cardinality of $A$ & CH-BST \\
+$\cardle{A}{B}$ & $A$ is no larger than $B$ & CH-BST \\
+$\cardless{A}{B}$ & $A$ is strictly smaller than $B$ & CH-BST \\
+$\cardeq{A}{B}$ & $A$ and $B$ are equinumerous & CH-BST \\
+$\Id{A}$ & Identity relation on $A$ & CH-BST \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Logical Connectives and Quantifiers
+%%% -----------------------------------------------------------------
+
+\subsection*{Logical Connectives and Quantifiers}
+\begin{tabular}{@{}lll@{}}
+$\lnot !A$ & Negation & CH-SYN \\
+$!A \land !B$ & Conjunction & CH-SYN \\
+$!A \lor !B$ & Disjunction & CH-SYN \\
+$!A \lif !B$ & Material conditional & CH-SYN \\
+$!A \liff !B$ & Biconditional & CH-SYN \\
+$\ltrue$ & Logical truth & CH-SYN \\
+$\lfalse$ & Logical falsum & CH-SYN \\
+$\lforall[x][!A(x)]$ & Universal quantification & CH-SYN \\
+$\lexists[x][!A(x)]$ & Existential quantification & CH-SYN \\
+$\eq[t_1][t_2]$ & Identity / equality & CH-SYN \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Syntax
+%%% -----------------------------------------------------------------
+
+\subsection*{Syntax}
+\begin{tabular}{@{}lll@{}}
+$\Lang{L}$ & Formal language & CH-SYN \\
+$\Var$ & Set of variables & CH-SYN \\
+$\PVar$ & Set of propositional variables & CH-SYN \\
+$\Trm[L]$ & Set of terms of $\Lang{L}$ & CH-SYN \\
+$\Frm[L]$ & Set of formulas of $\Lang{L}$ & CH-SYN \\
+$\Sent[L]$ & Set of sentences of $\Lang{L}$ & CH-SYN \\
+$\Atom{P}{t_1, \ldots, t_n}$ & Atomic formula & CH-SYN \\
+$\SubFrm{!A}$ & Set of subformulas of $!A$ & CH-SYN \\
+$\FV{!A}$ & Free variables of $!A$ & CH-SYN \\
+$\Subst{!A}{t}{x}$ & Substitution of $t$ for $x$ in $!A$ & CH-SYN \\
+$!A \ident !B$ & Syntactic identity & CH-SYN \\
+$\num{n}$ & Standard numeral for $n$ & CH-SYN \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Semantics
+%%% -----------------------------------------------------------------
+
+\subsection*{Semantics}
+\begin{tabular}{@{}lll@{}}
+$\Struct{M}$ & First-order structure & CH-SEM \\
+$\Domain{M}$ & Domain (universe) of $\Struct{M}$ & CH-SEM \\
+$\Assign{f}{M}$ & Interpretation of $f$ in $\Struct{M}$ & CH-SEM \\
+$\Value{t}{M}[s]$ & Value of term $t$ under assignment $s$ & CH-SEM \\
+$\Sat{M}{!A}[s]$ & $\Struct{M}$ satisfies $!A$ under $s$ & CH-SEM \\
+$\Sat[/]{M}{!A}$ & $\Struct{M}$ does not satisfy $!A$ & CH-SEM \\
+$\Entails$ & Semantic consequence (entailment) & CH-SEM \\
+$\Entails[/]$ & Does not entail & CH-SEM \\
+$\Theory{M}$ & Theory of $\Struct{M}$ & CH-SEM \\
+$\Mod(\Gamma)$ & Class of models of $\Gamma$ & CH-SEM \\
+$\Struct{M} \elemequiv \Struct{N}$ & Elementary equivalence & CH-SEM \\
+$\Struct{M} \iso \Struct{N}$ & Isomorphism & CH-SEM \\
+$\pAssign{v}$ & Propositional valuation & CH-SEM \\
+$\pSat{v}{!A}$ & Propositional satisfaction & CH-SEM \\
+$\QuantRank{!A}$ & Quantifier rank of $!A$ & CH-SEM \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Deduction
+%%% -----------------------------------------------------------------
+
+\subsection*{Deduction}
+\begin{tabular}{@{}lll@{}}
+$\Gamma \Proves !A$ & $!A$ is derivable from $\Gamma$ & CH-DED \\
+$\Gamma \Proves[/] !A$ & $!A$ is not derivable from $\Gamma$ & CH-DED \\
+$\Proves !A$ & $!A$ is a theorem & CH-DED \\
+$\MP$ & Modus ponens & CH-DED \\
+$\Intro{\lif}$, $\Elim{\lif}$ & ND introduction / elimination rule & CH-DED \\
+$\Discharge{!A}{n}$ & Discharged assumption (label $n$) & CH-DED \\
+$\Gamma \Sequent \Delta$ & Sequent & CH-DED \\
+$\LeftR{\lif}$, $\RightR{\lif}$ & SC left / right rule & CH-DED \\
+$\Weakening$, $\Contraction$, $\Exchange$, $\Cut$ & Structural rules & CH-DED \\
+$\sFmla{\True}{!A}$, $\sFmla{\False}{!A}$ & Signed formula (tableau) & CH-DED \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Theories and Formal Arithmetic
+%%% -----------------------------------------------------------------
+
+\subsection*{Theories and Formal Arithmetic}
+\begin{tabular}{@{}lll@{}}
+$\Th{T}$ & Named theory & CH-DED \\
+$\Th{Q}$ & Robinson arithmetic & CH-DED \\
+$\Th{PA}$ & Peano arithmetic & CH-DED \\
+$\defis$ & Definitional equality & CH-DED \\
+$\bforall{x < t}{!A}$ & Bounded universal quantifier & CH-META \\
+$\bexists{x < t}{!A}$ & Bounded existential quantifier & CH-META \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Computability
+%%% -----------------------------------------------------------------
+
+\subsection*{Computability}
+\begin{tabular}{@{}lll@{}}
+$\Zero$, $\Succ$, $\Add$, $\Mult$ & Basic recursive functions & CH-CMP \\
+$\Proj{n}{i}$ & Projection function & CH-CMP \\
+$\Char{R}$ & Characteristic function of $R$ & CH-CMP \\
+$\umin{x}{R(x)}$ & Unbounded minimization & CH-CMP \\
+$\cfind{e}$ & $e$-th partial computable function & CH-CMP \\
+$f(x) \fdefined$ & $f(x)$ is defined (converges) & CH-CMP \\
+$f(x) \fundefined$ & $f(x)$ is undefined (diverges) & CH-CMP \\
+$f \colon A \pto B$ & Partial function from $A$ to $B$ & CH-CMP \\
+$\concat$ & String / sequence concatenation & CH-CMP \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% G\"odel Numbering and Provability
+%%% -----------------------------------------------------------------
+
+\subsection*{G\"odel Numbering and Provability}
+\begin{tabular}{@{}lll@{}}
+$\gn{!A}$ & G\"odel number of $!A$ & CH-META \\
+$\Gn{!A}$ & G\"odel number (corner-quote style) & CH-META \\
+$\OProv[\Th{T}](x)$ & Provability predicate for $\Th{T}$ & CH-META \\
+$\ORProv[\Th{T}](x)$ & Rosser provability predicate & CH-META \\
+$\OCon[\Th{T}]$ & Consistency statement for $\Th{T}$ & CH-META \\
+$\OPrf[\Th{T}](x,y)$ & Proof predicate for $\Th{T}$ & CH-META \\
+\end{tabular}
+
+\bigskip
+
+%%% -----------------------------------------------------------------
+%%% Formal Set Theory
+%%% -----------------------------------------------------------------
+
+\subsection*{Formal Set Theory}
+\begin{tabular}{@{}lll@{}}
+$\ZF$, $\ZFC$ & Zermelo--Fraenkel (with Choice) & CH-SET \\
+$\ZFminus$, $\Zminus$ & ZF / Z without Foundation or Choice & CH-SET \\
+$\ordtype{A, R}$ & Order type of $(A, R)$ & CH-SET \\
+$\ordsucc{\alpha}$ & Ordinal successor & CH-SET \\
+$\cardsucc{\cardfont{a}}$ & Cardinal successor & CH-SET \\
+$\cardfont{a}$ & Cardinal (fraktur) & CH-SET \\
+$V_\alpha$ & Stage $\alpha$ of the cumulative hierarchy & CH-SET \\
+$\setrank{x}$ & Rank of set $x$ & CH-SET \\
+$\funimage{f}{A}$ & Image of $A$ under $f$ & CH-SET \\
+$\trcl{A}$ & Transitive closure of $A$ & CH-SET \\
+\end{tabular}

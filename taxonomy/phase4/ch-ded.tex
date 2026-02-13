@@ -27,6 +27,7 @@ detail. Canonical proofs are given here for the Hilbert-style
 \subsection{Axiom Schemas and Rules of Inference}
 
 \begin{defn}[Axiom Schema] % PRIM-DED001
+\index{axiom schema}
 \label{PRIM-DED001}
 An \emph{axiom schema} is a schematic expression involving metavariables
 that stands for a (typically infinite) collection of formulas: every
@@ -41,6 +42,8 @@ proof systems employ different collections of axiom schemas (or none at
 all, as in the case of natural deduction).
 
 \begin{defn}[Non-Logical Axiom] % PRIM-DED002
+\index{axiom!non-logical}
+\index{theory}
 \label{PRIM-DED002}
 A \emph{non-logical axiom} is a sentence adopted as a premise of
 a theory but not derivable from the logical axioms alone.  A set of
@@ -52,6 +55,7 @@ proof-theoretically) from~$\Gamma_0$.
 \end{defn}
 
 \begin{defn}[Rule of Inference] % PRIM-DED003
+\index{rule!inference}
 \label{PRIM-DED003}
 A \emph{rule of inference} gives a sufficient condition for what counts
 as a correct inference step in a derivation from a set of
@@ -92,6 +96,7 @@ make different choices:
 \subsection{Proof Systems and Derivations}
 
 \begin{defn}[Proof System] % PRIM-DED004
+\index{proof system}
 \label{PRIM-DED004}
 A \emph{proof system} is a specification of:
 \begin{enumerate}
@@ -104,6 +109,7 @@ on formulas.
 \end{defn}
 
 \begin{defn}[Derivation] % PRIM-DED005
+\index{derivation}
 \label{PRIM-DED005}
 Let $\Gamma$ be a set of formulas of~$\Lang L$.  A \emph{derivation}
 from~$\Gamma$ is a finite combinatorial object---a sequence of
@@ -136,6 +142,7 @@ exists a derivation of~$!A$ from~$\Gamma$ in the given system.
 \subsection{Sequents and Structural Rules}
 
 \begin{defn}[Sequent] % PRIM-DED008
+\index{sequent}
 \label{PRIM-DED008}
 A \emph{sequent} is an expression of the form
 \[
@@ -159,6 +166,7 @@ $!B_1 \lor \dots \lor !B_n$ holds.  When $\Delta$ is empty, $\Gamma
 \Sequent$ asserts that $\lnot(!A_1 \land \dots \land !A_m)$.
 
 \begin{defn}[Structural Rules] % PRIM-DED007
+\index{structural rules}
 \label{PRIM-DED007}
 The \emph{structural rules} of a proof system govern the manipulation
 of the context (the set or sequence of assumptions or side formulas)
@@ -241,6 +249,7 @@ relevant logic restricts weakening.
 \subsection{Assumption Discharge}
 
 \begin{defn}[Assumption Discharge] % PRIM-DED009
+\index{assumption discharge}
 \label{PRIM-DED009}
 In natural deduction, an \emph{assumption} is any sentence occupying a
 topmost (leaf) position in a derivation tree. Certain rules of
@@ -257,7 +266,7 @@ discharging rule even when the assumption to be discharged does not
 actually occur in the derivation above.  The set of
 \emph{undischarged} assumptions of a derivation is the set of
 assumptions that have not been cancelled by any rule application.  A
-derivation with no undischarged assumptions is a \emph{proof} (of a
+derivation with no undischarged assumptions is a \emph{proof}\index{proof} (of a
 theorem).
 
 %%% -----------------------------------------------------------------
@@ -267,6 +276,8 @@ theorem).
 \subsection{Provability and Theorems}
 
 \begin{defn}[Provability] % PRIM-DED006
+\index{provability}
+\index{derivability}
 \label{PRIM-DED006}
 A formula~$!A$ is \emph{derivable} from $\Gamma$, written
 $\Gamma \Proves !A$, if there is a derivation from~$\Gamma$ ending
@@ -274,6 +285,7 @@ in~$!A$ (in whatever proof system is in force).
 \end{defn}
 
 \begin{defn}[Theorem] % PRIM-DED010
+\index{theorem}
 \label{PRIM-DED010}
 A formula~$!A$ is a \emph{theorem} if there is a derivation
 of~$!A$ from the empty set.  We write $\Proves !A$ if $!A$ is a
@@ -402,6 +414,8 @@ They are independently interesting, and each plays a role in the proof
 of the completeness theorem (see CP-002, Completeness, \S\ref{META.2}).
 
 \begin{defn}[Syntactic Consistency] % DEF-DED001
+\index{consistency!syntactic}
+\index{inconsistency}
 \label{DEF-DED001}
 A set $\Gamma$ of formulas is \emph{consistent} if and only if
 $\Gamma \Proves/ \lfalse$; it is \emph{inconsistent} otherwise.
@@ -475,6 +489,7 @@ is inconsistent.
 \subsection{Derived and Admissible Rules}
 
 \begin{defn}[Derived Rule] % DEF-DED009
+\index{rule!derived}
 \label{DEF-DED009}
 A rule $\frac{!A_1 \cdots !A_n}{!B}$ is a \emph{derived rule} of a
 proof system if there exists a derivation of~$!B$ from assumptions
@@ -483,6 +498,7 @@ serve as shortcuts that do not extend the system's deductive power.
 \end{defn}
 
 \begin{defn}[Admissible Rule] % DEF-DED010
+\index{rule!admissible}
 \label{DEF-DED010}
 A rule $\frac{!A_1 \cdots !A_n}{!B}$ is \emph{admissible} if:
 whenever $\Proves !A_1, \ldots, \Proves !A_n$ are all provable (as
@@ -509,6 +525,7 @@ global transformation of the proof.
 \subsection{Deductive Closure and Conservative Extension}
 
 \begin{defn}[Deductive Closure] % DEF-DED003
+\index{deductive closure}
 \label{DEF-DED003}
 The \emph{deductive closure} of a set of formulas~$\Gamma$ is the set
 \[
@@ -518,6 +535,7 @@ A set $\Gamma$ is \emph{deductively closed} if $\Gamma = \Thms{\Gamma}$.
 \end{defn}
 
 \begin{defn}[Conservative Extension] % DEF-DED004
+\index{conservative extension}
 \label{DEF-DED004}
 A theory $T'$ in language $\Lang{L'} \supseteq \Lang{L}$ is a
 \emph{conservative extension} of a theory $T$ in $\Lang{L}$ if for
@@ -541,6 +559,7 @@ and the method of Henkin constants used in the completeness proof (see
 \subsection{Maximally Consistent Sets}
 
 \begin{defn}[Maximally Consistent Set] % DEF-DED002
+\index{maximally consistent set}
 \label{DEF-DED002}
 A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
 \begin{enumerate}
@@ -721,6 +740,8 @@ is difficult.
 \subsection{Propositional Axioms and Modus Ponens}
 
 \begin{defn}[Axiomatic System] % DEF-DED005
+\index{Hilbert system}
+\index{axiomatic system}
 \label{DEF-DED005}
 The \emph{axiomatic (Hilbert-style) deduction system} is defined by
 the propositional axiom schemas of \ref{AX-DED003} below, the
@@ -764,6 +785,8 @@ comprises all formulas of the following forms:
 \end{defn}
 
 \begin{defn}[Modus Ponens] % AX-DED001
+\index{modus ponens}
+\index{rule!modus ponens}
 \label{AX-DED001}
 If $!B$ and $!B \lif !A$ already occur in a derivation, then $!A$ is
 a correct inference step. We abbreviate this rule as~$\MP$.
@@ -839,6 +862,7 @@ By transitivity (\ref{DED-prop:transitivity}), $\Gamma \Proves !B$.
 \end{proof}
 
 \begin{thm}[Deduction Theorem --- Axiomatic Proof] % THM-DED001, CP-009
+\index{deduction theorem}
 \label{DED2-thm:deduction-thm}
 $\Gamma \cup \{!A\} \Proves !B$ if and only if $\Gamma \Proves !A
 \lif !B$.
@@ -1009,6 +1033,7 @@ substitution lemma $\Sat{M}{!B(t_1)}$ iff $\Sat{M}{!B(t_2)}$.
 \end{proof}
 
 \begin{thm}[Soundness] % CP-001(AX)
+\index{soundness!axiomatic system}
 \label{DED2-thm:soundness}
 If $\Gamma \Proves !A$ then $\Gamma \Entails !A$.
 \end{thm}
@@ -1081,6 +1106,7 @@ satisfy~$\Gamma$, so $\Gamma$ is unsatisfiable.
 %% ===================================================================
 
 \section{Natural Deduction} \label{DED.3}
+\index{natural deduction}
 
 Natural deduction instantiates the generic framework of \S\ref{DED.1}
 differently from axiomatic deduction.  There are no logical axioms;
@@ -1111,6 +1137,7 @@ semantics'').
 \subsection{Rules and Derivations}
 
 \begin{defn}[Assumption]
+\index{assumption}
 An \emph{assumption} is any sentence
 in the topmost position of any branch of a derivation tree.
 \end{defn}
@@ -1120,7 +1147,7 @@ the topmost sentences are assumptions, and if a sentence stands below
 one, two, or three other sentences, it must follow correctly by a rule
 of inference. The sentences at the top of the inference are the
 \emph{premises} and the sentence below the \emph{conclusion}. The
-rules come in pairs---an introduction and an elimination rule for each
+rules come in pairs---an introduction\index{introduction rule} and an elimination\index{elimination rule} rule for each
 operator---and some rules allow an assumption to be
 \emph{discharged}. To indicate which assumption is discharged by which
 inference, both receive a matching label: the assumption is written
@@ -1360,6 +1387,7 @@ write~$\Proves !A$.
 \subsection{Soundness} \label{DED.3.sou}
 
 \begin{thm}[Soundness] % CP-001(ND)
+\index{soundness!natural deduction}
 \label{DED3-thm:soundness}
 If $!A$ is derivable from the undischarged assumptions~$\Gamma$, then
 $\Gamma \Entails !A$.
@@ -1503,6 +1531,7 @@ concatenation.
 %% ===================================================================
 
 \section{Sequent Calculus} \label{DED.4}
+\index{sequent calculus}
 
 The sequent calculus (Gentzen's $\Log{LK}$) instantiates the generic
 framework of \S\ref{DED.1} with derivations that are trees of
@@ -1526,6 +1555,7 @@ For the following, let $\Gamma, \Delta, \Pi, \Lambda$ represent finite
 sequences of sentences.
 
 \begin{defn}[Sequent]
+\index{sequent!definition}
 A \emph{sequent} is an expression $\Gamma \Sequent \Delta$ where
 $\Gamma$ (the \emph{antecedent}) and $\Delta$ (the \emph{succedent})
 are finite (possibly empty) sequences of sentences.
@@ -1548,6 +1578,7 @@ appending $!A$ to the right end of~$\Gamma$ (and $!A, \Gamma$ for
 appending to the left). $\Gamma, \Delta$ denotes concatenation.
 
 \begin{defn}[Initial Sequent]
+\index{initial sequent}
 An \emph{initial sequent} is a sequent of one of the following forms:
 \begin{enumerate}
 \item $!A \Sequent !A$ for any sentence~$!A$;
@@ -1559,8 +1590,8 @@ An \emph{initial sequent} is a sequent of one of the following forms:
 Derivations in the sequent calculus are trees of sequents, where the
 topmost sequents are initial sequents, and the logical rules are named
 for the main operator of the sentence they introduce. Each comes in
-two forms: a left rule (introducing the operator in the antecedent)
-and a right rule (introducing it in the succedent).
+two forms: a left rule\index{rule!left} (introducing the operator in the antecedent)
+and a right rule\index{rule!right} (introducing it in the succedent).
 
 %%% -----------------------------------------------------------------
 %%% DED.4.2  Propositional Rules
@@ -1699,6 +1730,8 @@ A series of weakening, contraction, and exchange inferences is often
 indicated by double inference lines.
 
 \subsubsection*{Cut}
+\index{cut rule}
+\index{rule!cut}
 
 \begin{defish}
 \[
@@ -1714,6 +1747,7 @@ The cut rule is not strictly necessary, but makes it considerably
 easier to reuse and combine derivations.
 
 \begin{rem}[Cut Elimination] % CP-010
+\index{cut elimination}
 \label{CP-010}
 \emph{Cut Elimination (Gentzen's Hauptsatz):} The $\Cut$ rule is
 \emph{admissible} in~$\Log{LK}$---every $\Log{LK}$-derivation using
@@ -1839,6 +1873,7 @@ iff every structure satisfies it.
 \end{defn}
 
 \begin{thm}[Soundness] % CP-001(SC)
+\index{soundness!sequent calculus}
 \label{DED4-thm:sequent-soundness}
 If $\Log{LK}$ derives $\Theta \Sequent \Xi$, then $\Theta \Sequent
 \Xi$ is valid.
@@ -1995,6 +2030,7 @@ In the sequent calculus, derivability is expressed via $\Gamma_0
 %% ===================================================================
 
 \section{Tableaux} \label{DED.5}
+\index{analytic tableau}
 
 Tableaux instantiate the generic framework of \S\ref{DED.1} by
 working \emph{refutationally}: to show $\Gamma \Proves !A$, one
@@ -2016,6 +2052,7 @@ tableau for some $!B_1, \dots, !B_n \in \Gamma$.
 \label{DEF-DED008}
 
 \begin{defn}[Signed Formula]
+\index{signed formula}
 A \emph{signed formula} is a pair consisting of a truth value sign and
 a sentence:
 \[
@@ -2213,6 +2250,7 @@ that $p \lif p$ is valid.
 \subsection{Tableaux}
 
 \begin{defn}[Tableau]
+\index{tableau}
 \label{DED5-defn:tableau}
 A \emph{tableau} for assumptions $\sFmla{S_1}{!A_1}$, \dots,
 $\sFmla{S_n}{!A_n}$ (where each $S_i$ is $\True$ or~$\False$) is a
@@ -2224,8 +2262,8 @@ finite tree of signed formulas satisfying:
   correct application of an inference rule to a signed formula in the
   branch above it.
 \end{enumerate}
-A branch is \emph{closed} iff it contains both $\sFmla{\True}{!A}$
-and~$\sFmla{\False}{!A}$, and \emph{open} otherwise. A tableau with
+A branch\index{branch!tableau} is \emph{closed}\index{branch!closed} iff it contains both $\sFmla{\True}{!A}$
+and~$\sFmla{\False}{!A}$, and \emph{open}\index{branch!open} otherwise. A tableau with
 every branch closed is a \emph{closed tableau}; otherwise it is
 \emph{open}.
 \end{defn}
@@ -2246,6 +2284,7 @@ structure satisfies it, and \emph{unsatisfiable} otherwise.
 \end{defn}
 
 \begin{thm}[Soundness] % CP-001(Tab)
+\index{soundness!tableau}
 \label{DED5-thm:tableau-soundness}
 If $\Gamma$ has a closed tableau, $\Gamma$ is unsatisfiable.
 \end{thm}
@@ -2422,6 +2461,8 @@ PRIM-SYN009, Language, \S\ref{SYN.1} for the general notion of a
 first-order language).
 
 \begin{defn}[Robinson Arithmetic $\Th{Q}$] % DEF-DED011
+\index{Robinson arithmetic}
+\index{theory!Robinson arithmetic}
 \label{DEF-DED011}
 The theory $\Th{Q}$ axiomatized by the following sentences is known
 as ``Robinson's $\Th{Q}$'' and is a very simple theory of arithmetic.
@@ -2465,6 +2506,8 @@ the incompleteness theorems apply to a wide class of theories.
 \subsection{Peano Arithmetic $\Th{PA}$}
 
 \begin{defn}[Peano Arithmetic $\Th{PA}$] % DEF-DED012
+\index{Peano arithmetic}
+\index{theory!Peano arithmetic}
 \label{DEF-DED012}
 Suppose $!A(x)$ is a formula in $\Lang L_A$ with free variables~$x$
 and $y_1$, \dots, $y_n$.  Then any sentence of the form
@@ -2503,6 +2546,7 @@ be carried out in~$\Th{PA}$.
 \subsection{$\omega$-Consistency}
 
 \begin{defn}[$\omega$-Consistency] % DEF-DED013
+\index{omega-consistency@$\omega$-consistency}
 \label{DEF-DED013}
 A theory $\Th{T}$ is \emph{$\omega$-consistent} if the following
 holds: if $\lexists[x][!A(x)]$ is any sentence and $\Th{T}$ proves
@@ -2524,6 +2568,7 @@ Rosser's Theorem, \S\ref{META.5}).
 \subsection{Derivability Conditions}
 
 \begin{defn}[Derivability Conditions] % DEF-DED014 (authoritative: \S META.6)
+\index{derivability conditions}
 Let $\Th{T}$ be an axiomatizable theory extending~$\Th{Q}$, and let
 $\OProv[\Th{T}](y)$ be a formula representing the derivability
 predicate for~$\Th{T}$ (i.e., $\OProv[\Th{T}](y) \defis
@@ -2609,6 +2654,7 @@ proof system:
 \subsection{Lindenbaum's Lemma}
 
 \begin{lem}[Lindenbaum's Lemma] % THM-DED005 (authoritative: \S META.2)
+\index{Lindenbaum's lemma}
 Every consistent set~$\Gamma$ in a language~$\Lang{L}$ can be
 extended to a complete and consistent set~$\Gamma^*$.
 \end{lem}
@@ -2666,6 +2712,7 @@ theorems.  It guarantees that any expressible property can be asserted
 of its own G\"odel number.
 
 \begin{lem}[Fixed-Point Lemma] % THM-DED006 (authoritative: \S META.5)
+\index{fixed-point lemma}
 Let $!B(x)$ be any formula with one free variable~$x$. Then there is a
 sentence~$!A$ such that $\Th{Q} \Proves !A \liff !B(\gn{!A})$.
 \end{lem}
@@ -2720,6 +2767,7 @@ which is $!E(\gn{!E(x)})$, i.e.,~$!A$.
 \subsection{L\"ob's Theorem}
 
 \begin{thm}[L\"ob's Theorem] % THM-DED007 (authoritative: \S META.6)
+\index{Lob's theorem@L\"ob's theorem}
 Let $\Th{T}$ be an axiomatizable theory extending $\Th{Q}$, and
 suppose $\OProv[\Th{T}](y)$ is a formula satisfying the derivability
 conditions P1--P3 (see DEF-DED014, \S\ref{DED.6}). If $\Th{T}$ derives

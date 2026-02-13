@@ -2,7 +2,7 @@
 
 **Date**: 2026-02-13
 **Repository**: sqkim25/OpenLogic (fork of OpenLogicProject/OpenLogic)
-**Current phase**: Phase 4 complete + Lean 4 machine verification complete. Phase 5 (prose audit) COMPLETE — all chapters PASS.
+**Current phase**: Phase 5 (prose audit) COMPLETE. Publication preparation COMPLETE.
 
 ---
 
@@ -16,8 +16,9 @@ This project creates a lean, Metamath-inspired systematization of mathematical l
 - 517 formal items machine-verified in Lean 4 (14 modules, 4,132 lines, 30 `sorry` on deep theorems)
 - 19/24 key theorems match mathlib formalizations
 - 2 prior QC passes: 10-dimension structural rubric (avg 27.3/30), 6-dimension coherence audit (all 18/18)
+- Publication preparation complete: notation index, further reading, subject index (270 entries), `\cref` standardization (193 cross-references)
 
-**What remains**: Publication preparation (bibliography, index, notation index).
+**What remains**: Optional `sorry` reduction in Lean formalization; human peer review.
 
 ---
 
@@ -266,8 +267,11 @@ SEM and DED are independent of each other — their connection (the completeness
 | `taxonomy/phase4/ch-meta.tex` | 2,874 | 126 KB |
 | `taxonomy/phase4/ch-set.tex` | 2,033 | 82 KB |
 | `taxonomy/phase4/ch-ext.tex` | 167 | 8 KB |
+| `taxonomy/phase4/notation-index.tex` | ~150 | 5 KB |
+| `taxonomy/phase4/further-reading.tex` | ~100 | 4 KB |
 | `taxonomy/phase4/lean-text.pdf` | — | 904 KB |
 | `taxonomy/phase4/VERIFICATION-REPORT.md` | 291 | 17 KB |
+| `taxonomy/phase4/PROSE-AUDIT.md` | ~300 | 18 KB |
 
 ### Machine Verification (16 files)
 
@@ -287,11 +291,9 @@ SEM and DED are independent of each other — their connection (the completeness
 
 2. **CH-EXT is a stub**: 167 lines, 0 formal items. Contains summary paragraphs with pointers to OpenLogic source material for modal logic, intuitionistic logic, many-valued logic, second-order logic, lambda calculus, and other topics.
 
-3. **`\cref` vs `Theorem~\ref{}` inconsistency**: CH-DED and CH-CMP use `\cref{}` while other chapters use manual `Theorem~\ref{}`. Both compile correctly but produce different typographic styles.
+3. **LLM-based verification caveat**: All non-mathematical QC (coherence, flow, cross-references) was performed by LLM agents, not human mathematicians. The formal content (definitions, theorem statements, dependency chain) is machine-verified by Lean 4.
 
-4. **LLM-based verification caveat**: All non-mathematical QC (coherence, flow, cross-references) was performed by LLM agents, not human mathematicians. The formal content (definitions, theorem statements, dependency chain) is machine-verified by Lean 4.
-
-5. **Token/tag resolution**: `!!{token}` and `\iftag` resolutions from OpenLogic source were applied by agents following rules, but no automated parser verified every expansion.
+4. **Token/tag resolution**: `!!{token}` and `\iftag` resolutions from OpenLogic source were applied by agents following rules, but no automated parser verified every expansion.
 
 ---
 
@@ -311,11 +313,17 @@ An 8-dimension prose quality rubric (Clarity, Motivation, Examples, Flow, Densit
 
 **Full report**: [`taxonomy/phase4/PROSE-AUDIT.md`](phase4/PROSE-AUDIT.md)
 
-### Publication Preparation (pending)
+### Publication Preparation (COMPLETE)
 
-- Bibliography and references
-- Notation index / symbol table
-- Subject index
-- Decision on CH-EXT: expand, publish as stub, or cut
-- Resolve `\cref` style inconsistency
-- Optional: reduce `sorry` count in Lean formalization
+All publication preparation tasks done:
+
+- **`\cref` standardization**: All 193 cross-references across 7 chapters now use `\cref{}`. Added `\crefname` definitions for `cor` and `chapter`. Zero manual `Type~\ref{}` patterns remain.
+- **Notation index**: `notation-index.tex` — 10 categories (Standard Sets, Set Theory, Connectives, Syntax, Semantics, Deduction, Theories, Computability, Gödel Numbering, Formal Set Theory) covering all principal symbols.
+- **Further reading**: `further-reading.tex` — curated bibliography organized by domain (7 subsections, 16 references).
+- **Subject index**: 270 `\index{}` entries across 7 chapters at key definition/theorem sites. `\makeindex` infrastructure in preamble, `\printindex` in back matter.
+- **CH-EXT decision**: Publish as-is (stub with pointers).
+
+### Remaining (optional)
+
+- Reduce `sorry` count in Lean formalization (30 deep theorems)
+- Human peer review

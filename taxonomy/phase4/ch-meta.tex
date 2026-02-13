@@ -12,6 +12,7 @@ is truth-preserving: nothing that can be derived from a set of
 sentences~$\Gamma$ goes beyond what is semantically entailed by~$\Gamma$.
 
 \begin{thm}[Soundness Theorem] % CP-001
+\index{soundness theorem}
 \label{CP-001}
 If $\Gamma \Proves !A$, then $\Gamma \Entails !A$.
 \end{thm}
@@ -76,6 +77,7 @@ constructs a model out of the syntax itself.
 \subsection{Complete Consistent Sets of Sentences}
 
 \begin{defn}[Complete set] % DEF-SEM005 (authoritative: \S SEM.3)
+\index{complete consistent set}
 A set~$\Gamma$ of sentences is \emph{complete} iff for any
 sentence~$!A$, either $!A \in \Gamma$ or $\lnot !A \in \Gamma$.
 \end{defn}
@@ -180,6 +182,7 @@ item (2) again, $\Gamma \Proves !A \lif !B$.  By
 \subsection{Maximally Consistent Sets of Sentences}
 
 \begin{defn}[Maximally consistent set] % DEF-DED002 (authoritative: \S DED.1)
+\index{maximally consistent set}
 A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
 \begin{enumerate}
 \item $\Gamma$ is consistent, and
@@ -189,7 +192,7 @@ A set~$\Gamma$ of sentences is \emph{maximally consistent} iff
 
 \begin{ex}\label{ex:mcs}
 The set $\Gamma = \{!A : \Sat{M}{!A}\}$ from
-Example~\ref{ex:complete-set} is maximally consistent: it is
+\cref{ex:complete-set} is maximally consistent: it is
 consistent (since $\Struct{M} \models \Gamma$), and adding any
 $!B \notin \Gamma$ produces an inconsistent set, because $!B \notin
 \Gamma$ means $\Sat{M}{\lnot !B}$, so $\lnot !B \in \Gamma$, and
@@ -197,7 +200,7 @@ $\Gamma \cup \{!B\} \Proves \lfalse$.
 \end{ex}
 
 Every maximally consistent set is complete and consistent; it therefore
-has all the properties established in Proposition~\ref{prop:ccs}.
+has all the properties established in \cref{prop:ccs}.
 
 %%% -----------------------------------------------------------------
 %%% META.2.3  Henkin Expansion
@@ -219,6 +222,7 @@ $\Obj d_1$, \dots, then $\Gamma$ is consistent in~$\Lang L'$.
 \end{prop}
 
 \begin{defn}[Saturated set] \label{defn:saturated-set}
+\index{saturated set}
 A set $\Gamma$ of formulas of a language $\Lang {L}$ is
 \emph{saturated} iff for each formula~$!A(x) \in \Frm[L]$ with one
 free variable~$x$ there is a constant~$c \in \Lang{L}$ such
@@ -238,7 +242,8 @@ witnesses for \emph{every} existential sentence it contains.
 The following definition will be used in the proof of the next lemma.
 
 \begin{defn} \label{defn:henkin-exp}
-Let $\Lang L'$ be as in Proposition~\ref{prop:lang-exp}.  Fix an enumeration
+\index{Henkin expansion}
+Let $\Lang L'$ be as in \cref{prop:lang-exp}.  Fix an enumeration
 $!A_0(x_0)$, $!A_1(x_1)$, \dots of all formulas~$!A_i(x_i)$
 of~$\Lang L'$ in which one variable ($x_i$) occurs free.  We define
 the sentences~$!D_n$ by induction on~$n$.
@@ -254,6 +259,7 @@ $\lexists[x_{n}][!A_{n}(x_{n})] \lif !A_{n}(c_{n})$.
 \end{defn}
 
 \begin{lem}[Henkin's Lemma] % THM-META-HEN
+\index{Henkin's lemma}
 \label{lem:henkin}
 Every consistent set~$\Gamma$ can be extended to a saturated
 consistent set~$\Gamma'$.
@@ -262,9 +268,9 @@ consistent set~$\Gamma'$.
 \begin{proof}
 Given a consistent set of sentences~$\Gamma$ in a language~$\Lang{L}$,
 expand the language by adding a denumerable set of new
-constants to form~$\Lang{L'}$.  By Proposition~\ref{prop:lang-exp}, $\Gamma$
+constants to form~$\Lang{L'}$.  By \cref{prop:lang-exp}, $\Gamma$
 is still consistent in the richer language.  Further, let $!D_i$ be as
-in Definition~\ref{defn:henkin-exp}.  Let
+in \cref{defn:henkin-exp}.  Let
 \begin{align*}
 \Gamma_0 & = \Gamma \\
 \Gamma_{n+1} & = \Gamma_n \cup \{!D_n \}
@@ -284,7 +290,7 @@ step, suppose that $\Gamma_{n}$ is consistent but $\Gamma_{n+1} =
 $\lexists[x_{n}][!A_{n}(x_n)] \lif !A_{n}(c_{n})$,
 where $!A_n(x_n)$ is a formula of $\Lang{L'}$ with only the
 variable~$x_n$ free. By the way we have chosen the~$c_n$ (see
-Definition~\ref{defn:henkin-exp}), $c_n$ does not occur in~$!A_n(x_n)$ nor
+\cref{defn:henkin-exp}), $c_n$ does not occur in~$!A_n(x_n)$ nor
 in~$\Gamma_n$.
 
 If $\Gamma_n \cup \{!D_n\}$ is inconsistent, then $\Gamma_n
@@ -329,14 +335,14 @@ Suppose $\Gamma$ is complete, consistent, and saturated.
       \in \Gamma$.  Because $\Gamma$ is saturated,
       $(\lexists[x][!A(x)] \lif !A(c)) \in \Gamma$ for some
       constant~$c$. By the provability properties of~$\lif$ (see
-      Proposition~\ref{prop:ccs}\ref{prop:ccs-if}),
-      and Proposition~\ref{prop:ccs}\ref{prop:ccs-prov-in}, $!A(c)
+      \cref{prop:ccs}\ref{prop:ccs-if}),
+      and \cref{prop:ccs}\ref{prop:ccs-prov-in}, $!A(c)
       \in \Gamma$.
 
     For the other direction, saturation is not necessary: Suppose
     $!A(t) \in \Gamma$.  Then $\Gamma \Proves \lexists[x][!A(x)]$ by
     the provability properties of quantifiers (see \S\ref{DED.1}), item~(1). By
-    Proposition~\ref{prop:ccs}\ref{prop:ccs-prov-in},
+    \cref{prop:ccs}\ref{prop:ccs-prov-in},
     $\lexists[x][!A(x)] \in \Gamma$.
 
 \item Suppose that $!A(t) \in \Gamma$ for
@@ -355,7 +361,7 @@ Suppose $\Gamma$ is complete, consistent, and saturated.
       $\lforall[x][!A(x)] \in \Gamma$.  Then $\Gamma \Proves !A(t)$
       by the provability properties of quantifiers (see \S\ref{DED.1}),
       item~(2). We get $!A(t) \in \Gamma$ by
-      Proposition~\ref{prop:ccs}.
+      \cref{prop:ccs}.
 \end{enumerate}
 \end{proof}
 
@@ -366,6 +372,7 @@ Suppose $\Gamma$ is complete, consistent, and saturated.
 \subsection{Lindenbaum's Lemma}
 
 \begin{lem}[Lindenbaum's Lemma] % THM-DED005
+\index{Lindenbaum's lemma}
 \label{THM-DED005}
 Every consistent set~$\Gamma$ in a language~$\Lang{L}$ can be
 extended to a complete and consistent set~$\Gamma^*$.
@@ -435,6 +442,7 @@ to itself, and defines predicate extensions so that an atomic sentence
 is true in $\Struct{M(\Gamma^*)}$ iff it is in~$\Gamma^*$.
 
 \begin{defn}[Term model] % DEF-META-TM
+\index{term model}
 \label{defn:termmodel}
 Let $\Gamma^*$ be a complete and consistent,
 saturated set of sentences in a language~$\Lang L$. The \emph{term
@@ -472,7 +480,7 @@ $\Atom{R}{s, t} \in \Gamma^*$.
 
 \begin{lem}
 \label{lem:val-in-termmodel} Let $\Struct M(\Gamma^*)$ be the term model
-of Definition~\ref{defn:termmodel}; then $\Value{t}{M(\Gamma^*)} = t$.
+of \cref{defn:termmodel}; then $\Value{t}{M(\Gamma^*)} = t$.
 \end{lem}
 
 \begin{proof}
@@ -493,7 +501,7 @@ and so by induction this holds for every closed term~$t$.
 
 \begin{prop}
 \label{prop:quant-termmodel}
-Let $\Struct M(\Gamma^*)$ be the term model of Definition~\ref{defn:termmodel}.
+Let $\Struct M(\Gamma^*)$ be the term model of \cref{defn:termmodel}.
 \begin{enumerate}
 \item $\Sat{M(\Gamma^*)}{\lexists[x][!A(x)]}$ iff
   $\Sat{M(\Gamma^*)}{!A(t)}$ for at least one closed term~$t$.
@@ -530,6 +538,7 @@ Let $\Struct M(\Gamma^*)$ be the term model of Definition~\ref{defn:termmodel}.
 \end{proof}
 
 \begin{lem}[Truth Lemma] % THM-META-TL
+\index{truth lemma}
 \label{lem:truth}
 Suppose $!A$ does not contain~$\eq$. Then
 $\Sat{M(\Gamma^*)}{!A}$ iff $!A \in \Gamma^*$.
@@ -572,7 +581,7 @@ We prove both directions simultaneously, and by induction on $!A$.
     $\Sat{M(\Gamma^*)}{!C}$ (by
     definition of satisfaction) iff both $!B \in \Gamma^*$ and $!C \in
     \Gamma^*$ (by the induction hypothesis). By
-    Proposition~\ref{prop:ccs}\ref{prop:ccs-and}, this is the case
+    \cref{prop:ccs}\ref{prop:ccs-and}, this is the case
     iff $(!B \land !C) \in \Gamma^*$.
 
 \item $!A \ident !B \lor !C$:
@@ -582,7 +591,7 @@ We prove both directions simultaneously, and by induction on $!A$.
     definition of satisfaction) iff $!B \in \Gamma^*$ or $!C \in
     \Gamma^*$ (by induction hypothesis). This is the case iff $(!B
     \lor !C) \in \Gamma^*$ (by
-    Proposition~\ref{prop:ccs}\ref{prop:ccs-or}).
+    \cref{prop:ccs}\ref{prop:ccs-or}).
 
 \item $!A \ident !B \lif !C$:
     $\Sat{M(\Gamma^*)}{!B \lif !C}$
@@ -590,22 +599,22 @@ We prove both directions simultaneously, and by induction on $!A$.
     definition of satisfaction) iff $!B \notin \Gamma^*$ or $!C \in
     \Gamma^*$ (by induction hypothesis). This is the case iff $(!B
     \lif !C) \in \Gamma^*$ (by
-    Proposition~\ref{prop:ccs}\ref{prop:ccs-if}).
+    \cref{prop:ccs}\ref{prop:ccs-if}).
 
 \item $!A \ident \lforall[x][!B(x)]$:
     $\Sat{M(\Gamma^*)}{\lforall[x][!B(x)]}$ iff
       $\Sat{M(\Gamma^*)}{!B(t)}$ for all terms~$t$
-      (Proposition~\ref{prop:quant-termmodel}).  By induction hypothesis, this
+      (\cref{prop:quant-termmodel}).  By induction hypothesis, this
       is the case iff $!B(t) \in \Gamma^*$ for all terms~$t$; by
-      Proposition~\ref{prop:saturated-instances}, this in turn is the case
+      \cref{prop:saturated-instances}, this in turn is the case
       iff $\lforall[x][!A(x)] \in \Gamma^*$.
 
 \item $!A \ident \lexists[x][!B(x)]$:
     $\Sat{M(\Gamma^*)}{\lexists[x][!B(x)]}$ iff
       $\Sat{M(\Gamma^*)}{!B(t)}$ for at least one term~$t$
-      (Proposition~\ref{prop:quant-termmodel}).  By induction hypothesis, this
+      (\cref{prop:quant-termmodel}).  By induction hypothesis, this
       is the case iff $!B(t) \in \Gamma^*$ for at least one term~$t$.
-      By Proposition~\ref{prop:saturated-instances}, this in turn is the
+      By \cref{prop:saturated-instances}, this in turn is the
       case iff $\lexists[x][!B(x)] \in \Gamma^*$.
 \end{enumerate}
 \end{proof}
@@ -689,9 +698,10 @@ and $\equivclass{\Trm[L]}{\approx} = \Setabs{\equivrep{t}{\approx}}{t \in \Trm[L
 \end{defn}
 
 \begin{defn}[Factored term model] % DEF-META-FTM
+\index{factored term model}
 \label{defn:term-model-factor}
 Let $\Struct M = \Struct M(\Gamma^*)$ be the term model
-for~$\Gamma^*$ from Definition~\ref{defn:termmodel}.  Then $\Struct{\equivclass{M}{\approx}}$ is the following
+for~$\Gamma^*$ from \cref{defn:termmodel}.  Then $\Struct{\equivclass{M}{\approx}}$ is the following
 structure:
 \begin{enumerate}
 \item $\Domain{\equivclass{M}{\approx}} = \equivclass{\Trm[L]}{\approx}$.
@@ -708,7 +718,7 @@ structure:
 The definitions of $\Assign{f}{\equivclass{M}{\approx}}$ and
 $\Assign{R}{\equivclass{M}{\approx}}$ refer to elements of
 $\equivclass{\Trm[L]}{\approx}$ via representatives~$t \in
-\equivrep{t}{\approx}$.  Proposition~\ref{prop:approx-equiv}
+\equivrep{t}{\approx}$.  \cref{prop:approx-equiv}
 guarantees that these definitions do not depend on the choice of
 representatives.
 
@@ -733,7 +743,7 @@ $\Struct{\equivclass{M}{\approx}}$ is well defined, i.e., if $t_1$,
 \end{prop}
 
 \begin{proof}
-Follows from Proposition~\ref{prop:approx-equiv} by induction on~$n$.
+Follows from \cref{prop:approx-equiv} by induction on~$n$.
 \end{proof}
 
 \begin{lem}
@@ -743,7 +753,7 @@ Follows from Proposition~\ref{prop:approx-equiv} by induction on~$n$.
 \end{lem}
 
 \begin{proof}
-The proof is similar to that of Lemma~\ref{lem:val-in-termmodel}.
+The proof is similar to that of \cref{lem:val-in-termmodel}.
 \end{proof}
 
 \begin{lem}[Truth Lemma, with identity] % THM-META-TLI
@@ -753,7 +763,7 @@ $\Sat{\equivclass{M}{\approx}}{!A}$ iff $!A \in \Gamma^*$ for all
 \end{lem}
 
 \begin{proof}
-By induction on~$!A$, just as in the proof of Lemma~\ref{lem:truth}.
+By induction on~$!A$, just as in the proof of \cref{lem:truth}.
 The only case that needs additional attention is when $!A \ident
 \eq[t][t']$.
 \begin{align*}
@@ -773,6 +783,7 @@ The only case that needs additional attention is when $!A \ident
 Let us combine our results: we arrive at the completeness theorem.
 
 \begin{thm}[Completeness Theorem] % CP-002
+\index{completeness theorem}
 \label{CP-002}
 Let $\Gamma$ be a set of sentences.  If $\Gamma$ is consistent, it
 is satisfiable.
@@ -780,8 +791,8 @@ is satisfiable.
 
 \begin{proof}
 Suppose $\Gamma$ is consistent. By
-  Lemma~\ref{lem:henkin}, there is a saturated consistent set
-  $\Gamma' \supseteq \Gamma$. By Lemma~\ref{THM-DED005} (Lindenbaum's Lemma), there
+  \cref{lem:henkin}, there is a saturated consistent set
+  $\Gamma' \supseteq \Gamma$. By \cref{THM-DED005} (Lindenbaum's Lemma), there
 is a $\Gamma^* \supseteq \Gamma'$ which is
 consistent and complete.
   Since $\Gamma' \subseteq \Gamma^*$, for each
@@ -789,13 +800,13 @@ consistent and complete.
         $\lexists[x][!A(x)] \lif !A(c)$
   and so $\Gamma^*$ is saturated.  If $\Gamma$
   does not contain~$\eq$, then by
-Lemma~\ref{lem:truth} (Truth Lemma),
+\cref{lem:truth} (Truth Lemma),
 $\Sat{M(\Gamma^*)}{!A}$ iff $!A \in
 \Gamma^*$.  From this it follows in particular that for all $!A \in
 \Gamma$, $\Sat{M(\Gamma^*)}{!A}$, so
 $\Gamma$ is satisfiable.
   If $\Gamma$ does contain~$\eq$,
-  then by Lemma~\ref{lem:truth-factored}, for all sentences~$!A$,
+  then by \cref{lem:truth-factored}, for all sentences~$!A$,
   $\Sat{\equivclass{M}{\approx}}{!A}$ iff $!A \in \Gamma^*$.  In
   particular, $\Sat{\equivclass{M}{\approx}}{!A}$ for all $!A \in
   \Gamma$, so $\Gamma$ is satisfiable.
@@ -808,9 +819,9 @@ $\Gamma \Proves !A$.
 \end{cor}
 
 \begin{proof}
-Note that the $\Gamma$'s in Corollary~\ref{cor:completeness} and
-Theorem~\ref{CP-002} are universally quantified.  To make sure we
-do not confuse ourselves, let us restate Theorem~\ref{CP-002}
+Note that the $\Gamma$'s in \cref{cor:completeness} and
+\cref{CP-002} are universally quantified.  To make sure we
+do not confuse ourselves, let us restate \cref{CP-002}
 using a different variable: for any set of sentences~$\Delta$, if
 $\Delta$ is consistent, it is satisfiable.  By contraposition, if
 $\Delta$ is not satisfiable, then $\Delta$ is inconsistent.  We will
@@ -820,7 +831,7 @@ Suppose that $\Gamma \Entails !A$.  Then $\Gamma \cup \{\lnot !A\}$ is
 unsatisfiable by the entailment--unsatisfiability equivalence
 (see DEF-SEM002, \S\ref{SEM.4}).  Taking $\Gamma
 \cup \{\lnot !A\}$ as our $\Delta$, the previous version of
-Theorem~\ref{CP-002} gives us that $\Gamma \cup \{\lnot !A\}$ is
+\cref{CP-002} gives us that $\Gamma \cup \{\lnot !A\}$ is
 inconsistent.  By
 the derivability from inconsistency property (see \S\ref{DED.1}),
 $\Gamma \Proves !A$.
@@ -835,11 +846,13 @@ $\Gamma \Proves !A$.
 \section{Compactness} \label{META.3}
 
 \begin{defn}[Finitely satisfiable] % DEF-SEM003
+\index{finitely satisfiable}
 \label{DEF-SEM003}
   A set $\Gamma$ of formulas is \emph{finitely satisfiable} iff every finite $\Gamma_0 \subseteq \Gamma$ is satisfiable.
 \end{defn}
 
 \begin{thm}[Compactness Theorem] % CP-003
+\index{compactness theorem}
 \label{CP-003}
 The following hold for any sentences $\Gamma$ and $!A$:
 \begin{enumerate}
@@ -860,7 +873,7 @@ satisfiable.
 
 Now suppose that $\Gamma$ is finitely satisfiable.  Then every finite
 subset~$\Gamma_0 \subseteq \Gamma$ is satisfiable.  By soundness
-(Corollary~\ref{cor:satisfiable-consistent}, from \S\ref{META.1}),
+(\cref{cor:satisfiable-consistent}, from \S\ref{META.1}),
 every finite subset is consistent.  Then $\Gamma$ itself must be
 consistent by
 the compactness of derivability (see \S\ref{DED.1}).
@@ -893,6 +906,7 @@ non-enumerable structures is also satisfied in some enumerable
 structure.
 
 \begin{thm}[Downward L\"owenheim--Skolem] % CP-004
+\index{Lowenheim-Skolem theorem}
 \label{CP-004}
 If $\Gamma$ is consistent then it has
 an enumerable model, i.e., it is satisfiable in a structure
@@ -1081,6 +1095,7 @@ which is true in $\Struct{N}$ (the standard model of arithmetic;
 see \S\ref{SEM.5}), then $\Th{Q} \Proves !A$.
 
 \begin{defn}[Bounded quantifiers] % DEF-INC015
+\index{bounded quantifiers}
 \label{DEF-INC015}
 A \emph{bounded existential formula} is one of the form
 $\lexists[x][(x < t \land !A(x))]$ where $t$ is any term, which we
@@ -1166,7 +1181,7 @@ Suppose $t_1$ and $t_2$ are closed terms. Then
 Given terms $t_1$ and $t_2$, we fix $n = \Value{t_1}{N}$ and
 $m = \Value{t_2}{N}$.
 
-Suppose $!A \ident t_1 = t_2$. By Lemma~\ref{lem:q-proves-clterm-id},
+Suppose $!A \ident t_1 = t_2$. By \cref{lem:q-proves-clterm-id},
 $\Th{Q} \Proves \eq[t_1][\num n]$ and $\Th{Q} \Proves \eq[t_2][\num n]$.
 If $n = m$, then $\Th{Q} \Proves \eq[\num n][\num m]$ and hence
 $\Th{Q} \Proves \eq[t_1][t_2]$ by the transitivity of identity.
@@ -1179,7 +1194,7 @@ which states that $x < y \liff \lexists[z][\eq[z' + x][y]]$
 for all $x,y$.
 
 Suppose $\Sat{N}{t_1 < t_2}$. Then there exists some $k \in \Nat$
-such that $n + k + 1 = m$. By Lemma~\ref{lem:q-proves-clterm-id},
+such that $n + k + 1 = m$. By \cref{lem:q-proves-clterm-id},
 $\Th{Q} \Proves \eq[t_1][\num n]$ and $\Th{Q} \Proves \eq[t_2][\num m]$,
 and by the first part of this lemma,
 $\Th{Q} \Proves \eq[\num n + {\num k}'][\num m]$.
@@ -1219,13 +1234,13 @@ Suppose $!A$ is a formula, $t$ a closed term, and $k=\Value{t}{N}$. Then
     Similarly, we can take an empty disjunction to be simply
     $\ltrue$, which is also provable in~$\Th{Q}$.
     We therefore suppose that $\Value{t}{N} = k+1$ for some
-    natural number~$k$. By Lemma~\ref{lem:q-proves-clterm-id} we
+    natural number~$k$. By \cref{lem:q-proves-clterm-id} we
     can assume that we are working with a formula of the
     form $\bforall{x<\num{k+1}}{!A(x)}$.
 
     Suppose that $\Th{Q} \Proves \bforall{x<\num{k+1}}{!A(x)}$,
     and let $n \leq k$. Since $\Th{Q} \Proves \num n < \num{k+1}$
-    by Lemma~\ref{lem:atomic-completeness}, it follows by logic that
+    by \cref{lem:atomic-completeness}, it follows by logic that
     $\Th{Q} \Proves !A(\num n)$. Applying this fact $k+1$ times
     for each $n \leq k$, we get that $\Th{Q} \Proves !A(\num 0)
     \land \dots \land !A(\num k)$ as desired.
@@ -1243,13 +1258,14 @@ Suppose $!A$ is a formula, $t$ a closed term, and $k=\Value{t}{N}$. Then
 \end{proof}
 
 \begin{lem} \label{lem:delta0-completeness}
+\index{delta-0 completeness}
 If $!A$ is a $\Delta_0$ sentence which is true in
 $\Struct{N}$, then $\Th{Q} \Proves !A$.
 \end{lem}
 
 \begin{proof}
 We prove this by induction on formula complexity.
-The base case is given by Lemma~\ref{lem:atomic-completeness},
+The base case is given by \cref{lem:atomic-completeness},
 so we move to the induction step. For simplicity we split
 the case of negation into subcases depending on the
 structure of the formula to which the negation is
@@ -1285,7 +1301,7 @@ in~$\Struct{N}$, where $t$ is a closed term and $k=\Value{t}{N}$. By the inducti
 hypothesis and logic, if $!A(\num n)$ is true in~$\Struct{N}$
 for all $n < \Value{t}{N}$ then $\Th{Q} \Proves
 !A(\num 0) \land \dots \land !A(\num{k-1})$.
-By Lemma~\ref{lem:bounded-quant-equiv} it follows that
+By \cref{lem:bounded-quant-equiv} it follows that
 $\Th{Q} \Proves \bforall{x<t}{!A(x)}$.
 
 \item The case for the bounded existential quantifier, where
@@ -1308,7 +1324,7 @@ for bounded universal quantifiers.
 The only cases remaining are when $!A$ is atomic and when
 $\lnot !A \ident \lnot\lnot !B$ for some $\Delta_0$
 sentence $!B$. If $!A$ is atomic then by
-Lemma~\ref{lem:atomic-completeness}, $\Th{Q} \Proves \lnot !A$.
+\cref{lem:atomic-completeness}, $\Th{Q} \Proves \lnot !A$.
 If $\lnot !A \ident \lnot\lnot !B$, then by logic it is
 provably equivalent in~$\Th{Q}$ to~$!B$, which is true
 in~$\Struct{N}$ since $\lnot !A$ is true in~$\Struct{N}$.
@@ -1318,6 +1334,7 @@ $\Th{Q} \Proves \lnot !A$.
 \end{proof}
 
 \begin{thm}[$\Sigma_1$-Completeness] \label{thm:sigma1-completeness}
+\index{sigma-1 completeness}
 If $!A$ is a $\Sigma_1$ sentence which is true
 in~$\Struct{N}$, then $\Th{Q} \Proves !A$.
 \end{thm}
@@ -1329,7 +1346,7 @@ number~$n$ and a variable assignment~$s$ such that $s(x) = n$ and
 $\Sat{N}{!A(x)}[s]$. By standard facts about
 the satisfaction relation it follows that
 $\Sat{N}{!A(\num n)}$. But $!A(\num n)$ is a
-$\Delta_0$ formula, so by Lemma~\ref{lem:delta0-completeness}
+$\Delta_0$ formula, so by \cref{lem:delta0-completeness}
 we have that $\Th{Q} \Proves !A(\num n)$, and hence by
 logic we also have that $\Th{Q} \Proves \lexists[x][!A(x)]$.
 \end{proof}
@@ -1397,6 +1414,7 @@ it also derives $\lnot !G_\Th{T}$, and hence it would be inconsistent.
 \end{proof}
 
 \begin{defn}[$\omega$-consistency]
+\index{omega-consistency}
 \label{defn:omega-consistency}
 A theory $\Th{T}$ is \emph{$\omega$-consistent} if the following holds: if
 $\lexists[x][!A(x)]$ is any sentence and $\Th{T}$ derives $\lnot
@@ -1422,7 +1440,7 @@ We show that if $\Th{T}$ derives $\lnot !G_\Th{T}$, then it is
 $\omega$-inconsistent. Suppose $\Th{T}$ derives $\lnot !G_\Th{T}$. If
 $\Th{T}$ is inconsistent, it is $\omega$-inconsistent, and we are
 done. Otherwise, $\Th{T}$ is consistent, so it does not derive
-$!G_\Th{T}$ by Lemma~\ref{lem:cons-G-unprov}. Since there is no
+$!G_\Th{T}$ by \cref{lem:cons-G-unprov}. Since there is no
 derivation of $!G_\Th{T}$ in $\Th{T}$, $\Th{Q}$ derives
 \[
 \lnot \OPrf[\Th{T}](\num 0, \gn{!G_\Th{T}}), \lnot \OPrf[\Th{T}](\num 1,
@@ -1435,6 +1453,7 @@ $\omega$-inconsistent.
 \end{proof}
 
 \begin{thm}[First Incompleteness Theorem --- G\"odel's version] % CP-005
+\index{Godel's first incompleteness theorem}
 \label{CP-005}
 Let $\Th{T}$ be any
 $\omega$-consistent, axiomatizable theory extending~$\Th{Q}$. Then
@@ -1443,8 +1462,8 @@ $\Th{T}$ is not complete.
 
 \begin{proof}
   If $\Th{T}$ is $\omega$-consistent, it is consistent, so $\Th{T}
-  \Proves/ !G_\Th{T}$ by Lemma~\ref{lem:cons-G-unprov}.  By
-  Lemma~\ref{lem:omega-cons-G-unref}, $\Th{T} \Proves/ \lnot !G_\Th{T}$.
+  \Proves/ !G_\Th{T}$ by \cref{lem:cons-G-unprov}.  By
+  \cref{lem:omega-cons-G-unref}, $\Th{T} \Proves/ \lnot !G_\Th{T}$.
   This means that $\Th{T}$ is incomplete, since it derives neither
   $!G_\Th{T}$ nor $\lnot !G_\Th{T}$.
 \end{proof}
@@ -1455,7 +1474,7 @@ There is an alternative, more direct proof of the First Incompleteness
 Theorem via computability theory: if $\Th{T}$ were a complete,
 consistent, axiomatizable extension of~$\Th{Q}$, then $\Th{T}$ would
 be decidable, contradicting the undecidability of~$\Th{Q}$ (see
-Theorem~\ref{CP-008} below). This computability-theoretic argument
+\cref{CP-008} below). This computability-theoretic argument
 avoids the need for the $\omega$-consistency hypothesis entirely,
 though it does not construct an explicit independent sentence.
 \end{rem}
@@ -1473,6 +1492,7 @@ a ``modified'' derivability predicate $\ORProv_T(y)$ instead of
 $\OProv[\Th{T}](y)$.
 
 \begin{thm}[Rosser's Theorem] % CP-005 (strengthened)
+\index{Rosser's theorem}
 \label{thm:rosser}
 Let $\Th{T}$ be any consistent, axiomatizable theory
 extending $\Th{Q}$. Then $\Th{T}$ is not complete.
@@ -1516,7 +1536,7 @@ By the fixed-point lemma, there is a formula $!R_\Th{T}$ such that
   \Th{Q} \Proves !R_\Th{T} \liff \lnot \ORProv[\Th{T}](\gn{!R_\Th{T}}).
   \label{RT}
 \end{equation}
-In contrast to the proof of Theorem~\ref{CP-005},
+In contrast to the proof of \cref{CP-005},
 here we claim that if $\Th{T}$ is consistent, $\Th{T}$ does not derive
 $!R_\Th{T}$, and $\Th{T}$ also does not derive $\lnot !R_\Th{T}$. (In
 other words, we do not need the assumption of $\omega$-consistency.)
@@ -1629,6 +1649,7 @@ facts about this derivability predicate. In fact, what we need are
 the following facts:
 
 \begin{defn}[Derivability Conditions] % DEF-DED014
+\index{derivability conditions}
 \label{DEF-DED014}
 A formula $\OProv[\Th{T}](y)$ satisfies the
 \emph{Hilbert--Bernays--L\"ob derivability conditions} for a
@@ -1677,6 +1698,7 @@ $\OCon[\Th{PA}]$ to be the sentence $\lnot
 the job:
 
 \begin{thm}[Second Incompleteness Theorem] % CP-006
+\index{Godel's second incompleteness theorem}
 \label{CP-006}
 Assuming $\Th{PA}$ is consistent, then $\Th{PA}$ does not derive
 $\OCon[\Th{PA}]$.
@@ -1692,7 +1714,7 @@ with a derivability predicate having these properties.
 It is informative to read G\"odel's sketch of an argument, since the
 theorem follows like a good punch line. It goes like this. Let
 $!G_\Th{PA}$ be the G\"odel sentence that we constructed in the proof
-of Theorem~\ref{CP-005}. We have shown ``If $\Th{PA}$
+of \cref{CP-005}. We have shown ``If $\Th{PA}$
 is consistent, then $\Th{PA}$ does not derive $!G_\Th{PA}$.'' If we
 formalize this \emph{in} $\Th{PA}$, we have a proof of
 \[
@@ -1845,10 +1867,11 @@ formula~$\OProv[\Th{T}](y) \lif !A$. The fixed point of that
 corresponds to the sentence~$X$ in the preceding sketch.
 
 \begin{thm}[L\"ob's Theorem] % THM-DED007
+\index{Lob's theorem}
 \label{THM-DED007}
 Let $\Th{T}$ be an axiomatizable theory extending $\Th{Q}$, and
 suppose $\OProv[\Th{T}](y)$ is a formula satisfying conditions P1--P3
-(Definition~\ref{DEF-DED014}). If $\Th{T}$ derives $\OProv[\Th{T}](\gn{!A}) \lif !A$,
+(\cref{DEF-DED014}). If $\Th{T}$ derives $\OProv[\Th{T}](\gn{!A}) \lif !A$,
 then in fact $\Th{T}$ derives $!A$.
 \end{thm}
 
@@ -1924,6 +1947,7 @@ interpretation for the symbols in the language of arithmetic.  Then
 $\Sat{N}{!A}$ means ``$!A$ is true in the standard interpretation.''
 
 \begin{defn}[Definability in $\Struct{N}$] \label{defn:definable-N}
+\index{definability in N@definability in $\Struct{N}$}
 A relation $R(x_1,\dots,x_k)$ of natural numbers is \emph{definable}
 in $\Struct{N}$ if and only if there is a formula $!A(x_1,\dots,x_k)$
 in the language of arithmetic such that for every $n_1,\dots,n_k$,
@@ -1977,6 +2001,7 @@ is: is the set $\Setabs{\Gn{!A}}{\Sat{N}{!A}}$ definable in
 arithmetic? Tarski's theorem answers this in the negative.
 
 \begin{thm}[Tarski's Undefinability Theorem] % CP-007
+\index{Tarski's theorem}
 \label{CP-007}
 The set of true sentences of arithmetic is not definable in arithmetic.
 \end{thm}
@@ -1984,7 +2009,7 @@ The set of true sentences of arithmetic is not definable in arithmetic.
 \begin{proof}
 Suppose $!D(x)$ defined it, i.e., $\Sat{N}{!A}$ iff
 $\Sat{N}{!D(\gn{!A})}$. By the fixed-point lemma
-(Lemma~\ref{THM-DED006}), there is a formula
+(\cref{THM-DED006}), there is a formula
 $!A$ such that $\Th{Q} \Proves !A \liff \lnot !D(\gn{!A})$, and hence
 $\Sat{N}{!A \liff \lnot !D(\gn{!A})}$. But then $\Sat{N}{!A}$ if and
 only if $\Sat{N}{\lnot !D(\gn{!A})}$, which contradicts the fact that
@@ -2032,6 +2057,7 @@ iff $y$ is the G\"odel number of a sentence provable in~$\Th{Q}$,
 recursive?  The answer is: no.
 
 \begin{thm}[Undecidability of $\Th{Q}$] % CP-008
+\index{undecidability of Q@undecidability of $\Th{Q}$}
 \label{CP-008}
 $\Th{Q}$ is undecidable, i.e., the relation
 \[
@@ -2117,6 +2143,7 @@ separates $!A$ and $\lnot !B$.  It will be useful to consider the
 generalization to sets of sentences.
 
 \begin{defn}
+\index{separation}
 A sentence $!C$ \emph{separates} sets of sentences $\Gamma$ and
 $\Delta$ if and only if $\Gamma \Entails !C$ and $\Delta \Entails
 \lnot !C$. If no such sentence exists, then $\Gamma$ and $\Delta$
@@ -2147,7 +2174,7 @@ and $\Delta$ are separated in $\Lang{L}'_0$. Then $\Gamma \Entails
 \Subst{!C}{c}{x}$ and $\Delta \Entails \lnot \Subst{!C}{c}{x}$ for some $!C \in
 \Lang{L}_0$ (where $c$ is a new constant---the case where $!C$
 contains more than one such new constant is similar). By
-compactness (Theorem~\ref{CP-003}), there are \emph{finite} subsets $\Gamma_0$ of $\Gamma$
+compactness (\cref{CP-003}), there are \emph{finite} subsets $\Gamma_0$ of $\Gamma$
 and $\Delta_0$ of $\Delta$ such that $\Gamma_0 \Entails \Subst{!C}{c}{x}$
 and $\Delta_0 \Entails \lnot \Subst{!C}{c}{x}$. Let $!G$ be the
 conjunction of all formulas in $\Gamma_0$ and $!H$ the
@@ -2205,6 +2232,7 @@ inseparable. We distinguish two cases:
 \subsection{The Interpolation Theorem}
 
 \begin{thm}[Craig's Interpolation Theorem] % CP-011
+\index{Craig interpolation theorem}
 \label{CP-011}
 If $\Entails !A \lif !B$, then there is a sentence $!C$ such that
 $\Entails !A \lif !C$ and $\Entails !C \lif !B$, and every
@@ -2271,7 +2299,7 @@ By simultaneous induction on $n$ we can now prove:
 \item\label{part-b} $\Gamma_{n+1}$ and $\Delta_n$ are inseparable in
     $\Lang{L}'_0$.
 \end{enumerate}
-The basis for \ref{part-a} is given by Lemma~\ref{lem:sep1}. For
+The basis for \ref{part-a} is given by \cref{lem:sep1}. For
 part \ref{part-b}, we need to distinguish three cases:
 \begin{enumerate}
 \item If $\Gamma_0 \cup \{!A_0 \}$ and $\Delta_0$ are separable, then
@@ -2281,7 +2309,7 @@ part \ref{part-b}, we need to distinguish three cases:
 \item It remains to consider the case where $!A_0$ is existential, so
   that $\Gamma_1 = \Gamma_0 \cup \{ \lexists[x][!S], \Subst{!S}{c}{x}
   \}$. By construction, $\Gamma_0 \cup \{ \lexists[x][!S]\}$ and
-  $\Delta_0$ are inseparable, so that by Lemma~\ref{lem:sep2} also
+  $\Delta_0$ are inseparable, so that by \cref{lem:sep2} also
   $\Gamma_0 \cup \{ \lexists[x][!S], \Subst{!S}{c}{x} \}$ and
   $\Delta_0$ are inseparable.
 \end{enumerate}
@@ -2289,13 +2317,13 @@ This completes the basis of the induction for \ref{part-a} and
 \ref{part-b} above. Now for the inductive step. For \ref{part-a}, if
 $\Delta_{n+1} = \Delta_n \cup \{ !B_n \}$ then $\Gamma_{n+1}$ and
 $\Delta_{n+1}$ are inseparable by construction (even when $!B_n$ is
-existential, by Lemma~\ref{lem:sep2}); if $\Delta_{n+1} = \Delta_n$
+existential, by \cref{lem:sep2}); if $\Delta_{n+1} = \Delta_n$
 (because $\Gamma_{n+1}$ and $\Delta_n \cup \{!B_n\}$ are separable),
 then we use the induction hypothesis on \ref{part-b}. For the
 inductive step for \ref{part-b}, if $\Gamma_{n+2} = \Gamma_{n+1} \cup
 \{!A_{n+1} \}$ then $\Gamma_{n+2}$ and $\Delta_{n+1}$ are
 inseparable by construction (even when $!A_{n+1}$ is existential,
-by Lemma~\ref{lem:sep2}); and if  $\Gamma_{n+2} = \Gamma_{n+1}$ then
+by \cref{lem:sep2}); and if  $\Gamma_{n+2} = \Gamma_{n+1}$ then
 we use the inductive case for \ref{part-a} just proved. This
 concludes the induction on \ref{part-a} and \ref{part-b}.
 
@@ -2346,7 +2374,7 @@ Since $\Gamma^*$ is maximally consistent, it has a model
 $\Struct{M}'_1$ whose domain $\Domain{M'_1}$ comprises all and
 only the elements $\Assign{c}{M'_1}$ interpreting the
 constants---just like in the proof of the Completeness Theorem
-(Theorem~\ref{CP-002}). Similarly, $\Delta^*$ has a
+(\cref{CP-002}). Similarly, $\Delta^*$ has a
 model $\Struct{M}'_2$ whose domain $\Domain{M'_2}$ is given by the
 interpretations $\Assign{c}{M'_2}$ of the constants.
 
@@ -2421,6 +2449,7 @@ way---whenever it \emph{implicitly defines}~$P$---then it also
 explicitly defines it.
 
 \begin{defn}
+\index{explicit definability}
 Suppose $\Lang{L}$ is a language not containing the
 predicate~$P$.  A set $\Sigma(P)$ of sentences of $\Lang{L}
 \cup \{P\}$ \emph{explicitly defines}~$P$ if and only if there is
@@ -2439,6 +2468,7 @@ must be identical.  Beth's theorem (below) shows that, remarkably,
 these two notions coincide in first-order logic.
 
 \begin{defn}
+\index{implicit definability}
 Suppose $\Lang{L}$ is a language not containing the
 predicates~$P$ and~$P'$.  A set $\Sigma(P)$ of sentences of
 $\Lang{L} \cup \{P\}$ \emph{implicitly defines} $P$ if and only if
@@ -2449,7 +2479,7 @@ $\Lang{L} \cup \{P\}$ \emph{implicitly defines} $P$ if and only if
 \]
 where $\Sigma(P')$ is the result of uniformly replacing $P$ with $P'$
 in $\Sigma(P)$.
-\end{defn}
+\end{defn>
 
 In other words, for any model $\Struct{M}$ and $R, R' \subseteq
 \Domain{M}^n$, if both $\Expan{M}{R} \Entails \Sigma(P)$ and
@@ -2459,6 +2489,7 @@ expansion of $\Lang{L}$ to $\Lang{L} \cup \{P\}$ such that
 $\Assign{P}{M'} = R$, and similarly for $\Expan{M}{R'}$.
 
 \begin{thm}[Beth Definability Theorem] % CP-012
+\index{Beth definability theorem}
 \label{CP-012}
 A set $\Sigma(P)$ of $\Lang{L}
   \cup\{P\}$-formulas implicitly defines $P$ if and only $\Sigma(P)$
@@ -2480,7 +2511,7 @@ $\Lang{L}$. Then
 \Sigma(P) \cup \Sigma(P') \Entails
 \Atom{P}{c_1, \dots, c_n} \to  \Atom{P'}{c_1, \dots, c_n}.
 \]
-By compactness (Theorem~\ref{CP-003}), there are finite sets $\Delta_0 \subseteq \Sigma(P)$
+By compactness (\cref{CP-003}), there are finite sets $\Delta_0 \subseteq \Sigma(P)$
 and $\Delta_1 \subseteq \Sigma(P')$ such that
 \[
 \Delta_0 \cup \Delta_1 \Entails
@@ -2497,7 +2528,7 @@ $\Entails$:
 !D(P) \land \Atom{P}{c_1, \dots, c_n} \Entails
 !D(P') \to \Atom{P'}{c_1, \dots, c_n}.
 \]
-By Craig's Interpolation Theorem (Theorem~\ref{CP-011}) there is a sentence $!C(c_1,\dots, c_n)$
+By Craig's Interpolation Theorem (\cref{CP-011}) there is a sentence $!C(c_1,\dots, c_n)$
 not containing $P$ or $P'$ such that:
 \begin{align*}
   !D(P) \land \Atom{P}{c_1, \dots, c_n} & \Entails !C(c_1,\dots, c_n); \\
@@ -2734,7 +2765,7 @@ $\Struct{M} \elemequiv \Struct{N}$.
 \begin{proof}[Proof sketch]
 The forward direction proceeds by induction on~$!A$.  For the
 converse, one proceeds by induction on~$n$.  The key step uses
-Proposition~\ref{prop:qr-finite}: given $a \in \Domain{M}$, let
+\cref{prop:qr-finite}: given $a \in \Domain{M}$, let
 $!T^a_n$ be the finite set of formulas of rank $\le n$ satisfied by
 $\mathbf{a}a$ in $\Struct{M}$.  Then $\mathbf{a}$ satisfies
 $\lexists[x][!T^a_n]$ (rank $\le n+1$), so by hypothesis $\mathbf{b}$
@@ -2777,7 +2808,7 @@ expressing that $\Struct{M} \models_L !E$ and $\Struct{N} \not\models_L
 \Struct{N}$ via~$I$.  By the L\"owenheim--Skolem Property,
 $!D_1 \land !D_2$ has an enumerable model containing enumerable
 partially isomorphic substructures.  But enumerable partially
-isomorphic structures are isomorphic (Theorem~\ref{thm:p-isom1}),
+isomorphic structures are isomorphic (\cref{thm:p-isom1}),
 contradicting the Isomorphism Property.
 \end{proof}
 
@@ -2797,7 +2828,7 @@ $\Mod(L){!E} = \Mod(L){!D}$.
 \begin{proof}
 Let $n$ be such that any two $n$-equivalent structures
 $\Struct{M}$ and $\Struct{N}$ agree on the value assigned to~$!E$.
-Recall Proposition~\ref{prop:qr-finite}: there are only finitely many
+Recall \cref{prop:qr-finite}: there are only finitely many
 first-order sentences in a finite language that have
 quantifier rank no greater than~$n$, up to logical equivalence. Now,
 for each fixed structure~$\Struct{M}$ let $!D_{\Struct{M}}$ be the
@@ -2818,6 +2849,7 @@ $!D_\Struct{N}$ is a disjunct in $!D$, and since $\Struct{N}
 \end{proof}
 
 \begin{thm}[Lindstr\"om's Theorem] % CP-013
+\index{Lindstrom's theorem}
   \label{CP-013} Suppose $\tuple{L, \models_L}$ has the
   Compactness and the L\"owenheim--Skolem Properties. Then
   $\tuple{L, \models_L} \le \tuple{F, \models}$ (so
@@ -2826,21 +2858,21 @@ $!D_\Struct{N}$ is a disjunct in $!D$, and since $\Struct{N}
 
 \emph{Proof idea.}  Given an $L$-sentence~$!E$ over a finite
 relational language, use the back-and-forth characterization of
-elementary equivalence (Theorem~\ref{thm:b-n-f}) and a compactness
+elementary equivalence (\cref{thm:b-n-f}) and a compactness
 argument to find~$n$ such that $!E$ cannot distinguish structures
 agreeing on all first-order sentences of quantifier rank~$\le n$.
 Then $!E$ is equivalent to a Boolean combination of such sentences,
 showing $\tuple{L, \models_L} \le \tuple{F, \models}$.
 
 \begin{proof}
-By Lemma~\ref{lem:lindstrom}, it suffices to show that for any $!E
+By \cref{lem:lindstrom}, it suffices to show that for any $!E
 \in L(\Lang{L})$, with $\Lang{L}$ finite, there is $n \in \Nat$
 such that for any two structures $\Struct{M}$ and~$\Struct{N}$: if
 $\Struct{M} \equiv_n \Struct{N}$ then $\Struct{M}$ and $\Struct{N}$
 agree on~$!E$. For then $!E$ is equivalent to a first-order
 sentence, from which $\tuple{L, \models_L} \le \tuple{F, \models}$
 follows. Since we are working in a finite, purely relational
-language, by Theorem~\ref{thm:b-n-f} we can replace the statement
+language, by \cref{thm:b-n-f} we can replace the statement
 that $\Struct{M} \equiv_n \Struct{N}$ by the corresponding algebraic
 statement that $I_n(\emptyset,\emptyset)$.
 
@@ -2855,7 +2887,7 @@ that they satisfy the same atomic sentences (we can take a
 subsequence of the $\Struct{M}$'s otherwise). Let $\Struct{M}$ be the
 union of all the $\Struct{M}_n$'s, i.e., the unique minimal
 structure having each $\Struct{M}_n$ as a substructure.  As in the
-proof of Theorem~\ref{thm:abstract-p-isom}, let $\Struct{M}^*$ be the
+proof of \cref{thm:abstract-p-isom}, let $\Struct{M}^*$ be the
 extension of $\Struct{M}$ with domain $\Domain{M} \cup
 \Domain{M}^{<\omega}$, in the expanded language comprising the
 concatenation predicates $P$ and~$Q$.
@@ -2897,7 +2929,7 @@ $J(n^*-k, \mathbf{a}, \mathbf{b})$, where $k$ is the length of
 $\mathbf{a}$ and $\mathbf{b}$. Since $n^*$ is non-standard, for each
 standard $k$ we have that $n^* - k >0$, and the set $\mathcal{I}$
 witnesses the fact that $\Struct{M_{n^*}} \simeq_p
-\Struct{N_{n^*}}$. But by Theorem~\ref{thm:abstract-p-isom},
+\Struct{N_{n^*}}$. But by \cref{thm:abstract-p-isom},
 $\Struct{M_{n^*}}$ is $L$-equivalent to $\Struct{N_{n^*}}$, a
 contradiction.
 \end{proof}
@@ -2962,7 +2994,7 @@ corresponds to branching in the tableau.
 \cup \{\lnot !A\}$ witnesses the unsatisfiability of $\Gamma \cup
 \{\lnot !A\}$.  By soundness of tableaux (see \S\ref{DED.5}) we have
 $\Gamma \Entails !A$, and by the Completeness Theorem
-(Theorem~\ref{CP-002}), $\Gamma \Proves_H !A$.
+(\cref{CP-002}), $\Gamma \Proves_H !A$.
 
 Alternatively, each direction can be verified by a direct syntactic
 translation.  The indirect route via soundness and completeness gives
@@ -2971,9 +3003,9 @@ with respect to the same semantics, they derive the same formulas.
 \end{proof}
 
 The indirect argument deserves emphasis.  By the Soundness Theorem
-(Theorem~\ref{CP-001}), for each system $S$ we have: if $\Gamma
+(\cref{CP-001}), for each system $S$ we have: if $\Gamma
 \Proves_S !A$ then $\Gamma \Entails !A$.  By the Completeness Theorem
-(Theorem~\ref{CP-002}), for each system $S$: if $\Gamma \Entails !A$
+(\cref{CP-002}), for each system $S$: if $\Gamma \Entails !A$
 then $\Gamma \Proves_S !A$.  Chaining these two facts for any pair of
 systems $S_1$ and $S_2$ yields: $\Gamma \Proves_{S_1} !A$ iff $\Gamma
 \Proves_{S_2} !A$.  Thus the equivalence is an immediate corollary of

@@ -21,7 +21,7 @@ subsets of $\Nat$.  A function may fail to be defined on some inputs;
 we make this precise.
 
 \begin{defn}[Partial function] % DEF-CMP001
-\label{DEF-CMP001}
+\label{DEF-CMP001}\index{partial function}\index{function!partial}
 A \emph{partial function} $f\colon \Nat^k \pto \Nat$ is a function
 from a subset of $\Nat^k$ to $\Nat$.  We write $f(\vec{x}) \fdefined$
 to mean that $f$ is defined at $\vec{x}$ (i.e., $\vec{x}$ is in the
@@ -32,7 +32,7 @@ both are defined and equal.
 \end{defn}
 
 \begin{defn}[Total function] % DEF-CMP002
-\label{DEF-CMP002}
+\label{DEF-CMP002}\index{total function}\index{function!total}
 A partial function $f\colon \Nat^k \pto \Nat$ is \emph{total} if
 $f(\vec{x}) \fdefined$ for every $\vec{x} \in \Nat^k$, i.e., if
 its domain is all of $\Nat^k$.
@@ -46,7 +46,7 @@ defined at $g_0(\vec{x}), \dots, g_k(\vec{x})$.
 \subsection{Composition and primitive recursion} \label{CMP.1.2}
 
 \begin{defn}[Composition] % PRIM-CMP001a
-\label{DEF-CMP-COMP}
+\label{DEF-CMP-COMP}\index{composition}
 Suppose $f$ is a $k$-place function, and $g_0$, \dots, $g_{k-1}$ are
 $k$ functions which are all $n$-place.  The function defined by
 \emph{composition from $f$ and $g_0$, \dots,~$g_{k-1}$} is the
@@ -57,14 +57,14 @@ f(g_0(x_0, \dots, x_{n-1}), \dots, g_{k-1}(x_0, \dots, x_{n-1})).
 \]
 \end{defn}
 
-Together with the projection functions $\Proj{n}{i}(x_0, \dots,
+Together with the projection functions\index{projection function}\index{function!projection} $\Proj{n}{i}(x_0, \dots,
 x_{n-1}) = x_i$, composition provides sufficient flexibility to
 rearrange, duplicate, or discard arguments.  For instance, a
 three-place function $g(x_0, y, z) = \Succ(z)$ can be defined as
 $g(x_0, y, z) = \Succ(\Proj{3}{2}(x_0, y, z))$.
 
 \begin{defn}[Primitive recursion] % PRIM-CMP002
-\label{PRIM-CMP002}
+\label{PRIM-CMP002}\index{primitive recursion}
 Suppose $f$ is a $k$-place function ($k \geq 1$) and $g$ is a
 $(k+2)$-place function.  The function defined by \emph{primitive
   recursion from $f$ and $g$} is the $(k+1)$-place function~$h$
@@ -77,13 +77,13 @@ defined by the equations
 \end{defn}
 
 \begin{defn}[Primitive recursive function] % PRIM-CMP002
-\label{PRIM-CMP002-SET}
+\label{PRIM-CMP002-SET}\index{primitive recursive function}\index{function!primitive recursive}
 The set of \emph{primitive recursive functions} is the set of
 functions from $\Nat^n$ to $\Nat$, defined inductively by the
 following clauses:
 \begin{enumerate}
-\item $\Zero$ is primitive recursive.
-\item $\Succ$ is primitive recursive.
+\item $\Zero$\index{zero function}\index{function!zero} is primitive recursive.
+\item $\Succ$\index{successor function}\index{function!successor} is primitive recursive.
 \item Each projection function $\Proj{n}{i}$ is primitive recursive.
 \item If $f$ is a $k$-place primitive recursive function and $g_0$,
   \dots,~$g_{k-1}$ are $n$-place primitive recursive functions, then
@@ -103,7 +103,7 @@ primitive recursion.
 \subsection{Primitive recursive relations} \label{CMP.1.3}
 
 \begin{defn}[Characteristic function] % DEF-CMP003
-\label{DEF-CMP003}
+\label{DEF-CMP003}\index{characteristic function}\index{function!characteristic}
 The \emph{characteristic function} of a relation $R(\vec{x})$ is the
 function
 \[
@@ -287,7 +287,7 @@ We now extend the primitive recursive functions by allowing partial
 functions and adding the unbounded search operator.
 
 \begin{defn}[Unbounded search / $\mu$-recursion] % PRIM-CMP003
-\label{PRIM-CMP003}
+\label{PRIM-CMP003}\index{unbounded search}\index{minimization}\index{mu-operator@$\mu$-operator}
 If $f(x, \vec{z})$ is any partial function on the natural numbers,
 define $\umin{x}{f(x, \vec{z})}$ to be
 \begin{quote}
@@ -310,7 +310,7 @@ computation does not halt, neither does the computation of
 $\umin{x}{f(x, \vec{z})}$.
 
 \begin{defn}[Partial recursive function] % PRIM-CMP001
-\label{PRIM-CMP001}
+\label{PRIM-CMP001}\index{partial recursive function}\index{function!partial recursive}
 The set of \emph{partial recursive functions} is the smallest set of
 partial functions from the natural numbers to the natural numbers (of
 various arities) containing zero, successor, and projections, and
@@ -318,7 +318,7 @@ closed under composition, primitive recursion, and unbounded search.
 \end{defn}
 
 \begin{defn}[Recursive function] % DEF-CMP002
-\label{DEF-CMP002-REC}
+\label{DEF-CMP002-REC}\index{recursive function}\index{function!recursive}\index{general recursive function}
 The set of \emph{recursive functions} (also called \emph{total
   recursive functions}) is the set of partial recursive functions that
 are total.
@@ -339,7 +339,7 @@ functions.
 \subsection{Definition of Turing machines} \label{CMP.2.1}
 
 \begin{defn}[Turing machine] % PRIM-CMP004
-\label{PRIM-CMP004}
+\label{PRIM-CMP004}\index{Turing machine}
 A \emph{Turing machine} $M$ is a tuple $\langle Q, \Sigma, q_0,
 \delta\rangle$ consisting of
 \begin{enumerate}
@@ -431,7 +431,7 @@ $n \in \Nat$, let $\TMstroke^n$ be the empty sequence if $n = 0$, and
 otherwise the sequence consisting of exactly $n$~$\TMstroke$'s.
 
 \begin{defn}[Turing computation of a total function] % DEF-CMP-TMCOMP
-\label{DEF-CMP-TMCOMP}
+\label{DEF-CMP-TMCOMP}\index{computable function}\index{function!computable}
 A Turing machine~$M$ \emph{computes} the function
 $f\colon \Nat^k \to \Nat$ iff $M$~halts on input
 \[
@@ -442,7 +442,7 @@ with output $\TMstroke^{f(n_1, \dots, n_k)}$.
 \end{defn}
 
 \begin{defn}[Turing computation of a partial function] % DEF-CMP-TMPCOMP
-\label{DEF-CMP-TMPCOMP}
+\label{DEF-CMP-TMPCOMP}\index{partial computable function}\index{function!partial computable}
 A Turing machine~$M$ computes the partial function
 $f\colon \Nat^k \pto \Nat$ iff
 \begin{enumerate}
@@ -526,7 +526,7 @@ halts on square~$1$.  The other conditions of
 \subsection{The Church--Turing thesis} \label{CMP.2.6}
 
 \begin{defn}[Church--Turing thesis] % PRIM-CMP005
-\label{PRIM-CMP005}
+\label{PRIM-CMP005}\index{Church-Turing thesis}
 The \emph{Church--Turing Thesis} states that anything computable via
 an effective procedure is Turing computable.
 \end{defn}
@@ -568,7 +568,7 @@ to terminate for non-members.
 \subsection{Computable sets} \label{CMP.3.1}
 
 \begin{defn}[Computable / decidable set] % PRIM-CMP006
-\label{PRIM-CMP006}
+\label{PRIM-CMP006}\index{computable set}\index{decidable set}\index{decidability}
 Let $S$ be a set of natural numbers.  Then $S$ is \emph{computable}
 (equivalently, \emph{decidable}) iff its characteristic
 function~$\Char{S}$ is computable, i.e., the function
@@ -591,7 +591,7 @@ either~$1$ or~$0$, indicating membership.
 \subsection{Computably enumerable sets} \label{CMP.3.2}
 
 \begin{defn}[Computably enumerable set] % PRIM-CMP007
-\label{PRIM-CMP007}
+\label{PRIM-CMP007}\index{computably enumerable set}\index{recursively enumerable set}
 A set $S$ is \emph{computably enumerable} (abbreviated \emph{c.e.};
 also called \emph{recursively enumerable} or \emph{r.e.}) if it is
 empty or the range of a computable function.
@@ -700,7 +700,7 @@ W_e = \Setabs{x}{\cfind{e}(x) \fdefined}.
 Then if $A$ is any computably enumerable set, $A = W_e$ for some~$e$.
 
 \begin{thm}[$\exists$-characterization of c.e.\ sets] % DEF-CMP010b
-\label{DEF-CMP010b}
+\label{DEF-CMP010b}\index{computably enumerable set}
 A set $S$ is computably enumerable if and only if there is a
 computable relation $R(x, y)$ such that
 \[
@@ -900,7 +900,7 @@ $\Nat$ to $\Nat$ is not.  But we can find specific examples of
 non-computable functions.
 
 \begin{defn}[Halting function] % PRIM-CMP008
-\label{PRIM-CMP008}
+\label{PRIM-CMP008}\index{halting function}
 The \emph{halting function}~$h$ is defined as
 \[
 h(e,n) =
@@ -912,7 +912,7 @@ h(e,n) =
 \end{defn}
 
 \begin{defn}[Halting problem] % PRIM-CMP008
-\label{PRIM-CMP008-PROB}
+\label{PRIM-CMP008-PROB}\index{halting problem}\index{undecidability}
 The \emph{Halting Problem} is the problem of determining (for any $e$,
 $n$) whether the Turing machine~$M_e$ halts for an input of~$n$
 strokes.
@@ -975,7 +975,7 @@ computable.
 \end{proof}
 
 \begin{thm}[Unsolvability of the Halting Problem] % THM-CMP002
-\label{THM-CMP002}
+\label{THM-CMP002}\index{halting problem}
 The halting problem is unsolvable, i.e., the function~$h$ is not Turing
 computable.
 \end{thm}
@@ -1055,7 +1055,7 @@ $\fn{sequenceBound}(x,k) = p_{k-1}^{k \cdot (x+1)}$.
 
 \begin{thm}[Kleene's Normal Form Theorem] % THM-CMP004
 \label{THM-CMP004}
-\label{DEF-CMP-NF}
+\label{DEF-CMP-NF}\index{Kleene normal form}
 There is a primitive recursive relation $T(e, x, s)$ and a primitive
 recursive function $U(s)$, with the following property: if $f$ is any
 partial recursive function, then for some~$e$,
@@ -1125,7 +1125,7 @@ that are not Turing computable.
 \subsection{The universal Turing machine} \label{CMP.5.4}
 
 \begin{thm}[Universal Turing machine] % PRIM-CMP012
-\label{PRIM-CMP012}
+\label{PRIM-CMP012}\index{universal Turing machine}\index{Turing machine!universal}
 There is a \emph{universal Turing machine}~$U$ which, when started on
 input $\tuple{e,n}$:
 \begin{enumerate}
@@ -1166,7 +1166,7 @@ decodes the simulated tape contents back into a unary output and halts.
 \subsection{The $s$-$m$-$n$ theorem} \label{CMP.5.5}
 
 \begin{thm}[$s$-$m$-$n$ theorem] % THM-CMP004
-\label{THM-CMP004-SMN}
+\label{THM-CMP004-SMN}\index{s-m-n theorem@$s$-$m$-$n$ theorem}
   For each pair of natural numbers $n$ and~$m$, there is a primitive
   recursive function~$s^m_n$ such that for every sequence
   $e$, $a_0$, \dots, $a_{m-1}$, $y_0$, \dots, $y_{n-1}$, we have
@@ -1406,7 +1406,7 @@ inference step, and bounded search over sub-derivations.
 \subsection{Representability in $\Th{Q}$} \label{CMP.5.10}
 
 \begin{defn}[Representable function] % DEF-CMP009
-\label{DEF-CMP009-REP}
+\label{DEF-CMP009-REP}\index{representable function}\index{function!representable}
 A function $f(x_0, \dots, x_k)$ is \emph{representable in $\Th{Q}$}
 if there is a formula $!A_f(x_0, \dots, x_k, y)$ such that whenever
 $f(n_0, \dots, n_k) = m$, then:
@@ -1418,7 +1418,7 @@ $f(n_0, \dots, n_k) = m$, then:
 \end{defn}
 
 \begin{defn}[Representable relation]
-\label{DEF-CMP-REPREL}
+\label{DEF-CMP-REPREL}\index{representable relation}
 A relation $R(x_0,\dots,x_k)$ is \emph{representable in $\Th{Q}$} if
 there is a formula $!A_R(x_0,\dots,x_k)$ such that whenever
 $R(n_0,\dots,n_k)$ is true, $\Th{Q} \Proves !A_R(\num{n_0}, \dots,
@@ -1430,7 +1430,7 @@ The representability theorem establishes a deep connection between
 computability and provability.
 
 \begin{thm}[Representability theorem] % DEF-CMP009
-\label{THM-CMP-REPCOMP}
+\label{THM-CMP-REPCOMP}\index{representability theorem}
 A function is representable in $\Th{Q}$ if and only if it is computable.
 A relation is representable in $\Th{Q}$ if and only if it is computable.
 \end{thm}
@@ -1507,7 +1507,7 @@ y), y)$ where $\hat{h}(\vec{x}, y) = \umin{d}{(\beta(d,0) = f(\vec{x})
 \subsection{Productive sets} \label{CMP.5.12}
 
 \begin{defn}[Productive set] % DEF-CMP007
-\label{DEF-CMP007}
+\label{DEF-CMP007}\index{productive set}
 A set $A \subseteq \Nat$ is \emph{productive} if there exists a
 computable function~$f$ such that for every c.e.\ set $W_e \subseteq
 A$, we have $f(e) \in A \setminus W_e$.  Such a function~$f$ is called
@@ -1552,7 +1552,7 @@ sets, axiomatizable theories, and computable inseparability.
 \subsection{Many-one reducibility} \label{CMP.6.1}
 
 \begin{defn}[Many-one reduction] % PRIM-CMP009
-\label{PRIM-CMP009}
+\label{PRIM-CMP009}\index{many-one reduction}\index{reduction}
 Let $A$ and $B$ be sets of natural numbers.  A computable
 function~$f\colon \Nat \to \Nat$ is a \emph{many-one reduction} of $A$
 to~$B$ iff, for every natural number~$x$,
@@ -1609,7 +1609,7 @@ are c.e., whence $A$ is computable by \cref{THM-CMP-CECOMP}.
 \subsection{Complete c.e.\ sets} \label{CMP.6.2}
 
 \begin{defn}[Complete c.e.\ set] % DEF-CMP008
-\label{DEF-CMP008}
+\label{DEF-CMP008}\index{complete c.e. set}\index{computably enumerable set!complete}
 A set $A$ is a \emph{complete computably enumerable set} (under
 many-one reducibility) if
 \begin{enumerate}
@@ -1667,7 +1667,7 @@ total iff $x \in K$, so $k$ reduces $K$ to $\fn{Tot}$.
 \subsection{Axiomatizable theories} \label{CMP.6.4}
 
 \begin{defn}[Axiomatizable theory] % DEF-CMP011
-\label{DEF-CMP011}
+\label{DEF-CMP011}\index{axiomatizable theory}
 A theory~$\Gamma$ is \emph{axiomatizable} if it is axiomatized by a
 decidable set of axioms, i.e., $\Gamma = \Setabs{!A}{\Gamma_0 \Entails
   !A}$ for some decidable set~$\Gamma_0$.
@@ -1694,7 +1694,7 @@ check membership in~$A$ decidably, $\Th{T}$ is c.e.
 \subsection{Computable inseparability} \label{CMP.6.5}
 
 \begin{defn}[Computable inseparability] % DEF-CMP014
-\label{DEF-CMP014}
+\label{DEF-CMP014}\index{computable inseparability}
 Two disjoint sets $A$ and $B$ are \emph{computably inseparable} if
 there is no computable set $C$ such that $A \subseteq C$ and $B
 \subseteq \Complement{C}$.
@@ -1735,7 +1735,7 @@ arithmetical theories.
 \subsection{Rice's theorem} \label{CMP.7.1}
 
 \begin{thm}[Rice's Theorem] % THM-CMP003
-\label{THM-CMP003}
+\label{THM-CMP003}\index{Rice's theorem}
   Let $C$ be any set of partial computable functions, and let $A =
   \Setabs{n}{\cfind{n} \in C}$.  If $A$ is computable, then either $C$
   is empty or $C$ is the set of all partial computable functions.
@@ -1832,7 +1832,7 @@ $f$ such that $\cfind{f(x)}(y) \simeq g(x,y)$ and apply (2).
 \end{proof}
 
 \begin{thm}[Recursion Theorem / Fixed-Point Theorem] % THM-CMP005
-\label{THM-CMP005}
+\label{THM-CMP005}\index{recursion theorem}\index{fixed-point theorem}
 For every partial computable function $g(x,y)$, there is an index~$e$
 such that for every~$y$,
 \[
