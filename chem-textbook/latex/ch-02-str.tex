@@ -1,0 +1,970 @@
+% ch-02-str.tex — Chapter 2: How Does Arrangement Determine Properties? (Structure Domain)
+% Full conversion from CH-02-STR.md
+
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+\noindent\textit{Domain: STR (Structure) --- From atomic inventory to molecular architecture}
+
+\bigskip
+
+Pick up two bottles from under your kitchen sink. One is vegetable oil. The other is water. Both are clear liquids at room temperature. Both pour easily. But try to mix them and something peculiar happens: they refuse. The oil floats on top of the water in a stubborn, shimmering layer. No amount of shaking will make them stay mixed for long.
+
+Why? It is not because oil and water are made of different elements --- they are not, really. Water is hydrogen and oxygen. Vegetable oil is mostly hydrogen, oxygen, and carbon. The same three elements. The same protons, neutrons, and electrons you catalogued in Chapter~\ref{ch:com}. If composition were the whole story, oil and water should behave similarly. They do not.
+
+The difference is \textbf{structure}: how the atoms are connected, what shape those connections create, and how that shape determines every property you can observe --- whether a substance dissolves in water, whether it is a solid or a gas, whether it conducts electricity, whether it is flexible or brittle. Chapter~\ref{ch:com} answered ``What is stuff made of?'' This chapter answers the next question: \textbf{How is it arranged, and why does that arrangement matter?} By the end, you will be able to take a molecular formula, draw how its atoms are connected, predict the molecule's three-dimensional shape, determine whether it is polar or nonpolar, identify the forces that hold molecules near each other, and use all of that to explain everyday phenomena --- from why ice floats to why plastic bags and Kevlar vests are both made of polymers yet behave nothing alike.
+
+We start with the most basic structural question: how do atoms connect?
+
+
+%% ============================================================
+\section{STR.1: How Do Atoms Connect?}
+\label{sec:str1}
+%% ============================================================
+
+In Chapter~\ref{ch:com}, you learned that atoms bond because most of them have incomplete sets of valence electrons (PRIM-COM007). Metals lose electrons, nonmetals gain them, and atoms in the middle --- especially carbon --- share. But we never drew a picture of what ``sharing'' looks like. We never asked: if two atoms share electrons, how exactly are those electrons arranged? And how do we know whether the sharing is equal or lopsided?
+
+This section answers both questions. First, we learn to draw \textbf{Lewis structures} --- 2D diagrams that show exactly where every valence electron sits in a molecule. Then we learn to classify bonds by how evenly the electrons are shared.
+
+%% ---- Reasoning Move: DEF-STR001 ----
+\begin{reasoningmove}{DEF-STR001}{Lewis Structure}
+  \textbf{Reasoning move}: Given a molecular formula and the valence electron count for each atom, distribute electrons as bonding pairs and lone pairs to satisfy the octet rule (duet for H), producing a 2D diagram that shows how atoms are connected and where unshared electrons reside.
+\end{reasoningmove}
+
+\depends{PRIM-COM007}{valence electron reasoning, Chapter~1 --- you must know how many valence electrons each atom brings before you can distribute them}{1}
+
+A Lewis structure is a map of a molecule's electrons. It shows you two things: which atoms are bonded to which (by sharing electron pairs), and where the unshared electrons sit (as lone pairs). Every bond, every lone pair, every piece of molecular behavior we discuss in the rest of this chapter traces back to this diagram.
+
+Here is the procedure, step by step:
+
+\textbf{Step 1: Count total valence electrons.}
+
+Add up the valence electrons contributed by each atom. As we learned in Chapter~\ref{ch:com}, the valence electron count comes from the group number (PRIM-COM007). For ions, add electrons for negative charges or subtract for positive charges.
+
+\textbf{Step 2: Connect atoms with single bonds.}
+
+Place the least electronegative atom in the center (hydrogen is always on the outside). Draw a single line (representing a shared pair of 2 electrons) between the central atom and each surrounding atom.
+
+\textbf{Step 3: Distribute remaining electrons as lone pairs.}
+
+After accounting for the bonding electrons, place the remaining electrons as lone pairs (dots) on the outer atoms first, giving each atom an octet (8 electrons) or a duet (2 electrons for hydrogen). Then place any leftover lone pairs on the central atom.
+
+\textbf{Step 4: Check octets. If the central atom lacks an octet, convert lone pairs to multiple bonds.}
+
+If the central atom does not have 8 electrons, take a lone pair from an adjacent atom and make it a second (or third) shared pair --- creating a double bond (=) or triple bond.
+
+\subsection*{Worked Example 1: Water (\ce{H2O})}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Count valence electrons}: O has 6 (group~16), each H has 1 (group~1). Total = $6 + 1 + 1 = 8$.
+  \item \textbf{Connect with single bonds}: H---O---H. That uses 4 electrons (2 bonds $\times$ 2 electrons each).
+  \item \textbf{Distribute remaining}: $8 - 4 = 4$ electrons remain. Place them as 2 lone pairs on oxygen.
+  \item \textbf{Check octets}: Oxygen has 2 bonding pairs + 2 lone pairs = 8 electrons. Each H has 2 electrons (duet). Done.
+\end{enumerate}
+
+\figurebox{Lewis structure of water: oxygen in the center bonded to two hydrogen atoms, with two lone pairs on oxygen.}{fig:lewis-water}
+
+Oxygen has two bonds and two lone pairs. Those lone pairs will matter enormously when we get to molecular shape.
+
+\subsection*{Worked Example 2: Carbon Dioxide (\ce{CO2})}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Count valence electrons}: C has 4 (group~14), each O has 6 (group~16). Total = $4 + 6 + 6 = 16$.
+  \item \textbf{Connect with single bonds}: O---C---O. Uses 4 electrons.
+  \item \textbf{Distribute remaining}: $16 - 4 = 12$. Place lone pairs on oxygens first: 3 pairs on each O uses 12. Each O now has 8 ($1$ bond $+ 3$ lone pairs $= 2 + 6 = 8$).
+  \item \textbf{Check central atom}: Carbon has only 4 electrons (2 bonds). Needs 4 more. Convert one lone pair from each oxygen into a bonding pair, creating double bonds.
+\end{enumerate}
+
+\figurebox{Lewis structure of \ce{CO2}: carbon in the center with double bonds to each oxygen, each oxygen retaining two lone pairs.}{fig:lewis-co2}
+
+Carbon has two double bonds and no lone pairs. Each oxygen has two lone pairs. This structure --- two double bonds, no lone pairs on the central atom --- is why \ce{CO2} is linear and nonpolar, as we will see shortly.
+
+\subsection*{Worked Example 3: Ammonia (\ce{NH3})}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Count}: N has 5 (group~15), each H has 1. Total = $5 + 3 = 8$.
+  \item \textbf{Connect}: H---N with three single bonds. Uses 6 electrons.
+  \item \textbf{Distribute}: $8 - 6 = 2$ remaining. Place as one lone pair on N.
+  \item \textbf{Check}: N has 3 bonding pairs + 1 lone pair = 8. Each H has 2. Done.
+\end{enumerate}
+
+Result: Nitrogen has three bonds and one lone pair. That lone pair will push the hydrogen atoms closer together, making ammonia pyramidal rather than flat.
+
+\subsection*{Worked Example 4: Formaldehyde (\ce{CH2O})}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Count}: C has 4, each H has 1, O has 6. Total = $4 + 2 + 6 = 12$.
+  \item \textbf{Connect}: H atoms connect to C, O connects to C. Three single bonds use 6 electrons.
+  \item \textbf{Distribute}: $12 - 6 = 6$ remaining. Place 3 lone pairs on O. O now has 8 ($1$ bond $+ 3$ lone pairs). C has only 6 (3 single bonds).
+  \item \textbf{Fix}: Convert one lone pair on O to a bonding pair. C=O double bond. C now has 8.
+\end{enumerate}
+
+Result: C has two single bonds to H and one double bond to O. Formaldehyde has a C=O double bond, which makes it reactive --- this is the basis of its use as a preservative and disinfectant.
+
+\subsection*{Worked Example 5: Ammonium Ion (\ce{NH4+})}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Count}: N has 5, each H has 1, minus 1 for the positive charge. Total = $5 + 4 - 1 = 8$.
+  \item \textbf{Connect}: Four N---H single bonds use 8 electrons.
+  \item \textbf{Distribute}: $8 - 8 = 0$ remaining. No lone pairs.
+  \item \textbf{Check}: N has 4 bonding pairs = 8. Each H has 2. Done.
+\end{enumerate}
+
+Result: Nitrogen has four bonds and zero lone pairs. The absence of a lone pair is why \ce{NH4+} has a different shape than \ce{NH3} --- four bonding groups with no lone pair produces a tetrahedral shape.
+
+\medskip
+
+\textbf{A note on resonance}: Some molecules can have their double bonds drawn in more than one position. Ozone (\ce{O3}), for example, can be drawn with the double bond on the left O or the right O. Both drawings are equally valid --- the real molecule is a blend of both. This is called \textbf{resonance}. We mention it here so you recognize it when you see it, but we will not pursue the topic further. For our purposes, any single valid Lewis structure is sufficient for predicting shape and polarity.
+
+%% ---- Reasoning Move: PRIM-STR001 ----
+\begin{reasoningmove}{PRIM-STR001}{Bond Type Classification}
+  \textbf{Reasoning move}: Given two elements and their electronegativities, calculate the electronegativity difference to classify the bond as covalent (shared equally), polar covalent (shared unequally), or ionic (transferred).
+\end{reasoningmove}
+
+\depends{DEF-COM005}{electronegativity, Chapter~1 --- you must know each atom's electronegativity to compute the difference}{1}
+
+Now that you can draw Lewis structures showing which atoms are bonded, the next question is: \textbf{what kind of bond is it?} Not all bonds are the same. The key variable is \textbf{how evenly the electrons are shared}, and that depends on the electronegativity difference ($\Delta$EN) between the two bonded atoms.
+
+As we learned in Chapter~\ref{ch:com}, electronegativity (DEF-COM005) measures how strongly an atom attracts shared electrons. When two atoms bond, there are three possibilities:
+
+\begin{center}
+\begin{tabular}{lllp{4.5cm}}
+  \toprule
+  \textbf{$\Delta$EN} & \textbf{Bond Type} & \textbf{What Happens} & \textbf{Example} \\
+  \midrule
+  $< 0.4$   & Nonpolar covalent & Electrons shared equally     & C---H ($\Delta$EN = 0.4), O=O ($\Delta$EN = 0) \\
+  $0.4$--$1.7$ & Polar covalent & Electrons shared unequally & O---H ($\Delta$EN = 1.2), C---O ($\Delta$EN = 0.8) \\
+  $> 1.7$   & Ionic           & Electrons effectively transferred & Na---Cl ($\Delta$EN = 2.1), K---F ($\Delta$EN = 3.2) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Think of it as a spectrum, not three rigid boxes. At one extreme, identical atoms (like \ce{O2} or \ce{N2}) share electrons perfectly --- pure covalent. At the other extreme, a metal and a nonmetal with vastly different electronegativities (like Na and Cl) do not truly share at all --- the electron transfers, forming ions. In between lies polar covalent, where electrons are shared but pulled toward the more electronegative atom.
+
+\textbf{Common bond examples:}
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Bond} & \textbf{$\Delta$EN Calculation} & \textbf{Classification} \\
+  \midrule
+  C---H  & $|2.6 - 2.2| = 0.4$ & Nonpolar covalent (borderline) \\
+  O---H  & $|3.4 - 2.2| = 1.2$ & Polar covalent \\
+  N---H  & $|3.0 - 2.2| = 0.8$ & Polar covalent \\
+  C=O    & $|3.4 - 2.6| = 0.8$ & Polar covalent \\
+  Na---Cl & $|3.2 - 0.9| = 2.3$ & Ionic \\
+  C---C  & $|2.6 - 2.6| = 0$   & Nonpolar covalent \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Why does bond type matter?} Table salt (\ce{NaCl}) is ionic ($\Delta$EN = 2.3), which is why it forms a rigid crystal lattice of alternating \ce{Na+} and \ce{Cl-} ions, dissolves readily in water, and conducts electricity when dissolved. Vegetable oil contains mostly C---H and C---C bonds ($\Delta$EN near 0), which is why it does not dissolve in water and does not conduct electricity. The type of bond determines the molecule's personality.
+
+\textbf{A fourth category --- metallic bonding}: When metal atoms bond to other metal atoms, they do not share or transfer electrons in the usual sense. Instead, the valence electrons become delocalized --- spread across the entire metal. This ``electron sea'' model explains metals' conductivity, malleability, and luster. We will explore this in the Enrichment section (STR.E) at the end of this chapter.
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Draw the Lewis structure for hydrogen chloride (HCl). How many lone pairs are on the chlorine atom?}
+
+  \practiceq{Draw the Lewis structure for methane (\ce{CH4}). Does the carbon atom have any lone pairs?}
+
+  \practiceq{Calculate the electronegativity difference for each bond and classify it: (a)~H---F, (b)~C---Cl, (c)~K---Br, (d)~N---O.}
+
+  \practiceq{Why is the bond in \ce{O2} classified as nonpolar covalent? Use the concept of electronegativity difference.}
+
+  \practiceq{A molecule contains a C=O bond and a C---H bond. Which bond is more polar? How do you know?}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You can now draw Lewis structures and classify bonds. But a Lewis structure is flat --- it is a 2D map drawn on paper. Real molecules are three-dimensional. Where the electrons sit determines the shape, and the shape determines whether the molecule is polar. That is where we go next.}
+
+
+%% ============================================================
+\section{STR.2: Where Do the Electrons Sit, and What Shape Does the Molecule Take?}
+\label{sec:str2}
+%% ============================================================
+
+A Lewis structure tells you which atoms are bonded and where the lone pairs are. But it does not tell you the molecule's actual three-dimensional shape. Water's Lewis structure looks like H---O---H in a straight line, but water is not linear --- it is bent, like a boomerang. That bend is the reason water is polar, which is the reason water dissolves salt, which is the reason life as we know it exists in aqueous solution.
+
+Shape matters. In this section, we learn three things: how to locate partial charges on individual bonds (bond polarity), how to predict 3D molecular geometry from a Lewis structure (VSEPR), and how to combine those two to determine whether the whole molecule is polar or nonpolar.
+
+%% ---- Reasoning Move: PRIM-STR002 ----
+\begin{reasoningmove}{PRIM-STR002}{Bond Polarity Reasoning}
+  \textbf{Reasoning move}: Given a bond between two atoms, use their electronegativity difference to determine the direction and magnitude of partial charge separation (which end is $\delta^{-}$, which is $\delta^{+}$).
+\end{reasoningmove}
+
+\depends{DEF-COM005}{electronegativity, Chapter~1}{1}
+\depends{PRIM-STR001}{bond type classification, STR.1}{2}
+
+In a polar covalent bond, the shared electrons are not centered between the two atoms. They are pulled toward the more electronegative atom. This creates a partial charge separation:
+
+\begin{itemize}[nosep]
+  \item The more electronegative atom gains a \textbf{partial negative charge}, written $\boldsymbol{\delta^{-}}$ (delta-minus).
+  \item The less electronegative atom acquires a \textbf{partial positive charge}, written $\boldsymbol{\delta^{+}}$ (delta-plus).
+\end{itemize}
+
+These are not full charges like those on ions. They are partial --- a fraction of an electron's worth of charge imbalance.
+
+\textbf{Example 1: The O---H bond in water.}
+
+Oxygen (EN = 3.4) is more electronegative than hydrogen (EN = 2.2). The shared electrons spend more time near oxygen. Result: $\delta^{+}$ on H, $\delta^{-}$ on O. Each O---H bond in water has a partial negative charge on the oxygen end and a partial positive charge on the hydrogen end.
+
+\textbf{Example 2: The H---Cl bond.}
+
+Chlorine (EN = 3.2) is more electronegative than hydrogen (EN = 2.2). The shared electrons are pulled toward chlorine: $\delta^{+}$ on H, $\delta^{-}$ on Cl.
+
+\textbf{Example 3: The C---H bond.}
+
+Carbon (EN = 2.6) and hydrogen (EN = 2.2) have a very small electronegativity difference (0.4). This bond is essentially nonpolar --- the electrons are shared nearly equally. For most purposes, we treat C---H bonds as nonpolar.
+
+\textbf{Example 4: The C---O bond.}
+
+Carbon (EN = 2.6) and oxygen (EN = 3.4) differ by 0.8. This is a polar bond, with oxygen as the $\delta^{-}$ end: $\delta^{+}$ on C, $\delta^{-}$ on O.
+
+\textbf{Why does bond polarity matter?} By itself, a single polar bond creates a small dipole --- a separation of charge within the bond. But a molecule has multiple bonds, and whether the whole molecule is polar depends on whether those individual dipoles add up or cancel out. That depends on the molecule's shape, which is our next topic.
+
+%% ---- Reasoning Move: PRIM-STR003 ----
+\begin{reasoningmove}{PRIM-STR003}{Molecular Shape Reasoning}
+  \textbf{Reasoning move}: Given a Lewis structure, count the electron groups around the central atom, apply VSEPR to predict the 3D molecular geometry.
+\end{reasoningmove}
+
+\depends{DEF-STR001}{Lewis structure, STR.1 --- you must have a Lewis structure before you can count electron groups}{2}
+
+VSEPR stands for Valence Shell Electron Pair Repulsion. The idea is simple: \textbf{electron groups around a central atom repel each other and spread out as far apart as possible.} This repulsion determines the molecule's three-dimensional shape.
+
+An ``electron group'' is any of the following on the central atom:
+\begin{itemize}[nosep]
+  \item A single bond (counts as 1 group)
+  \item A double bond (counts as 1 group --- same direction, so it acts as one unit)
+  \item A triple bond (counts as 1 group)
+  \item A lone pair (counts as 1 group)
+\end{itemize}
+
+The key distinction is between \textbf{electron geometry} (the arrangement of all electron groups, including lone pairs) and \textbf{molecular geometry} (the arrangement of atoms only --- which is what you actually ``see'').
+
+Here is the prediction table for 2, 3, and 4 electron groups:
+
+\begin{center}
+\begin{tabular}{lllllll}
+  \toprule
+  \textbf{Electron Groups} & \textbf{Bonding} & \textbf{Lone} & \textbf{Electron Geom.} & \textbf{Molecular Geom.} & \textbf{Angle} & \textbf{Example} \\
+  \midrule
+  2 & 2 & 0 & Linear            & \textbf{Linear}            & $180^{\circ}$  & \ce{CO2} \\
+  3 & 3 & 0 & Trigonal planar   & \textbf{Trigonal planar}    & $120^{\circ}$  & \ce{BF3} \\
+  3 & 2 & 1 & Trigonal planar   & \textbf{Bent}               & ${\sim}117^{\circ}$ & \ce{SO2} \\
+  4 & 4 & 0 & Tetrahedral       & \textbf{Tetrahedral}        & $109.5^{\circ}$ & \ce{CH4} \\
+  4 & 3 & 1 & Tetrahedral       & \textbf{Trigonal pyramidal} & ${\sim}107^{\circ}$ & \ce{NH3} \\
+  4 & 2 & 2 & Tetrahedral       & \textbf{Bent}               & ${\sim}104.5^{\circ}$ & \ce{H2O} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{How to use this table:}
+
+\begin{enumerate}[nosep]
+  \item Draw the Lewis structure (DEF-STR001).
+  \item Count the total electron groups on the central atom (bonds + lone pairs).
+  \item Identify how many are bonding pairs and how many are lone pairs.
+  \item Look up the molecular geometry.
+\end{enumerate}
+
+\subsection*{Worked Example: Why is water bent?}
+
+\begin{enumerate}[nosep]
+  \item Lewis structure: O has 2 bonds to H and 2 lone pairs.
+  \item Total electron groups on O: 4 (2 bonds + 2 lone pairs).
+  \item Electron geometry: tetrahedral (4 groups spread as far apart as possible).
+  \item But only 2 of those groups are bonds to atoms. The molecular geometry --- what you see --- is \textbf{bent}, with a bond angle of about $104.5^{\circ}$.
+\end{enumerate}
+
+The lone pairs are invisible in a physical model, but they take up space. They push the two O---H bonds closer together, creating the bent shape.
+
+\subsection*{Worked Example: Why is \ce{CO2} linear?}
+
+\begin{enumerate}[nosep]
+  \item Lewis structure: C has 2 double bonds to O and 0 lone pairs.
+  \item Total electron groups on C: 2 (each double bond counts as one group).
+  \item Electron geometry: linear (2 groups go to opposite sides).
+  \item Molecular geometry: \textbf{linear}, bond angle $180^{\circ}$.
+\end{enumerate}
+
+No lone pairs means no bending. The two double bonds point in exactly opposite directions.
+
+\subsection*{Worked Example: Why is methane (\ce{CH4}) tetrahedral?}
+
+\begin{enumerate}[nosep]
+  \item Lewis structure: C has 4 single bonds to H, 0 lone pairs.
+  \item Total electron groups: 4. All bonding.
+  \item Molecular geometry: \textbf{tetrahedral}, bond angle $109.5^{\circ}$.
+\end{enumerate}
+
+Four bonds spread equally in 3D space form a tetrahedron --- like a triangular pyramid. This is the fundamental shape of carbon chemistry.
+
+%% ---- Reasoning Move: DEF-STR002 ----
+\begin{reasoningmove}{DEF-STR002}{Molecular Polarity}
+  \textbf{Reasoning move}: Given a molecule's shape and bond dipoles, determine the vector sum to classify as polar or nonpolar.
+\end{reasoningmove}
+
+\depends{PRIM-STR002}{bond polarity reasoning}{2}
+\depends{PRIM-STR003}{molecular shape reasoning}{2}
+
+Now we combine the previous two skills. A molecule is \textbf{polar} if the bond dipoles do not cancel out, and \textbf{nonpolar} if they do. Whether they cancel depends on the molecule's shape.
+
+Think of it as a \textbf{tug-of-war}. Each polar bond is a rope pulling in a particular direction. If the pulls are symmetric --- equal and opposite --- they cancel, and the molecule is nonpolar. If the pulls are asymmetric, there is a net pull in one direction, and the molecule is polar.
+
+\textbf{Decision rule}: If a molecule has polar bonds and a \textbf{symmetric} shape, the dipoles cancel and the molecule is \textbf{nonpolar}. If the shape is \textbf{asymmetric}, the dipoles do not cancel and the molecule is \textbf{polar}.
+
+\begin{center}
+\begin{tabular}{lllll}
+  \toprule
+  \textbf{Molecule} & \textbf{Polar Bonds?} & \textbf{Shape} & \textbf{Cancel?} & \textbf{Polarity} \\
+  \midrule
+  \ce{CO2}  & Yes (C=O is polar) & Linear              & Yes (opposite dirs.) & \textbf{Nonpolar} \\
+  \ce{H2O}  & Yes (O---H is polar) & Bent              & No (both pull toward O) & \textbf{Polar} \\
+  \ce{CH4}  & No (C---H $\approx$ nonpolar) & Tetrahedral & N/A          & \textbf{Nonpolar} \\
+  \ce{NH3}  & Yes (N---H is polar) & Trig.\ pyramidal  & No (all pull toward N) & \textbf{Polar} \\
+  \ce{CCl4} & Yes (C---Cl is polar) & Tetrahedral      & Yes (symmetric)  & \textbf{Nonpolar} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Why \ce{CO2} is nonpolar despite having polar bonds}: Each C=O bond is polar ($\delta^{+}$ on C, $\delta^{-}$ on O). But the molecule is linear --- the two oxygen atoms pull in exactly opposite directions. The pulls cancel. Net dipole: zero. The molecule is nonpolar.
+
+\textbf{Why \ce{H2O} is polar}: Each O---H bond is polar ($\delta^{+}$ on H, $\delta^{-}$ on O). The molecule is bent --- the two bonds do not point in opposite directions. Both hydrogens are on the same side, so both bond dipoles pull toward the oxygen side. The pulls do not cancel. Net dipole: toward oxygen. The molecule is polar.
+
+\begin{hook}{Plastic wrap on glass}
+  Why does plastic wrap cling to glass but not to itself? Plastic wrap (polyethylene) is made of nonpolar C---H chains. Glass has polar Si---O bonds on its surface. When you press nonpolar plastic wrap against polar glass, the polar surface induces a temporary charge imbalance in the plastic, creating an attraction. Two sheets of plastic wrap lack this polar-nonpolar interaction, so they do not cling to each other.
+\end{hook}
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why is water polar but carbon dioxide is not?}
+  \chainitem{PRIM-STR001}{Bond type}{O---H bonds in water and C=O bonds in \ce{CO2} are both covalent between atoms of different electronegativity --- both have polar bonds.}
+  \chainitem{DEF-STR001}{Lewis structure}{Water has 2 bonds and 2 lone pairs on oxygen. \ce{CO2} has 2 double bonds and 0 lone pairs on carbon.}
+  \chainitem{PRIM-STR003}{Molecular shape}{2 bonds + 2 lone pairs gives a bent shape for \ce{H2O}. 2 bonds + 0 lone pairs gives a linear shape for \ce{CO2}.}
+  \chainitem{DEF-STR002}{Molecular polarity}{In bent \ce{H2O}, both O---H dipoles point toward the same side --- they reinforce --- net dipole --- \textbf{polar}. In linear \ce{CO2}, the two C=O dipoles point in exactly opposite directions --- they cancel --- no net dipole --- \textbf{nonpolar}.}
+\end{reasoningchain}
+
+\noindent The key move is step 3 to 4: geometry decides whether bond dipoles cancel. Same type of bond polarity, different geometry, opposite molecular polarity.
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Draw the Lewis structure of hydrogen fluoride (HF). Label the $\delta^{+}$ and $\delta^{-}$ ends of the bond. Is the molecule polar or nonpolar?}
+
+  \practiceq{Predict the molecular geometry of boron trifluoride (\ce{BF3}). The boron atom has 3 bonds and 0 lone pairs. Is \ce{BF3} polar or nonpolar?}
+
+  \practiceq{Carbon tetrachloride (\ce{CCl4}) has four polar C---Cl bonds arranged in a tetrahedral shape. Explain why the molecule is nonpolar despite having polar bonds.}
+
+  \practiceq{Sulfur dioxide (\ce{SO2}) has a bent shape with 2 bonds and 1 lone pair on sulfur. Is \ce{SO2} polar or nonpolar? Explain.}
+
+  \practiceq{Predict whether each molecule is polar or nonpolar: (a)~HCl, (b)~\ce{N2}, (c)~\ce{CHCl3} (one H and three Cl around a central C).}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You now know how to determine a molecule's shape and polarity. These properties govern what happens between molecules --- the forces that hold them near each other, pull them apart, and determine whether a substance is a solid, liquid, or gas. Those intermolecular forces are next.}
+
+
+%% ============================================================
+\section{STR.3: What Holds Molecules Near Each Other?}
+\label{sec:str3}
+%% ============================================================
+
+There is an important distinction that separates good chemistry reasoning from confused reasoning: \textbf{intramolecular forces} hold atoms together within a molecule (these are the covalent and ionic bonds from STR.1), while \textbf{intermolecular forces} (IMFs) hold separate molecules near each other. Breaking an intramolecular bond means destroying the molecule --- turning water into hydrogen gas and oxygen gas. Breaking intermolecular forces just means pulling molecules apart --- turning liquid water into steam. The water molecules remain intact; they simply move farther apart.
+
+When water boils, you are not breaking O---H bonds. You are overcoming the forces between water molecules. Understanding these intermolecular forces explains why water boils at \SI{100}{\degreeCelsius} rather than at \SI{-100}{\degreeCelsius}, why rubbing alcohol evaporates faster than water, and why butter melts in a warm pan.
+
+%% ---- Reasoning Move: DEF-STR003 ----
+\begin{reasoningmove}{DEF-STR003}{Hydrogen Bond}
+  \textbf{Reasoning move}: Given a molecule containing H bonded to N, O, or F, identify the potential for hydrogen bonding.
+\end{reasoningmove}
+
+\depends{PRIM-STR002}{bond polarity reasoning, STR.2 --- you must understand partial charges to see why hydrogen bonding occurs}{2}
+
+A hydrogen bond is a particularly strong type of intermolecular attraction. It occurs when a hydrogen atom bonded to a very electronegative atom (nitrogen, oxygen, or fluorine) is attracted to a lone pair on a nearby N, O, or F atom on a different molecule.
+
+\textbf{Three criteria must all be met:}
+
+\begin{enumerate}[nosep]
+  \item A hydrogen atom must be covalently bonded to N, O, or F (these create a strongly $\delta^{+}$ hydrogen).
+  \item A nearby molecule must have a lone pair on an N, O, or F atom (this provides the $\delta^{-}$ target).
+  \item The two molecules must be close enough for the attraction to be significant.
+\end{enumerate}
+
+\textbf{Notation}: Hydrogen bonds are drawn as dotted lines ($\cdots$) to distinguish them from solid-line covalent bonds.
+
+Each water molecule can form up to \textbf{four} hydrogen bonds: two through its hydrogen atoms (as donors) and two through its oxygen lone pairs (as acceptors). This extensive hydrogen bonding network is what makes water exceptional.
+
+\begin{hook}{Boiling water vs.\ rubbing alcohol}
+  Why does it take so long to boil water compared to rubbing alcohol? Water (\ce{H2O}) has extensive hydrogen bonding --- each molecule can form up to four hydrogen bonds. Rubbing alcohol (isopropanol, \ce{C3H7OH}) can form hydrogen bonds too, but only through its one O---H group. The rest of the molecule is nonpolar C---H chains. Water's denser hydrogen bonding network means more energy is needed to pull the molecules apart, so water has a higher boiling point (\SI{100}{\degreeCelsius} vs.\ \SI{82}{\degreeCelsius} for isopropanol).
+\end{hook}
+
+\textbf{How strong are hydrogen bonds?} They occupy a middle ground:
+\begin{itemize}[nosep]
+  \item A typical covalent bond (O---H): ${\sim}\SI{460}{kJ/mol}$
+  \item A typical hydrogen bond (O---H$\cdots$O): ${\sim}\SI{20}{kJ/mol}$
+  \item A typical dipole-dipole interaction: ${\sim}\SI{2}{kJ/mol}$
+\end{itemize}
+
+Hydrogen bonds are roughly 10 times stronger than ordinary dipole-dipole forces, but roughly 10 times weaker than covalent bonds. They are strong enough to give water its remarkable properties but weak enough to be broken by moderate heating.
+
+\textbf{Where hydrogen bonds show up in everyday life:}
+\begin{itemize}[nosep]
+  \item Water's high boiling point (compared to similar-sized molecules without H-bonding)
+  \item DNA's double helix (held together by hydrogen bonds between base pairs)
+  \item The absorbency of cotton and paper (cellulose fibers form H-bonds with water)
+\end{itemize}
+
+%% ---- Reasoning Move: PRIM-STR004 ----
+\begin{reasoningmove}{PRIM-STR004}{Intermolecular Force Hierarchy}
+  \textbf{Reasoning move}: Given a molecule's structure, identify which IMFs are present and rank them.
+\end{reasoningmove}
+
+\depends{DEF-STR002}{molecular polarity, STR.2}{2}
+\depends{DEF-STR003}{hydrogen bond, STR.3}{2}
+
+Every substance experiences intermolecular forces. The question is: which ones, and how strong? Here is the hierarchy, from weakest to strongest:
+
+\figurebox{The IMF Ladder. From weakest to strongest: London dispersion forces (all molecules), dipole-dipole (polar molecules), hydrogen bonding (H bonded to N, O, or F), ionic interactions (full ions like \ce{Na+} and \ce{Cl-}).}{fig:imf-ladder}
+
+\textbf{Key facts about each type:}
+
+\textbf{London dispersion forces} (also called van der Waals forces): Present in ALL molecules --- polar and nonpolar alike. They arise from temporary, random fluctuations in electron distribution. At any instant, electrons may be slightly unevenly distributed, creating a momentary dipole that induces a dipole in a neighboring molecule. These forces are individually very weak but increase with molecular size (more electrons = more surface area for fluctuations = stronger London forces).
+
+\textbf{Dipole-dipole forces}: Occur between polar molecules. The $\delta^{+}$ end of one molecule attracts the $\delta^{-}$ end of another. Stronger than London forces for molecules of similar size.
+
+\textbf{Hydrogen bonding}: A special, extra-strong form of dipole-dipole interaction. Requires H bonded to N, O, or F.
+
+\textbf{Ionic interactions}: The strongest. Full positive and negative charges attract each other. This is why ionic compounds like \ce{NaCl} have very high melting points (\SI{801}{\degreeCelsius} for \ce{NaCl}).
+
+\textbf{Critical principle: Every molecule has London dispersion forces.} Even nonpolar molecules like \ce{O2} and \ce{CH4} experience London forces. For nonpolar molecules, London forces are the only IMF present. For polar molecules, London forces are present in addition to dipole-dipole forces. For molecules with O---H, N---H, or F---H bonds, hydrogen bonding is present in addition to dipole-dipole and London forces.
+
+\textbf{How to identify IMFs for a given molecule:}
+
+\begin{enumerate}[nosep]
+  \item Is it ionic? (Are there full charges, like \ce{Na+Cl-}?) If yes: ionic interactions.
+  \item Does it have H bonded to N, O, or F? If yes: hydrogen bonding + dipole-dipole + London.
+  \item Is it a polar molecule? If yes: dipole-dipole + London.
+  \item Is it nonpolar? London only.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Substance} & \textbf{Formula} & \textbf{IMFs Present} & \textbf{Dominant IMF} \\
+  \midrule
+  Methane        & \ce{CH4}      & London only                      & London \\
+  Hydrogen chloride & HCl        & Dipole-dipole + London           & Dipole-dipole \\
+  Water          & \ce{H2O}     & H-bonding + dipole-dipole + London & H-bonding \\
+  Table salt     & \ce{NaCl}    & Ionic                             & Ionic \\
+  Ethanol        & \ce{C2H5OH}  & H-bonding + dipole-dipole + London & H-bonding \\
+  Cooking oil    & Long C---H chains & London only                  & London \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{hook}{Rubbing alcohol evaporates faster than water}
+  Both experience hydrogen bonding, but water can form up to 4 hydrogen bonds per molecule while isopropanol forms fewer. Water's stronger overall IMF network holds it in the liquid phase more stubbornly. More energy (or more time) is needed to pull water molecules into the gas phase.
+\end{hook}
+
+%% ---- Reasoning Move: DEF-STR006 ----
+\begin{reasoningmove}{DEF-STR006}{Phase from IMF Balance}
+  \textbf{Reasoning move}: Given a substance's dominant IMF strength and temperature, predict solid/liquid/gas.
+\end{reasoningmove}
+
+\depends{PRIM-STR004}{IMF hierarchy --- you must know the dominant IMF before you can predict phase}{2}
+
+Whether a substance is a solid, liquid, or gas at a given temperature depends on a tug-of-war between two competing factors:
+
+\begin{itemize}[nosep]
+  \item \textbf{Intermolecular forces} pull molecules together (favoring solid or liquid).
+  \item \textbf{Kinetic energy} (which increases with temperature) flings molecules apart (favoring gas).
+\end{itemize}
+
+At low temperatures, IMFs win: molecules are locked in place as a \textbf{solid}. As temperature rises, kinetic energy increases until molecules can slide past each other but stay close: \textbf{liquid}. At still higher temperatures, kinetic energy overcomes IMFs entirely, and molecules fly apart: \textbf{gas}.
+
+\textbf{The rule is qualitative and comparative:}
+
+\begin{quote}
+  Stronger IMFs = higher melting and boiling points (more energy needed to overcome them).
+
+  Weaker IMFs = lower melting and boiling points (less energy needed).
+\end{quote}
+
+\textbf{Comparison examples:}
+
+\begin{center}
+\begin{tabular}{lllp{5cm}}
+  \toprule
+  \textbf{Substance} & \textbf{Dominant IMF} & \textbf{Boiling Point} & \textbf{Reasoning} \\
+  \midrule
+  Methane (\ce{CH4})   & London only (small) & $-161$~\degC & Very weak IMFs; gas at room temp.\ \\
+  Ethanol (\ce{C2H5OH}) & H-bonding          & 78~\degC     & Moderate IMFs; liquid at room temp.\ \\
+  Water (\ce{H2O})     & H-bonding (extensive) & 100~\degC  & Strong H-bond network; liquid at room temp.\ \\
+  \ce{NaCl}            & Ionic               & 1{,}413~\degC & Very strong ionic; solid at room temp.\ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{hook}{Butter in a warm pan}
+  Butter is a mixture of fats --- large nonpolar molecules held together by London dispersion forces. At refrigerator temperature (${\sim}\SI{4}{\degreeCelsius}$), the London forces keep butter solid. At room temperature (${\sim}\SI{22}{\degreeCelsius}$), butter softens. In a warm pan (${\sim}\SI{40}{\degreeCelsius}$ and above), kinetic energy overcomes the London forces and butter melts. The same IMF-vs-kinetic-energy reasoning explains why chocolate melts in your hand and why candle wax drips.
+\end{hook}
+
+\textbf{A preview}: The phase of a substance determines much of its practical behavior. We will see that IMF strength determines boiling point, which influences everything from cooking to climate. In Chapter~\ref{ch:nrg}, when we explore how energy flows in and out of substances, the amount of energy required to change phase will connect directly back to IMF strength.
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Which type of IMF is present in ALL molecules, whether polar or nonpolar?}
+
+  \practiceq{Explain why water (\ce{H2O}, molar mass~18) has a much higher boiling point than methane (\ce{CH4}, molar mass~16), even though they are similar in size.}
+
+  \practiceq{Rank these substances from lowest to highest boiling point: \ce{NaCl}, \ce{CH4}, \ce{C2H5OH}. Explain your reasoning using the IMF hierarchy.}
+
+  \practiceq{Butane (\ce{C4H10}) is a gas at room temperature. Decane (\ce{C10H22}) is a liquid. Both are nonpolar hydrocarbons with only London dispersion forces. Why does decane have a higher boiling point?}
+
+  \practiceq{Is the following statement true or false? ``When water boils, the covalent O---H bonds break.'' Explain.}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You now understand the forces that hold molecules near each other --- from weak London forces to strong ionic interactions --- and how those forces determine phase. But what do these forces mean for everyday properties like solubility, melting point, and material strength? The next section chains the reasoning all the way from molecular structure to observable behavior.}
+
+
+%% ============================================================
+\section{STR.4: How Does Structure Predict What a Substance Does?}
+\label{sec:str4}
+%% ============================================================
+
+This section is where everything comes together. You have learned to draw Lewis structures (STR.1), predict shape and polarity (STR.2), and identify intermolecular forces (STR.3). Now we chain all of that into the capstone skill: given a molecule's structure, predict its macroscopic properties.
+
+We focus on two specific applications: solubility (``like dissolves like'') and water's exceptional behavior as a solvent. Both follow directly from molecular polarity and IMFs.
+
+%% ---- Reasoning Move: PRIM-STR005 ----
+\begin{reasoningmove}{PRIM-STR005}{Structure-to-Property Inference}
+  \textbf{Reasoning move}: Given a molecule's structural features, predict the direction of a macroscopic property relative to a comparison molecule.
+\end{reasoningmove}
+
+\depends{DEF-STR002}{molecular polarity, STR.2}{2}
+\depends{PRIM-STR004}{IMF hierarchy, STR.3}{2}
+
+This is the capstone reasoning skill of the chapter. It chains together everything:
+
+\begin{quote}
+  Lewis structure $\rightarrow$ shape $\rightarrow$ polarity $\rightarrow$ IMF type $\rightarrow$ property prediction
+\end{quote}
+
+The predictions are always \textbf{directional and comparative}, never numerical. We do not calculate exact boiling points; we predict which substance boils at a higher temperature and explain why.
+
+\textbf{Example 1: Why is coconut oil solid but olive oil liquid at room temperature?}
+
+\begin{enumerate}[nosep]
+  \item Both are fats --- long carbon chains with ester linkages.
+  \item Coconut oil is mostly \textbf{saturated} fat: straight carbon chains that pack closely together.
+  \item Olive oil is mostly \textbf{unsaturated} fat: carbon chains with C=C double bonds that create kinks, preventing close packing.
+  \item Close packing = more London dispersion contact between chains = stronger total IMFs.
+  \item Stronger IMFs = higher melting point.
+  \item Prediction: coconut oil (straight chains, strong London forces) is solid at room temperature; olive oil (kinked chains, weaker London forces) is liquid. Correct.
+\end{enumerate}
+
+\textbf{Example 2: Why does acetone (nail polish remover) evaporate faster than water?}
+
+\begin{enumerate}[nosep]
+  \item Acetone (\ce{CH3COCH3}) is polar (C=O dipole, bent geometry) but has no O---H bond --- no hydrogen bonding as a donor.
+  \item Water (\ce{H2O}) has extensive hydrogen bonding.
+  \item Acetone's dominant IMF: dipole-dipole + London. Water's dominant IMF: hydrogen bonding.
+  \item Hydrogen bonding $>$ dipole-dipole, so water's IMFs are stronger.
+  \item Prediction: acetone evaporates more readily than water. Correct.
+\end{enumerate}
+
+\textbf{Example 3: Why does rubbing alcohol dissolve in water but cooking oil does not?}
+
+\begin{enumerate}[nosep]
+  \item Rubbing alcohol (isopropanol, \ce{C3H7OH}) has an O---H group --- polar, capable of hydrogen bonding with water.
+  \item Cooking oil (long nonpolar C---H chains) has no polar groups.
+  \item Water is polar. Isopropanol's polar O---H region can interact with water's polar molecules.
+  \item Oil's nonpolar chains cannot form favorable interactions with water.
+  \item Prediction: isopropanol dissolves in water; oil does not. Correct.
+\end{enumerate}
+
+Notice the pattern: every prediction follows the same chain. Structure determines polarity. Polarity determines IMF type. IMF type determines the property. This is the reasoning engine of the STR domain.
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why does hand soap remove grease but water alone cannot?}
+  \chainitem{DEF-STR001}{Lewis structure}{Grease molecules are long hydrocarbon chains --- all C---H and C---C bonds.}
+  \chainitem{DEF-STR002}{Molecular polarity}{C---H bonds are nearly nonpolar --- grease is nonpolar overall.}
+  \chainitem{PRIM-STR004}{IMF hierarchy}{Nonpolar grease interacts only through weak London dispersion forces with polar water --- unfavorable mixing.}
+  \chainitem{PRIM-STR005}{Structure-to-property}{Weak grease-water interaction --- grease does not dissolve in water. This is why rinsing greasy hands with water alone does not work.}
+  \chainitem{}{Soap structure}{Now add soap. A soap molecule has a long nonpolar hydrocarbon tail and a polar ionic head (\ce{COO- Na+}).}
+  \chainitem{PRIM-STR004}{IMF hierarchy (again)}{The nonpolar tail interacts with grease through London forces; the polar head interacts with water through ion-dipole forces.}
+  \chainitem{PRIM-STR005}{Structure-to-property (again)}{Soap molecules surround grease droplets --- tails inward (touching grease), heads outward (touching water) --- forming a micelle. The micelle is carried away by water.}
+\end{reasoningchain}
+
+\noindent The chain is: Lewis structure $\rightarrow$ polarity $\rightarrow$ IMF type $\rightarrow$ solubility prediction $\rightarrow$ soap as a molecular bridge between polar and nonpolar worlds.
+
+%% ---- Reasoning Move: DEF-STR004 ----
+\begin{reasoningmove}{DEF-STR004}{``Like Dissolves Like''}
+  \textbf{Reasoning move}: Given a solute and solvent, compare polarities to predict solubility.
+\end{reasoningmove}
+
+\depends{DEF-STR002}{molecular polarity, STR.2}{2}
+\depends{PRIM-STR005}{structure-to-property inference, STR.4}{2}
+
+This is perhaps the most useful everyday chemistry heuristic: \textbf{polar substances dissolve in polar solvents, and nonpolar substances dissolve in nonpolar solvents.}
+
+The reasoning is straightforward. Dissolving requires the solute molecules to separate from each other and intermingle with solvent molecules. This only happens if the solute-solvent interactions are at least as strong as the solute-solute and solvent-solvent interactions they replace. Polar solvents (like water) form strong interactions with polar solutes but cannot interact strongly with nonpolar solutes. The nonpolar molecules are essentially shut out.
+
+\textbf{Everyday examples:}
+
+\begin{center}
+\begin{tabular}{lllp{4.5cm}}
+  \toprule
+  \textbf{Solute} & \textbf{Solvent} & \textbf{Dissolves?} & \textbf{Reasoning} \\
+  \midrule
+  Table salt (\ce{NaCl}, ionic) & Water (polar) & Yes & Ionic-polar interaction is strong \\
+  Sugar (\ce{C12H22O11}, polar O---H) & Water (polar) & Yes & Polar-polar H-bonding \\
+  Grease (nonpolar hydrocarbon) & Water (polar) & No & Nonpolar cannot interact with polar \\
+  Grease & Vegetable oil (nonpolar) & Yes & Nonpolar-nonpolar London forces \\
+  Nail polish (nonpolar organic) & Water & No & Polarity mismatch \\
+  Nail polish & Acetone (somewhat polar) & Yes & Compatible polarities \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{The soap bridge}: Grease does not dissolve in water, yet washing your hands with soap removes grease. How? Soap molecules are \textbf{amphiphilic} --- they have a polar head (which interacts with water) and a long nonpolar tail (which interacts with grease). The nonpolar tail buries itself in the grease, while the polar head faces outward into the water. This forms a tiny sphere called a \textbf{micelle}, with grease trapped inside and polar heads on the outside, allowing the whole assembly to be rinsed away by water. Soap does not change the polarity of grease --- it bridges the gap between polar and nonpolar.
+
+\begin{hook}{Oil and vinegar dressing}
+  Why oil and vinegar salad dressing separates: Vinegar is mostly water (polar). Oil is nonpolar. When you shake the bottle, you temporarily disperse tiny oil droplets in the water, but ``like dissolves like'' means they cannot stay mixed. The oil droplets quickly merge and rise to the top (oil is less dense than water). Adding an emulsifier --- like mustard, which contains amphiphilic molecules --- can slow the separation.
+\end{hook}
+
+%% ---- Reasoning Move: DEF-STR010 ----
+\begin{reasoningmove}{DEF-STR010}{Water as Solvent}
+  \textbf{Reasoning move}: Given water's molecular structure, reason about why it is an exceptional solvent for ionic and polar substances.
+\end{reasoningmove}
+
+\depends{DEF-STR002}{molecular polarity, STR.2}{2}
+\depends{DEF-STR003}{hydrogen bonding, STR.3}{2}
+\depends{DEF-STR004}{``like dissolves like'', STR.4}{2}
+
+Salt dissolves in water in seconds, but sand sits unchanged. Ethanol mixes with water in any proportion, but cooking oil floats stubbornly on top. Water is not just a good solvent --- it is an extraordinarily selective one. Understanding why requires pulling together everything we have learned about water's structure.
+
+\textbf{Three features make water an exceptional solvent:}
+
+\textbf{Feature 1: Bent geometry creates a strong dipole.}
+
+Water's bent shape ($104.5^{\circ}$) means its two O---H bond dipoles do not cancel. The oxygen end is $\delta^{-}$ and the hydrogen end is $\delta^{+}$, giving water a large net dipole moment. This permanent polarity lets water interact strongly with other polar and ionic substances.
+
+\textbf{Feature 2: Four hydrogen bonds per molecule create a dense interaction network.}
+
+Each water molecule can donate two hydrogen bonds (through its two H atoms) and accept two (through its two lone pairs on oxygen). This four-fold hydrogen bonding capacity means water molecules form an extensive, dynamic network. When a new solute enters, water can rapidly reorganize this network to accommodate it --- surrounding ions or polar molecules with a shell of oriented water molecules.
+
+\textbf{Feature 3: Small molecular size allows close approach.}
+
+Water molecules are small (only 3 atoms). This lets them crowd closely around solute particles, maximizing the number of solvent-solute interactions per unit area.
+
+\textbf{How water dissolves an ionic compound (\ce{NaCl}):}
+
+When you drop a salt crystal into water, the polar water molecules attack the crystal surface. The $\delta^{-}$ oxygen ends orient toward \ce{Na+} ions, and the $\delta^{+}$ hydrogen ends orient toward \ce{Cl-} ions. These ion-dipole interactions compete with the ionic bonds holding the crystal together. One by one, ions are pulled off the crystal surface and surrounded by a shell of oriented water molecules --- a \textbf{hydration shell}. The dissolved ions, each wrapped in water, are now free to move independently. This is why salt water conducts electricity: the ions carry charge through the solution.
+
+\textbf{Contexts where water's solvent ability matters:}
+
+\begin{itemize}[nosep]
+  \item \textbf{Blood}: Blood plasma is mostly water. It dissolves and transports ions (\ce{Na+}, \ce{K+}, \ce{Cl-}, \ce{Ca^{2+}}), polar molecules (glucose, amino acids), and gases (\ce{O2}, \ce{CO2} --- though \ce{O2} mainly travels bound to hemoglobin). The human body depends on water's solvent properties at every level.
+
+  \item \textbf{Water pollution}: Water's ability to dissolve so many substances is a double-edged sword. Pesticides, heavy metal ions (\ce{Pb^{2+}}, \ce{Hg^{2+}}), nitrate ions (\ce{NO3-}) from fertilizer runoff --- all dissolve in water because of its strong polarity and hydrogen bonding capacity. A ``clean'' river is not pure \ce{H2O}; it is water with only trace amounts of dissolved substances. Pollution is a matter of degree, not kind.
+
+  \item \textbf{Ocean salinity}: Rivers carry dissolved ions (\ce{Na+}, \ce{Cl-}, \ce{Mg^{2+}}, \ce{SO4^{2-}}) from rocks and soil into the ocean. Water evaporates from the ocean surface, but the ions stay behind. Over billions of years, this one-way transport has made the ocean salty (${\sim}3.5\%$ dissolved salts by mass). Every sip of seawater demonstrates water's effectiveness as an ionic solvent.
+\end{itemize}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Predict whether ethanol (\ce{C2H5OH}) is more soluble in water or in hexane (\ce{C6H14}). Explain using ``like dissolves like.''}
+
+  \practiceq{Motor oil is a mixture of long nonpolar hydrocarbons. Why does it not wash off your hands with water alone?}
+
+  \practiceq{Why does sugar dissolve in water but wax does not? Both are composed of C, H, and O atoms.}
+
+  \practiceq{Using the structure-to-property chain, explain why propane (\ce{C3H8}) is a gas at room temperature while propanol (\ce{C3H7OH}) is a liquid.}
+
+  \practiceq{A water treatment plant needs to remove dissolved lead ions (\ce{Pb^{2+}}) from drinking water. Why did the lead dissolve in water in the first place?}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{Structure-to-property reasoning is now complete for small molecules. But some of the most important substances in everyday life --- gasoline, plastics, proteins, DNA --- are built on carbon backbones that can be astonishingly long and varied. Why carbon? Why not silicon or nitrogen? That is the question we take up next.}
+
+
+%% ============================================================
+\section{STR.5: Why Does Carbon Build So Many Molecules?}
+\label{sec:str5}
+%% ============================================================
+
+Here is a striking fact: of the roughly 200 million known chemical compounds, more than 95\% contain carbon. Carbon is not the most abundant element on Earth (that is oxygen), nor the most reactive (that is fluorine), nor the most massive (that is oganesson, if you are counting). Yet carbon builds more molecules than all other elements combined.
+
+Why? The answer lies in carbon's unique structural versatility, and understanding it requires every tool we have developed in this chapter --- Lewis structures, bond types, shapes, polarity, and IMFs. This section explores three ideas: how isomers prove that arrangement matters as much as composition, how carbon's four-bond versatility creates extraordinary molecular diversity, and how linking carbon monomers into polymers produces the materials of modern life.
+
+%% ---- Reasoning Move: DEF-STR005 ----
+\begin{reasoningmove}{DEF-STR005}{Isomer Recognition}
+  \textbf{Reasoning move}: Given two molecules with the same formula, determine if they are isomers and predict different properties.
+\end{reasoningmove}
+
+\depends{DEF-STR001}{Lewis structure, STR.1}{2}
+\depends{DEF-STR002}{molecular polarity, STR.2}{2}
+
+In Chapter~\ref{ch:com}, you learned to read a chemical formula and count atoms (PRIM-COM005). Two molecules with the formula \ce{C2H6O} both contain 2 carbons, 6 hydrogens, and 1 oxygen. But they can be arranged in two very different ways:
+
+\textbf{Arrangement 1: Ethanol (\ce{CH3CH2OH})}
+
+The oxygen is bonded to a carbon and a hydrogen, forming an O---H group. This molecule has a polar O---H bond, can form hydrogen bonds, dissolves in water, and has a boiling point of \SI{78}{\degreeCelsius}. It is the alcohol in beer and wine.
+
+\textbf{Arrangement 2: Dimethyl ether (\ce{CH3OCH3})}
+
+The oxygen is bonded to two carbons, with no O---H group. This molecule is slightly polar but cannot form hydrogen bonds as a donor. It does not dissolve readily in water and has a boiling point of \SI{-24}{\degreeCelsius}. It is a gas at room temperature, used as an aerosol propellant.
+
+Same formula. Same atom counts. Dramatically different properties. Molecules that share the same molecular formula but have different structural arrangements are called \textbf{isomers}.
+
+Isomers are the strongest possible proof that \textbf{composition alone does not determine properties}. Structure matters. This is why Chapter~2 exists.
+
+\textbf{Types of isomers (for our purposes):}
+
+\textbf{Structural isomers}: Atoms are connected in a different order. Ethanol vs.\ dimethyl ether is a structural isomer pair.
+
+Another example: butane (\ce{CH3CH2CH2CH3}) and isobutane (\ce{CH3CH(CH3)CH3}) both have the formula \ce{C4H10}. Butane is a straight chain; isobutane is branched. Butane boils at \SI{-1}{\degreeCelsius}; isobutane boils at \SI{-12}{\degreeCelsius}. The branched molecule has less surface area for London forces, so its boiling point is lower.
+
+\textbf{Geometric (cis/trans) isomers}: Atoms are connected in the same order, but arranged differently in space around a rigid double bond.
+
+Consider 2-butene (\ce{CH3CH=CHCH3}). The two \ce{CH3} groups can be on the same side of the double bond (\textbf{cis}-2-butene) or on opposite sides (\textbf{trans}-2-butene). Because the double bond prevents rotation, these are distinct molecules with different properties. \textit{cis}-2-butene boils at \SI{4}{\degreeCelsius}; \textit{trans}-2-butene boils at \SI{1}{\degreeCelsius}.
+
+\begin{hook}{Ibuprofen mirror images}
+  Ibuprofen exists as two mirror-image forms (called R and S). Only the S-form is the active painkiller. The R-form is inactive --- your body's enzymes, which are themselves specific 3D shapes, can only interact properly with one arrangement. Same formula, same connections, but different spatial arrangement leads to different biological activity. (We mention this as a compelling example but will not pursue chirality or R/S nomenclature further.)
+\end{hook}
+
+%% ---- Reasoning Move: DEF-STR007 ----
+\begin{reasoningmove}{DEF-STR007}{Carbon Backbone Reasoning}
+  \textbf{Reasoning move}: Given carbon's 4 valence electrons and 4 bonds, reason about chain/branch/ring diversity.
+\end{reasoningmove}
+
+\depends{PRIM-COM007}{valence electron reasoning, Chapter~1}{1}
+\depends{DEF-STR001}{Lewis structure, STR.1}{2}
+
+Carbon has 4 valence electrons (group~14, as established by PRIM-COM007 in Chapter~\ref{ch:com}). To satisfy the octet rule, carbon forms exactly \textbf{4 bonds}. This number --- four --- is the key to carbon's extraordinary versatility.
+
+\textbf{Three features of carbon backbone diversity:}
+
+\textbf{Feature 1: Four bonds allow chains, branches, and rings.}
+
+With 4 bonds, carbon can link to other carbons in long chains (like pearls on a necklace), branched structures (like a tree), or rings (like a bracelet). No other element does this as extensively. Silicon (also group~14) can form chains, but Si---Si bonds are weaker than C---C bonds and more reactive, so silicon chains are rare in nature.
+
+\textbf{Feature 2: Chain length affects London forces and therefore properties.}
+
+Longer carbon chains have more electrons and more surface area. More surface area means stronger London dispersion forces. Stronger London forces mean higher boiling points.
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Hydrocarbon} & \textbf{Chain Length} & \textbf{Boiling Point} & \textbf{Phase at Room Temp.} \\
+  \midrule
+  Methane (\ce{CH4})      & 1     & $-161$~\degC & Gas \\
+  Propane (\ce{C3H8})     & 3     & $-42$~\degC  & Gas \\
+  Octane (\ce{C8H18})     & 8     & 126~\degC    & Liquid \\
+  Eicosane (\ce{C20H42})  & 20    & 343~\degC    & Solid (waxy) \\
+  Polyethylene             & 1{,}000+ & Does not boil (decomposes) & Solid (plastic) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Gasoline (short chains, roughly 5--12 carbons) is a volatile liquid that evaporates easily. Candle wax (long chains, roughly 20--30 carbons) is a solid at room temperature. Paraffin wax, motor oil, gasoline --- all are hydrocarbons. Their different properties trace entirely to chain length and the resulting London forces.
+
+\textbf{Feature 3: Functional groups create polarity and reactivity.}
+
+A pure hydrocarbon (only C and H) is nonpolar. But replace one or more H atoms with a group containing O, N, or other electronegative atoms, and the molecule gains polarity, hydrogen bonding capability, and chemical reactivity. These substituent groups are called \textbf{functional groups}.
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Functional Group} & \textbf{Structure} & \textbf{Properties It Adds} & \textbf{Example Molecule} \\
+  \midrule
+  Hydroxyl  & ---OH    & Polarity, H-bonding, water solubility & Ethanol (\ce{C2H5OH}) \\
+  Carboxyl  & ---COOH  & Acidity, polarity, H-bonding          & Acetic acid (\ce{CH3COOH}) \\
+  Amino     & ---\ce{NH2} & Basicity, polarity, H-bonding      & Methylamine (\ce{CH3NH2}) \\
+  Carbonyl  & C=O      & Polarity, reactivity                  & Acetone (\ce{CH3COCH3}) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+You do not need to memorize these. You need to recognize them: if you see an O---H group on a carbon chain, you know the molecule can hydrogen-bond and dissolve in water. If you see only C---H bonds, you know the molecule is nonpolar. This recognition skill is carbon backbone reasoning applied.
+
+\begin{hook}{Why carbon and not silicon?}
+  Silicon is directly below carbon on the periodic table (also group~14, also 4 valence electrons). But C---C bonds (\SI{346}{kJ/mol}) are significantly stronger than Si---Si bonds (\SI{226}{kJ/mol}), and carbon forms strong double and triple bonds (C=C, C$\equiv$C) while silicon does not readily do so. Life on Earth is carbon-based, not silicon-based, because carbon's bond strength and versatility enable the structural complexity that biology requires.
+\end{hook}
+
+%% ---- Reasoning Move: DEF-STR008 ----
+\begin{reasoningmove}{DEF-STR008}{Polymer Reasoning}
+  \textbf{Reasoning move}: Given a monomer, predict how it links into polymers, and how chain features determine material properties.
+\end{reasoningmove}
+
+\depends{DEF-STR007}{carbon backbone reasoning, STR.5}{2}
+\depends{PRIM-STR004}{IMF hierarchy, STR.3}{2}
+
+A \textbf{polymer} is a very long molecule made by linking many small repeating units called \textbf{monomers}. The word comes from Greek: \textit{poly} (many) + \textit{meros} (parts). Polymers are everywhere --- plastic bags, nylon clothing, rubber tires, Kevlar body armor, DNA, proteins, cellulose in wood.
+
+The key insight is that a polymer's properties depend not just on what monomer it is made from, but on \textbf{four structural features} of the chain:
+
+\textbf{Feature 1: Chain length.}
+
+Longer chains = more London dispersion contact between chains = stronger material. This is why ultra-high-molecular-weight polyethylene (used in joint replacements and bulletproof vests) is much tougher than regular polyethylene (used in plastic bags). Same monomer, different chain length, different properties.
+
+\textbf{Feature 2: Branching.}
+
+Branched chains cannot pack as closely together as straight chains. Less close packing = fewer London force contacts = weaker, more flexible material. Low-density polyethylene (LDPE, used in plastic bags and cling wrap) is highly branched and soft. High-density polyethylene (HDPE, used in milk jugs and pipes) has little branching and is stiffer and stronger.
+
+\textbf{Feature 3: Cross-linking.}
+
+When chains are chemically bonded to each other (cross-linked), the material becomes rigid and cannot be melted or reshaped. Vulcanized rubber (car tires) is natural rubber with sulfur cross-links added. Without cross-linking, rubber is soft and sticky in heat. With cross-linking, it is elastic and durable across a wide temperature range.
+
+\textbf{Feature 4: Monomer polarity.}
+
+If the monomer has polar groups (like the amide groups in nylon, ---CO---NH---), the polymer chains can form hydrogen bonds between them. Hydrogen-bonded polymer chains are much stronger than those held together by London forces alone. Kevlar, the material in body armor, has extensive hydrogen bonding between its polyamide chains --- that is why it can stop a bullet. Polyethylene, held together only by London forces, cannot.
+
+\textbf{Everyday polymer comparison:}
+
+\begin{center}
+\begin{tabular}{lllp{4cm}}
+  \toprule
+  \textbf{Polymer} & \textbf{Monomer} & \textbf{Key IMF} & \textbf{Properties} \\
+  \midrule
+  Polyethylene (plastic bag) & Nonpolar (\ce{CH2=CH2}) & London only & Flexible, weak, low melting \\
+  Nylon (stockings, rope) & Polar amide groups & H-bonding & Strong, elastic, higher melting \\
+  Kevlar (body armor) & Aromatic + polar amide & Extensive H-bonding & Extremely strong, rigid \\
+  Vulcanized rubber (tires) & Nonpolar + cross-links & London + covalent & Elastic, durable, heat-resistant \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{hook}{Biodegradable plastics}
+  Polymers held together by London forces (like polyethylene) do not biodegrade easily because microorganisms lack enzymes to efficiently break the C---C backbone. Polymers with polar bonds (like polylactic acid, PLA, made from plant sugars) can be broken down by microorganisms because the ester linkages in their backbone are susceptible to hydrolysis. The push toward biodegradable plastics is fundamentally a question of polymer backbone chemistry --- designing chains that nature's enzymes can cut.
+\end{hook}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Ethanol (\ce{CH3CH2OH}) and dimethyl ether (\ce{CH3OCH3}) have the same molecular formula (\ce{C2H6O}). Predict which has a higher boiling point, and explain why.}
+
+  \practiceq{Why does increasing carbon chain length increase a hydrocarbon's boiling point?}
+
+  \practiceq{Two polymer samples are made from the same monomer. Sample A has long, straight chains. Sample B has short, highly branched chains. Which would you predict is stiffer? Why?}
+
+  \practiceq{Kevlar is much stronger than polyethylene, even though both are polymers. What structural difference accounts for this?}
+
+  \practiceq{A company advertises a ``biodegradable plastic bag.'' Using polymer reasoning, what structural feature would make a polymer biodegradable?}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{Carbon's versatility explains the staggering diversity of organic molecules --- from the methane in natural gas to the polyamides in your clothing. But organic molecules are not the only materials in your life. The metals in your coins, wires, and bridges hold together by a different mechanism entirely. That mechanism --- for those who want to go deeper --- is the subject of our Enrichment section.}
+
+
+%% ============================================================
+\section{STR.E: How Do Metals Hold Together?}
+\label{sec:stre}
+%% ============================================================
+
+\begin{enrichment}{Metallic Bonding and the Electron Sea Model}
+
+This material extends the core concepts from STR.1 and is not required for subsequent chapters. It provides a structural model for metallic bonding that completes the picture of how different types of substances hold together. Your instructor will tell you whether this section is assigned.
+
+\bigskip
+
+%% ---- Reasoning Move: DEF-STR009 ----
+\begin{reasoningmove}{DEF-STR009}{Metallic Structure}
+  \textbf{Reasoning move}: Given a metallic element, reason about the electron sea model to predict metallic properties.
+\end{reasoningmove}
+
+\depends{PRIM-STR001}{bond type classification, STR.1}{2}
+\depends{DEF-COM002}{ion, Chapter~1}{1}
+
+In STR.1, we classified bonds as covalent, polar covalent, or ionic based on electronegativity differences. But what happens when metal atoms bond to other metal atoms? The electronegativity difference is zero (same element), so it is not ionic. But metals do not form discrete molecules with shared electron pairs like covalent compounds do. A copper wire is not made of \ce{Cu2} molecules. It is a continuous solid.
+
+The model that explains metallic bonding is the \textbf{electron sea model}. Here is the idea:
+
+Metal atoms have low electronegativities and few valence electrons (1--3 for most common metals). In a solid metal, these valence electrons are not held by any one atom. Instead, they detach from their parent atoms and become \textbf{delocalized} --- free to roam throughout the entire metal. The result is a lattice of positively charged metal cations (the nuclei plus core electrons) immersed in a ``sea'' of mobile electrons.
+
+\figurebox{Electron sea model: a regular array of metal cations ($\oplus$) surrounded by a sea of delocalized electrons ($e^{-}$) that flow freely throughout the metal.}{fig:electron-sea}
+
+This model explains every characteristic metallic property:
+
+\textbf{Electrical conductivity}: Copper wire conducts electricity because its delocalized electrons are free to flow in response to a voltage. In covalent compounds, electrons are locked in bonds between specific atoms and cannot flow. In ionic solids, ions are locked in a crystal lattice and cannot move (though they can conduct when melted or dissolved). The electron sea is what makes metals the conductors of choice for electrical wiring.
+
+\textbf{Thermal conductivity}: The mobile electrons also carry thermal energy efficiently. When you touch a metal spoon sitting in hot soup, it feels hot immediately because the delocalized electrons rapidly transfer kinetic energy from the hot end to the cold end. A wooden spoon (covalent bonds, no delocalized electrons) does not conduct heat nearly as well.
+
+\textbf{Malleability and ductility}: Gold can be hammered into sheets only a few atoms thick (gold leaf). Copper can be drawn into thin wire. These properties --- malleability (ability to be hammered into sheets) and ductility (ability to be drawn into wire) --- arise because the cation layers in a metal can slide past each other without breaking the structure. The electron sea simply flows to accommodate the new arrangement. In an ionic solid like \ce{NaCl}, displacing a layer would put positive ions next to positive ions, causing repulsion and shattering the crystal. Metals bend; ionic solids shatter.
+
+\textbf{Luster}: Metals are shiny because the delocalized electrons can absorb and re-emit light across a broad range of wavelengths. When light hits a metal surface, the sea of electrons oscillates in response and radiates the light back --- this is what gives metals their characteristic reflective appearance.
+
+\textbf{Metallic vs.\ ionic bonding --- a contrast:}
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Property} & \textbf{Metallic (e.g., Cu)} & \textbf{Ionic (e.g., \ce{NaCl})} \\
+  \midrule
+  Bonding model         & Cation lattice + electron sea & Cation-anion lattice \\
+  Electrical conductivity (solid) & High            & None \\
+  Malleability          & High (bends)                  & None (shatters) \\
+  Melting point         & Varies (Hg: $-39$~\degC; W: 3{,}422~\degC) & Generally high (\ce{NaCl}: 801~\degC) \\
+  Luster                & Yes                           & No (crystalline, but not metallic sheen) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The wide range of metallic melting points reflects the number of delocalized electrons and the size of the cation. Mercury (Hg), a liquid at room temperature, has a relatively weak electron sea interaction. Tungsten (W), used in light bulb filaments, has an extremely strong one. Both follow the electron sea model; the difference is degree.
+
+\end{enrichment}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Using the electron sea model, explain why metals conduct electricity but ionic solids (in solid form) do not.}
+
+  \practiceq{Why does a metal bend when struck with a hammer, while a salt crystal shatters?}
+
+  \practiceq{Mercury is a liquid metal at room temperature. Does the electron sea model still apply to mercury? What might explain its low melting point?}
+\end{practicequestions}
+
+
+%% ============================================================
+%% Chapter Summary
+%% ============================================================
+
+\begin{chaptersummary}
+\noindent This chapter established the \textbf{structure toolkit} --- the reasoning moves for predicting how atomic arrangement determines macroscopic properties. Here is what you can now do:
+
+\medskip
+
+\begin{tabular}{llp{6cm}}
+  \toprule
+  \textbf{ID} & \textbf{Reasoning Move} & \textbf{What It Lets You Do} \\
+  \midrule
+  DEF-STR001  & Lewis structure            & Draw 2D electron maps showing bonds and lone pairs \\
+  PRIM-STR001 & Bond type classification    & Classify bonds as nonpolar covalent, polar covalent, or ionic using $\Delta$EN \\
+  PRIM-STR002 & Bond polarity reasoning     & Locate $\delta^{+}$ and $\delta^{-}$ partial charges on a bond \\
+  PRIM-STR003 & Molecular shape reasoning   & Predict 3D geometry from electron group count (VSEPR) \\
+  DEF-STR002  & Molecular polarity          & Determine whether a molecule is polar or nonpolar from shape + bond dipoles \\
+  DEF-STR003  & Hydrogen bond               & Identify H-bonding potential (H bonded to N, O, or F) \\
+  PRIM-STR004 & IMF hierarchy               & Rank intermolecular forces: London $<$ dipole-dipole $<$ H-bonding $<$ ionic \\
+  DEF-STR006  & Phase from IMF balance       & Predict solid/liquid/gas from dominant IMF strength vs.\ temperature \\
+  PRIM-STR005 & Structure-to-property inference & Chain structure $\rightarrow$ polarity $\rightarrow$ IMF $\rightarrow$ property prediction \\
+  DEF-STR004  & ``Like dissolves like''      & Predict solubility by comparing solute and solvent polarities \\
+  DEF-STR010  & Water as solvent            & Explain water's exceptional dissolving power from its bent shape, H-bonding, and small size \\
+  DEF-STR005  & Isomer recognition          & Identify same-formula, different-arrangement molecules with different properties \\
+  DEF-STR007  & Carbon backbone reasoning   & Explain carbon's molecular diversity from 4-bond versatility, chain length, and functional groups \\
+  DEF-STR008  & Polymer reasoning           & Predict polymer properties from chain length, branching, cross-linking, and monomer polarity \\
+  DEF-STR009  & Metallic structure          & Explain metallic properties using the electron sea model (Enrichment) \\
+  \bottomrule
+\end{tabular}
+\end{chaptersummary}
+
+\medskip
+
+Every concept in this chapter built on the composition toolkit from Chapter~\ref{ch:com}. You needed valence electron counts (PRIM-COM007) to draw Lewis structures. You needed electronegativity (DEF-COM005) to classify bonds and determine polarity. You needed the concept of ions (DEF-COM002) to understand ionic interactions and metallic bonding. Composition came first; structure came second.
+
+And structure is not the end of the chain. Chapter~\ref{ch:nrg} will ask: when substances interact or change phase, where does the energy come from, and where does it go? To answer that, you will need the IMF strengths (PRIM-STR004) and phase reasoning (DEF-STR006) you learned here --- those are the bridges from structure to energy. Catalysts, which we will meet in Chapter~\ref{ch:chg}, work by lowering the activation energy of reactions, and understanding why requires knowing how molecular shape determines which molecules can interact.
+
+But structure always matters. A molecule's composition tells you what atoms are present. Its structure tells you what the molecule \textit{does}. That distinction --- between inventory and architecture, between parts list and blueprint --- is the central insight of this chapter. Same atoms, different arrangement, different properties. That is the power of structure.

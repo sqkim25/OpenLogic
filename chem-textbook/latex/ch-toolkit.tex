@@ -1,0 +1,94 @@
+% ch-toolkit.tex — Your Chemical Toolkit
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+%% ============================================================
+\section*{The Five Domains (Plus One)}
+%% ============================================================
+
+Chemistry is vast, but the questions it answers are not. This book is organized around five governing questions. Each question defines a domain, and each domain teaches you a set of reasoning moves --- the cognitive tools you will use throughout the course and beyond.
+
+\begin{center}
+\begin{tabular}{cllp{6cm}}
+  \toprule
+  \textbf{Chapter} & \textbf{Domain} & \textbf{Governing Question} & \textbf{What You'll Learn} \\
+  \midrule
+  1 & Composition (COM) & What is stuff made of? & 13 reasoning moves for identifying atoms, elements, compounds, and formulas \\
+  2 & Structure (STR) & How is it put together? & 15 reasoning moves for bonds, molecular shapes, polarity, and intermolecular forces \\
+  3 & Energy (NRG) & What drives change? & 11 reasoning moves for energy transfer, entropy, spontaneity, and activation energy \\
+  4 & Scale (SCL) & How much? How big? & 11 reasoning moves for moles, concentration, and proportional reasoning \\
+  5 & Change (CHG) & What happens? & 12 reasoning moves for chemical equations, equilibrium, rate, acids and bases, and redox \\
+  6 & Life (MULTI) & Chemistry meets life & Optional capstone: the same primitives explain DNA, proteins, and metabolism \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Together, these 62 reasoning moves (plus the capstone applications) form your \textbf{chemical toolkit}. Once you have them, you can reason through situations you have never seen before --- not because you memorized the answer, but because you own the moves.
+
+%% ============================================================
+\section*{How the Domains Build on Each Other}
+%% ============================================================
+
+The domains are not independent. They form a dependency chain, and the book is sequenced to respect it:
+
+\begin{center}
+\begin{tikzpicture}[
+  node distance=1.5cm and 2.5cm,
+  every node/.style={draw, rounded corners, minimum width=3.5cm, minimum height=0.8cm, align=center, font=\sffamily\small},
+  arrow/.style={-{Stealth[length=6pt]}, thick}
+]
+  \node (com) {COM\\What is stuff made of?};
+  \node (str) [below left=1.5cm and 0.5cm of com] {STR\\How is it put together?};
+  \node (nrg) [below right=1.5cm and 0.5cm of com] {NRG\\What drives change?};
+  \node (scl) [below=1.5cm of str] {SCL\\How much? How big?};
+  \node (chg) [below=1.5cm of nrg] {CHG\\What happens?};
+  \node (multi) [below right=1.5cm and 0.5cm of chg] {MULTI\\Chemistry meets life};
+
+  \draw[arrow] (com) -- (str);
+  \draw[arrow] (com) -- (nrg);
+  \draw[arrow] (str) -- (scl);
+  \draw[arrow] (str) -- (chg);
+  \draw[arrow] (nrg) -- (chg);
+  \draw[arrow] (scl) -- (chg);
+  \draw[arrow] (chg) -- (multi);
+  \draw[arrow] (scl) -- (multi);
+\end{tikzpicture}
+\end{center}
+
+\textbf{Composition (COM)} is the foundation. Everything starts with knowing what stuff is made of --- atoms, elements, compounds, and how we represent them. You cannot discuss structure without knowing what you are structuring.
+
+\textbf{Structure (STR)} and \textbf{Energy (NRG)} both build directly on Composition. Structure asks how atoms connect and arrange themselves. Energy asks what drives those arrangements to form or break apart. These two domains are largely independent of each other and could, in principle, be read in either order --- but we place Structure first because several Energy reasoning moves reference molecular shape.
+
+\textbf{Scale (SCL)} builds on Composition and Structure. Once you know what something is made of and how it is put together, you can ask \textit{how much} --- how many atoms, what concentration, what mass. Scale is where proportional reasoning enters the picture.
+
+\textbf{Change (CHG)} builds on everything that came before. Chemical change involves composition (what reacts?), structure (why does it react?), energy (is the reaction favorable?), and scale (how much product forms?). This is the domain where your reasoning moves combine most powerfully.
+
+\textbf{Life (MULTI)} is the optional capstone. It introduces no new primitives. Instead, it shows that the same 62 reasoning moves you already own are sufficient to explain the chemistry of DNA, protein folding, enzyme catalysis, and metabolism. If your course includes a biochemistry unit, this chapter demonstrates the payoff of the reasoning-move approach: you do not need a separate set of rules for biological chemistry.
+
+%% ============================================================
+\section*{Composition Patterns: Where Domains Meet}
+%% ============================================================
+
+At the end of several chapters, you will encounter \textbf{Composition Pattern (CP) capstone sections}. These are extended worked examples that weave together reasoning moves from multiple domains into a single explanatory chain. They show you that chemistry's real power lies not in individual moves but in their combination.
+
+There are seven Composition Patterns distributed across the book:
+
+\begin{center}
+\begin{tabular}{clll}
+  \toprule
+  \textbf{Pattern} & \textbf{Title} & \textbf{Location} & \textbf{Domains Combined} \\
+  \midrule
+  CP-001 & Structure-to-Property Prediction & End of Chapter 4 & STR + SCL \\
+  CP-002 & Energy-Driven Transformation & End of Chapter 5 & NRG + CHG \\
+  CP-003 & Acid-Base in the Body & End of Chapter 5 & STR + CHG + SCL \\
+  CP-004 & Greenhouse Effect & End of Chapter 4 & STR + NRG + SCL \\
+  CP-005 & Dose Makes the Poison & End of Chapter 5 & STR + CHG + SCL \\
+  CP-006 & Food Chemistry & End of Chapter 5 & COM + NRG + CHG + SCL \\
+  CP-007 & Biochemistry Connection & Chapter 6 & STR + CHG + SCL \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+For example, CP-004 (Greenhouse Effect) chains together reasoning moves about molecular composition (what is \ce{CO2}?), molecular shape and polarity (why does it absorb infrared light?), energy transfer (what happens to that absorbed energy?), and scale (what does \SI{420}{ppm} mean for the atmosphere?). No single domain can explain the greenhouse effect alone. The Composition Pattern shows you how the moves interlock.
+
+Think of these patterns as the ``boss levels'' of each chapter --- the places where you see your toolkit working at full capacity.

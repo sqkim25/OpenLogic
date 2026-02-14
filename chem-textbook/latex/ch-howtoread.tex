@@ -1,0 +1,52 @@
+% ch-howtoread.tex — How to Read This Book
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+Each chapter follows a consistent structure built around the reasoning moves. Here is what to expect as you read.
+
+\subsection*{Reasoning Move Blockquotes}
+
+Every new reasoning move is introduced in a blockquote with a standard format: \textit{Given X, do Y to determine Z.} For example:
+
+\begin{reasoningmove}{PRIM-COM005}{Chemical Formula Reading}
+  Given a chemical formula, extract which atoms are present, how many of each, and their ratios to determine the quantitative composition of the substance.
+\end{reasoningmove}
+
+\noindent These blockquotes are your primary reference. When you encounter one, slow down --- this is a new tool entering your toolkit.
+
+\subsection*{Dependency Annotations}
+
+When a reasoning move relies on an earlier one, you will see an italic note like \textit{Depends on: PRIM-COM005 (chemical formula reading, Chapter~1)}. These annotations tell you exactly which prior tool is being recalled. If the reference feels unfamiliar, flip back and review it before continuing. The annotations also serve as a self-diagnostic: if you consistently need to look up a particular move, it is worth spending extra time on it.
+
+\subsection*{Reasoning Chain Callout Boxes}
+
+These are step-by-step worked examples, set apart from the main text, that show multiple reasoning moves working together. A reasoning chain might look like:
+
+\begin{reasoningchain}{Why does salt dissolve in water?}
+  \chainitem{PRIM-COM004}{Substance classification}{\ce{NaCl} is an ionic compound.}
+  \chainitem{PRIM-STR001}{Bond type classification}{\ce{Na+} and \ce{Cl-} are held by ionic bonds.}
+  \chainitem{DEF-STR002}{Molecular polarity}{Water is a polar molecule.}
+  \chainitem{PRIM-STR004}{IMF hierarchy}{Water--ion attractions can overcome the ionic lattice energy.}
+\end{reasoningchain}
+
+\noindent These chains are where the reasoning-move approach pays off most visibly. Study them carefully.
+
+\subsection*{Practice Questions}
+
+End-of-section questions are framed as reasoning exercises, not fact recall. Instead of ``What is the atomic number of carbon?'' you will see questions like ``Given that carbon has 6 protons, use PRIM-COM003 to determine its position on the periodic table, then use PRIM-STR001 to predict how many bonds it typically forms.'' The goal is always to practice \textit{using} the moves, not to test whether you memorized a number.
+
+\subsection*{Composition Pattern Capstones}
+
+At the end of selected chapters, an extended section walks through one or two Composition Patterns --- multi-domain reasoning chains applied to real-world phenomena. These are the most challenging sections and the most rewarding. They are where you see the full power of your toolkit.
+
+\subsection*{Enrichment (E) Sections}
+
+Some topics go a step beyond what is needed for the main narrative --- a deeper look at orbital shapes, a more precise definition of entropy, a brief detour into nuclear chemistry. These sections are marked with \textbf{(E)} and are entirely optional. Skipping them will not break any dependency chain. If your instructor assigns them, they will deepen your understanding; if not, you will not miss anything required for later chapters.
+
+\subsection*{Chapter Summary Tables}
+
+Every chapter ends with a quick-reference table listing all reasoning moves introduced in that chapter, their identifiers, and a one-sentence description. Use these tables for review and for navigating back to specific moves when you need a refresher.
+
+\bigskip
+
+\noindent The most important piece of advice for reading this book: \textbf{trust the dependency chain.} If something feels confusing, the issue is almost always that a prior reasoning move needs review. The dependency annotations will tell you exactly where to look. Chemistry is not a subject where isolated facts suddenly click --- it is a subject where each move makes the next one possible. Work the chain, and the subject will open up.

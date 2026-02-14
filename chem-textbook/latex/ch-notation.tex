@@ -1,0 +1,33 @@
+% ch-notation.tex — Notation Guide
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+Chemistry has its own shorthand. This book uses a minimal, consistent set of conventions so that notation never becomes a barrier to understanding. Every symbol is explained on first use in every chapter, but the table below serves as a quick reference.
+
+\begin{center}
+\begin{longtable}{llp{6cm}}
+  \toprule
+  \textbf{Category} & \textbf{Convention} & \textbf{Example} \\
+  \midrule
+  \endhead
+  Formula representation & Molecular formulas throughout & \ce{H2O}, \ce{CO2}, \ce{C3H8} \\[4pt]
+  Charge notation & Superscript after the element or group & \ce{Na+}, \ce{Cl-} \\[4pt]
+  Energy units & kJ for thermochemistry; Calories for food and nutrition & $\DH = \SI{-890}{kJ}$; 200 Calories per serving \\[4pt]
+  Enthalpy notation & $\DH$ with no subscripts unless comparing multiple values & $\DH < 0$ means exothermic (releases heat) \\[4pt]
+  Concentration & ``concentration'' in prose; M (molar) in equations & \SI{0.1}{\molar} \ce{NaCl} \\[4pt]
+  Trace quantities & ppm (parts per million) & \SI{0.7}{ppm} fluoride in tap water \\[4pt]
+  Temperature & \degC{} for everyday contexts; K (kelvin) only when a formula requires it & Water boils at \SI{100}{\degreeCelsius} \\[4pt]
+  Electron representation & Dots for lone pairs; lines for bonds & H--O--H \\[4pt]
+  Reaction arrows & $\rightarrow$ for reactions that go to completion; \ce{<=>} for equilibrium & \ce{N2 + 3 H2 <=> 2 NH3} \\[4pt]
+  Element symbols & Standard IUPAC symbols; full name on first use per chapter & Sodium (Na) \\
+  \bottomrule
+\end{longtable}
+\end{center}
+
+A few additional notes:
+
+\begin{itemize}[nosep]
+  \item \textbf{Subscripts and superscripts} appear as formatted text (\ce{H2O}, \ce{Na+}) rather than as typed-out approximations. If you are reading a plain-text version of this book, subscripts are written after an underscore (H\_2O) and superscripts after a caret (Na\^{}+).
+  \item \textbf{Units always follow a number with a space}: \SI{100}{\degreeCelsius}, not 100\degC; \SI{2.5}{kJ}, not 2.5kJ.
+  \item \textbf{We prefer everyday language over jargon}: ``concentration'' rather than ``molarity'' in running prose, ``heat released'' rather than ``exothermic enthalpy change'' until the technical term has been properly introduced.
+\end{itemize}

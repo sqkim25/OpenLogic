@@ -1,0 +1,711 @@
+% ch-03-nrg.tex — Chapter 3: What Drives Change? (Energy Domain)
+% Full conversion from CH-03-NRG.md
+
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+\noindent\textit{Domain: NRG (Energy) --- The accounting department of chemistry}
+
+\bigskip
+
+You strike a match. For a moment, nothing happens --- just the scratch of wood against a rough strip. Then, suddenly, flame. The match head glows, heat radiates outward, and within seconds a small fire burns at the tip. The chemicals that were sitting quietly in the matchbox for months have, in an instant, become something else entirely: hot gas, a wisp of smoke, and a fading ember.
+
+Here is a question that sounds simple but opens up the entire energy landscape of chemistry: \textbf{Where did that heat come from?}
+
+Not ``what made it happen'' --- that is a question about the scratch, the friction, the spark. The question is deeper. The heat that warmed your fingertips was not hiding in the match head like water in a sponge. It was not created out of nothing. It came from somewhere, and it went somewhere, and if you trace its path carefully --- the way an accountant traces money through a ledger --- you discover one of the most powerful ideas in all of science: \textbf{energy is never created or destroyed. It only changes form.} Every process you will ever encounter, from a campfire to a cold pack to the metabolism of a candy bar, obeys this rule without exception.
+
+This chapter teaches you to think about energy the way a forensic accountant thinks about money. Where does it come from? Where does it go? Does the reaction release energy or absorb it? Is the process probable enough to happen on its own? And if it is favorable, why does it sometimes sit there doing nothing until you give it a push? By the end, you will have a toolkit for answering all of these questions --- not with equations, but with reasoning moves that let you trace energy through any chemical or physical process you encounter.
+
+
+%% ============================================================
+\section{NRG.1: Where Does Energy Go?}
+\label{sec:nrg1}
+%% ============================================================
+
+\subsection*{The Big Idea: Energy Is Conserved}
+
+As we learned in Chapter~\ref{ch:com}, atoms are conserved in chemical reactions --- they rearrange but are never created or destroyed (PRIM-COM006). Energy obeys an analogous conservation principle. When a log burns in a fireplace, the chemical energy stored in the wood does not vanish. It is converted into thermal energy (heat you feel) and radiant energy (light you see). The total amount of energy before the fire equals the total amount after. The books always balance.
+
+This is the first law of thermodynamics, and we are going to treat it not as an equation to memorize but as a \textbf{reasoning tool}: whenever you encounter any process --- a reaction, a phase change, an energy transfer --- you can trace the energy through it like following money through a bank statement. Energy in must equal energy out, with any stored energy accounted for.
+
+%% ---- Reasoning Move: PRIM-NRG001 ----
+\begin{reasoningmove}{PRIM-NRG001}{Energy Tracking}
+  \textbf{Reasoning move}: Given a process (chemical reaction, physical change, or energy transfer), trace energy through the system: identify input energy forms, energy transformations within the system, and output energy forms, then verify that total energy is conserved.
+\end{reasoningmove}
+
+\depends{PRIM-COM001}{atomic composition analysis --- you must identify what substances and bonds are present before you can trace energy through them}{1}
+
+This is the entry point to all energy reasoning. Before you can ask whether a reaction releases or absorbs energy (that is NRG.2), whether a process is probable (NRG.3), or what barrier prevents it from happening (NRG.4), you need the foundational skill: \textbf{trace where energy comes from and where it goes.}
+
+Think of energy tracking as accounting. Every process has debits (energy coming in) and credits (energy going out), and the ledger must balance. The ``currency'' comes in several forms:
+
+\begin{center}
+\begin{tabular}{llp{5cm}}
+  \toprule
+  \textbf{Energy Form} & \textbf{What It Is} & \textbf{Example} \\
+  \midrule
+  Chemical energy    & Energy stored in chemical bonds & Gasoline, food, batteries \\
+  Thermal energy     & Kinetic energy of moving particles & Hot water, body heat \\
+  Radiant energy     & Energy carried by light or other EM radiation & Sunlight, infrared from a fire \\
+  Electrical energy  & Energy from the flow of charged particles & Lightning, a battery-powered device \\
+  Mechanical energy  & Energy of motion or position & A thrown ball, water behind a dam \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+These forms are interconvertible. Chemical energy in a battery becomes electrical energy in a circuit, which becomes radiant energy in a light bulb, which becomes thermal energy when absorbed by the walls of a room. At every step, energy changes form but the total amount stays the same.
+
+\begin{hook}{Eating a granola bar before a run}
+  When you eat a granola bar before a run, you are performing energy tracking. The chemical energy stored in the bonds of carbohydrates, fats, and proteins is converted by your body into thermal energy (body heat --- you feel warm when you exercise) and mechanical energy (muscle contractions that move your legs). The total energy from the granola bar equals the heat you radiate plus the work your muscles do. Nothing is created. Nothing is lost. Everything is transformed.
+\end{hook}
+
+\figurebox{Energy flow diagram for eating a granola bar. Chemical energy (bonds in food) is converted to thermal energy (body heat, approximately 75\%) and mechanical energy (muscle movement, approximately 25\%). Total energy in = total energy out.}{fig:energy-flow-granola}
+
+The percentages are approximate, but the principle is exact: input equals output. This is why you feel hot during exercise --- most of the chemical energy from food is converted to heat, not motion. Your body is not a very efficient engine, but it is a perfectly honest accountant.
+
+\begin{hook}{Car engines}
+  A car engine converts chemical energy in gasoline into mechanical energy (turning the wheels) and thermal energy (the engine gets hot). An electric car converts electrical energy from the battery into mechanical energy and thermal energy. In both cases, if you could measure every joule of energy coming in and every joule going out, the totals would match.
+\end{hook}
+
+%% ---- Reasoning Move: DEF-NRG001 ----
+\begin{reasoningmove}{DEF-NRG001}{Heat vs.\ Temperature}
+  \textbf{Reasoning move}: Given two objects at different temperatures in contact, distinguish heat (energy transferred) from temperature (average molecular kinetic energy), and predict direction of heat flow.
+\end{reasoningmove}
+
+\depends{PRIM-NRG001}{energy tracking --- heat is a specific form of energy transfer, requiring the general energy tracking framework}{3}
+
+Here is the single most commonly confused pair of concepts in introductory chemistry: \textbf{heat and temperature are not the same thing.}
+
+Consider this scenario: a bathtub filled with lukewarm water at \SI{35}{\degreeCelsius}, and a thimble of boiling water at \SI{100}{\degreeCelsius}. Which one contains more thermal energy?
+
+The thimble is hotter. But the bathtub contains \textbf{far more total thermal energy}. Why? Because the bathtub has enormously more water molecules, each one moving and carrying kinetic energy. The thimble has very few molecules, even though each one is moving faster on average. If you had to warm a cold room, the bathtub of lukewarm water would do a much better job than the thimble of boiling water, because the bathtub has more total energy to transfer.
+
+This distinction is critical:
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Concept} & \textbf{What It Is} & \textbf{What It Measures} & \textbf{Analogy} \\
+  \midrule
+  \textbf{Temperature} & A property of an object & Average kinetic energy of its molecules & Speed limit on a highway \\
+  \textbf{Heat} & A process (energy in transit) & Energy transferred due to a temperature difference & Actual traffic flow \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Temperature is something an object \textbf{has}. Heat is something that \textbf{happens} --- it is the transfer of thermal energy from a hotter object to a cooler one. When you put a cold spoon into a bowl of hot soup, thermal energy flows from the soup (higher temperature) to the spoon (lower temperature). That flow is heat. It continues until the spoon and soup reach the same temperature --- a state called \textbf{thermal equilibrium}.
+
+\textbf{Key point}: Heat always flows from hot to cold. Never the other way around (without external work being done). This is as reliable as gravity pulling things downward.
+
+\begin{hook}{Checking for fever}
+  When you check a child's forehead for fever, you are sensing temperature --- the average kinetic energy of molecules at the skin's surface. When you run a hot bath to soothe sore muscles, you are using heat transfer: thermal energy flows from the hot water into your cooler body until both approach the same temperature. The bath ``feels hot'' because heat is flowing into you, not because the water contains a substance called ``heat.''
+\end{hook}
+
+\begin{hook}{The cold doorknob}
+  A metal doorknob and a wooden door are both at the same room temperature (about \SI{22}{\degreeCelsius}). But the doorknob feels colder when you touch it. Why? Because metal conducts heat away from your hand much faster than wood does. The temperature is identical, but the rate of heat transfer is different. Your hand is not sensing temperature --- it is sensing heat flow.
+\end{hook}
+
+%% ---- Reasoning Move: DEF-NRG005 ----
+\begin{reasoningmove}{DEF-NRG005}{Calorie/Joule}
+  \textbf{Reasoning move}: Given an energy value in calories, kilocalories (food Calories), or joules, convert between units.
+\end{reasoningmove}
+
+\depends{DEF-NRG001}{heat vs.\ temperature --- the calorie is defined via heat transfer to water and temperature change}{3}
+
+Energy needs units, just like distance needs meters or miles. Chemistry uses two main energy units, and everyday life uses a confusing variant of one of them.
+
+\textbf{The joule (J)} is the SI (international standard) unit of energy. It is used in most scientific contexts.
+
+\textbf{The calorie (cal)} --- lowercase c --- is the amount of energy needed to raise the temperature of 1 gram of water by \SI{1}{\degreeCelsius}. It connects directly to the heat-temperature distinction you just learned: a calorie is defined by how much heat it takes to change water's temperature by a specific amount.
+
+\textbf{The food Calorie (Cal)} --- capital C --- is the one you see on nutrition labels. Here is the source of endless confusion: \textbf{one food Calorie is actually one kilocalorie (1,000 calories)}. When a candy bar label says ``250 Calories,'' it means 250 kilocalories, or 250,000 calories. The food industry adopted the kilocalorie but dropped the ``kilo'' prefix and capitalized the C instead. It is a notational choice that has confused people for decades.
+
+\textbf{The conversion:}
+
+\begin{quote}
+  1 cal = \SI{4.184}{J} (exact, by definition)
+
+  1 food Calorie (Cal) = 1 kcal = 1{,}000 cal = \SI{4184}{J} = \SI{4.184}{kJ}
+\end{quote}
+
+\begin{hook}{Energy in a candy bar}
+  A candy bar labeled 250 Calories contains 250 kcal = \SI{1046}{kJ} of chemical energy stored in its molecular bonds. When your body metabolizes it, that energy is released and converted to body heat and mechanical work. Counting Calories IS energy tracking (PRIM-NRG001) applied to food.
+\end{hook}
+
+Where does the energy in food come from? It comes from the chemical bonds in the macronutrients:
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Macronutrient} & \textbf{Energy Content} & \textbf{Example Foods} \\
+  \midrule
+  Carbohydrates & ${\sim}$4 Cal/g (\SI{17}{kJ/g}) & Bread, pasta, sugar, fruit \\
+  Protein       & ${\sim}$4 Cal/g (\SI{17}{kJ/g}) & Meat, beans, eggs, tofu \\
+  Fat           & ${\sim}$9 Cal/g (\SI{38}{kJ/g}) & Oils, butter, nuts, cheese \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Fat stores more than twice as much energy per gram as carbohydrates or protein. This is why high-fat foods are ``calorie-dense'' and why your body stores excess energy as fat --- it is the most efficient energy storage form, packing the most energy into the least mass.
+
+\textbf{Practice conversion}: A granola bar contains \SI{12}{g} of carbohydrate, \SI{5}{g} of fat, and \SI{3}{g} of protein. Estimate its Calorie content.
+
+\begin{itemize}[nosep]
+  \item Carbohydrate: $12\text{ g} \times 4\text{ Cal/g} = 48\text{ Cal}$
+  \item Fat: $5\text{ g} \times 9\text{ Cal/g} = 45\text{ Cal}$
+  \item Protein: $3\text{ g} \times 4\text{ Cal/g} = 12\text{ Cal}$
+  \item \textbf{Total: approximately 105 Cal} (= 105 kcal = \SI{439}{kJ})
+\end{itemize}
+
+This is how nutrition labels are calculated --- not by burning food in a laboratory (although that method works too), but by measuring the grams of each macronutrient and multiplying by the known energy yield per gram. It is energy tracking with a unit conversion.
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{A flashlight converts chemical energy (battery) into light and heat. Does this violate energy conservation? Where does the energy go when the flashlight dims and eventually dies?}
+
+  \practiceq{A swimming pool at \SI{25}{\degreeCelsius} and a cup of tea at \SI{70}{\degreeCelsius} are sitting side by side. Which contains more total thermal energy? Which is at a higher temperature? Explain the difference.}
+
+  \practiceq{A nutrition label lists \SI{30}{g} of carbohydrate, \SI{10}{g} of fat, and \SI{8}{g} of protein. Estimate the total Calories and convert to kilojoules.}
+
+  \practiceq{Your body temperature is \SI{37}{\degreeCelsius}. You hold an ice cube (\SI{0}{\degreeCelsius}) in your hand. Describe the direction of heat flow and what happens to the ice cube. Use the terms ``heat,'' ``temperature,'' and ``thermal equilibrium'' correctly.}
+
+  \practiceq{Convert 500 food Calories to (a)~kilocalories, (b)~calories, and (c)~kilojoules.}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You now know that energy is conserved, that heat and temperature are different things, and that Calories are just a unit for tracking chemical energy in food. But this raises a new question: if energy is always conserved, why do some reactions give off heat while others absorb it? What determines which direction energy flows? That is where bonds come in.}
+
+
+%% ============================================================
+\section{NRG.2: Why Do Some Reactions Release Energy?}
+\label{sec:nrg2}
+%% ============================================================
+
+Some reactions are hot. Strike a match, and it burns --- releasing thermal energy and light. Mix cement, and the bucket gets warm. Burn natural gas on the stove, and the flame heats your food.
+
+Other reactions are cold. Crack open an instant cold pack, and it drops in temperature so fast you can use it to treat a sprained ankle. Dissolve ammonium nitrate in water, and the solution chills noticeably.
+
+Why the difference? The answer lies in the bonds.
+
+%% ---- Reasoning Move: PRIM-NRG002 ----
+\begin{reasoningmove}{PRIM-NRG002}{Bond Energy Reasoning}
+  \textbf{Reasoning move}: Given a chemical reaction, compare the total energy required to break all bonds in reactants with the total energy released when forming all bonds in products.
+\end{reasoningmove}
+
+\depends{PRIM-NRG001}{energy tracking --- bond energy reasoning is a specific application of energy conservation to chemical bonds}{3}
+
+Here is the most important misconception to correct in this entire chapter, and possibly in the entire course:
+
+\textbf{``Breaking bonds releases energy'' is WRONG.}
+
+This is one of the most persistent errors in introductory chemistry. Students hear ``energy is released in combustion'' and reason backward: ``The reaction breaks apart molecules, so breaking bonds must release energy.'' The logic sounds plausible. It is completely incorrect.
+
+Here is the truth:
+
+\begin{quote}
+  \textbf{Breaking bonds ALWAYS requires energy. Forming bonds ALWAYS releases energy.}
+\end{quote}
+
+Think of a chemical bond as a stretched rubber band holding two atoms together. To pull the atoms apart (break the bond), you must put energy in --- you must do work against the attractive forces holding them together. When atoms come together and form a new bond, they release energy --- the atoms snap together and the excess energy radiates outward as heat.
+
+So if breaking bonds costs energy and forming bonds releases energy, how can any reaction release energy overall? The answer: \textbf{it depends on which set of bonds is stronger.}
+
+\begin{itemize}[nosep]
+  \item If the bonds formed in the products are \textbf{stronger} than the bonds broken in the reactants, more energy is released than was invested. The reaction is a net energy producer.
+  \item If the bonds broken in the reactants are \textbf{stronger} than the bonds formed in the products, more energy is consumed than is released. The reaction is a net energy consumer.
+\end{itemize}
+
+\textbf{Worked example --- methane combustion (natural gas burning):}
+
+\reaction{CH4(g) + 2 O2(g) -> CO2(g) + 2 H2O(g)}
+
+Step 1: \textbf{Bonds broken} (costs energy):
+\begin{itemize}[nosep]
+  \item 4 C---H bonds in methane
+  \item 2 O=O bonds in oxygen
+\end{itemize}
+
+Step 2: \textbf{Bonds formed} (releases energy):
+\begin{itemize}[nosep]
+  \item 2 C=O bonds in \ce{CO2}
+  \item 4 O---H bonds in \ce{H2O}
+\end{itemize}
+
+The C=O bonds in carbon dioxide and the O---H bonds in water are very strong bonds --- stronger, collectively, than the C---H and O=O bonds that were broken. More energy is released in forming the product bonds than was invested in breaking the reactant bonds. The surplus energy is what heats your food on the stove.
+
+\figurebox{Bond energy comparison for methane combustion. Energy invested to break bonds in \ce{CH4} and \ce{O2} (left bar) is less than energy released when forming bonds in \ce{CO2} and \ce{H2O} (right bar). The difference is the net energy released to the surroundings.}{fig:bond-energy-methane}
+
+\textbf{Why does this misconception matter?} Because if you think breaking bonds releases energy, you will get the logic of every energy question backward. You will predict that decomposition reactions (which break molecules apart) should release energy, when in fact many of them absorb energy. The correct reasoning --- breaking costs, forming pays --- gives you a reliable tool for predicting energy flow in any reaction.
+
+%% ---- Reasoning Move: PRIM-NRG003 ----
+\begin{reasoningmove}{PRIM-NRG003}{Exo/Endothermic Classification}
+  \textbf{Reasoning move}: Given an energy diagram or description, classify as exothermic (energy released) or endothermic (energy absorbed).
+\end{reasoningmove}
+
+\depends{PRIM-NRG001}{energy tracking --- must trace energy flow to determine direction}{3}
+
+Now that you understand bond energy reasoning, you can classify every energy-involving process into one of two categories:
+
+\textbf{Exothermic}: The process releases energy to the surroundings. The products end up at a \textbf{lower} energy level than the reactants. The surroundings get warmer.
+
+\textbf{Endothermic}: The process absorbs energy from the surroundings. The products end up at a \textbf{higher} energy level than the reactants. The surroundings get cooler.
+
+This is a simple binary classification --- every process is one or the other (or, rarely, neither, if the energy levels happen to match exactly). Here is how to visualize it:
+
+\figurebox{Side-by-side energy diagrams. Left (exothermic): reactants at a higher energy level than products, with an arrow pointing downward labeled ``energy released to surroundings.'' Right (endothermic): reactants at a lower energy level than products, with an arrow pointing upward labeled ``energy absorbed from surroundings.''}{fig:exo-endo-diagrams}
+
+\textbf{Real-world examples:}
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Process} & \textbf{Classification} & \textbf{How You Know} \\
+  \midrule
+  Burning wood & Exothermic & You feel heat radiating from the fire \\
+  Hand warmer (iron oxidation) & Exothermic & The packet gets warm in your hand \\
+  Instant cold pack (\ce{NH4NO3} dissolving) & Endothermic & The pack gets cold against your skin \\
+  Cooking an egg & Endothermic & You must continuously add heat (from the stove) \\
+  Rusting of iron & Exothermic & Very slow, but releasing energy as it oxidizes \\
+  Photosynthesis & Endothermic & Plants need continuous sunlight (energy input) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Critical distinction}: Exothermic and endothermic describe the \textbf{direction of energy flow}, not whether a process will happen on its own. Many exothermic reactions need a push to get started (a match needs to be struck). And some endothermic processes happen spontaneously (ice melting on a warm day). Spontaneity is a separate question --- we will get to it in NRG.3.
+
+%% ---- Reasoning Move: DEF-NRG003 ----
+\begin{reasoningmove}{DEF-NRG003}{Enthalpy Change (\DH)}
+  \textbf{Reasoning move}: Given a reaction at constant pressure, classify the enthalpy change as negative (exothermic) or positive (endothermic).
+\end{reasoningmove}
+
+\depends{PRIM-NRG003}{exo/endothermic classification --- \DH{} puts a quantitative sign and magnitude on the qualitative classification}{3}
+\depends{DEF-NRG001}{heat vs.\ temperature --- \DH{} measures heat transfer at constant pressure}{3}
+
+You now know how to classify a process as exothermic or endothermic. But classification alone does not tell you \textbf{how much} energy is involved. Is burning methane a little exothermic or massively exothermic? Is dissolving ammonium nitrate slightly endothermic or dramatically so?
+
+This is where enthalpy change comes in. \textbf{\DH} (delta-H) is the ``scoreboard number'' that tells you both the direction and the magnitude of energy flow for a reaction at constant pressure (which is the case for nearly every reaction you encounter in an open container on a lab bench or in your kitchen).
+
+The sign convention is straightforward:
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{\DH} & \textbf{Meaning} & \textbf{Energy Flow} \\
+  \midrule
+  \textbf{Negative} ($\DH < 0$) & Exothermic & Energy released FROM the reaction TO the surroundings \\
+  \textbf{Positive} ($\DH > 0$) & Endothermic & Energy absorbed BY the reaction FROM the surroundings \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{hook}{Your gas bill}
+  The combustion of methane has $\DH = \SI{-890}{kJ/mol}$. That negative sign tells you the reaction is exothermic, and the \SI{890}{kJ/mol} tells you how much energy is released per mole of methane burned. Your gas bill is essentially paying for that negative \DH: the energy released by burning natural gas is what heats your home.
+\end{hook}
+
+\begin{hook}{Photosynthesis}
+  Photosynthesis has $\DH = +\SI{2803}{kJ/mol}$ of glucose produced. The positive sign tells you this is endothermic --- plants must absorb energy (from sunlight) to drive this reaction. Without continuous energy input, photosynthesis stops.
+\end{hook}
+
+A few reactions and their \DH{} values, to give you a sense of scale:
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Reaction} & \textbf{\DH{} (kJ/mol)} & \textbf{Classification} \\
+  \midrule
+  \ce{CH4 + 2 O2 -> CO2 + 2 H2O} & $-890$ & Strongly exothermic \\
+  \ce{C3H8 + 5 O2 -> 3 CO2 + 4 H2O} & $-2{,}220$ & Very strongly exothermic \\
+  Dissolution of \ce{NH4NO3} in water & $+25.7$ & Mildly endothermic \\
+  \ce{6 CO2 + 6 H2O -> C6H12O6 + 6 O2} & $+2{,}803$ & Strongly endothermic \\
+  Neutralization of HCl with NaOH & $-57.1$ & Moderately exothermic \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{An important property of \DH}: Enthalpy is a \textbf{state function}. This means the value of \DH{} depends only on the starting and ending states of the reaction, not on the path taken to get there. Whether you burn methane in one step or in a complicated series of intermediate reactions, the total \DH{} is the same: \SI{-890}{kJ/mol}. Think of it like altitude: the elevation difference between the base of a mountain and its summit is the same whether you take the short steep trail or the long winding one.
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why does your hand warmer get hot?}
+  \chainitem{}{Chemistry}{The hand warmer contains iron powder exposed to air when you open the packet.}
+  \chainitem{}{Reaction}{Iron reacts with oxygen: \ce{4 Fe(s) + 3 O2(g) -> 2 Fe2O3(s)}. This is the same process as rusting, but accelerated.}
+  \chainitem{PRIM-NRG002}{Bond energy reasoning}{The Fe---O bonds formed in iron oxide are very strong. More energy is released forming these bonds than is required to break the O=O bonds in oxygen.}
+  \chainitem{PRIM-NRG003}{Exo/endothermic classification}{Since more energy is released than consumed, the reaction is exothermic.}
+  \chainitem{DEF-NRG003}{\DH{} is negative}{The enthalpy change confirms the reaction releases heat energy.}
+  \chainitem{PRIM-NRG001}{Energy tracking}{The chemical energy stored in the iron-oxygen system is converted to thermal energy, which warms your hand. Total energy is conserved.}
+\end{reasoningchain}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{A student says, ``When you burn wood, the bonds in wood break apart and release energy.'' What is wrong with this statement? Correct it using bond energy reasoning (PRIM-NRG002).}
+
+  \practiceq{An instant cold pack feels cold when activated. Is the dissolution of ammonium nitrate exothermic or endothermic? What is the sign of \DH?}
+
+  \practiceq{Combustion of hydrogen gas: \ce{2 H2(g) + O2(g) -> 2 H2O(l)}, $\DH = \SI{-572}{kJ}$. Is this reaction exothermic or endothermic? What does the negative sign tell you about the relative strength of the bonds formed versus the bonds broken?}
+
+  \practiceq{Photosynthesis and combustion of glucose are reverse reactions. If photosynthesis has $\DH = +\SI{2803}{kJ/mol}$, what is \DH{} for the combustion of glucose? Explain your reasoning.}
+
+  \practiceq{Draw a simple energy diagram (like the ones shown above) for a reaction with $\DH = \SI{-200}{kJ}$. Label the reactants, products, and the energy released.}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You can now trace energy through a process, classify it as exothermic or endothermic, and read the \DH{} scoreboard. But here is a puzzle: ice melts at room temperature even though melting is endothermic --- the ice absorbs energy from the surroundings. If releasing energy is favorable, why would an energy-absorbing process ever happen on its own? The answer requires a second driver of change: one that has nothing to do with energy and everything to do with probability.}
+
+
+%% ============================================================
+\section{NRG.3: What Makes a Process Probable?}
+\label{sec:nrg3}
+%% ============================================================
+
+If energy were the only thing that mattered, then only exothermic processes would ever happen on their own. Endothermic processes would require constant pushing --- and the moment you stopped pushing, they would reverse. The universe would always slide downhill energetically.
+
+But that is not what we observe. Ice melts on a warm counter --- an endothermic process. A drop of dye spreads through a glass of water on its own --- no energy is released. Salt dissolves in water spontaneously, even when the process is slightly endothermic. Clearly, something besides energy is driving these changes.
+
+That something is \textbf{entropy}.
+
+%% ---- Reasoning Move: PRIM-NRG004 ----
+\begin{reasoningmove}{PRIM-NRG004}{Entropy Reasoning}
+  \textbf{Reasoning move}: Given a before-and-after description, determine whether the number of possible arrangements (microstates) increased or decreased.
+\end{reasoningmove}
+
+Entropy is one of the most misunderstood concepts in science, partly because it has been taught badly for generations. You may have heard that entropy means ``disorder.'' \textbf{Forget that.} The disorder metaphor is actively misleading --- it leads students to think entropy is about spatial messiness (a messy room has ``high entropy'') rather than about probability. A messy room does not have higher entropy than a clean one. Entropy is not about how tidy something looks.
+
+Here is what entropy actually is: \textbf{a measure of how many different ways the particles and energy in a system can be arranged.}
+
+Think of it this way. Take a deck of 52 playing cards. Arrange them in perfect order: Ace through King of spades, then hearts, then diamonds, then clubs. That is one very specific arrangement. Now shuffle the deck. The shuffled deck is also one specific arrangement --- but there are approximately $8 \times 10^{67}$ possible shuffled arrangements (that is an 8 followed by 67 zeros). There is only one perfectly ordered arrangement.
+
+If you shuffle a sorted deck, what is the probability of getting the sorted order back? Essentially zero. Not because some force opposes sorting, but because the number of ``shuffled'' arrangements is so astronomically larger than the number of ``sorted'' arrangements that a sorted outcome is overwhelmingly improbable.
+
+\textbf{This is entropy.} A state with more possible arrangements (more ``microstates'') is more probable, and therefore has higher entropy. Systems naturally evolve toward states with more arrangements --- not because a force pushes them there, but because those states are overwhelmingly more likely.
+
+\textbf{Qualitative predictors of entropy change:}
+
+\begin{center}
+\begin{tabular}{llp{6cm}}
+  \toprule
+  \textbf{Change} & \textbf{Effect on Entropy} & \textbf{Why} \\
+  \midrule
+  Solid $\rightarrow$ Liquid $\rightarrow$ Gas & Entropy increases & Gas particles can be in many more positions and orientations than liquid or solid \\
+  Fewer particles $\rightarrow$ More particles & Entropy increases & More independent particles = more possible arrangements \\
+  Lower temp.\ $\rightarrow$ Higher temp. & Entropy increases & Faster-moving particles can distribute energy in more ways \\
+  Smaller volume $\rightarrow$ Larger volume & Entropy increases & More space = more possible positions for each particle \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{hook}{Why does an ice cube melt?}
+  In ice, water molecules are locked into a rigid crystal lattice --- each molecule sits in a fixed position, vibrating slightly. The number of possible arrangements is very small. In liquid water, molecules can slide past each other, rotate freely, and occupy many different positions. The number of possible arrangements is enormously larger. Melting is overwhelmingly probable because liquid water has vastly more ways to arrange its molecules than ice does. That is entropy reasoning.
+\end{hook}
+
+\begin{hook}{Food coloring in water}
+  Why does a drop of food coloring spread through a glass of water? Initially, all the dye molecules are concentrated in one small region. There is only a tiny fraction of possible arrangements where all the dye is clustered in one spot. There are astronomically more arrangements where the dye is evenly spread throughout the glass. The dye spreads because the dispersed state is overwhelmingly more probable. No energy is released --- this is purely entropy-driven.
+\end{hook}
+
+\begin{hook}{Why coffee cools down}
+  Why does a cup of hot coffee cool to room temperature? At the molecular level, the fast-moving coffee molecules and the slower-moving air molecules can distribute their combined thermal energy in far more ways when the energy is spread evenly (both at room temperature) than when it is concentrated in the coffee (coffee hot, air cool). The even distribution has enormously more microstates, so it is overwhelmingly probable.
+\end{hook}
+
+%% ---- Reasoning Move: PRIM-NRG005 ----
+\begin{reasoningmove}{PRIM-NRG005}{Spontaneity Reasoning}
+  \textbf{Reasoning move}: Given the energy change AND entropy change, determine whether the process will occur spontaneously.
+\end{reasoningmove}
+
+\depends{PRIM-NRG003}{exo/endothermic classification --- need to know the energy direction}{3}
+\depends{PRIM-NRG004}{entropy reasoning --- need to know the entropy direction}{3}
+
+You now have two drivers of change:
+
+\begin{enumerate}[nosep]
+  \item \textbf{Energy favorability}: Processes that release energy (exothermic) are energetically favorable.
+  \item \textbf{Entropy favorability}: Processes that increase the number of arrangements are entropically favorable.
+\end{enumerate}
+
+A process is \textbf{spontaneous} when it occurs without continuous external energy input. \textbf{Spontaneous does NOT mean fast.} A diamond slowly converting to graphite is spontaneous under normal conditions --- graphite is the more stable form of carbon --- but the rate is so slow that your diamond ring is safe for billions of years. Spontaneous means ``thermodynamically favorable,'' not ``instant.''
+
+When energy and entropy agree, the prediction is easy. When they conflict, temperature is the referee. Here is the four-case matrix:
+
+\begin{center}
+\begin{tabular}{lllll}
+  \toprule
+  \textbf{Case} & \textbf{Energy (\DH)} & \textbf{Entropy (\DS)} & \textbf{Spontaneous?} & \textbf{Example} \\
+  \midrule
+  1 & Exothermic ($-$) & Increases ($+$) & \textbf{Always} & Combustion \\
+  2 & Endothermic ($+$) & Decreases ($-$) & \textbf{Never} & Unscrambling an egg \\
+  3 & Exothermic ($-$) & Decreases ($-$) & \textbf{At low $T$} & Freezing water \\
+  4 & Endothermic ($+$) & Increases ($+$) & \textbf{At high $T$} & Melting ice \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Why does temperature matter in Cases 3 and 4?} Because temperature determines how heavily entropy counts relative to energy. At high temperatures, particles have lots of kinetic energy, and the system can ``afford'' to absorb energy in exchange for more arrangements --- entropy wins. At low temperatures, particles have little kinetic energy, and the energy drive dominates --- energy wins. Temperature is the dial that adjusts the balance.
+
+\begin{hook}{Water freezing at $-10$~\degC}
+  Water freezing at \SI{-10}{\degreeCelsius} is Case~3. The process is exothermic (water releases heat as it solidifies) but entropy-decreasing (the rigid crystal lattice has fewer arrangements than liquid water). At \SI{-10}{\degreeCelsius}, the temperature is low enough that the energy favorability outweighs the entropy penalty. Freezing happens spontaneously.
+\end{hook}
+
+\begin{hook}{Ice melting at $+25$~\degC}
+  Ice melting at \SI{+25}{\degreeCelsius} is Case~4. The process is endothermic (ice absorbs heat from the surroundings) but entropy-increasing (liquid water has vastly more arrangements). At \SI{+25}{\degreeCelsius}, the temperature is high enough that the entropy favorability outweighs the energy penalty. Melting happens spontaneously.
+\end{hook}
+
+These are the \textbf{same} two substances (water and ice) and the \textbf{same} two drivers (energy and entropy) --- but temperature determines which process wins. This is why water freezes below \SI{0}{\degreeCelsius} and melts above \SI{0}{\degreeCelsius}. At exactly \SI{0}{\degreeCelsius}, the two drives are perfectly balanced, and ice and liquid water coexist in equilibrium.
+
+\textbf{A crucial point about spontaneous processes}: Spontaneous does NOT mean the reaction will visibly happen right now. It means the process is thermodynamically favorable --- given enough time, it will proceed in that direction. The rate at which it happens is a completely separate question, which we address in NRG.4.
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why does salt dissolve in water?}
+  \chainitem{}{Ionic compound}{Salt (\ce{NaCl}) is an ionic compound: \ce{Na+} ions and \ce{Cl-} ions held together in a crystal lattice.}
+  \chainitem{}{Dissolution}{When salt dissolves, the ions separate and spread throughout the water.}
+  \chainitem{PRIM-NRG003}{Energy analysis}{Breaking the ionic bonds in the crystal requires energy. Forming new ion-water interactions releases energy. The process is approximately thermoneutral (very slightly endothermic for \ce{NaCl}).}
+  \chainitem{PRIM-NRG004}{Entropy analysis}{The ions go from a rigid, ordered crystal (very few arrangements) to being dispersed throughout the entire volume of water (enormously more arrangements). Entropy increases dramatically.}
+  \chainitem{PRIM-NRG005}{Spontaneity assessment}{Even though the energy change is slightly unfavorable (endothermic), the entropy increase is large. At room temperature, entropy wins. Dissolving is spontaneous.}
+  \chainitem{}{Case identification}{This is Case~4 from the matrix: endothermic + entropy increase = spontaneous at sufficiently high temperature. Room temperature is high enough.}
+\end{reasoningchain}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{A drop of perfume is released at one end of a room. Eventually, you can smell it at the other end. Is this process driven by energy, entropy, or both? Explain using the concept of arrangements.}
+
+  \practiceq{Freezing water is exothermic. Does that mean it is always spontaneous? Why or why not? Use the four-case matrix.}
+
+  \practiceq{A student says, ``Entropy means disorder, so a messy room has higher entropy than a clean room.'' Explain why this statement is incorrect.}
+
+  \practiceq{Classify each of the following as Case~1, 2, 3, or~4 from the spontaneity matrix: (a)~burning propane at any temperature, (b)~water evaporating on a hot summer day, (c)~a gas condensing to a liquid in a freezer.}
+
+  \practiceq{Diamond converting to graphite is spontaneous at room temperature and pressure, but it does not visibly happen. Does this contradict the definition of ``spontaneous''? Explain.}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You now have two lenses for evaluating change: energy and entropy. Together, they tell you whether a process is favorable. But favorable does not mean it will happen right away. Gasoline in a fuel tank is thermodynamically favorable for combustion --- so why does it not burst into flame? Something is missing from the picture: a barrier that must be overcome before a favorable process can proceed.}
+
+
+%% ============================================================
+\section{NRG.4: What Stops a Favorable Reaction from Happening?}
+\label{sec:nrg4}
+%% ============================================================
+
+A piece of paper is sitting on your desk. The reaction of paper with oxygen in the air is exothermic and entropy-increasing --- it is Case~1 on the spontaneity matrix, spontaneous at all temperatures. Yet the paper does not burst into flame. Gasoline sits calmly in your car's fuel tank despite being surrounded by oxygen. Iron is exposed to air every day but rusts slowly over years, not in a flash.
+
+If these reactions are all thermodynamically favorable, what stops them from happening immediately?
+
+The answer is \textbf{activation energy} --- a barrier that must be overcome before the reaction can proceed.
+
+%% ---- Reasoning Move: PRIM-NRG006 ----
+\begin{reasoningmove}{PRIM-NRG006}{Activation Energy Reasoning}
+  \textbf{Reasoning move}: Given a favorable but non-occurring process, identify the activation energy barrier.
+\end{reasoningmove}
+
+\depends{PRIM-NRG001}{energy tracking --- activation energy is an energy concept requiring energy accounting}{3}
+
+Imagine rolling a boulder from one valley to another. The second valley is lower than the first (exothermic --- the boulder ends up at lower energy), so the process is favorable. But between the two valleys is a hill. The boulder will not roll into the lower valley unless you first push it up and over the hill. The height of that hill is the \textbf{activation energy} --- the minimum energy input needed to get the process started.
+
+\figurebox{Energy diagram with activation energy. Reactants at an initial energy level, a ``hill'' rising to the transition state, then dropping down to products at a lower energy level. $E_a$ (activation energy) is the height from reactants to the transition state. \DH{} is the difference between reactants and products.}{fig:activation-energy}
+
+The \textbf{activation energy ($E_a$)} is the difference between the reactants' energy and the top of the hill (the transition state). The \textbf{overall energy change (\DH)} is the difference between reactants and products. These are two completely different quantities:
+
+\begin{itemize}[nosep]
+  \item \DH{} tells you \textbf{whether} the reaction is favorable (the energy destination)
+  \item $E_a$ tells you \textbf{how hard it is to get started} (the energy barrier)
+\end{itemize}
+
+\begin{hook}{Gasoline and the spark plug}
+  Gasoline does not spontaneously combust in your fuel tank even though combustion is strongly exothermic ($\DH$ = very negative). The activation energy barrier is too high for the reaction to proceed at room temperature. But when the spark plug fires, it provides a brief burst of energy that pushes a small amount of gasoline molecules over the activation energy hill. Once those molecules react, the energy they release pushes neighboring molecules over the hill, and the reaction propagates. The spark plug does not provide the energy for the entire reaction --- it just provides the initial push to get over the barrier.
+\end{hook}
+
+\begin{hook}{Striking a match}
+  Striking a match provides friction, which generates enough thermal energy to overcome the activation energy of the chemicals in the match head. The match head chemicals have been sitting safely in the box for months. Their combustion is spontaneous (thermodynamically favorable), but the activation energy barrier prevents anything from happening until you strike the match.
+\end{hook}
+
+\textbf{Three ways to overcome the activation energy barrier:}
+
+\begin{enumerate}[nosep]
+  \item \textbf{Add heat (raise temperature)}: At higher temperatures, molecules move faster. More of them have enough kinetic energy to clear the $E_a$ hill. This is why reactions generally speed up when heated.
+
+  \item \textbf{Provide a spark or flame}: A localized burst of energy pushes some molecules over the barrier. The energy they release can then push others over.
+
+  \item \textbf{Use a catalyst}: A catalyst provides an alternative reaction pathway with a \textbf{lower} activation energy hill. The catalyst does not change the starting or ending energy --- it does not change \DH. It just lowers the hill, making it easier for molecules to get over.
+\end{enumerate}
+
+\figurebox{Side-by-side energy diagrams: without catalyst (tall hill) and with catalyst (shorter hill). Both diagrams show the same reactant and product energy levels (same \DH), but the catalyst pathway has a lower $E_a$.}{fig:catalyst-comparison}
+
+\begin{hook}{Catalytic converter}
+  Your car's catalytic converter is a device that lowers the activation energy for converting toxic exhaust gases --- carbon monoxide (CO) and nitrogen oxides (\ce{NO_x}) --- into less harmful products like carbon dioxide (\ce{CO2}) and nitrogen gas (\ce{N2}). These reactions are thermodynamically favorable (spontaneous), but without the catalyst, they would be too slow to clean the exhaust effectively. The catalyst speeds them up by lowering the hill.
+\end{hook}
+
+Catalysts, which we will meet in more detail in Chapter~\ref{ch:chg}, work by lowering the activation energy. They do not change the net energy of the reaction (\DH{} stays the same), and they are not consumed in the process --- they participate but emerge unchanged.
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why does paper not burst into flame?}
+  \chainitem{PRIM-NRG003}{Exo/endothermic}{Paper is made of cellulose, a carbon-based polymer. Its combustion (reaction with \ce{O2}) is exothermic: \DH{} is strongly negative.}
+  \chainitem{PRIM-NRG004}{Entropy}{Combustion also increases entropy: solid paper becomes gaseous \ce{CO2} and \ce{H2O} vapor, with more particles and more arrangements.}
+  \chainitem{PRIM-NRG005}{Spontaneity}{Exothermic + entropy increase = Case~1, always spontaneous. The reaction SHOULD happen.}
+  \chainitem{}{Observation}{But it does not --- at room temperature, paper sits quietly. Why?}
+  \chainitem{PRIM-NRG006}{Activation energy}{The cellulose molecules and \ce{O2} molecules do not have enough kinetic energy at room temperature to overcome the activation energy barrier. The reaction is favorable but blocked.}
+  \chainitem{}{Resolution}{Touch a lit match to the paper. The flame provides enough local energy to push some molecules over the $E_a$ hill. Once they react, the energy they release pushes neighboring molecules over the hill, and the fire spreads.}
+  \chainitem{}{Conclusion}{Spontaneity tells you IF a reaction is favorable. Activation energy tells you WHETHER it can get started. Both questions must be answered to predict what actually happens.}
+\end{reasoningchain}
+
+%% ---- Reasoning Move: DEF-NRG002 ----
+\begin{reasoningmove}{DEF-NRG002}{Specific Heat Capacity}
+  \textbf{Reasoning move}: Given two substances receiving the same heat, use specific heat capacity to predict which temperature rises more.
+\end{reasoningmove}
+
+\depends{DEF-NRG001}{heat vs.\ temperature --- specific heat capacity quantifies the relationship between heat added and temperature change}{3}
+
+You have now learned that heat is energy being transferred, and temperature is the average kinetic energy of molecules. But how much does a substance's temperature change when it absorbs a given amount of heat? The answer depends on the substance. Different materials respond very differently to the same energy input.
+
+\textbf{Specific heat capacity ($c$)} is the amount of energy (in joules) needed to raise the temperature of one gram of a substance by one degree Celsius. A substance with a high specific heat capacity absorbs a lot of energy before its temperature rises noticeably. A substance with a low specific heat capacity heats up quickly with very little energy input.
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  \textbf{Substance} & \textbf{Specific Heat (J/g$\cdot$\degC)} & \textbf{What This Means} \\
+  \midrule
+  Water    & 4.18  & Takes a LOT of energy to heat up \\
+  Ethanol  & 2.44  & Moderate \\
+  Aluminum & 0.897 & Heats up relatively quickly \\
+  Iron     & 0.449 & Heats up fast \\
+  Copper   & 0.385 & Heats up very fast \\
+  Sand     & 0.290 & Heats up extremely fast \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Water's specific heat capacity is extraordinarily high compared to most materials. It takes over nine times more energy to raise the temperature of a gram of water by one degree than it takes for the same mass of iron. This single fact explains a remarkable number of real-world phenomena.
+
+\textbf{The reasoning tool}: The relationship between heat, mass, specific heat, and temperature change can be expressed as:
+
+\begin{quote}
+  $q = m \times c \times \Delta T$
+\end{quote}
+
+where $q$ is heat added, $m$ is mass, $c$ is specific heat capacity, and $\Delta T$ is the temperature change. We are not going to use this equation for calculations. Instead, use it as a reasoning tool for qualitative comparisons:
+
+\begin{itemize}[nosep]
+  \item \textbf{Higher $c$} means the substance needs \textbf{more energy per degree} of temperature change. It is ``harder to heat up'' and ``harder to cool down.''
+  \item For two substances of equal mass receiving the same heat, the one with \textbf{lower $c$} will experience a \textbf{larger temperature change}.
+\end{itemize}
+
+\begin{hook}{The beach}
+  Sand at the beach gets scorching hot by noon, but the ocean stays cool. At night, the sand cools quickly while the water stays relatively warm. Why? Sand has a very low specific heat capacity (\SI{0.290}{J/g\cdot\degreeCelsius}) --- a small amount of solar energy raises its temperature dramatically. Water has a very high specific heat capacity (\SI{4.18}{J/g\cdot\degreeCelsius}) --- the same solar energy causes only a small temperature change. The sun delivers the same energy to both, but the temperature response is completely different.
+\end{hook}
+
+\begin{hook}{Coastal vs.\ inland climate}
+  San Francisco, on the Pacific coast, has mild weather year-round: cool summers, mild winters. Sacramento, only 90 miles inland, swings between hot summers and cold winters. The difference? San Francisco is next to the ocean. Water's high specific heat capacity means the ocean absorbs enormous amounts of summer heat without getting very hot, then releases that heat slowly in winter without getting very cold. The ocean acts as a thermal buffer, moderating the coastal climate. Inland cities lack this buffer.
+\end{hook}
+
+\begin{hook}{Why the pan heats up before the water}
+  A metal pan heats up almost instantly on a stove (low specific heat capacity), while the water inside it takes much longer to reach a boil (high specific heat capacity). This is useful: the pan responds quickly to temperature adjustments, giving you precise control, while the water holds its temperature steadily once hot, providing even, consistent cooking heat.
+\end{hook}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{Hydrogen gas and oxygen gas can sit in the same container without reacting. Yet the reaction \ce{2 H2(g) + O2(g) -> 2 H2O(l)} has $\DH = \SI{-572}{kJ}$. Why does the reaction not occur? What would make it happen?}
+
+  \practiceq{A catalyst lowers the activation energy of a reaction. Does it change the \DH{} of the reaction? Does it change whether the reaction is spontaneous? What does it change?}
+
+  \practiceq{Equal masses of water and iron are placed in the same oven at \SI{200}{\degreeCelsius} for the same time. Which reaches a higher temperature first? Use specific heat capacity reasoning.}
+
+  \practiceq{Explain why coastal cities generally have milder climates than inland cities at the same latitude, using the concept of specific heat capacity.}
+
+  \practiceq{A student says, ``If a reaction is spontaneous, it will happen immediately.'' Is this correct? Use the concepts of spontaneity and activation energy to explain.}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You can now trace energy through any process, classify it as exothermic or endothermic, assess whether entropy favors or disfavors it, determine whether it is spontaneous, and explain why favorable reactions sometimes need a push. For most students, this is where the energy chapter ends. The next section is optional enrichment that ties together the energy and entropy drives into a single conceptual framework.}
+
+
+%% ============================================================
+\section{NRG.E: Can Free Energy Settle the Tie?}
+\label{sec:nrge}
+%% ============================================================
+
+\begin{enrichment}{Free Energy --- Unifying Energy and Entropy}
+
+This material extends the Core concepts from NRG.3 and is not required for subsequent chapters. It provides a useful conceptual synthesis for students who want to see how energy and entropy are unified. Your instructor will tell you whether this section is assigned.
+
+\bigskip
+
+%% ---- Reasoning Move: DEF-NRG004 ----
+\begin{reasoningmove}{DEF-NRG004}{Free Energy (Conceptual)}
+  \textbf{Reasoning move}: Given conflicting energy and entropy favorability, evaluate whether the combined effect is net favorable.
+\end{reasoningmove}
+
+\depends{PRIM-NRG005}{spontaneity reasoning --- free energy formalizes the qualitative spontaneity assessment into a single conceptual quantity}{3}
+
+In NRG.3, you learned the four-case spontaneity matrix. Cases~1 (always spontaneous) and~2 (never spontaneous) are clear-cut. But Cases~3 and~4 --- where energy and entropy conflict --- required you to reason qualitatively about whether ``temperature is high enough'' or ``low enough'' for one driver to outweigh the other. That reasoning works, but it leaves an open question: is there a single concept that combines both drivers into one assessment?
+
+There is. It is called \textbf{free energy}, and it represents the net combined effect of the energy drive and the entropy drive.
+
+Think of free energy as a \textbf{scorecard} with two rows:
+
+\figurebox{Free energy scorecard. Row~1: Energy drive (enthalpy) --- exothermic is favorable ($-$), endothermic is unfavorable ($+$). Row~2: Entropy drive (weighted by temperature) --- entropy increases is favorable ($-$), entropy decreases is unfavorable ($+$). Net score: negative means spontaneous, positive means non-spontaneous.}{fig:free-energy-scorecard}
+
+The key insight is that \textbf{temperature acts as a weighting factor for the entropy drive}. At low temperatures, the entropy row barely matters --- the energy drive dominates the scorecard. At high temperatures, the entropy row matters a lot --- it can override the energy drive entirely.
+
+This is exactly what the four-case matrix told you, but now unified under a single concept:
+
+\begin{itemize}[nosep]
+  \item \textbf{Case 1}: Both rows favorable. Net score is always negative. Always spontaneous.
+  \item \textbf{Case 2}: Both rows unfavorable. Net score is always positive. Never spontaneous.
+  \item \textbf{Case 3}: Energy favorable, entropy unfavorable. At low $T$, energy row dominates (spontaneous). At high $T$, entropy row dominates (non-spontaneous).
+  \item \textbf{Case 4}: Energy unfavorable, entropy favorable. At low $T$, energy row dominates (non-spontaneous). At high $T$, entropy row dominates (spontaneous).
+\end{itemize}
+
+\begin{hook}{Protein folding and fever}
+  Proteins fold into specific three-dimensional shapes at body temperature (about \SI{37}{\degreeCelsius}). The folding process involves a combination of favorable energy changes (new interactions form between parts of the protein chain) and an entropy increase (water molecules that were ordered around the unfolded protein are released, gaining freedom of movement). The free energy scorecard comes out negative at \SI{37}{\degreeCelsius}: folding is spontaneous. But during a high fever (above \SI{40}{\degreeCelsius}), the balance shifts. The entropy term for the protein chain itself (which loses arrangements when it folds) becomes more heavily weighted. At fever temperatures, the scorecard can flip --- proteins begin to unfold (denature). This is one reason why very high fevers are dangerous: the molecular machinery of your cells literally starts to come apart because the free energy balance has shifted.
+\end{hook}
+
+\begin{hook}{Why water boils at \SI{100}{\degreeCelsius}}
+  Water boils at \SI{100}{\degreeCelsius} at sea level. Below \SI{100}{\degreeCelsius}, the free energy scorecard favors the liquid state. Above \SI{100}{\degreeCelsius}, the entropy drive (gas has enormously more arrangements than liquid) is weighted heavily enough by the high temperature to override the energy penalty of breaking intermolecular attractions. At exactly \SI{100}{\degreeCelsius}, the scorecard is balanced: liquid and gas coexist.
+\end{hook}
+
+\textbf{What this section does NOT include}: There is a famous equation that relates free energy to enthalpy, entropy, and temperature: $\DG = \DH - T\DS$. You do not need this equation. The conceptual scorecard gives you the same predictive power for qualitative reasoning. If you continue to a majors-level chemistry course, you will learn to use the equation for quantitative calculations. For now, the scorecard is your tool.
+
+\end{enrichment}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{A reaction is endothermic and increases entropy. Using the free energy scorecard, at what kind of temperature (high or low) would this reaction be spontaneous? Which case from the four-case matrix is this?}
+
+  \practiceq{Explain why water freezes at \SI{0}{\degreeCelsius} and melts at \SI{0}{\degreeCelsius} using the free energy scorecard concept. What is special about exactly \SI{0}{\degreeCelsius}?}
+
+  \practiceq{If a protein unfolds (denatures) at high temperature, what does that tell you about the free energy scorecard for protein folding? Which row of the scorecard changes as temperature increases?}
+\end{practicequestions}
+
+
+%% ============================================================
+%% Chapter Summary
+%% ============================================================
+
+\begin{chaptersummary}
+\noindent This chapter established the \textbf{energy toolkit} --- the reasoning moves for tracing energy through chemical and physical processes, classifying them, and predicting whether they will occur. Here is what you can now do:
+
+\medskip
+
+\begin{tabular}{llp{6cm}}
+  \toprule
+  \textbf{ID} & \textbf{Reasoning Move} & \textbf{What It Lets You Do} \\
+  \midrule
+  PRIM-NRG001 & Energy tracking          & Trace energy through any process: identify forms, transformations, and verify conservation \\
+  DEF-NRG001  & Heat vs.\ temperature    & Distinguish energy transfer (heat) from average molecular motion (temperature) \\
+  DEF-NRG005  & Calorie/joule            & Convert between energy units and connect chemistry to nutrition labels \\
+  PRIM-NRG002 & Bond energy reasoning    & Compare energy costs of breaking bonds vs.\ energy released from forming bonds \\
+  PRIM-NRG003 & Exo/endothermic classification & Classify any process by the direction of energy flow \\
+  DEF-NRG003  & Enthalpy change (\DH)    & Read the energy ``scoreboard'' --- sign and magnitude of energy released or absorbed \\
+  PRIM-NRG004 & Entropy reasoning        & Assess whether the number of molecular arrangements increases or decreases \\
+  PRIM-NRG005 & Spontaneity reasoning    & Combine energy and entropy to predict whether a process occurs on its own \\
+  PRIM-NRG006 & Activation energy reasoning & Identify the energy barrier that prevents favorable reactions from proceeding \\
+  DEF-NRG002  & Specific heat capacity   & Predict how different substances respond to the same energy input \\
+  DEF-NRG004  & Free energy (conceptual) & Unify energy and entropy drives into a single favorability assessment (Enrichment) \\
+  \bottomrule
+\end{tabular}
+\end{chaptersummary}
+
+\medskip
+
+The NRG toolkit answers the question \textbf{``What drives change?''} in two parts. First, energy conservation and bond energy reasoning tell you \textit{whether} a reaction releases or absorbs energy. Second, entropy reasoning tells you \textit{whether} the molecular arrangements become more or less probable. Spontaneity reasoning combines both drivers, with temperature as the referee. And activation energy reasoning explains why favorable reactions sometimes need a push to get started.
+
+Every concept here will be deployed in later chapters. Chapter~\ref{ch:scl} (How Much? How Big?) will connect these energy concepts to measurable quantities at the macroscopic scale. Chapter~\ref{ch:chg} (What Happens?) will use spontaneity reasoning to predict reaction direction, activation energy to understand reaction rates, and enthalpy to evaluate reaction energetics. The energy toolkit is the accounting department of chemistry: it tells you whether the books balance and which direction the net flow goes. What actually transforms, and how fast --- those are questions for Chapters~\ref{ch:scl} and~\ref{ch:chg}.
