@@ -134,14 +134,14 @@ These blockquotes are your primary reference. When you encounter one, slow down 
 **Reasoning Chain Callout Boxes.** These are step-by-step worked examples, set apart from the main text, that show multiple reasoning moves working together. A reasoning chain might look like:
 
 > **Reasoning Chain: Why does salt dissolve in water?**
-> 1. *COM-06 (Classify substance)*: NaCl is an ionic compound.
-> 2. *STR-03 (Identify bond type)*: Na⁺ and Cl⁻ are held by ionic bonds.
-> 3. *STR-11 (Assess polarity)*: Water is a polar molecule.
-> 4. *NRG-02 (Compare interaction strengths)*: Water-ion attractions can overcome the ionic lattice energy.
+> 1. *PRIM-COM004 (Substance classification)*: NaCl is an ionic compound.
+> 2. *PRIM-STR001 (Bond type classification)*: Na⁺ and Cl⁻ are held by ionic bonds.
+> 3. *DEF-STR002 (Molecular polarity)*: Water is a polar molecule.
+> 4. *PRIM-STR004 (IMF hierarchy)*: Water-ion attractions can overcome the ionic lattice energy.
 
 These chains are where the reasoning-move approach pays off most visibly. Study them carefully.
 
-**Practice Questions.** End-of-section questions are framed as reasoning exercises, not fact recall. Instead of "What is the atomic number of carbon?" you will see questions like "Given that carbon has 6 protons, use COM-03 to determine its position on the periodic table, then use STR-01 to predict how many bonds it typically forms." The goal is always to practice *using* the moves, not to test whether you memorized a number.
+**Practice Questions.** End-of-section questions are framed as reasoning exercises, not fact recall. Instead of "What is the atomic number of carbon?" you will see questions like "Given that carbon has 6 protons, use PRIM-COM003 to determine its position on the periodic table, then use PRIM-STR001 to predict how many bonds it typically forms." The goal is always to practice *using* the moves, not to test whether you memorized a number.
 
 **Composition Pattern Capstones.** At the end of selected chapters, an extended section walks through one or two Composition Patterns --- multi-domain reasoning chains applied to real-world phenomena. These are the most challenging sections and the most rewarding. They are where you see the full power of your toolkit.
 

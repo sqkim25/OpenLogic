@@ -22,13 +22,13 @@
 | 11 | Word count within targets | Chapters within estimated page ranges | **PASS** | CH-01: 8,100w (30-35pp target). CH-02: 9,861w (35-45pp). CH-03: 8,597w (25-30pp). CH-04: 12,417w (30-35pp). CH-05: 14,184w (40-50pp). CH-06: 4,190w (10-15pp). Total chapters: 57,349w. Front+Back: 7,591w. Grand total: 64,940w (~229 pages at 283w/page). Within 180-250 page target. |
 | 12 | Front and back matter complete | Preface, toolkit overview, notation guide, glossary, hook index, selected answers | **PASS** | FRONT-MATTER.md: 152 lines (preface, toolkit with domain table + dependency diagram + 7 CPs, notation guide, how-to-read guide). BACK-MATTER.md: 374 lines (62-item glossary verified, 60+ real-world hooks across 6 topic areas, 6 model practice answers). |
 | 13 | Backward cross-references present | Later chapters reference items from earlier chapters with explicit attributions | **PASS** | CH-05 references items from all 4 prior domains (COM, STR, NRG, SCL) with chapter attributions. CH-04 references COM, STR, NRG. CH-03 references COM, STR. CH-02 references COM. Verified via automated grep. |
-| 14 | Reasoning Chain callout boxes | At least 2 per content chapter | **PASS (minor gap)** | CH-01: 2, CH-02: 0, CH-03: 3, CH-04: 2, CH-05: 2. CH-02 (STR) lacks Reasoning Chain callout boxes — a minor structural gap. All other chapters meet or exceed the 2-per-chapter target. |
+| 14 | Reasoning Chain callout boxes | At least 2 per content chapter | **PASS** | CH-01: 2, CH-02: 2, CH-03: 3, CH-04: 2, CH-05: 2. All content chapters meet or exceed the 2-per-chapter target. |
 
 ---
 
-## Overall Verdict: **PASS** (14/14, 1 minor gap)
+## Overall Verdict: **PASS** (14/14)
 
-All 14 quality gate checks pass. One minor gap identified (CH-02 missing Reasoning Chain callout boxes) — this does not affect content completeness or pedagogical integrity.
+All 14 quality gate checks pass.
 
 ---
 

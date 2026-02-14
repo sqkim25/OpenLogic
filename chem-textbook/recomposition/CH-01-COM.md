@@ -218,12 +218,12 @@ How does this play out?
 
 **Real-world example**: Sodium metal (group 1, one lonely valence electron) reacts violently with water. Why? That single valence electron is loosely held and eager to be transferred. Potassium (also group 1 but further down the table) reacts even more violently -- its valence electron is held even more loosely, consistent with periodic position reasoning (PRIM-COM003).
 
-> **Reasoning Chain**: Why does sodium react with chlorine?
-> 1. Sodium is in group 1 and has 1 valence electron (PRIM-COM007)
-> 2. Chlorine is in group 17 and has 7 valence electrons (PRIM-COM007)
-> 3. Sodium "wants" to lose 1 electron; chlorine "wants" to gain 1 (octet rule)
-> 4. Sodium transfers its electron to chlorine: Na⁺ and Cl⁻ form
-> 5. The oppositely charged ions attract, forming NaCl -- table salt
+> **Reasoning Chain: Why does sodium react with chlorine?**
+> 1. *PRIM-COM007 (valence electron reasoning)*: Sodium is in group 1 and has 1 valence electron.
+> 2. *PRIM-COM007 (valence electron reasoning)*: Chlorine is in group 17 and has 7 valence electrons.
+> 3. Sodium "wants" to lose 1 electron; chlorine "wants" to gain 1 (octet rule).
+> 4. Sodium transfers its electron to chlorine: Na⁺ and Cl⁻ form.
+> 5. The oppositely charged ions attract, forming NaCl -- table salt.
 
 ---
 
@@ -357,14 +357,14 @@ This is one of the most powerful ideas in chemistry: **in any chemical reaction,
 
 This principle has a formal name -- the law of conservation of mass -- but the atomic-level version is more useful for reasoning: **conservation of atoms**.
 
-> **Reasoning Chain**: Why does burning wood produce CO₂?
-> 1. Wood contains carbon atoms and hydrogen atoms (PRIM-COM001)
-> 2. Carbon is element 6; hydrogen is element 1 (PRIM-COM002)
-> 3. When burned, carbon atoms combine with oxygen atoms from the air (PRIM-COM006: atoms rearrange, not destroyed)
-> 4. The product CO₂ contains the same carbon atoms -- they moved from wood to gas
-> 5. The hydrogen atoms combine with oxygen to form H₂O (water vapor)
-> 6. The ash is what remains of atoms that did not form gaseous products
-> 7. Total atoms before = total atoms after. Nothing was destroyed; everything was rearranged.
+> **Reasoning Chain: Why does burning wood produce CO₂?**
+> 1. *PRIM-COM001 (atomic composition)*: Wood contains carbon atoms and hydrogen atoms.
+> 2. *PRIM-COM002 (element identification)*: Carbon is element 6; hydrogen is element 1.
+> 3. *PRIM-COM006 (conservation of atoms)*: When burned, carbon atoms combine with oxygen atoms from the air — atoms rearrange, not destroyed.
+> 4. The product CO₂ contains the same carbon atoms — they moved from wood to gas.
+> 5. The hydrogen atoms combine with oxygen to form H₂O (water vapor).
+> 6. The ash is what remains of atoms that did not form gaseous products.
+> 7. *PRIM-COM006 (conservation of atoms)*: Total atoms before = total atoms after. Nothing was destroyed; everything was rearranged.
 
 **Why does this matter?** Conservation of atoms is your verification tool. Whenever you encounter a chemical process -- whether it is burning fuel, cooking food, or a claim on the news -- you can check: are atoms being conserved? If someone claims a process "destroys" a chemical, conservation says no: the atoms went somewhere. They were rearranged into different substances, but they still exist.
 

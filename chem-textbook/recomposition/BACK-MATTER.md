@@ -74,15 +74,15 @@ All 62 reasoning moves are listed below, organized alphabetically within each do
 
 ### NRG Domain -- Energy (11 items: 6 PRIM + 5 DEF)
 
-**DEF-NRG001: Specific heat capacity** -- Given two substances receiving the same amount of heat, use specific heat capacity to predict which substance's temperature rises more: higher specific heat means the substance is "harder to heat up." (Chapter 3, C)
+**DEF-NRG001: Heat vs. temperature** -- Given two objects at different temperatures in contact, distinguish heat (energy transferred) from temperature (average molecular kinetic energy), and predict that heat flows from hot to cold until thermal equilibrium is reached. (Chapter 3, C)
 
-**DEF-NRG002: Calorie/joule** (E) -- Given an energy value in calories, kilocalories (food Calories), or joules, convert between units and connect chemistry to nutrition labels (1 food Calorie = 1 kcal = 4,184 J). (Chapter 3, E)
+**DEF-NRG002: Specific heat capacity** -- Given two substances receiving the same amount of heat, use specific heat capacity to predict which substance's temperature rises more: higher specific heat means the substance is "harder to heat up." (Chapter 3, C)
 
 **DEF-NRG003: Enthalpy change (delta-H)** -- Given a reaction at constant pressure, read the sign and magnitude of delta-H: negative means exothermic (energy released), positive means endothermic (energy absorbed). (Chapter 3, C)
 
 **DEF-NRG004: Free energy (conceptual)** (E) -- Given conflicting energy and entropy drives, evaluate whether the combined "free energy scorecard" is net favorable (spontaneous) or unfavorable, with temperature as the weighting factor. (Chapter 3, E)
 
-**DEF-NRG005: Calorimetry / Heat vs. temperature** -- Given two objects at different temperatures in contact, distinguish heat (energy transferred) from temperature (average molecular kinetic energy), and predict that heat flows from hot to cold until thermal equilibrium is reached. (Chapter 3, C)
+**DEF-NRG005: Calorie/joule** -- Given an energy value in calories, kilocalories (food Calories), or joules, convert between units and connect chemistry to nutrition labels (1 food Calorie = 1 kcal = 4,184 J). (Chapter 3, C)
 
 **PRIM-NRG001: Energy tracking** -- Given a process (chemical reaction, physical change, or energy transfer), trace energy through the system: identify input energy forms, energy transformations within the system, and output energy forms, then verify that total energy is conserved. (Chapter 3, C)
 
@@ -108,7 +108,7 @@ All 62 reasoning moves are listed below, organized alphabetically within each do
 
 **DEF-SCL004: Colligative properties** (E) -- Given dissolved particles in a solvent, predict that the freezing point is lowered and the boiling point is raised, with the magnitude depending on particle count (not identity). (Chapter 4, E)
 
-**DEF-SCL005: Unit analysis** -- Given a multi-step calculation involving physical quantities, use dimensional analysis (tracking units through each step) to verify correctness, catch conversion errors, and ensure the final answer has the expected units. (Chapter 4, C)
+**DEF-SCL005: Safety and risk reasoning** -- Given hazard information (GHS pictograms, LD50, PEL, exposure route, duration), distinguish hazard (intrinsic property of a substance) from risk (depends on concentration, route, and duration of exposure) to make informed safety judgments. (Chapter 4, C)
 
 **PRIM-SCL001: Macro-to-submicro translation** -- Given an observable macroscopic property or a molecular-level behavior, translate between the two levels: explain the macroscopic in terms of the molecular, or predict the macroscopic from the molecular. (Chapter 4, C)
 
@@ -120,7 +120,7 @@ All 62 reasoning moves are listed below, organized alphabetically within each do
 
 **PRIM-SCL005: Proportional reasoning** -- Given a ratio (from a balanced equation, a recipe, or a dosage), scale it up or down to connect molecular-level ratios to lab-scale or everyday quantities. (Chapter 4, C)
 
-**PRIM-SCL006: Safety/risk reasoning** -- Given hazard information (GHS pictograms, LD50, PEL, exposure route, duration), distinguish hazard (intrinsic property of a substance) from risk (depends on concentration, route, and duration of exposure) to make informed safety judgments. (Chapter 4, C)
+**PRIM-SCL006: Unit analysis** -- Given a multi-step calculation involving physical quantities, use dimensional analysis (tracking units through each step) to verify correctness, catch conversion errors, and ensure the final answer has the expected units. (Chapter 4, C)
 
 ---
 
@@ -183,7 +183,7 @@ Real-world examples organized by topic area, with chapter and taxonomy reference
 | How do medical isotopes work (I-131)? | DEF-COM001 (isotope), PRIM-CHG007 (nuclear change), DEF-CHG004 (half-life) | Ch 5 |
 | Is fluoride in water safe? | PRIM-STR005 (structure-to-property), PRIM-CHG005 (acid-base), DEF-SCL002 (ppm), PRIM-SCL003 (concentration); CP-005 | Ch 5 |
 | What are electrolytes in sports drinks? | DEF-COM002 (ion), PRIM-SCL003 (concentration) | Ch 1, 4 |
-| Why is medication dosing based on body weight? | PRIM-SCL005 (proportional reasoning), DEF-SCL005 (unit analysis) | Ch 4 |
+| Why is medication dosing based on body weight? | PRIM-SCL005 (proportional reasoning), PRIM-SCL006 (unit analysis) | Ch 4 |
 | Why do some people have lactose intolerance? | DEF-CHG001 (catalyst -- the enzyme lactase lowers Ea for lactose hydrolysis) | Ch 5 |
 | Why is sickle cell disease caused by one amino acid change? | PRIM-STR005 (structure-to-property), PRIM-STR004 (IMF hierarchy) | Ch 6 |
 
@@ -226,7 +226,7 @@ Real-world examples organized by topic area, with chapter and taxonomy reference
 | Why does rubbing alcohol evaporate faster than water? | PRIM-STR004 (IMF hierarchy), PRIM-STR005 (structure-to-property), PRIM-SCL001 (macro-to-submicro); CP-001 | Ch 4 |
 | Why don't oil and water mix? | PRIM-STR004 (IMF hierarchy), DEF-STR004 ("like dissolves like"), PRIM-SCL004 (emergence); CP-001 bridge | Ch 2, 4 |
 | Why does salt melt ice? | DEF-SCL004 (colligative properties -- dissolved particles lower freezing point) | Ch 4 |
-| Why does metal feel colder than wood at the same temperature? | DEF-NRG001 (specific heat / thermal conductivity), PRIM-SCL001 (macro-to-submicro -- rate of heat transfer differs) | Ch 3, 4 |
+| Why does metal feel colder than wood at the same temperature? | DEF-NRG001 (heat vs. temperature -- metal conducts heat away faster), DEF-NRG002 (specific heat capacity), PRIM-SCL001 (macro-to-submicro -- rate of heat transfer differs) | Ch 3, 4 |
 | Why does sweat cool you down? | PRIM-SCL001 (macro-to-submicro -- fastest molecules leave, lowering average kinetic energy) | Ch 4 |
 | Why is Kevlar stronger than a plastic bag? | DEF-STR008 (polymer reasoning -- Kevlar has H-bonding between chains; polyethylene has only London forces) | Ch 2 |
 | Why does plastic wrap cling to glass? | DEF-STR002 (molecular polarity -- polar glass induces charge in nonpolar plastic) | Ch 2 |

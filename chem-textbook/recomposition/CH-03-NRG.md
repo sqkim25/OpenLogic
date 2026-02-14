@@ -69,7 +69,7 @@ The percentages are approximate, but the principle is exact: input equals output
 
 Here is the single most commonly confused pair of concepts in introductory chemistry: **heat and temperature are not the same thing.**
 
-Consider this scenario: a bathtub filled with lukewarm water at 35°C, and a thimble of boiling water at 100°C. Which one contains more thermal energy?
+Consider this scenario: a bathtub filled with lukewarm water at 35 °C, and a thimble of boiling water at 100 °C. Which one contains more thermal energy?
 
 The thimble is hotter. But the bathtub contains **far more total thermal energy**. Why? Because the bathtub has enormously more water molecules, each one moving and carrying kinetic energy. The thimble has very few molecules, even though each one is moving faster on average. If you had to warm a cold room, the bathtub of lukewarm water would do a much better job than the thimble of boiling water, because the bathtub has more total energy to transfer.
 
@@ -86,7 +86,7 @@ Temperature is something an object **has**. Heat is something that **happens** -
 
 **Real-world example**: When you check a child's forehead for fever, you are sensing temperature -- the average kinetic energy of molecules at the skin's surface. When you run a hot bath to soothe sore muscles, you are using heat transfer: thermal energy flows from the hot water into your cooler body until both approach the same temperature. The bath "feels hot" because heat is flowing into you, not because the water contains a substance called "heat."
 
-**Real-world example**: A metal doorknob and a wooden door are both at the same room temperature (about 22°C). But the doorknob feels colder when you touch it. Why? Because metal conducts heat away from your hand much faster than wood does. The temperature is identical, but the rate of heat transfer is different. Your hand is not sensing temperature -- it is sensing heat flow.
+**Real-world example**: A metal doorknob and a wooden door are both at the same room temperature (about 22 °C). But the doorknob feels colder when you touch it. Why? Because metal conducts heat away from your hand much faster than wood does. The temperature is identical, but the rate of heat transfer is different. Your hand is not sensing temperature -- it is sensing heat flow.
 
 ---
 
@@ -100,7 +100,7 @@ Energy needs units, just like distance needs meters or miles. Chemistry uses two
 
 **The joule (J)** is the SI (international standard) unit of energy. It is used in most scientific contexts.
 
-**The calorie (cal)** -- lowercase c -- is the amount of energy needed to raise the temperature of 1 gram of water by 1°C. It connects directly to the heat-temperature distinction you just learned: a calorie is defined by how much heat it takes to change water's temperature by a specific amount.
+**The calorie (cal)** -- lowercase c -- is the amount of energy needed to raise the temperature of 1 gram of water by 1 °C. It connects directly to the heat-temperature distinction you just learned: a calorie is defined by how much heat it takes to change water's temperature by a specific amount.
 
 **The food Calorie (Cal)** -- capital C -- is the one you see on nutrition labels. Here is the source of endless confusion: **one food Calorie is actually one kilocalorie (1,000 calories)**. When a candy bar label says "250 Calories," it means 250 kilocalories, or 250,000 calories. The food industry adopted the kilocalorie but dropped the "kilo" prefix and capitalized the C instead. It is a notational choice that has confused people for decades.
 
@@ -137,11 +137,11 @@ This is how nutrition labels are calculated -- not by burning food in a laborato
 
 1. A flashlight converts chemical energy (battery) into light and heat. Does this violate energy conservation? Where does the energy go when the flashlight dims and eventually dies?
 
-2. A swimming pool at 25°C and a cup of tea at 70°C are sitting side by side. Which contains more total thermal energy? Which is at a higher temperature? Explain the difference.
+2. A swimming pool at 25 °C and a cup of tea at 70 °C are sitting side by side. Which contains more total thermal energy? Which is at a higher temperature? Explain the difference.
 
 3. A nutrition label lists 30 g of carbohydrate, 10 g of fat, and 8 g of protein. Estimate the total Calories and convert to kilojoules.
 
-4. Your body temperature is 37°C. You hold an ice cube (0°C) in your hand. Describe the direction of heat flow and what happens to the ice cube. Use the terms "heat," "temperature," and "thermal equilibrium" correctly.
+4. Your body temperature is 37 °C. You hold an ice cube (0 °C) in your hand. Describe the direction of heat flow and what happens to the ice cube. Use the terms "heat," "temperature," and "thermal equilibrium" correctly.
 
 5. Convert 500 food Calories to (a) kilocalories, (b) calories, and (c) kilojoules.
 
@@ -382,16 +382,16 @@ When energy and entropy agree, the prediction is easy. When they conflict, tempe
 |------|------------|-------------|-------------|---------|
 | 1 | Exothermic (-) | Increases (+) | **Always** spontaneous | Combustion: fuel burns, releasing heat and producing gases (more particles, more arrangements) |
 | 2 | Endothermic (+) | Decreases (-) | **Never** spontaneous | Unscrambling an egg: would require energy input AND decrease in arrangements -- does not happen |
-| 3 | Exothermic (-) | Decreases (-) | **Spontaneous at LOW temperature** | Freezing water: releases heat but forms ordered crystal. Happens below 0°C. |
-| 4 | Endothermic (+) | Increases (+) | **Spontaneous at HIGH temperature** | Melting ice: absorbs heat but gains arrangements. Happens above 0°C. |
+| 3 | Exothermic (-) | Decreases (-) | **Spontaneous at LOW temperature** | Freezing water: releases heat but forms ordered crystal. Happens below 0 °C. |
+| 4 | Endothermic (+) | Increases (+) | **Spontaneous at HIGH temperature** | Melting ice: absorbs heat but gains arrangements. Happens above 0 °C. |
 
 **Why does temperature matter in Cases 3 and 4?** Because temperature determines how heavily entropy counts relative to energy. At high temperatures, particles have lots of kinetic energy, and the system can "afford" to absorb energy in exchange for more arrangements -- entropy wins. At low temperatures, particles have little kinetic energy, and the energy drive dominates -- energy wins. Temperature is the dial that adjusts the balance.
 
-**Real-world example**: Water freezing at -10°C is Case 3. The process is exothermic (water releases heat as it solidifies) but entropy-decreasing (the rigid crystal lattice has fewer arrangements than liquid water). At -10°C, the temperature is low enough that the energy favorability outweighs the entropy penalty. Freezing happens spontaneously.
+**Real-world example**: Water freezing at -10 °C is Case 3. The process is exothermic (water releases heat as it solidifies) but entropy-decreasing (the rigid crystal lattice has fewer arrangements than liquid water). At -10 °C, the temperature is low enough that the energy favorability outweighs the entropy penalty. Freezing happens spontaneously.
 
-**Real-world example**: Ice melting at +25°C is Case 4. The process is endothermic (ice absorbs heat from the surroundings) but entropy-increasing (liquid water has vastly more arrangements). At +25°C, the temperature is high enough that the entropy favorability outweighs the energy penalty. Melting happens spontaneously.
+**Real-world example**: Ice melting at +25 °C is Case 4. The process is endothermic (ice absorbs heat from the surroundings) but entropy-increasing (liquid water has vastly more arrangements). At +25 °C, the temperature is high enough that the entropy favorability outweighs the energy penalty. Melting happens spontaneously.
 
-These are the **same** two substances (water and ice) and the **same** two drivers (energy and entropy) -- but temperature determines which process wins. This is why water freezes below 0°C and melts above 0°C. At exactly 0°C, the two drives are perfectly balanced, and ice and liquid water coexist in equilibrium.
+These are the **same** two substances (water and ice) and the **same** two drivers (energy and entropy) -- but temperature determines which process wins. This is why water freezes below 0 °C and melts above 0 °C. At exactly 0 °C, the two drives are perfectly balanced, and ice and liquid water coexist in equilibrium.
 
 **A crucial point about spontaneous processes**: Spontaneous does NOT mean the reaction will visibly happen right now. It means the process is thermodynamically favorable -- given enough time, it will proceed in that direction. The rate at which it happens is a completely separate question, which we address in NRG.4.
 
@@ -550,7 +550,7 @@ where q is heat added, m is mass, c is specific heat capacity, and ΔT is the te
 
 2. A catalyst lowers the activation energy of a reaction. Does it change the ΔH of the reaction? Does it change whether the reaction is spontaneous? What does it change?
 
-3. Equal masses of water and iron are placed in the same oven at 200°C for the same time. Which reaches a higher temperature first? Use specific heat capacity reasoning.
+3. Equal masses of water and iron are placed in the same oven at 200 °C for the same time. Which reaches a higher temperature first? Use specific heat capacity reasoning.
 
 4. Explain why coastal cities generally have milder climates than inland cities at the same latitude, using the concept of specific heat capacity.
 
@@ -609,9 +609,9 @@ This is exactly what the four-case matrix told you, but now unified under a sing
 - **Case 3**: Energy favorable, entropy unfavorable. At low T, energy row dominates (spontaneous). At high T, entropy row dominates (non-spontaneous).
 - **Case 4**: Energy unfavorable, entropy favorable. At low T, energy row dominates (non-spontaneous). At high T, entropy row dominates (spontaneous).
 
-**Real-world example**: Proteins fold into specific three-dimensional shapes at body temperature (about 37°C). The folding process involves a combination of favorable energy changes (new interactions form between parts of the protein chain) and an entropy increase (water molecules that were ordered around the unfolded protein are released, gaining freedom of movement). The free energy scorecard comes out negative at 37°C: folding is spontaneous. But during a high fever (above 40°C), the balance shifts. The entropy term for the protein chain itself (which loses arrangements when it folds) becomes more heavily weighted. At fever temperatures, the scorecard can flip -- proteins begin to unfold (denature). This is one reason why very high fevers are dangerous: the molecular machinery of your cells literally starts to come apart because the free energy balance has shifted.
+**Real-world example**: Proteins fold into specific three-dimensional shapes at body temperature (about 37 °C). The folding process involves a combination of favorable energy changes (new interactions form between parts of the protein chain) and an entropy increase (water molecules that were ordered around the unfolded protein are released, gaining freedom of movement). The free energy scorecard comes out negative at 37 °C: folding is spontaneous. But during a high fever (above 40 °C), the balance shifts. The entropy term for the protein chain itself (which loses arrangements when it folds) becomes more heavily weighted. At fever temperatures, the scorecard can flip -- proteins begin to unfold (denature). This is one reason why very high fevers are dangerous: the molecular machinery of your cells literally starts to come apart because the free energy balance has shifted.
 
-**Real-world example**: Water boils at 100°C at sea level. Below 100°C, the free energy scorecard favors the liquid state. Above 100°C, the entropy drive (gas has enormously more arrangements than liquid) is weighted heavily enough by the high temperature to override the energy penalty of breaking intermolecular attractions. At exactly 100°C, the scorecard is balanced: liquid and gas coexist.
+**Real-world example**: Water boils at 100 °C at sea level. Below 100 °C, the free energy scorecard favors the liquid state. Above 100 °C, the entropy drive (gas has enormously more arrangements than liquid) is weighted heavily enough by the high temperature to override the energy penalty of breaking intermolecular attractions. At exactly 100 °C, the scorecard is balanced: liquid and gas coexist.
 
 **What this section does NOT include**: There is a famous equation that relates free energy to enthalpy, entropy, and temperature: ΔG = ΔH - TΔS. You do not need this equation. The conceptual scorecard gives you the same predictive power for qualitative reasoning. If you continue to a majors-level chemistry course, you will learn to use the equation for quantitative calculations. For now, the scorecard is your tool.
 
@@ -621,7 +621,7 @@ This is exactly what the four-case matrix told you, but now unified under a sing
 
 1. A reaction is endothermic and increases entropy. Using the free energy scorecard, at what kind of temperature (high or low) would this reaction be spontaneous? Which case from the four-case matrix is this?
 
-2. Explain why water freezes at 0°C and melts at 0°C using the free energy scorecard concept. What is special about exactly 0°C?
+2. Explain why water freezes at 0 °C and melts at 0 °C using the free energy scorecard concept. What is special about exactly 0 °C?
 
 3. If a protein unfolds (denatures) at high temperature, what does that tell you about the free energy scorecard for protein folding? Which row of the scorecard changes as temperature increases?
 

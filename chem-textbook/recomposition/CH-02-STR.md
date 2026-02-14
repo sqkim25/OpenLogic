@@ -332,7 +332,7 @@ Think of it as a **tug-of-war**. Each polar bond is a rope pulling in a particul
 >
 > 1. *PRIM-STR001 (bond type)*: O—H bonds in water and C═O bonds in CO₂ are both covalent between atoms of different electronegativity → both have polar bonds.
 > 2. *DEF-STR001 (Lewis structure)*: Water has 2 bonds and 2 lone pairs on oxygen. CO₂ has 2 double bonds and 0 lone pairs on carbon.
-> 3. *PRIM-STR002 (molecular geometry)*: 2 bonds + 2 lone pairs → bent shape for H₂O. 2 bonds + 0 lone pairs → linear shape for CO₂.
+> 3. *PRIM-STR003 (molecular shape)*: 2 bonds + 2 lone pairs → bent shape for H₂O. 2 bonds + 0 lone pairs → linear shape for CO₂.
 > 4. *DEF-STR002 (molecular polarity)*: In bent H₂O, both O—H dipoles point toward the same side → they reinforce → net dipole → **polar**. In linear CO₂, the two C═O dipoles point in exactly opposite directions → they cancel → no net dipole → **nonpolar**.
 >
 > The key move is step 3 → 4: geometry decides whether bond dipoles cancel. Same type of bond polarity, different geometry, opposite molecular polarity.
