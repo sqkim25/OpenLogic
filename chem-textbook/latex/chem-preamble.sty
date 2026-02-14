@@ -228,8 +228,8 @@
 %% ---- 11. Figure Placeholder ----
 %% Usage: \figurebox{Periodic table showing electronegativity trends}{fig:periodic-en}
 \newcommand{\figurebox}[2]{%
-  \begin{figure}[htbp]
-    \centering
+  \par\medskip
+  \begin{center}
     \begin{tcolorbox}[
       colback=white,
       colframe=hookgray!50,
@@ -240,16 +240,15 @@
     ]
       \textit{[Figure: #1]}
     \end{tcolorbox}
-    \caption{#1}
-    \label{#2}
-  \end{figure}
+  \end{center}
+  \par\medskip
 }
 
 %% ---- 12. Notation Concordance Commands ----
 %% Shorthand for commonly used notation
-\newcommand{\DH}{\ensuremath{\Delta H}}              % Enthalpy change
-\newcommand{\DG}{\ensuremath{\Delta G}}              % Gibbs free energy
-\newcommand{\DS}{\ensuremath{\Delta S}}              % Entropy change
+\renewcommand{\DH}{\ensuremath{\Delta H}}             % Enthalpy change
+\providecommand{\DG}{\ensuremath{\Delta G}}           % Gibbs free energy
+\providecommand{\DS}{\ensuremath{\Delta S}}           % Entropy change
 \newcommand{\degC}{\si{\degreeCelsius}}              % Degrees Celsius
 \newcommand{\kJmol}{\si{kJ/mol}}                    % kJ per mole
 \newcommand{\emark}{\textsuperscript{(E)}}           % Enrichment marker
