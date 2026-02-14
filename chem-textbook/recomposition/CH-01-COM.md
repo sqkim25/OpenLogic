@@ -551,7 +551,7 @@ Some of these claims are well-supported. Some are exaggerations. Some are flat-o
 
 ---
 
-### Questions to Think About
+### Practice Questions: COM.5
 
 1. Pick a product in your kitchen. Read its label. Choose one ingredient and try to build a causal chain: what does that ingredient do at the molecular level, and how does it lead to the product's advertised effect?
 

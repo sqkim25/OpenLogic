@@ -38,7 +38,7 @@ This reasoning move works in two directions, like a bridge with traffic flowing 
 
 **The key insight**: macroscopic properties are not separate from molecular behavior. They are molecular behavior, viewed at a scale your senses can detect. Temperature is not something floating in the air -- it is the average kinetic energy of trillions of molecules. Pressure is not a mysterious force -- it is the collective result of gas molecules slamming into container walls. Color, hardness, boiling point, viscosity -- every property you can see, feel, or measure is the sum total of what molecules are doing.
 
-**A framework for translation**: The chemist John Johnstone described three levels of understanding in chemistry:
+**A framework for translation**: The chemistry educator Alex Johnstone described three levels of understanding in chemistry:
 
 | Level | What It Describes | Example (Boiling Water) |
 |-------|-------------------|------------------------|

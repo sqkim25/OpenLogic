@@ -988,7 +988,7 @@ Same reasoning chain. Different phenomenon. The tools transfer: spontaneity expl
 | **PRIM-STR005**: Structure-to-property inference | Chapter 2 (STR.4) | Given structural features, predict direction of a macroscopic property |
 | **PRIM-CHG005**: Acid-base reasoning | Chapter 5 (CHG.4) | Identify proton donor/acceptor, predict products |
 | **DEF-CHG002**: pH scale | Chapter 5 (CHG.4) | Classify solution acidity and relate pH to H⁺ concentration |
-| **PRIM-SCL003**: Concentration reasoning | Chapter 4 (SCL.2) | Determine amount of solute per volume and predict concentration-dependent effects |
+| **PRIM-SCL003**: Concentration reasoning | Chapter 4 (SCL.3) | Determine amount of solute per volume and predict concentration-dependent effects |
 
 ---
 
@@ -1067,8 +1067,8 @@ Same five primitives. Same reasoning chain. Different phenomenon.
 |-----------|--------|---------------|
 | **PRIM-STR005**: Structure-to-property inference | Chapter 2 (STR.4) | Given structural features, predict direction of a macroscopic property |
 | **PRIM-CHG005**: Acid-base reasoning | Chapter 5 (CHG.4) | Identify proton donor/acceptor, predict products |
-| **PRIM-SCL003**: Concentration reasoning | Chapter 4 (SCL.2) | Determine amount of solute per volume and predict concentration-dependent effects |
-| **DEF-SCL002**: Parts per million (ppm) | Chapter 4 (SCL.2) | Express trace concentrations in ppm and compare against thresholds |
+| **PRIM-SCL003**: Concentration reasoning | Chapter 4 (SCL.3) | Determine amount of solute per volume and predict concentration-dependent effects |
+| **DEF-SCL002**: Parts per million (ppm) | Chapter 4 (SCL.3) | Express trace concentrations in ppm and compare against thresholds |
 
 ---
 

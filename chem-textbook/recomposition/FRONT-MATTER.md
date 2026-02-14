@@ -80,13 +80,13 @@ There are seven Composition Patterns distributed across the book:
 
 | Pattern | Title | Location | Domains Combined |
 |---------|-------|----------|-----------------|
-| CP-001 | Structure-to-Property Prediction | End of Chapter 4 | COM + STR + SCL |
-| CP-002 | Energy-Driven Transformation | End of Chapter 5 | COM + STR + NRG + CHG |
-| CP-003 | Acid-Base in the Body | End of Chapter 5 | COM + SCL + CHG |
-| CP-004 | Greenhouse Effect | End of Chapter 4 | COM + STR + NRG + SCL |
-| CP-005 | Dose Makes the Poison | End of Chapter 5 | COM + SCL + CHG |
-| CP-006 | Food Chemistry | End of Chapter 5 | COM + NRG + SCL + CHG |
-| CP-007 | Biochemistry Connection | Chapter 6 | All domains |
+| CP-001 | Structure-to-Property Prediction | End of Chapter 4 | STR + SCL |
+| CP-002 | Energy-Driven Transformation | End of Chapter 5 | NRG + CHG |
+| CP-003 | Acid-Base in the Body | End of Chapter 5 | STR + CHG + SCL |
+| CP-004 | Greenhouse Effect | End of Chapter 4 | STR + NRG + SCL |
+| CP-005 | Dose Makes the Poison | End of Chapter 5 | STR + CHG + SCL |
+| CP-006 | Food Chemistry | End of Chapter 5 | COM + NRG + CHG + SCL |
+| CP-007 | Biochemistry Connection | Chapter 6 | STR + CHG + SCL |
 
 For example, CP-004 (Greenhouse Effect) chains together reasoning moves about molecular composition (what is CO₂?), molecular shape and polarity (why does it absorb infrared light?), energy transfer (what happens to that absorbed energy?), and scale (what does 420 ppm mean for the atmosphere?). No single domain can explain the greenhouse effect alone. The Composition Pattern shows you how the moves interlock.
 
@@ -125,11 +125,11 @@ Each chapter follows a consistent structure built around the reasoning moves. He
 
 **Reasoning Move Blockquotes.** Every new reasoning move is introduced in a blockquote with a standard format: *Given X, do Y to determine Z.* For example:
 
-> **COM-04: Formula Interpretation.** Given a molecular formula, count the subscript after each element symbol to determine how many atoms of that element are present in one unit of the substance.
+> **PRIM-COM005: Chemical Formula Reading.** Given a chemical formula, extract which atoms are present, how many of each, and their ratios to determine the quantitative composition of the substance.
 
 These blockquotes are your primary reference. When you encounter one, slow down --- this is a new tool entering your toolkit.
 
-**Dependency Annotations.** When a reasoning move relies on an earlier one, you will see an italic note like *[Recall COM-04: Formula Interpretation]*. These annotations tell you exactly which prior tool is being recalled. If the reference feels unfamiliar, flip back and review it before continuing. The annotations also serve as a self-diagnostic: if you consistently need to look up a particular move, it is worth spending extra time on it.
+**Dependency Annotations.** When a reasoning move relies on an earlier one, you will see an italic note like *Depends on: PRIM-COM005 (chemical formula reading, Chapter 1)*. These annotations tell you exactly which prior tool is being recalled. If the reference feels unfamiliar, flip back and review it before continuing. The annotations also serve as a self-diagnostic: if you consistently need to look up a particular move, it is worth spending extra time on it.
 
 **Reasoning Chain Callout Boxes.** These are step-by-step worked examples, set apart from the main text, that show multiple reasoning moves working together. A reasoning chain might look like:
 

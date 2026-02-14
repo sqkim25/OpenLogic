@@ -326,6 +326,17 @@ Think of it as a **tug-of-war**. Each polar bond is a rope pulling in a particul
 
 **Why does plastic wrap cling to glass but not to itself?** Plastic wrap (polyethylene) is made of nonpolar C—H chains. Glass has polar Si—O bonds on its surface. When you press nonpolar plastic wrap against polar glass, the polar surface induces a temporary charge imbalance in the plastic, creating an attraction. Two sheets of plastic wrap lack this polar-nonpolar interaction, so they do not cling to each other.
 
+> **Reasoning Chain: Why is water polar but carbon dioxide is not?**
+>
+> Both molecules contain polar bonds, yet one is polar and the other is not. Let's trace the reasoning.
+>
+> 1. *PRIM-STR001 (bond type)*: O—H bonds in water and C═O bonds in CO₂ are both covalent between atoms of different electronegativity → both have polar bonds.
+> 2. *DEF-STR001 (Lewis structure)*: Water has 2 bonds and 2 lone pairs on oxygen. CO₂ has 2 double bonds and 0 lone pairs on carbon.
+> 3. *PRIM-STR002 (molecular geometry)*: 2 bonds + 2 lone pairs → bent shape for H₂O. 2 bonds + 0 lone pairs → linear shape for CO₂.
+> 4. *DEF-STR002 (molecular polarity)*: In bent H₂O, both O—H dipoles point toward the same side → they reinforce → net dipole → **polar**. In linear CO₂, the two C═O dipoles point in exactly opposite directions → they cancel → no net dipole → **nonpolar**.
+>
+> The key move is step 3 → 4: geometry decides whether bond dipoles cancel. Same type of bond polarity, different geometry, opposite molecular polarity.
+
 ---
 
 ### Practice Questions: STR.2
@@ -552,6 +563,18 @@ The predictions are always **directional and comparative**, never numerical. We 
 5. Prediction: isopropanol dissolves in water; oil does not. Correct.
 
 Notice the pattern: every prediction follows the same chain. Structure determines polarity. Polarity determines IMF type. IMF type determines the property. This is the reasoning engine of the STR domain.
+
+> **Reasoning Chain: Why does hand soap remove grease but water alone cannot?**
+>
+> 1. *DEF-STR001 (Lewis structure)*: Grease molecules are long hydrocarbon chains — all C—H and C—C bonds.
+> 2. *DEF-STR002 (molecular polarity)*: C—H bonds are nearly nonpolar → grease is nonpolar overall.
+> 3. *PRIM-STR004 (IMF hierarchy)*: Nonpolar grease interacts only through weak London dispersion forces with polar water → unfavorable mixing.
+> 4. *PRIM-STR005 (structure-to-property)*: Weak grease-water interaction → grease does not dissolve in water. This is why rinsing greasy hands with water alone does not work.
+> 5. Now add soap. A soap molecule has a long nonpolar hydrocarbon tail and a polar ionic head (COO⁻ Na⁺).
+> 6. *PRIM-STR004 again*: The nonpolar tail interacts with grease through London forces; the polar head interacts with water through ion-dipole forces.
+> 7. *PRIM-STR005 again*: Soap molecules surround grease droplets — tails inward (touching grease), heads outward (touching water) — forming a micelle. The micelle is carried away by water.
+>
+> The chain is: Lewis structure → polarity → IMF type → solubility prediction → soap as a molecular bridge between polar and nonpolar worlds.
 
 ---
 

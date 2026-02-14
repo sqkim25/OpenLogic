@@ -108,7 +108,7 @@ All 62 reasoning moves are listed below, organized alphabetically within each do
 
 **DEF-SCL004: Colligative properties** (E) -- Given dissolved particles in a solvent, predict that the freezing point is lowered and the boiling point is raised, with the magnitude depending on particle count (not identity). (Chapter 4, E)
 
-**DEF-SCL005: Unit analysis / Safety and risk reasoning** -- Given a calculation or a hazard scenario, use dimensional analysis to verify correctness and catch unit errors, and distinguish hazard (intrinsic property) from risk (depends on concentration, route, and duration). (Chapter 4, C)
+**DEF-SCL005: Unit analysis** -- Given a multi-step calculation involving physical quantities, use dimensional analysis (tracking units through each step) to verify correctness, catch conversion errors, and ensure the final answer has the expected units. (Chapter 4, C)
 
 **PRIM-SCL001: Macro-to-submicro translation** -- Given an observable macroscopic property or a molecular-level behavior, translate between the two levels: explain the macroscopic in terms of the molecular, or predict the macroscopic from the molecular. (Chapter 4, C)
 
@@ -120,7 +120,7 @@ All 62 reasoning moves are listed below, organized alphabetically within each do
 
 **PRIM-SCL005: Proportional reasoning** -- Given a ratio (from a balanced equation, a recipe, or a dosage), scale it up or down to connect molecular-level ratios to lab-scale or everyday quantities. (Chapter 4, C)
 
-**PRIM-SCL006: Safety/risk reasoning** -- Given hazard information (GHS pictograms, LD50, PEL, exposure route, duration), assess risk by combining intrinsic hazard with concentration, route, and duration of exposure. (Chapter 4, C)
+**PRIM-SCL006: Safety/risk reasoning** -- Given hazard information (GHS pictograms, LD50, PEL, exposure route, duration), distinguish hazard (intrinsic property of a substance) from risk (depends on concentration, route, and duration of exposure) to make informed safety judgments. (Chapter 4, C)
 
 ---
 
