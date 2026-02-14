@@ -1,0 +1,143 @@
+% ch-01-com.tex — Chapter 1: What Is Stuff Made Of? (Composition Domain)
+% Sample conversion demonstrating markdown-to-LaTeX mapping for COM.1
+
+% Note: \chapter{} command is in the main chem-textbook.tex file.
+% This file contains the chapter body only.
+
+\noindent\textit{Domain: COM (Composition) --- The root of all chemical reasoning}
+
+\bigskip
+
+You are holding a bottle of water. The label says ``purified drinking water'' and lists a few minerals: calcium, magnesium, potassium. Now pick up a can of soda. The ingredients list includes ``carbonated water, high fructose corn syrup, phosphoric acid, natural flavors, caffeine.'' One product has five ingredients. The other has three minerals and water.
+
+Here is a question that sounds simple but turns out to be the foundation of all chemistry: \textbf{What is this stuff actually made of?}
+
+Not ``what does the label call it.'' Not ``what does it taste like.'' What is it made of --- at the deepest level that still matters for chemistry? What are the building blocks, how many of each, and how do we keep track of them?
+
+This chapter answers that question. By the end, you will be able to take any substance --- water, table salt, aspirin, the calcium carbonate in an antacid tablet --- and break it down to its atomic inventory. You will be able to read chemical formulas, classify substances, and verify that atoms are not being created or destroyed in a chemical process. These are the foundational moves that every other chapter in this book depends on.
+
+We start with atoms.
+
+
+%% ============================================================
+\section{COM.1: What Are Atoms, and How Do We Identify Them?}
+\label{sec:com1}
+%% ============================================================
+
+\subsection*{The Big Idea: Matter Is Made of Countable Pieces}
+
+Pour water into a glass. It looks continuous --- a smooth, unbroken liquid you can divide as many times as you like. Scoop out half. Half again. Half again. It seems like you could keep going forever.
+
+You cannot.
+
+If you could zoom in far enough --- far beyond what any kitchen knife or microscope could show you --- you would eventually reach a point where the water is no longer smoothly divisible. You would find individual particles: distinct, countable units. These are \textbf{molecules}, and each water molecule is itself built from even smaller pieces called \textbf{atoms}.
+
+This is the single most important conceptual shift in this chapter: \textbf{matter is not infinitely divisible goo. It is made of discrete, countable atoms.} Everything you eat, drink, breathe, and touch is made of atoms. The chair you are sitting in. The screen you are reading. Your own body. All of it: atoms.
+
+We are not going to spend time on how scientists figured this out. That is a fascinating story involving vacuum tubes and gold foil and tiny oil drops, but it is a history story, not a reasoning tool. Instead, we accept the atomic model as a starting point and learn to use it.
+
+%% ---- Reasoning Move: PRIM-COM001 ----
+\begin{reasoningmove}{PRIM-COM001}{Atomic Composition Analysis}
+  \textbf{Reasoning move}: Given a substance or sample, decompose it into its constituent atoms and identify their subatomic particles (protons, neutrons, electrons) to determine what the substance is made of at the most fundamental chemical level.
+\end{reasoningmove}
+
+This is the entry point to all chemical reasoning. Before you can ask how atoms connect (that is Chapter~\ref{ch:str}), how energy flows (Chapter~\ref{ch:nrg}), or how substances transform (Chapter~\ref{ch:chg}), you need to know \textbf{what atoms are present}. Atomic composition analysis is the act of taking any sample and reasoning downward to its atomic inventory.
+
+\textbf{What is an atom made of?} Every atom contains three types of subatomic particles:
+
+\begin{center}
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Particle} & \textbf{Charge} & \textbf{Location} & \textbf{Mass (relative)} \\
+  \midrule
+  Proton   & Positive (+1) & Nucleus (center) & 1 \\
+  Neutron  & No charge (0) & Nucleus (center) & 1 \\
+  Electron & Negative ($-1$) & Surrounding the nucleus & $\approx 0$ (about 1/1836 of a proton) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The nucleus --- containing protons and neutrons packed tightly together --- sits at the center of the atom. Electrons occupy the space around the nucleus. The atom is mostly empty space. If the nucleus were the size of a marble at the center of a football field, the nearest electrons would be orbiting near the outer walls of the stadium.
+
+Here is the key fact: \textbf{the number of protons determines what element an atom is.} An atom with 6 protons is carbon. Always. An atom with 79 protons is gold. Always. The number of protons is called the \textbf{atomic number}, and we label it~$Z$. This is the single most important number in chemistry.
+
+\begin{hook}{Water quality and atomic composition}
+  When a water quality report says ``lead detected at \SI{5}{\ppb},'' the first reasoning step is atomic composition analysis: lead atoms ($Z = 82$) are present in the water. We know they are lead because of their proton count --- not because of their color, weight, or any other property.
+\end{hook}
+
+\begin{hook}{Sodium on food labels}
+  A food label lists ``sodium'' as an ingredient in crackers. Performing atomic composition analysis: sodium is an element with $Z = 11$, meaning every sodium atom has 11 protons in its nucleus. That one number --- 11 protons --- is what makes it sodium and not potassium ($Z = 19$) or calcium ($Z = 20$).
+\end{hook}
+
+%% ---- Reasoning Move: PRIM-COM002 ----
+\begin{reasoningmove}{PRIM-COM002}{Elemental Identity}
+  \textbf{Reasoning move}: Given an atom's proton count (atomic number~$Z$), identify the element it belongs to and locate it on the periodic table to access that element's characteristic properties.
+\end{reasoningmove}
+
+\depends{PRIM-COM001}{you need to know what $Z$ means before you can look it up}{1}
+
+If PRIM-COM001 tells you to count the protons, PRIM-COM002 tells you what to do with that count: \textbf{look it up on the periodic table}.
+
+The periodic table is a map. It is indexed by atomic number~$Z$. Every element has a unique spot on this map, and that spot tells you several things at a glance:
+
+\begin{itemize}[nosep]
+  \item The element's \textbf{symbol} (a one- or two-letter abbreviation: C for carbon, Na for sodium, Fe for iron)
+  \item The element's \textbf{atomic mass} (the weighted average mass of its naturally occurring atoms)
+  \item The element's \textbf{period} (row number --- tells you how many electron shells the atom has)
+  \item The element's \textbf{group} (column number --- tells you how many valence electrons, which we will get to shortly)
+\end{itemize}
+
+Think of the periodic table as a cheat sheet. You do not need to memorize the properties of 118 elements. You need to know how to read the table. Given~$Z$, you can find the element. Given the element's position (row and column), you can predict its behavior.
+
+\figurebox{The periodic table of the elements, organized by atomic number. Each box shows the element symbol, atomic number, and atomic mass. Rows (periods) indicate electron shell count; columns (groups) indicate valence electron count.}{fig:periodic-table}
+
+\textbf{How to use the periodic table as a lookup tool:}
+\begin{enumerate}[nosep]
+  \item Find the atomic number ($Z$). Every box on the table displays~$Z$ prominently.
+  \item Read the element symbol and name.
+  \item Note the period (row) and group (column).
+  \item Read the atomic mass (usually displayed below the symbol).
+\end{enumerate}
+
+\begin{hook}{Mercury in fish}
+  A news headline reads ``Mercury found in imported fish.'' You look up mercury: $Z = 80$, symbol Hg, period~6, group~12. It is a heavy metal --- you can see it sits in the lower portion of the table among the transition metals. That one lookup immediately distinguishes mercury from lighter, biologically essential elements like calcium ($Z = 20$) or iron ($Z = 26$).
+\end{hook}
+
+%% ---- Reasoning Chain ----
+\begin{reasoningchain}{Why is sodium chloride (table salt) an ionic compound?}
+  \chainitem{PRIM-COM002}{Elemental identity}{Look up sodium ($Z = 11$, group 1) and chlorine ($Z = 17$, group 17) on the periodic table.}
+  \chainitem{PRIM-COM007}{Valence electron reasoning}{Sodium has 1 valence electron (group 1); chlorine has 7 valence electrons (group 17).}
+  \chainitem{PRIM-COM004}{Substance classification}{The large electronegativity difference means sodium transfers its electron to chlorine, forming \ce{Na+} and \ce{Cl-}. This is an ionic compound.}
+\end{reasoningchain}
+
+%% ---- Practice Questions ----
+\begin{practicequestions}
+  \practiceq{A water quality report lists arsenic (As) as a contaminant. Look up arsenic on the periodic table. What is its atomic number? How many protons does every arsenic atom have?}
+
+  \practiceq{Two atoms are found in a sample. Atom A has 8 protons. Atom B has 8 protons and a different number of neutrons than Atom A. Are they the same element or different elements? How do you know?}
+
+  \practiceq{If someone told you they had discovered a new element with 6 protons, what would you tell them?}
+
+  \practiceq{A nutrition label says a food contains ``iron.'' What is the atomic number of iron? Where on the periodic table would you find it?}
+\end{practicequestions}
+
+\medskip
+
+\noindent\textit{You now know that matter is made of countable atoms, that each atom's identity is determined by its proton count, and that the periodic table is your lookup tool for connecting proton count to element identity. But the periodic table does far more than just name elements --- it predicts their behavior. That is where we go next.}
+
+%% ============================================================
+%% NOTE: Remaining sections (COM.2 through COM.E) follow the
+%% same conversion pattern. Each section uses:
+%%   - \section{} for main sections
+%%   - \begin{reasoningmove}{ID}{Name} for each PRIM/DEF
+%%   - \depends{ID}{description}{chapter} for dependency annotations
+%%   - \begin{hook}{title} for real-world examples
+%%   - \begin{reasoningchain}{title} with \chainitem{} for chains
+%%   - \begin{practicequestions} with \practiceq{} for questions
+%%   - \begin{enrichment}{title} for E-tier sections
+%%   - \begin{cpcapstone}{ID}{Title} with \cpstep{} for CPs
+%%   - \begin{chaptersummary} for the end-of-chapter table
+%%   - \reaction{} for displayed chemical equations
+%%   - \ce{} for inline chemical formulas
+%%   - \figurebox{description}{label} for figure placeholders
+%% ============================================================

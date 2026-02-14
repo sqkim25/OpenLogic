@@ -1,0 +1,128 @@
+% chem-textbook.tex — Main document for Chemistry: A Reasoning-Move Approach
+% A non-majors introductory chemistry textbook organized around 62 reasoning moves
+% across 5 domains: Composition, Structure, Energy, Scale, and Change.
+%
+% Build: latexmk -pdf chem-textbook.tex
+
+\documentclass[openany,oneside,11pt]{memoir}
+
+%% ---- Load custom style ----
+\usepackage{chem-preamble}
+
+%% ---- Document Metadata ----
+\title{\textbf{Chemistry: A Reasoning-Move Approach}\\[0.5em]
+  \large An Introduction for Non-Majors}
+\author{}
+\date{}
+
+%% ---- Hyperref Setup ----
+\hypersetup{
+  pdftitle={Chemistry: A Reasoning-Move Approach},
+  pdfsubject={Introductory Chemistry for Non-Majors},
+  pdfkeywords={chemistry, reasoning moves, non-majors, taxonomy},
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1
+}
+
+%% ---- Chapter Style ----
+\chapterstyle{bianchi}
+\setsecheadstyle{\Large\bfseries\sffamily}
+\setsubsecheadstyle{\large\bfseries\sffamily}
+\setsubsubsecheadstyle{\normalsize\bfseries\sffamily}
+
+\begin{document}
+
+%% ============================================================
+%% FRONT MATTER
+%% ============================================================
+\frontmatter
+
+\begin{titlingpage}
+  \centering
+  \vspace*{3cm}
+  {\Huge\bfseries\sffamily Chemistry:\\[0.3em]
+   A Reasoning-Move Approach\par}
+  \vspace{1cm}
+  {\Large\sffamily An Introduction for Non-Majors\par}
+  \vspace{2cm}
+  {\large\itshape 62 reasoning moves across 5 domains\\[0.5em]
+   Composition $\cdot$ Structure $\cdot$ Energy $\cdot$ Scale $\cdot$ Change\par}
+  \vspace{3cm}
+  {\normalsize Draft Edition --- \today\par}
+\end{titlingpage}
+
+\clearpage
+\tableofcontents*
+
+%% ---- Preface ----
+\chapter{Preface}
+\input{ch-preface}
+
+%% ---- Your Chemical Toolkit ----
+\chapter{Your Chemical Toolkit}
+\input{ch-toolkit}
+
+%% ---- Notation Guide ----
+\chapter{Notation Guide}
+\input{ch-notation}
+
+%% ---- How to Read This Book ----
+\chapter{How to Read This Book}
+\input{ch-howtoread}
+
+%% ============================================================
+%% MAIN MATTER
+%% ============================================================
+\mainmatter
+
+%% ---- Chapter 1: Composition ----
+\chapter{What Is Stuff Made Of?}
+\label{ch:com}
+\input{ch-01-com}
+
+%% ---- Chapter 2: Structure ----
+\chapter{How Does Arrangement Determine Properties?}
+\label{ch:str}
+\input{ch-02-str}
+
+%% ---- Chapter 3: Energy ----
+\chapter{What Drives Change?}
+\label{ch:nrg}
+\input{ch-03-nrg}
+
+%% ---- Chapter 4: Scale ----
+\chapter{How Much? How Big?}
+\label{ch:scl}
+\input{ch-04-scl}
+
+%% ---- Chapter 5: Change ----
+\chapter{What Happens?}
+\label{ch:chg}
+\input{ch-05-chg}
+
+%% ---- Chapter 6: Chemistry Meets Life (Enrichment) ----
+\begin{enrichment}{Chemistry Meets Life}
+\chapter{Chemistry Meets Life}
+\label{ch:multi}
+\input{ch-06-multi}
+\end{enrichment}
+
+%% ============================================================
+%% BACK MATTER
+%% ============================================================
+\backmatter
+
+%% ---- Glossary ----
+\chapter{Glossary of Reasoning Moves}
+\input{ch-glossary}
+
+%% ---- Real-World Hook Index ----
+\chapter{Real-World Hook Index}
+\input{ch-hookindex}
+
+%% ---- Answer Key ----
+\chapter{Answer Key}
+\input{ch-answers}
+
+\end{document}

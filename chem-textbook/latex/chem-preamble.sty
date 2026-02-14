@@ -1,0 +1,268 @@
+% chem-preamble.sty — Custom style for Chemistry: A Reasoning-Move Approach
+% Provides environments and commands for the textbook's structural elements.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{chem-preamble}[2026/02/14 Chemistry Textbook Style]
+
+%% ---- Fonts and Typography ----
+\RequirePackage[T1]{fontenc}
+\RequirePackage{mathpazo}          % Palatino for body text
+\RequirePackage[scaled=0.92]{helvet} % Helvetica for sans-serif
+\RequirePackage{microtype}         % Microtypographic refinements
+
+%% ---- Math and Science ----
+\RequirePackage{amsmath,amssymb}
+\RequirePackage[version=4]{mhchem} % Chemical formulas: \ce{H2O}, \ce{CO2}
+\RequirePackage{siunitx}           % Units: \SI{100}{\degreeCelsius}, \si{kJ}
+\sisetup{
+  per-mode=symbol,
+  group-separator={,},
+  detect-all
+}
+\DeclareSIUnit{\calorie}{Cal}
+\DeclareSIUnit{\ppm}{ppm}
+\DeclareSIUnit{\ppb}{ppb}
+\DeclareSIUnit{\molar}{M}
+
+%% ---- Layout and Graphics ----
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{booktabs}          % Professional tables
+\RequirePackage{longtable}         % Multi-page tables
+\RequirePackage{tabularx}          % Flexible-width tables
+\RequirePackage{enumitem}          % Custom list formatting
+\RequirePackage{multicol}
+\RequirePackage{float}             % Better float control
+
+%% ---- Cross-referencing ----
+\RequirePackage[hidelinks]{hyperref}
+\RequirePackage[nameinlink]{cleveref}
+
+%% ---- Colors ----
+\definecolor{reasonblue}{HTML}{1a5276}    % Reasoning-move blockquotes
+\definecolor{chaingreen}{HTML}{196f3d}    % Reasoning Chain callout boxes
+\definecolor{practiceamber}{HTML}{7d6608} % Practice question sections
+\definecolor{enrichpurple}{HTML}{6c3483}  % Enrichment sections
+\definecolor{hookgray}{HTML}{566573}      % Real-world hook boxes
+\definecolor{lightblue}{HTML}{d6eaf8}     % Reasoning-move background
+\definecolor{lightgreen}{HTML}{d5f5e3}    % Reasoning Chain background
+\definecolor{lightamber}{HTML}{fef9e7}    % Practice question background
+\definecolor{lightpurple}{HTML}{f4ecf7}   % Enrichment background
+
+%% ---- TikZ Libraries ----
+\usetikzlibrary{calc,positioning,arrows.meta,decorations.pathreplacing}
+
+%% ---- tcolorbox for styled environments ----
+\RequirePackage[most]{tcolorbox}
+
+%% ============================================================
+%% CUSTOM ENVIRONMENTS
+%% ============================================================
+
+%% ---- 1. Reasoning Move Blockquote ----
+%% Usage: \begin{reasoningmove}{PRIM-COM005}{Chemical Formula Reading}
+%%          Given a chemical formula, extract...
+%%        \end{reasoningmove}
+\newtcolorbox{reasoningmove}[2]{%
+  colback=lightblue,
+  colframe=reasonblue,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  title={#1: #2},
+  boxrule=1pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=12pt, after skip=12pt,
+  breakable
+}
+
+%% ---- 2. Reasoning Chain Callout Box ----
+%% Usage: \begin{reasoningchain}{Why does salt dissolve in water?}
+%%          \chainitem{PRIM-COM004}{Substance classification}{NaCl is ionic...}
+%%          \chainitem{PRIM-STR001}{Bond type}{Na+ and Cl- are held by...}
+%%        \end{reasoningchain}
+\newtcolorbox{reasoningchain}[1]{%
+  colback=lightgreen,
+  colframe=chaingreen,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  title={Reasoning Chain: #1},
+  boxrule=1pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=12pt, after skip=12pt,
+  breakable
+}
+\newcounter{chainstep}
+\newcommand{\chainitem}[3]{%
+  \stepcounter{chainstep}%
+  \par\noindent\textbf{\arabic{chainstep}.}~\textit{#1 (#2):} #3%
+  \par\smallskip
+}
+% Reset counter at start of each chain
+\AtBeginEnvironment{reasoningchain}{\setcounter{chainstep}{0}}
+
+%% ---- 3. Practice Questions ----
+%% Usage: \begin{practicequestions}
+%%          \practiceq{A water quality report...}
+%%          \practiceq{Classify each of the following...}
+%%        \end{practicequestions}
+\newtcolorbox{practicequestions}{%
+  colback=lightamber,
+  colframe=practiceamber,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  title={Practice Questions},
+  boxrule=1pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=12pt, after skip=12pt,
+  breakable
+}
+\newcounter{practiceqnum}[chapter]
+\newcommand{\practiceq}[1]{%
+  \stepcounter{practiceqnum}%
+  \par\noindent\textbf{\thechapter.\arabic{practiceqnum}.}~#1\par\smallskip
+}
+
+%% ---- 4. Enrichment Section Marker ----
+%% Usage: \begin{enrichment}{Topic Title}
+%%          Content here...
+%%        \end{enrichment}
+\newtcolorbox{enrichment}[1]{%
+  colback=lightpurple,
+  colframe=enrichpurple,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily,
+  title={Enrichment: #1},
+  boxrule=1pt,
+  arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  before skip=12pt, after skip=12pt,
+  breakable
+}
+
+%% ---- 5. Dependency Annotation ----
+%% Usage: \depends{PRIM-COM005}{chemical formula reading}{1}
+\newcommand{\depends}[3]{%
+  \par\noindent\textit{Depends on:\ \textbf{#1} (#2, Chapter~#3).}%
+  \par\smallskip
+}
+
+%% ---- 6. Real-World Hook ----
+%% Usage: \begin{hook}{Why does ice float?}
+%%          Most solids sink in their own liquid...
+%%        \end{hook}
+\newtcolorbox{hook}[1]{%
+  colback=white,
+  colframe=hookgray,
+  coltitle=hookgray,
+  fonttitle=\itshape\sffamily,
+  title={#1},
+  boxrule=0.5pt,
+  arc=2pt,
+  left=8pt, right=8pt, top=4pt, bottom=4pt,
+  before skip=8pt, after skip=8pt,
+  breakable
+}
+
+%% ---- 7. Chapter Summary Table ----
+%% Not a tcolorbox — just formatting commands for the summary tables.
+%% Use standard tabular/longtable within a framed environment.
+\newenvironment{chaptersummary}{%
+  \subsection*{Chapter Summary}%
+  \begin{center}%
+}{%
+  \end{center}%
+}
+
+%% ---- 8. Composition Pattern Capstone ----
+%% Usage: \begin{cpcapstone}{CP-001}{Structure-to-Property Prediction}
+%%          \cpstep{Name}{...}
+%%          \cpstep{Hook}{...}
+%%          \cpstep{Walkthrough}{...}
+%%          \cpstep{Bridge}{...}
+%%        \end{cpcapstone}
+\newtcolorbox{cpcapstone}[2]{%
+  colback=lightgreen!50!lightblue,
+  colframe=chaingreen!70!reasonblue,
+  coltitle=white,
+  fonttitle=\bfseries\sffamily\large,
+  title={Composition Pattern #1: #2},
+  boxrule=1.5pt,
+  arc=4pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  before skip=16pt, after skip=16pt,
+  breakable
+}
+\newcommand{\cpstep}[2]{%
+  \par\noindent\textbf{Step: #1.}~#2\par\medskip
+}
+
+%% ---- 9. Chemical Reaction Display ----
+%% Usage: \reaction{2 H2 + O2 -> 2 H2O}
+%%   (wraps mhchem \ce in a displayed equation)
+\newcommand{\reaction}[1]{%
+  \begin{equation*}
+    \ce{#1}
+  \end{equation*}
+}
+
+%% ---- 10. Model Answer (for answer key) ----
+%% Usage: \begin{modelanswer}{1}{3}{COM.3}
+%%          Content...
+%%        \end{modelanswer}
+\newtcolorbox{modelanswer}[3]{%
+  colback=white,
+  colframe=reasonblue!50,
+  fonttitle=\bfseries\sffamily\small,
+  title={Chapter~#1, Section~#3, Question~#2},
+  boxrule=0.5pt,
+  arc=2pt,
+  left=6pt, right=6pt, top=4pt, bottom=4pt,
+  before skip=8pt, after skip=8pt,
+  breakable
+}
+
+%% ---- 11. Figure Placeholder ----
+%% Usage: \figurebox{Periodic table showing electronegativity trends}{fig:periodic-en}
+\newcommand{\figurebox}[2]{%
+  \begin{figure}[htbp]
+    \centering
+    \begin{tcolorbox}[
+      colback=white,
+      colframe=hookgray!50,
+      boxrule=0.5pt,
+      arc=2pt,
+      width=0.8\textwidth,
+      halign=center
+    ]
+      \textit{[Figure: #1]}
+    \end{tcolorbox}
+    \caption{#1}
+    \label{#2}
+  \end{figure}
+}
+
+%% ---- 12. Notation Concordance Commands ----
+%% Shorthand for commonly used notation
+\newcommand{\DH}{\ensuremath{\Delta H}}              % Enthalpy change
+\newcommand{\DG}{\ensuremath{\Delta G}}              % Gibbs free energy
+\newcommand{\DS}{\ensuremath{\Delta S}}              % Entropy change
+\newcommand{\degC}{\si{\degreeCelsius}}              % Degrees Celsius
+\newcommand{\kJmol}{\si{kJ/mol}}                    % kJ per mole
+\newcommand{\emark}{\textsuperscript{(E)}}           % Enrichment marker
+
+%% ---- Page Layout Tweaks (for memoir class) ----
+%% Set generous margins for a textbook
+\setlrmarginsandblock{1in}{1in}{*}
+\setulmarginsandblock{1in}{1.2in}{*}
+\checkandfixthelayout
+
+%% ---- Header/Footer Style ----
+\pagestyle{headings}
+\makeevenhead{headings}{\thepage}{}{\leftmark}
+\makeoddhead{headings}{\rightmark}{}{\thepage}
+
+\endinput
